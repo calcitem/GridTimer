@@ -21,10 +21,10 @@ class TimerService implements ITimerService {
 
   TimerGridSet? _currentGrid;
   final Map<TimerId, TimerSession> _sessions = {};
-  
+
   /// 用于防止重复触发响铃的锁
   final Set<TimerId> _pendingRinging = {};
-  
+
   final StreamController<(TimerGridSet, List<TimerSession>)> _stateController =
       StreamController<(TimerGridSet, List<TimerSession>)>.broadcast();
 
@@ -78,14 +78,14 @@ class TimerService implements ITimerService {
     for (final entry in _sessions.entries.toList()) {
       final session = entry.value;
       final timerId = entry.key;
-      
+
       // 只处理状态为 RUNNING 且时间已到、且不在处理中的计时器
       if (session.status == TimerStatus.running &&
           session.shouldBeRinging(nowMs) &&
           !_pendingRinging.contains(timerId)) {
         // 加锁，防止重复触发
         _pendingRinging.add(timerId);
-        
+
         // 立即同步更新内存中的状态为 ringing，避免下次检查时重复触发
         final updated = session.copyWith(
           status: TimerStatus.ringing,
@@ -93,25 +93,25 @@ class TimerService implements ITimerService {
           lastUpdatedEpochMs: nowMs,
         );
         _sessions[timerId] = updated;
-        
+
         // 异步执行响铃逻辑（保存状态、播放声音）
         _triggerRingingAsync(timerId, session.slotIndex);
       }
     }
   }
-  
+
   Future<void> _triggerRingingAsync(TimerId timerId, int slotIndex) async {
     try {
       final session = _sessions[timerId];
       if (session == null) return;
-      
+
       // 保存状态到存储
       await _storage.saveSession(session);
 
       // 播放声音和 TTS
       final config = _currentGrid!.slots[slotIndex];
       await _audio.playLoop(soundKey: config.soundKey);
-      
+
       if (config.ttsEnabled) {
         await _tts.speak(
           text: '${config.name} time is up',
@@ -279,15 +279,15 @@ class TimerService implements ITimerService {
   }) async {
     final session = _sessions[timerId];
     if (session == null) return;
-    
+
     // 如果已经在响铃或处理中，跳过
-    if (session.status == TimerStatus.ringing || 
+    if (session.status == TimerStatus.ringing ||
         _pendingRinging.contains(timerId)) {
       return;
     }
 
     _pendingRinging.add(timerId);
-    
+
     try {
       final nowMs = _clock.nowEpochMs();
       final updated = session.copyWith(

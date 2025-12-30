@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
@@ -80,6 +81,7 @@ class TimerGridCell extends ConsumerWidget {
                     fontWeight: FontWeight.w900,
                     color: Colors.white,
                     height: 1.0,
+                    fontFeatures: [FontFeature.tabularFigures()],
                   ),
                 ),
               ),
@@ -114,6 +116,7 @@ class TimerGridCell extends ConsumerWidget {
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: isPaused ? Colors.white70 : Colors.white,
+            fontFeatures: const [FontFeature.tabularFigures()],
           ),
         ),
         // 中间：剩余秒数（超大字体）
@@ -130,6 +133,7 @@ class TimerGridCell extends ConsumerWidget {
                     fontWeight: FontWeight.w900,
                     color: isPaused ? Colors.white70 : Colors.white,
                     height: 1.0,
+                    fontFeatures: const [FontFeature.tabularFigures()],
                   ),
                 ),
               ),
@@ -161,6 +165,7 @@ class TimerGridCell extends ConsumerWidget {
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.white,
+            fontFeatures: [FontFeature.tabularFigures()],
           ),
         ),
         // 中间："时间到" 大字
