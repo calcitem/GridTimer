@@ -121,6 +121,147 @@
   "later": "Later",
   "@later": {
     "description": "Button to postpone action"
+  },
+
+  "minutes": "minutes",
+  "@minutes": {
+    "description": "Label for minutes"
+  },
+
+  "remainingSeconds": "seconds left",
+  "@remainingSeconds": {
+    "description": "Label for remaining seconds"
+  },
+
+  "pausing": "Paused",
+  "@pausing": {
+    "description": "Label when timer is paused"
+  },
+
+  "timeUp": "Time's Up",
+  "@timeUp": {
+    "description": "Label when timer rings"
+  },
+
+  "clickToStop": "Click to stop",
+  "@clickToStop": {
+    "description": "Instruction to stop alarm"
+  },
+
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings page title"
+  },
+
+  "appInformation": "App Information",
+  "@appInformation": {
+    "description": "Section: App Information"
+  },
+
+  "version": "Version",
+  "@version": {
+    "description": "Label for app version"
+  },
+
+  "timerSettings": "Timer Settings",
+  "@timerSettings": {
+    "description": "Section: Timer Settings"
+  },
+
+  "soundSettings": "Sound Settings",
+  "@soundSettings": {
+    "description": "Sound settings option"
+  },
+
+  "soundSettingsDesc": "Configure alarm sound",
+  "@soundSettingsDesc": {
+    "description": "Description for sound settings"
+  },
+
+  "ttsSettings": "TTS Settings",
+  "@ttsSettings": {
+    "description": "TTS settings option"
+  },
+
+  "ttsSettingsDesc": "Configure voice announcements",
+  "@ttsSettingsDesc": {
+    "description": "Description for TTS settings"
+  },
+
+  "languageSettings": "Language",
+  "@languageSettings": {
+    "description": "Language settings option"
+  },
+
+  "languageSettingsDesc": "Choose app language",
+  "@languageSettingsDesc": {
+    "description": "Description for language settings"
+  },
+
+  "permissions": "Permissions",
+  "@permissions": {
+    "description": "Section: Permissions"
+  },
+
+  "notificationPermission": "Notification Permission",
+  "@notificationPermission": {
+    "description": "Notification permission option"
+  },
+
+  "notificationPermissionDesc": "Allow timer notifications",
+  "@notificationPermissionDesc": {
+    "description": "Description for notification permission"
+  },
+
+  "about": "About",
+  "@about": {
+    "description": "Section: About"
+  },
+
+  "license": "License",
+  "@license": {
+    "description": "License option"
+  },
+
+  "licenseDesc": "View open source licenses",
+  "@licenseDesc": {
+    "description": "Description for license"
+  },
+
+  "comingSoon": "Coming soon",
+  "@comingSoon": {
+    "description": "Message for unimplemented features"
+  },
+
+  "selectLanguage": "Select Language",
+  "@selectLanguage": {
+    "description": "Dialog title for language selection"
+  },
+
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "English language name"
+  },
+
+  "languageChineseSimplified": "简体中文",
+  "@languageChineseSimplified": {
+    "description": "Simplified Chinese language name"
+  },
+
+  "errorText": "Error: {error}",
+  "@errorText": {
+    "description": "Error message template",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection failed"
+      }
+    }
+  },
+
+  "confirmStart": "Other timers are running. Continue to start this timer?",
+  "@confirmStart": {
+    "description": "Confirmation message when starting timer with others running"
   }
 }
 

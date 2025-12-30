@@ -79,4 +79,88 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get later => 'Later';
+
+  @override
+  String get minutes => 'minutes';
+
+  @override
+  String get remainingSeconds => 'seconds left';
+
+  @override
+  String get pausing => 'Paused';
+
+  @override
+  String get timeUp => 'Time\'s Up';
+
+  @override
+  String get clickToStop => 'Click to stop';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get appInformation => 'App Information';
+
+  @override
+  String get version => 'Version';
+
+  @override
+  String get timerSettings => 'Timer Settings';
+
+  @override
+  String get soundSettings => 'Sound Settings';
+
+  @override
+  String get soundSettingsDesc => 'Configure alarm sound';
+
+  @override
+  String get ttsSettings => 'TTS Settings';
+
+  @override
+  String get ttsSettingsDesc => 'Configure voice announcements';
+
+  @override
+  String get languageSettings => 'Language';
+
+  @override
+  String get languageSettingsDesc => 'Choose app language';
+
+  @override
+  String get permissions => 'Permissions';
+
+  @override
+  String get notificationPermission => 'Notification Permission';
+
+  @override
+  String get notificationPermissionDesc => 'Allow timer notifications';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get license => 'License';
+
+  @override
+  String get licenseDesc => 'View open source licenses';
+
+  @override
+  String get comingSoon => 'Coming soon';
+
+  @override
+  String get selectLanguage => 'Select Language';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageChineseSimplified => '简体中文';
+
+  @override
+  String errorText(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get confirmStart =>
+      'Other timers are running. Continue to start this timer?';
 }
