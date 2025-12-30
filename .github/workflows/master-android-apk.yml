@@ -22,7 +22,10 @@ jobs:
           java-version: '21'
 
       - name: Decode signing key
-        run: echo "$SIGNING_KEY" | base64 -d > android/app/key.jks
+        run: |
+          echo "$SIGNING_KEY" | base64 --decode --ignore-garbage > android/app/key.jks
+          ls -l android/app/key.jks
+
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
 
