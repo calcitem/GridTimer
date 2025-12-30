@@ -8,7 +8,7 @@ class PermissionService implements IPermissionService {
   @override
   Future<bool> canPostNotifications() async {
     if (!Platform.isAndroid) return true;
-    
+
     final status = await Permission.notification.status;
     return status.isGranted;
   }
@@ -59,7 +59,8 @@ class PermissionService implements IPermissionService {
   Future<void> openBatteryOptimizationSettings() async {
     // app_settings 仅在 Android 和 iOS 上可用
     if (Platform.isAndroid || Platform.isIOS) {
-      await AppSettings.openAppSettings(type: AppSettingsType.batteryOptimization);
+      await AppSettings.openAppSettings(
+          type: AppSettingsType.batteryOptimization);
     }
   }
 
@@ -71,6 +72,3 @@ class PermissionService implements IPermissionService {
     }
   }
 }
-
-
-

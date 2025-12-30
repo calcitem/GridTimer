@@ -294,11 +294,15 @@ class TimerService implements ITimerService {
   }
 
   TimerGridSet _createDefaultGrid() {
+    // 默认时间配置：1, 2, 3, 5, 10, 15, 20, 45, 60 分钟
+    const defaultDurations = [1, 2, 3, 5, 10, 15, 20, 45, 60];
+
     final configs = List.generate(9, (i) {
+      final minutes = defaultDurations[i];
       return TimerConfig(
         slotIndex: i,
-        name: 'Timer ${i + 1}',
-        presetDurationMs: const Duration(minutes: 5).inMilliseconds,
+        name: '$minutes min',
+        presetDurationMs: Duration(minutes: minutes).inMilliseconds,
         soundKey: 'default',
         ttsEnabled: true,
       );
