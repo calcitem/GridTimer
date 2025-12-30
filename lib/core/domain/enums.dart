@@ -54,5 +54,21 @@ enum BatteryOptState {
   unknown,
 }
 
+/// Audio playback mode for alarm.
+enum AudioPlaybackMode {
+  /// Loop indefinitely until user stops manually (default).
+  loopIndefinitely,
 
+  /// Loop for N minutes then stop automatically.
+  loopForDuration,
+
+  /// Loop for N minutes, pause for M minutes, then loop for N minutes again (once).
+  loopWithInterval,
+
+  /// Loop for N minutes, pause for M minutes, then loop for N minutes repeatedly until stopped.
+  loopWithIntervalRepeating,
+
+  /// Play once and stop automatically.
+  playOnce,
+}
 

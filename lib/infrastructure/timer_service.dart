@@ -115,7 +115,15 @@ class TimerService implements ITimerService {
       // 播放声音和 TTS
       final config = _currentGrid!.slots[slotIndex];
       final soundVolume = settings?.soundVolume ?? 1.0;
-      await _audio.playLoop(soundKey: config.soundKey, volume: soundVolume);
+      
+      // 使用配置的播放模式
+      await _audio.playWithMode(
+        soundKey: config.soundKey,
+        volume: soundVolume,
+        mode: settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
+        loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
+        intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+      );
 
       // 显示即时通知，确保锁屏时也能发声
       await _notification.showTimeUpNow(session: session, config: config);
@@ -342,7 +350,15 @@ class TimerService implements ITimerService {
       // Play audio and TTS
       final config = _currentGrid!.slots[session.slotIndex];
       final soundVolume = settings?.soundVolume ?? 1.0;
-      await _audio.playLoop(soundKey: config.soundKey, volume: soundVolume);
+      
+      // 使用配置的播放模式
+      await _audio.playWithMode(
+        soundKey: config.soundKey,
+        volume: soundVolume,
+        mode: settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
+        loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
+        intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+      );
 
       // 显示即时通知，确保锁屏时也能发声
       await _notification.showTimeUpNow(session: updated, config: config);

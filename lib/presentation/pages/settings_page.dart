@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../l10n/app_localizations.dart';
+import 'audio_playback_settings_page.dart';
 import 'audio_test_page.dart';
 import 'grid_durations_settings_page.dart';
 import 'sound_settings_page.dart';
@@ -109,6 +110,21 @@ class SettingsPage extends ConsumerWidget {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const SoundSettingsPage()),
+                );
+              },
+            ),
+
+            // Audio Playback Settings
+            ListTile(
+              leading: const Icon(Icons.play_circle_outline),
+              title: Text(l10n.audioPlaybackSettings),
+              subtitle: Text(l10n.audioPlaybackSettingsDesc),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const AudioPlaybackSettingsPage(),
+                  ),
                 );
               },
             ),

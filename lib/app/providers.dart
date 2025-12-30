@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/domain/entities/app_settings.dart';
+import '../core/domain/enums.dart';
 import '../core/domain/services/i_clock.dart';
 import '../core/domain/services/i_timer_service.dart';
 import '../core/domain/services/i_notification_service.dart';
@@ -170,5 +171,22 @@ class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
   Future<void> updateTtsPitch(double pitch) async {
     assert(pitch >= 0.5 && pitch <= 2.0, 'Pitch must be between 0.5 and 2.0');
     await updateSettings((s) => s.copyWith(ttsPitch: pitch));
+  }
+
+  /// Update audio playback mode.
+  Future<void> updateAudioPlaybackMode(AudioPlaybackMode mode) async {
+    await updateSettings((s) => s.copyWith(audioPlaybackMode: mode));
+  }
+
+  /// Update audio loop duration (in minutes).
+  Future<void> updateAudioLoopDuration(int minutes) async {
+    assert(minutes > 0, 'Loop duration must be greater than 0');
+    await updateSettings((s) => s.copyWith(audioLoopDurationMinutes: minutes));
+  }
+
+  /// Update audio interval pause duration (in minutes).
+  Future<void> updateAudioIntervalPause(int minutes) async {
+    assert(minutes > 0, 'Interval pause must be greater than 0');
+    await updateSettings((s) => s.copyWith(audioIntervalPauseMinutes: minutes));
   }
 }

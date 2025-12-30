@@ -1,5 +1,6 @@
 import 'package:hive_ce/hive.dart';
 import '../../core/domain/entities/app_settings.dart';
+import '../../core/domain/enums.dart';
 
 part 'app_settings_hive.g.dart';
 
@@ -45,6 +46,15 @@ class AppSettingsHive {
   @HiveField(12, defaultValue: [10, 120, 180, 300, 480, 600, 900, 1200, 2700])
   final List<int> gridDurationsInSeconds;
 
+  @HiveField(13, defaultValue: 0)
+  final int audioPlaybackModeIndex;
+
+  @HiveField(14, defaultValue: 5)
+  final int audioLoopDurationMinutes;
+
+  @HiveField(15, defaultValue: 2)
+  final int audioIntervalPauseMinutes;
+
   AppSettingsHive({
     required this.activeModeId,
     required this.flashEnabled,
@@ -59,6 +69,9 @@ class AppSettingsHive {
     required this.ttsSpeechRate,
     required this.ttsPitch,
     required this.gridDurationsInSeconds,
+    required this.audioPlaybackModeIndex,
+    required this.audioLoopDurationMinutes,
+    required this.audioIntervalPauseMinutes,
   });
 
   /// Convert from domain entity.
@@ -77,6 +90,9 @@ class AppSettingsHive {
       ttsSpeechRate: settings.ttsSpeechRate,
       ttsPitch: settings.ttsPitch,
       gridDurationsInSeconds: settings.gridDurationsInSeconds,
+      audioPlaybackModeIndex: settings.audioPlaybackMode.index,
+      audioLoopDurationMinutes: settings.audioLoopDurationMinutes,
+      audioIntervalPauseMinutes: settings.audioIntervalPauseMinutes,
     );
   }
 
@@ -96,6 +112,9 @@ class AppSettingsHive {
       ttsSpeechRate: ttsSpeechRate,
       ttsPitch: ttsPitch,
       gridDurationsInSeconds: gridDurationsInSeconds,
+      audioPlaybackMode: AudioPlaybackMode.values[audioPlaybackModeIndex],
+      audioLoopDurationMinutes: audioLoopDurationMinutes,
+      audioIntervalPauseMinutes: audioIntervalPauseMinutes,
     );
   }
 }
