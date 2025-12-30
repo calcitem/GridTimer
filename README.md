@@ -819,7 +819,7 @@ dev_dependencies:
 
 ### 2.1 `android/app/build.gradle` (Groovy)
 
-`flutter_local_notifications` requires **desugaring + Java 11** configuration.
+`flutter_local_notifications` requires **desugaring + Java 17** configuration.
 Also set **compileSdk = 35**, and for Play **targetSdk = 35**. ([Google Help][1])
 
 ```gradle
@@ -838,13 +838,13 @@ android {
         // Enable support for newer Java APIs on older Android versions
         coreLibraryDesugaringEnabled true
 
-        // Java 11 bytecode
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        // Java 17 bytecode
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 
@@ -871,12 +871,12 @@ android {
 
   compileOptions {
     isCoreLibraryDesugaringEnabled = true
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
 
   kotlinOptions {
-    jvmTarget = JavaVersion.VERSION_11.toString()
+    jvmTarget = JavaVersion.VERSION_17.toString()
   }
 }
 
