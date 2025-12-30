@@ -19,9 +19,7 @@ class SettingsPage extends ConsumerWidget {
     final settingsAsync = ref.watch(appSettingsProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.settings),
-      ),
+      appBar: AppBar(title: Text(l10n.settings)),
       body: settingsAsync.when(
         data: (settings) => ListView(
           children: [
@@ -36,7 +34,7 @@ class SettingsPage extends ConsumerWidget {
 
             // Timer Settings Section
             _buildSectionHeader(l10n.timerSettings),
-            
+
             // Flash Animation
             SwitchListTile(
               secondary: const Icon(Icons.flash_on),
@@ -47,7 +45,7 @@ class SettingsPage extends ConsumerWidget {
                 ref.read(appSettingsProvider.notifier).toggleFlash(value);
               },
             ),
-            
+
             // Vibration
             SwitchListTile(
               secondary: const Icon(Icons.vibration),
@@ -58,7 +56,7 @@ class SettingsPage extends ConsumerWidget {
                 ref.read(appSettingsProvider.notifier).toggleVibration(value);
               },
             ),
-            
+
             // Keep Screen On
             SwitchListTile(
               secondary: const Icon(Icons.screen_lock_portrait),
@@ -66,10 +64,12 @@ class SettingsPage extends ConsumerWidget {
               subtitle: Text(l10n.keepScreenOnDesc),
               value: settings.keepScreenOnWhileRunning,
               onChanged: (value) {
-                ref.read(appSettingsProvider.notifier).toggleKeepScreenOn(value);
+                ref
+                    .read(appSettingsProvider.notifier)
+                    .toggleKeepScreenOn(value);
               },
             ),
-            
+
             // TTS Global Enable
             SwitchListTile(
               secondary: const Icon(Icons.record_voice_over),
@@ -80,9 +80,9 @@ class SettingsPage extends ConsumerWidget {
                 ref.read(appSettingsProvider.notifier).toggleTts(value);
               },
             ),
-            
+
             const Divider(),
-            
+
             // Audio Test (for debugging)
             ListTile(
               leading: const Icon(Icons.bug_report, color: Colors.orange),
@@ -91,13 +91,15 @@ class SettingsPage extends ConsumerWidget {
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const AudioTestPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const AudioTestPage(),
+                  ),
                 );
               },
             ),
-            
+
             const Divider(),
-            
+
             // Sound Settings
             ListTile(
               leading: const Icon(Icons.volume_up),
@@ -106,13 +108,11 @@ class SettingsPage extends ConsumerWidget {
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const SoundSettingsPage(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const SoundSettingsPage()),
                 );
               },
             ),
-            
+
             // TTS Settings
             ListTile(
               leading: const Icon(Icons.settings_voice),
@@ -121,13 +121,11 @@ class SettingsPage extends ConsumerWidget {
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const TtsSettingsPage(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const TtsSettingsPage()),
                 );
               },
             ),
-            
+
             // Grid Durations Settings
             ListTile(
               leading: const Icon(Icons.grid_on),
@@ -142,7 +140,7 @@ class SettingsPage extends ConsumerWidget {
                 );
               },
             ),
-            
+
             // Language
             ListTile(
               leading: const Icon(Icons.language),
@@ -155,7 +153,7 @@ class SettingsPage extends ConsumerWidget {
 
             // Permissions Section
             _buildSectionHeader(l10n.permissions),
-            
+
             // Notification Permission
             ListTile(
               leading: const Icon(Icons.notifications_active),
@@ -164,11 +162,14 @@ class SettingsPage extends ConsumerWidget {
               trailing: ElevatedButton(
                 onPressed: () async {
                   final notification = ref.read(notificationServiceProvider);
-                  final granted = await notification.requestPostNotificationsPermission();
+                  final granted = await notification
+                      .requestPostNotificationsPermission();
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(granted ? '通知权限已授予' : '通知权限被拒绝，请在系统设置中手动授予'),
+                        content: Text(
+                          granted ? '通知权限已授予' : '通知权限被拒绝，请在系统设置中手动授予',
+                        ),
                         duration: const Duration(seconds: 2),
                       ),
                     );
@@ -177,7 +178,7 @@ class SettingsPage extends ConsumerWidget {
                 child: const Text('授予权限'),
               ),
             ),
-            
+
             // Exact Alarm Permission
             ListTile(
               leading: const Icon(Icons.alarm),
@@ -191,7 +192,7 @@ class SettingsPage extends ConsumerWidget {
                 child: const Text('设置'),
               ),
             ),
-            
+
             // Battery Optimization
             ListTile(
               leading: const Icon(Icons.battery_saver),
@@ -205,7 +206,33 @@ class SettingsPage extends ConsumerWidget {
                 child: const Text('设置'),
               ),
             ),
-            
+
+            // Alarm Channel Sound (Android 8+)
+            ListTile(
+              leading: const Icon(Icons.volume_up),
+              title: const Text('提醒声音设置'),
+              subtitle: const Text(
+                "如果 'Timer Alarm (default)' 的声音为“无”，到点只会显示通知不会响",
+              ),
+              trailing: ElevatedButton(
+                onPressed: () async {
+                  final permissionService = ref.read(permissionServiceProvider);
+                  try {
+                    await permissionService.openNotificationChannelSettings(
+                      channelId: 'gt.alarm.timeup.default.v2',
+                    );
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text('打开通知频道设置失败：$e')));
+                    }
+                  }
+                },
+                child: const Text('去设置'),
+              ),
+            ),
+
             const Divider(),
 
             // About Section
@@ -226,9 +253,8 @@ class SettingsPage extends ConsumerWidget {
           ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(
-          child: Text(l10n.errorText(err.toString())),
-        ),
+        error: (err, stack) =>
+            Center(child: Text(l10n.errorText(err.toString()))),
       ),
     );
   }
@@ -304,4 +330,3 @@ class SettingsPage extends ConsumerWidget {
     );
   }
 }
-

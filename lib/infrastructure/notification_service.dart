@@ -155,6 +155,12 @@ class NotificationService implements INotificationService {
     // 使用 v2 通道（配置了声音和振动）
     final channelId = 'gt.alarm.timeup.${config.soundKey}.v2';
 
+    // 关键：先取消同 ID 的“已显示通知/已安排通知”，否则 Android 可能把这次当作
+    // “更新现有通知”，从而不播放提示音（只更新状态栏内容）。
+    if (Platform.isAndroid) {
+      await _plugin.cancel(notificationId);
+    }
+
     final payload = jsonEncode({
       'v': 1,
       'type': 'time_up',
@@ -186,6 +192,8 @@ class NotificationService implements INotificationService {
       playSound: true,
       sound: RawResourceAndroidNotificationSound(soundResource),
       enableVibration: true,
+      // 明确允许重复提示（避免被系统当作“只提示一次”）
+      onlyAlertOnce: false,
       // 设置为持续通知，直到用户操作
       ongoing: false,
       autoCancel: false,
@@ -261,6 +269,11 @@ class NotificationService implements INotificationService {
     // 使用 v2 通道（配置了声音和振动）
     final channelId = 'gt.alarm.timeup.${config.soundKey}.v2';
 
+    // 到点立即提示时，先取消同 ID 的“已安排通知”，避免重复触发/更新导致不响铃。
+    if (Platform.isAndroid) {
+      await _plugin.cancel(notificationId);
+    }
+
     final payload = jsonEncode({
       'v': 1,
       'type': 'time_up',
@@ -287,6 +300,7 @@ class NotificationService implements INotificationService {
       playSound: true,
       sound: RawResourceAndroidNotificationSound(soundResource),
       enableVibration: true,
+      onlyAlertOnce: false,
       actions: [
         const AndroidNotificationAction(
           _actionIdStop,

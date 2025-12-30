@@ -11,6 +11,11 @@ abstract interface class IPermissionService {
 
   /// Opens system settings pages (best-effort, platform-specific).
   Future<void> openNotificationSettings();
+  /// Opens Android notification channel settings for a specific channelId (Android 8+).
+  ///
+  /// This is required because scheduled notifications use the channel's sound.
+  /// If the channel sound is set to "none" (无), alarms will be silent.
+  Future<void> openNotificationChannelSettings({required String channelId});
   Future<void> openExactAlarmSettings();
   Future<void> openFullScreenIntentSettings();
   Future<void> openBatteryOptimizationSettings();
