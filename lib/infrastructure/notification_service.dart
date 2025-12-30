@@ -73,9 +73,10 @@ class NotificationService implements INotificationService {
 
     // Create one channel per sound key
     for (final soundKey in soundKeys) {
-      // v3: Use ALARM audio usage so scheduled notifications can ring while locked.
-      // Note: channel properties cannot be changed after creation; bumping version is required.
-      final channelId = 'gt.alarm.timeup.$soundKey.v3';
+      // v2: Stable channel ID. On Android 8+, channel settings are controlled by the user.
+      // We keep the channel ID stable so users don't have to reconfigure lockscreen/sound
+      // settings after upgrades (especially on OEM ROMs like MIUI).
+      final channelId = 'gt.alarm.timeup.$soundKey.v2';
       final soundResource = _soundKeyToResource(soundKey);
 
       final channel = AndroidNotificationChannel(
@@ -87,7 +88,6 @@ class NotificationService implements INotificationService {
         sound: RawResourceAndroidNotificationSound(soundResource),
         enableVibration: true,
         groupId: _channelGroupId,
-        audioAttributesUsage: AudioAttributesUsage.alarm,
       );
 
       await androidPlugin.createNotificationChannel(channel);
@@ -154,8 +154,8 @@ class NotificationService implements INotificationService {
     if (session.endAtEpochMs == null) return;
 
     final notificationId = 1000 + session.slotIndex;
-    // Use v3 channel (ALARM audio usage).
-    final channelId = 'gt.alarm.timeup.${config.soundKey}.v3';
+    // Use v2 channel (user-configured on Android 8+).
+    final channelId = 'gt.alarm.timeup.${config.soundKey}.v2';
 
     // Cancel existing notifications with the same ID. Otherwise Android may treat this as an
     // update and suppress alerting behaviour (sound/vibration).
@@ -212,7 +212,8 @@ class NotificationService implements INotificationService {
 
     final details = NotificationDetails(android: androidDetails);
 
-    // Try exact alarm first, fallback to inexact
+    // MIUI/Android 15 can delay or silence scheduled notifications unless they are scheduled
+    // as alarm clocks. Try alarmClock first for best lockscreen reliability.
     try {
       await _plugin.zonedSchedule(
         notificationId,
@@ -220,20 +221,32 @@ class NotificationService implements INotificationService {
         'Time is up!',
         scheduledDate,
         details,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        androidScheduleMode: AndroidScheduleMode.alarmClock,
         payload: payload,
       );
     } catch (e) {
-      // Fallback to inexact if exact alarm permission denied
-      await _plugin.zonedSchedule(
-        notificationId,
-        config.name,
-        'Time is up!',
-        scheduledDate,
-        details,
-        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-        payload: payload,
-      );
+      // Fallback chain: exactAllowWhileIdle -> inexactAllowWhileIdle.
+      try {
+        await _plugin.zonedSchedule(
+          notificationId,
+          config.name,
+          'Time is up!',
+          scheduledDate,
+          details,
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          payload: payload,
+        );
+      } catch (_) {
+        await _plugin.zonedSchedule(
+          notificationId,
+          config.name,
+          'Time is up!',
+          scheduledDate,
+          details,
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          payload: payload,
+        );
+      }
     }
   }
 
@@ -270,8 +283,8 @@ class NotificationService implements INotificationService {
     }
 
     final notificationId = 1000 + session.slotIndex;
-    // Use v3 channel (ALARM audio usage).
-    final channelId = 'gt.alarm.timeup.${config.soundKey}.v3';
+    // Use v2 channel (user-configured on Android 8+).
+    final channelId = 'gt.alarm.timeup.${config.soundKey}.v2';
 
     // Cancel any pending notifications with the same ID to avoid update-suppressed alerting.
     if (Platform.isAndroid) {
@@ -312,7 +325,6 @@ class NotificationService implements INotificationService {
           showsUserInterface: true,
         ),
       ],
-      audioAttributesUsage: AudioAttributesUsage.alarm,
     );
 
     final details = NotificationDetails(android: androidDetails);
