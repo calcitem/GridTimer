@@ -391,6 +391,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other timers are running. Continue to start this timer?'**
   String get confirmStart;
+
+  /// Flash animation setting
+  ///
+  /// In en, this message translates to:
+  /// **'Flash Animation'**
+  String get flashAnimation;
+
+  /// Description for flash animation
+  ///
+  /// In en, this message translates to:
+  /// **'Red flash when timer rings'**
+  String get flashAnimationDesc;
+
+  /// Vibration setting
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration'**
+  String get vibration;
+
+  /// Description for vibration
+  ///
+  /// In en, this message translates to:
+  /// **'Vibrate when timer rings'**
+  String get vibrationDesc;
+
+  /// Keep screen on setting
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Screen On'**
+  String get keepScreenOn;
+
+  /// Description for keep screen on
+  ///
+  /// In en, this message translates to:
+  /// **'Prevent screen from sleeping while timer runs'**
+  String get keepScreenOnDesc;
+
+  /// TTS enabled setting
+  ///
+  /// In en, this message translates to:
+  /// **'Voice Announcements'**
+  String get ttsEnabled;
+
+  /// Description for TTS enabled
+  ///
+  /// In en, this message translates to:
+  /// **'Announce timer completion with voice'**
+  String get ttsEnabledDesc;
+
+  /// Alarm sound setting
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm Sound'**
+  String get alarmSound;
+
+  /// Description for alarm sound
+  ///
+  /// In en, this message translates to:
+  /// **'Choose sound for timer alerts'**
+  String get alarmSoundDesc;
+
+  /// Volume setting
+  ///
+  /// In en, this message translates to:
+  /// **'Volume'**
+  String get volume;
+
+  /// Description for volume
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust alarm volume'**
+  String get volumeDesc;
+
+  /// TTS language setting
+  ///
+  /// In en, this message translates to:
+  /// **'TTS Language'**
+  String get ttsLanguage;
+
+  /// Description for TTS language
+  ///
+  /// In en, this message translates to:
+  /// **'Choose voice announcement language'**
+  String get ttsLanguageDesc;
+
+  /// Test sound button
+  ///
+  /// In en, this message translates to:
+  /// **'Test Sound'**
+  String get testSound;
+
+  /// Test TTS button
+  ///
+  /// In en, this message translates to:
+  /// **'Test Voice'**
+  String get testTts;
 }
 
 class _AppLocalizationsDelegate

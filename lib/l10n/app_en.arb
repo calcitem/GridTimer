@@ -262,6 +262,86 @@
   "confirmStart": "Other timers are running. Continue to start this timer?",
   "@confirmStart": {
     "description": "Confirmation message when starting timer with others running"
+  },
+
+  "flashAnimation": "Flash Animation",
+  "@flashAnimation": {
+    "description": "Flash animation setting"
+  },
+
+  "flashAnimationDesc": "Red flash when timer rings",
+  "@flashAnimationDesc": {
+    "description": "Description for flash animation"
+  },
+
+  "vibration": "Vibration",
+  "@vibration": {
+    "description": "Vibration setting"
+  },
+
+  "vibrationDesc": "Vibrate when timer rings",
+  "@vibrationDesc": {
+    "description": "Description for vibration"
+  },
+
+  "keepScreenOn": "Keep Screen On",
+  "@keepScreenOn": {
+    "description": "Keep screen on setting"
+  },
+
+  "keepScreenOnDesc": "Prevent screen from sleeping while timer runs",
+  "@keepScreenOnDesc": {
+    "description": "Description for keep screen on"
+  },
+
+  "ttsEnabled": "Voice Announcements",
+  "@ttsEnabled": {
+    "description": "TTS enabled setting"
+  },
+
+  "ttsEnabledDesc": "Announce timer completion with voice",
+  "@ttsEnabledDesc": {
+    "description": "Description for TTS enabled"
+  },
+
+  "alarmSound": "Alarm Sound",
+  "@alarmSound": {
+    "description": "Alarm sound setting"
+  },
+
+  "alarmSoundDesc": "Choose sound for timer alerts",
+  "@alarmSoundDesc": {
+    "description": "Description for alarm sound"
+  },
+
+  "volume": "Volume",
+  "@volume": {
+    "description": "Volume setting"
+  },
+
+  "volumeDesc": "Adjust alarm volume",
+  "@volumeDesc": {
+    "description": "Description for volume"
+  },
+
+  "ttsLanguage": "TTS Language",
+  "@ttsLanguage": {
+    "description": "TTS language setting"
+  },
+
+  "ttsLanguageDesc": "Choose voice announcement language",
+  "@ttsLanguageDesc": {
+    "description": "Description for TTS language"
+  },
+
+  "testSound": "Test Sound",
+  "@testSound": {
+    "description": "Test sound button"
+  },
+
+  "testTts": "Test Voice",
+  "@testTts": {
+    "description": "Test TTS button"
   }
 }
 

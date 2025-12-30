@@ -58,7 +58,24 @@
   "languageEnglish": "English",
   "languageChineseSimplified": "简体中文",
   "errorText": "错误：{error}",
-  "confirmStart": "当前已有计时器在运行。要继续启动此计时器吗？"
+  "confirmStart": "当前已有计时器在运行。要继续启动此计时器吗？",
+
+  "flashAnimation": "闪烁动画",
+  "flashAnimationDesc": "响铃时红色闪烁",
+  "vibration": "振动",
+  "vibrationDesc": "响铃时振动",
+  "keepScreenOn": "保持屏幕常亮",
+  "keepScreenOnDesc": "计时器运行时防止屏幕休眠",
+  "ttsEnabled": "语音播报",
+  "ttsEnabledDesc": "计时结束时语音播报",
+  "alarmSound": "提醒声音",
+  "alarmSoundDesc": "选择计时器提醒声音",
+  "volume": "音量",
+  "volumeDesc": "调整提醒音量",
+  "ttsLanguage": "语音播报语言",
+  "ttsLanguageDesc": "选择语音播报语言",
+  "testSound": "测试声音",
+  "testTts": "测试语音"
 }
 
 
