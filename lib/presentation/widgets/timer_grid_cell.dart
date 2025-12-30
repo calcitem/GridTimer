@@ -263,17 +263,33 @@ class TimerGridCell extends ConsumerWidget {
       builder: (context) => AlertDialog(
         title: Text(l10n.confirmStartTitle),
         content: Text(l10n.confirmStart),
+        actionsPadding: const EdgeInsets.all(16),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.actionCancel),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _startTimer(ref);
-            },
-            child: Text(l10n.actionStart),
+          Row(
+            children: [
+              Expanded(
+                child: _buildTileButton(
+                  icon: Icons.close,
+                  label: l10n.actionCancel,
+                  color: Colors.grey.shade600,
+                  onPressed: () => Navigator.pop(context),
+                  isHorizontal: true,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: _buildTileButton(
+                  icon: Icons.play_arrow,
+                  label: l10n.actionStart,
+                  color: Colors.green.shade600,
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _startTimer(ref);
+                  },
+                  isHorizontal: true,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -292,41 +308,48 @@ class TimerGridCell extends ConsumerWidget {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text(l10n.timerActions),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  ref.read(timerServiceProvider).pause(session.timerId);
-                },
-                child: Text(l10n.actionPause),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  ref.read(timerServiceProvider).reset(session.timerId);
-                },
-                child: Text(l10n.actionReset),
-              ),
-              const SizedBox(height: 16),
-              OutlinedButton(
-                onPressed: () => Navigator.pop(context),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: _buildTileButton(
+                    icon: Icons.pause,
+                    label: l10n.actionPause,
+                    color: Colors.orange.shade700,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      ref.read(timerServiceProvider).pause(session.timerId);
+                    },
                   ),
                 ),
-                child: Text(l10n.actionCancel),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildTileButton(
+                    icon: Icons.refresh,
+                    label: l10n.actionReset,
+                    color: Colors.blue.shade700,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      ref.read(timerServiceProvider).reset(session.timerId);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: _buildTileButton(
+                icon: Icons.close,
+                label: l10n.actionCancel,
+                color: Colors.grey.shade600,
+                onPressed: () => Navigator.pop(context),
+                isHorizontal: true,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -339,41 +362,48 @@ class TimerGridCell extends ConsumerWidget {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text(l10n.timerActions),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  ref.read(timerServiceProvider).resume(session.timerId);
-                },
-                child: Text(l10n.actionResume),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  ref.read(timerServiceProvider).reset(session.timerId);
-                },
-                child: Text(l10n.actionReset),
-              ),
-              const SizedBox(height: 16),
-              OutlinedButton(
-                onPressed: () => Navigator.pop(context),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: _buildTileButton(
+                    icon: Icons.play_arrow,
+                    label: l10n.actionResume,
+                    color: Colors.green.shade700,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      ref.read(timerServiceProvider).resume(session.timerId);
+                    },
                   ),
                 ),
-                child: Text(l10n.actionCancel),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildTileButton(
+                    icon: Icons.refresh,
+                    label: l10n.actionReset,
+                    color: Colors.blue.shade700,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      ref.read(timerServiceProvider).reset(session.timerId);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: _buildTileButton(
+                icon: Icons.close,
+                label: l10n.actionCancel,
+                color: Colors.grey.shade600,
+                onPressed: () => Navigator.pop(context),
+                isHorizontal: true,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -386,43 +416,108 @@ class TimerGridCell extends ConsumerWidget {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text(l10n.timerRinging),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  ref.read(timerServiceProvider).stopRinging(session.timerId);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 24), // 更大的停止按钮
-                ),
-                child: Text(
-                  l10n.stopAlarm,
-                  style: const TextStyle(fontSize: 24), // 更大的字体
-                ),
-              ),
-              const SizedBox(height: 16),
-              OutlinedButton(
-                onPressed: () => Navigator.pop(context),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                child: Text(l10n.actionCancel),
-              ),
-            ],
-          ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildTileButton(
+              icon: Icons.stop_circle_outlined,
+              label: l10n.stopAlarm,
+              color: Colors.red.shade700,
+              onPressed: () {
+                Navigator.pop(context);
+                ref.read(timerServiceProvider).stopRinging(session.timerId);
+              },
+              isLarge: true,
+            ),
+            const SizedBox(height: 16),
+            _buildTileButton(
+              icon: Icons.close,
+              label: l10n.actionCancel,
+              color: Colors.grey.shade600,
+              onPressed: () => Navigator.pop(context),
+              isHorizontal: true,
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  /// 构建磁贴风格按钮
+  /// [isHorizontal] 为 true 时，按钮高度较小，内容横向排列
+  Widget _buildTileButton({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onPressed,
+    bool isLarge = false,
+    bool isHorizontal = false,
+  }) {
+    final child = InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(isHorizontal ? 8 : 16),
+      child: Container(
+        padding: EdgeInsets.all(isHorizontal ? 20 : 16),
+        alignment: Alignment.center,
+        child: isHorizontal
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(icon, size: 32, color: Colors.white),
+                  const SizedBox(width: 16),
+                  Text(
+                    label,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    icon,
+                    size: isLarge ? 80 : 56,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: isLarge ? 28 : 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      height: 1.1,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+      ),
+    );
+
+    if (isHorizontal) {
+      return Material(
+        color: color,
+        borderRadius: BorderRadius.circular(8),
+        child: child,
+      );
+    } else {
+      // 强制正方形比例，实现磁贴效果
+      return AspectRatio(
+        aspectRatio: 1.0,
+        child: Material(
+          color: color,
+          borderRadius: BorderRadius.circular(16),
+          child: child,
+        ),
+      );
+    }
   }
 }
