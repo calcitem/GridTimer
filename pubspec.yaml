@@ -48,6 +48,7 @@ dev_dependencies:
   hive_ce_generator: any
   freezed: 3.2.3
   json_serializable: 6.11.1
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
