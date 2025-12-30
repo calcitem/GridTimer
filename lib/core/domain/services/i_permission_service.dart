@@ -1,5 +1,3 @@
-import '../enums.dart';
-
 /// Permission and system settings guidance service.
 abstract interface class IPermissionService {
   /// Returns whether the app is allowed to show notifications (Android 13+).
@@ -18,4 +16,6 @@ abstract interface class IPermissionService {
   Future<void> openBatteryOptimizationSettings();
   Future<void> openAppSettings();
 }
+
+
 

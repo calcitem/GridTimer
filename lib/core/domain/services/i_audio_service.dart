@@ -6,7 +6,7 @@ abstract interface class IAudioService {
   Future<void> init();
 
   /// Plays the ringtone in a loop.
-  /// 
+  ///
   /// Must interrupt any currently playing sound (newer overrides older).
   Future<void> playLoop({
     required SoundKey soundKey,
@@ -18,5 +18,3 @@ abstract interface class IAudioService {
   /// Whether audio is currently playing.
   Future<bool> isPlaying();
 }
-
-

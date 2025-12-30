@@ -1,4 +1,3 @@
-import '../entities/timer_config.dart';
 import '../entities/timer_grid_set.dart';
 import '../entities/timer_session.dart';
 import '../types.dart';
@@ -52,4 +51,6 @@ abstract interface class ITimerService {
   /// Returns whether any timer is not idle.
   bool hasActiveTimers();
 }
+
+
 
