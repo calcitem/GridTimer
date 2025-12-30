@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
-import '../../core/domain/services/i_clock.dart';
 
 /// A single cell in the 3x3 timer grid.
 class TimerGridCell extends ConsumerWidget {

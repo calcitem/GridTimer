@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         applicationId "com.gridtimer.app"
-        minSdk 23
+        minSdkVersion flutter.minSdkVersion
         targetSdk 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

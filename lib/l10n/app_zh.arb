@@ -26,7 +26,7 @@
   "permissionNotificationBody": "为了接收计时器提醒，请开启通知权限。",
   
   "permissionExactAlarmTitle": "开启精确提醒",
-  "permissionExactAlarmBody": "为确保准时提醒，请开启"闹钟和提醒"权限。",
+  "permissionExactAlarmBody": "为确保准时提醒，请开启“闹钟和提醒”权限。",
   
   "openSettings": "打开设置",
   "later": "稍后"

@@ -48,7 +48,7 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openBatteryOptimizationSettings() async {
-    await AppSettings.openAppSettings(type: AppSettingsType.battery);
+    await AppSettings.openAppSettings(type: AppSettingsType.batteryOptimization);
   }
 
   @override

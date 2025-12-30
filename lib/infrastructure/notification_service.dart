@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz_data;
+import 'package:timezone/timezone.dart' as tz;
 import '../core/domain/entities/timer_config.dart';
 import '../core/domain/entities/timer_session.dart';
 import '../core/domain/enums.dart';
@@ -10,28 +12,32 @@ import '../core/domain/types.dart';
 
 /// Android notification service implementation.
 class NotificationService implements INotificationService {
-  final FlutterLocalNotificationsPlugin _plugin = FlutterLocalNotificationsPlugin();
-  final StreamController<NotificationEvent> _eventController = StreamController<NotificationEvent>.broadcast();
+  final FlutterLocalNotificationsPlugin _plugin =
+      FlutterLocalNotificationsPlugin();
+  final StreamController<NotificationEvent> _eventController =
+      StreamController<NotificationEvent>.broadcast();
 
   static const String _channelGroupId = 'gt.group.timers';
   static const String _actionIdStop = 'gt.action.stop';
-  static const String _actionIdOpen = 'gt.action.open';
 
   @override
   Future<void> init() async {
+    tz_data.initializeTimeZones();
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
     const initSettings = InitializationSettings(android: androidInit);
 
     await _plugin.initialize(
       initSettings,
       onDidReceiveNotificationResponse: _onNotificationResponse,
-      onDidReceiveBackgroundNotificationResponse: _onBackgroundNotificationResponse,
+      onDidReceiveBackgroundNotificationResponse:
+          _onBackgroundNotificationResponse,
     );
 
     // Create channel group
     if (Platform.isAndroid) {
       await _plugin
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannelGroup(
             const AndroidNotificationChannelGroup(
               _channelGroupId,
@@ -46,7 +52,8 @@ class NotificationService implements INotificationService {
   Future<void> ensureAndroidChannels({required Set<String> soundKeys}) async {
     if (!Platform.isAndroid) return;
 
-    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
     if (androidPlugin == null) return;
 
     // Create one channel per sound key
@@ -85,7 +92,8 @@ class NotificationService implements INotificationService {
   Future<bool> requestPostNotificationsPermission() async {
     if (!Platform.isAndroid) return true;
 
-    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
     if (androidPlugin == null) return false;
 
     final result = await androidPlugin.requestNotificationsPermission();
@@ -96,7 +104,8 @@ class NotificationService implements INotificationService {
   Future<bool> requestExactAlarmPermission() async {
     if (!Platform.isAndroid) return true;
 
-    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
     if (androidPlugin == null) return false;
 
     final result = await androidPlugin.requestExactAlarmsPermission();
@@ -130,7 +139,10 @@ class NotificationService implements INotificationService {
       'soundKey': config.soundKey,
     });
 
-    final scheduledDate = DateTime.fromMillisecondsSinceEpoch(session.endAtEpochMs!);
+    final scheduledDate = tz.TZDateTime.from(
+      DateTime.fromMillisecondsSinceEpoch(session.endAtEpochMs!),
+      tz.local,
+    );
 
     final androidDetails = AndroidNotificationDetails(
       channelId,
@@ -142,7 +154,7 @@ class NotificationService implements INotificationService {
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
       actions: [
-        AndroidNotificationAction(
+        const AndroidNotificationAction(
           _actionIdStop,
           'Stop',
           showsUserInterface: true,
@@ -158,10 +170,9 @@ class NotificationService implements INotificationService {
         notificationId,
         config.name,
         'Time is up!',
-        scheduledDate.toLocal(),
+        scheduledDate,
         details,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         payload: payload,
       );
     } catch (e) {
@@ -170,10 +181,9 @@ class NotificationService implements INotificationService {
         notificationId,
         config.name,
         'Time is up!',
-        scheduledDate.toLocal(),
+        scheduledDate,
         details,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         payload: payload,
       );
     }
@@ -212,7 +222,8 @@ class NotificationService implements INotificationService {
     NotificationEventType type = NotificationEventType.open;
     if (response.actionId == _actionIdStop) {
       type = NotificationEventType.stop;
-    } else if (response.notificationResponseType == NotificationResponseType.selectedNotification) {
+    } else if (response.notificationResponseType ==
+        NotificationResponseType.selectedNotification) {
       type = NotificationEventType.open;
     }
 
@@ -232,4 +243,3 @@ class NotificationService implements INotificationService {
     _eventController.close();
   }
 }
-

@@ -3,6 +3,7 @@ import '../../core/domain/entities/timer_grid_set.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/entities/app_settings.dart';
 import '../../core/domain/types.dart';
+import '../models/timer_config_hive.dart';
 import '../models/timer_grid_set_hive.dart';
 import '../models/timer_session_hive.dart';
 import '../models/app_settings_hive.dart';
@@ -106,6 +107,3 @@ class StorageRepository {
     await box.put(_keySettings, AppSettingsHive.fromDomain(settings));
   }
 }
-
-
-
