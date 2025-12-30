@@ -73,7 +73,8 @@ class NotificationService implements INotificationService {
 
     // Create one channel per sound key
     for (final soundKey in soundKeys) {
-      final channelId = 'gt.alarm.timeup.$soundKey.v1';
+      // v2: 添加了明确的 playSound 和 enableVibration 配置
+      final channelId = 'gt.alarm.timeup.$soundKey.v2';
       final soundResource = _soundKeyToResource(soundKey);
 
       final channel = AndroidNotificationChannel(
@@ -151,7 +152,8 @@ class NotificationService implements INotificationService {
     if (session.endAtEpochMs == null) return;
 
     final notificationId = 1000 + session.slotIndex;
-    final channelId = 'gt.alarm.timeup.${config.soundKey}.v1';
+    // 使用 v2 通道（配置了声音和振动）
+    final channelId = 'gt.alarm.timeup.${config.soundKey}.v2';
 
     final payload = jsonEncode({
       'v': 1,
@@ -177,6 +179,12 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
+      // 明确设置播放声音和振动
+      playSound: true,
+      enableVibration: true,
+      // 设置为持续通知，直到用户操作
+      ongoing: false,
+      autoCancel: false,
       actions: [
         const AndroidNotificationAction(
           _actionIdStop,
@@ -246,7 +254,8 @@ class NotificationService implements INotificationService {
     }
 
     final notificationId = 1000 + session.slotIndex;
-    final channelId = 'gt.alarm.timeup.${config.soundKey}.v1';
+    // 使用 v2 通道（配置了声音和振动）
+    final channelId = 'gt.alarm.timeup.${config.soundKey}.v2';
 
     final payload = jsonEncode({
       'v': 1,
