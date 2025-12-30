@@ -60,7 +60,8 @@ class PermissionService implements IPermissionService {
     // app_settings 仅在 Android 和 iOS 上可用
     if (Platform.isAndroid || Platform.isIOS) {
       await AppSettings.openAppSettings(
-          type: AppSettingsType.batteryOptimization);
+        type: AppSettingsType.batteryOptimization,
+      );
     }
   }
 
