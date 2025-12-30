@@ -22,9 +22,21 @@ class NotificationService implements INotificationService {
 
   @override
   Future<void> init() async {
+    // 始终初始化时区数据
     tz_data.initializeTimeZones();
+
+    // 仅在支持的平台上初始化通知插件
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      // Windows 和其他桌面平台暂不支持通知功能
+      return;
+    }
+
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const initSettings = InitializationSettings(android: androidInit);
+    const iosInit = DarwinInitializationSettings();
+    const initSettings = InitializationSettings(
+      android: androidInit,
+      iOS: iosInit,
+    );
 
     await _plugin.initialize(
       initSettings,
@@ -124,6 +136,11 @@ class NotificationService implements INotificationService {
     required TimerSession session,
     required TimerConfig config,
   }) async {
+    // 仅在支持的平台上安排通知
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      return;
+    }
+
     if (session.endAtEpochMs == null) return;
 
     final notificationId = 1000 + session.slotIndex;

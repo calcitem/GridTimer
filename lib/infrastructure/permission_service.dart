@@ -33,27 +33,42 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openNotificationSettings() async {
-    await AppSettings.openAppSettings(type: AppSettingsType.notification);
+    // app_settings 仅在 Android 和 iOS 上可用
+    if (Platform.isAndroid || Platform.isIOS) {
+      await AppSettings.openAppSettings(type: AppSettingsType.notification);
+    }
   }
 
   @override
   Future<void> openExactAlarmSettings() async {
-    await AppSettings.openAppSettings(type: AppSettingsType.alarm);
+    // app_settings 仅在 Android 和 iOS 上可用
+    if (Platform.isAndroid || Platform.isIOS) {
+      await AppSettings.openAppSettings(type: AppSettingsType.alarm);
+    }
   }
 
   @override
   Future<void> openFullScreenIntentSettings() async {
-    await AppSettings.openAppSettings();
+    // app_settings 仅在 Android 和 iOS 上可用
+    if (Platform.isAndroid || Platform.isIOS) {
+      await AppSettings.openAppSettings();
+    }
   }
 
   @override
   Future<void> openBatteryOptimizationSettings() async {
-    await AppSettings.openAppSettings(type: AppSettingsType.batteryOptimization);
+    // app_settings 仅在 Android 和 iOS 上可用
+    if (Platform.isAndroid || Platform.isIOS) {
+      await AppSettings.openAppSettings(type: AppSettingsType.batteryOptimization);
+    }
   }
 
   @override
   Future<void> openAppSettings() async {
-    await AppSettings.openAppSettings();
+    // app_settings 仅在 Android 和 iOS 上可用
+    if (Platform.isAndroid || Platform.isIOS) {
+      await AppSettings.openAppSettings();
+    }
   }
 }
 
