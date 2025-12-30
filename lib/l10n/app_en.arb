@@ -1,0 +1,126 @@
+{
+  "@@locale": "en",
+  
+  "appTitle": "GridTimer",
+  "@appTitle": {
+    "description": "Application title"
+  },
+  
+  "timerIdle": "Idle",
+  "@timerIdle": {
+    "description": "Timer status: idle"
+  },
+  
+  "timerRunning": "Running",
+  "@timerRunning": {
+    "description": "Timer status: running"
+  },
+  
+  "timerPaused": "Paused",
+  "@timerPaused": {
+    "description": "Timer status: paused"
+  },
+  
+  "timerRinging": "RINGING",
+  "@timerRinging": {
+    "description": "Timer status: ringing"
+  },
+  
+  "confirmStartTitle": "Confirm Start?",
+  "@confirmStartTitle": {
+    "description": "Dialog title when starting a new timer"
+  },
+  
+  "confirmStartBody": "Other timers are running. Continue to start {name}?",
+  "@confirmStartBody": {
+    "description": "Dialog body when starting a new timer",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Timer 1"
+      }
+    }
+  },
+  
+  "actionStart": "Start",
+  "@actionStart": {
+    "description": "Action: start timer"
+  },
+  
+  "actionPause": "Pause",
+  "@actionPause": {
+    "description": "Action: pause timer"
+  },
+  
+  "actionResume": "Resume",
+  "@actionResume": {
+    "description": "Action: resume timer"
+  },
+  
+  "actionReset": "Reset",
+  "@actionReset": {
+    "description": "Action: reset timer"
+  },
+  
+  "actionStop": "Stop",
+  "@actionStop": {
+    "description": "Action: stop alarm"
+  },
+  
+  "actionCancel": "Cancel",
+  "@actionCancel": {
+    "description": "Action: cancel"
+  },
+  
+  "timerActions": "Timer Actions",
+  "@timerActions": {
+    "description": "Timer actions dialog title"
+  },
+  
+  "stopAlarm": "Stop Alarm",
+  "@stopAlarm": {
+    "description": "Button to stop ringing alarm"
+  },
+  
+  "timeUpTts": "{name} time is up",
+  "@timeUpTts": {
+    "description": "TTS announcement when timer completes",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Timer 1"
+      }
+    }
+  },
+  
+  "permissionNotificationTitle": "Enable Notifications",
+  "@permissionNotificationTitle": {
+    "description": "Permission guide: notification title"
+  },
+  
+  "permissionNotificationBody": "To receive timer alerts, please enable notifications.",
+  "@permissionNotificationBody": {
+    "description": "Permission guide: notification body"
+  },
+  
+  "permissionExactAlarmTitle": "Enable Exact Alarms",
+  "@permissionExactAlarmTitle": {
+    "description": "Permission guide: exact alarm title"
+  },
+  
+  "permissionExactAlarmBody": "For precise timer alerts, please enable 'Alarms & reminders' permission.",
+  "@permissionExactAlarmBody": {
+    "description": "Permission guide: exact alarm body"
+  },
+  
+  "openSettings": "Open Settings",
+  "@openSettings": {
+    "description": "Button to open system settings"
+  },
+  
+  "later": "Later",
+  "@later": {
+    "description": "Button to postpone action"
+  }
+}
+

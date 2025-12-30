@@ -1,0 +1,12 @@
+# Template for local.properties
+# Copy this file to local.properties and update the path
+
+# Flutter SDK path
+# Example for Windows: sdk.dir=C:\\Users\\YourName\\flutter
+# Example for Mac/Linux: sdk.dir=/Users/YourName/flutter
+flutter.sdk=YOUR_FLUTTER_SDK_PATH_HERE
+
+# Android SDK path (usually auto-detected by Android Studio)
+# Example: sdk.dir=C:\\Users\\YourName\\AppData\\Local\\Android\\Sdk
+# sdk.dir=YOUR_ANDROID_SDK_PATH_HERE
+
