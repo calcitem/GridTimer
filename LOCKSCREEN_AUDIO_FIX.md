@@ -134,12 +134,32 @@ android:showWhenLocked="true"
 android:turnScreenOn="true"
 ```
 
+## 权限请求功能
+
+### 应用启动时自动请求
+
+在 `lib/main.dart` 的初始化流程中，应用会自动请求必要权限：
+
+1. **通知权限**（Android 13+）：会弹出系统权限对话框
+2. **精确闹钟权限**（Android 14+）：会尝试打开系统设置页面
+
+### 设置页面手动请求
+
+在"设置 > 权限"部分，用户可以：
+
+1. **通知权限**：点击"授予权限"按钮直接请求
+2. **精确闹钟权限**：点击"设置"按钮打开系统设置
+3. **电池优化设置**：点击"设置"按钮关闭电池优化
+
 ## 相关文件
 
+- `lib/main.dart` - 应用入口，初始化时请求权限
+- `lib/presentation/pages/settings_page.dart` - 设置页面，权限管理
 - `lib/core/domain/services/i_notification_service.dart` - 通知服务接口
 - `lib/infrastructure/notification_service.dart` - 通知服务实现
 - `lib/infrastructure/audio_service.dart` - 音频服务实现
 - `lib/infrastructure/timer_service.dart` - 计时器服务实现
+- `lib/infrastructure/permission_service.dart` - 权限服务实现
 - `android/app/src/main/AndroidManifest.xml` - Android 权限配置
 
 ## 注意事项
