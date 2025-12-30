@@ -1,5 +1,3 @@
-library grid_timer.core.domain.types;
-
 /// Core type definitions for GridTimer domain.
 
 /// Unique identifier for a mode (grid set).
