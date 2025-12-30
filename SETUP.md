@@ -136,7 +136,7 @@ Always run code generation after cloning:
 
 ### Android Build Issues
 
-1. Check Java version (Java 11 required):
+1. Check Java version (Java 17 required):
    ```bash
    java -version
    ```

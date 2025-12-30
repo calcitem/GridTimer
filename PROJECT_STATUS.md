@@ -14,7 +14,7 @@
 - [x] MainActivity.kt
 - [x] Notification receivers configured
 - [x] Full-screen intent support
-- [x] Desugaring configuration for Java 11
+- [x] Desugaring configuration for Java 17
 
 ### 3. Domain Layer (Pure Dart)
 - [x] Type definitions (ModeId, TimerId, SoundKey)
