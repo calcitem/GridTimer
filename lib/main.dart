@@ -64,6 +64,50 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
+
+        // 针对长辈优化的大号对话框主题
+        dialogTheme: const DialogThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ),
+          titleTextStyle: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+          contentTextStyle: TextStyle(fontSize: 20, color: Colors.black87),
+          actionsPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        ),
+
+        // 增大按钮尺寸和文字
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            textStyle: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            textStyle: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+
+        // 增大输入框文字
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(fontSize: 18),
+          floatingLabelStyle: TextStyle(fontSize: 20),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        ),
       ),
       home: const GridPage(),
     );
