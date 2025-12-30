@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../l10n/app_localizations.dart';
+import 'audio_test_page.dart';
 import 'grid_durations_settings_page.dart';
 import 'sound_settings_page.dart';
 import 'tts_settings_page.dart';
@@ -77,6 +78,21 @@ class SettingsPage extends ConsumerWidget {
               value: settings.ttsGlobalEnabled,
               onChanged: (value) {
                 ref.read(appSettingsProvider.notifier).toggleTts(value);
+              },
+            ),
+            
+            const Divider(),
+            
+            // Audio Test (for debugging)
+            ListTile(
+              leading: const Icon(Icons.bug_report, color: Colors.orange),
+              title: const Text('音频测试 (调试用)'),
+              subtitle: const Text('诊断声音问题'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const AudioTestPage()),
+                );
               },
             ),
             
