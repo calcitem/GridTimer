@@ -44,8 +44,8 @@ class GridTimerWidgetProvider : AppWidgetProvider() {
             val widgetData = HomeWidgetPlugin.getData(context)
             val activeTimersCount = widgetData.getInt("active_timers_count", 0)
             val ringingTimersCount = widgetData.getInt("ringing_timers_count", 0)
-            val nearestTimerName = widgetData.getString("nearest_timer_name")
-            val nearestTimerRemaining = widgetData.getString("nearest_timer_remaining")
+            val nearestTimerName = widgetData.getString("nearest_timer_name", null)
+            val nearestTimerRemaining = widgetData.getString("nearest_timer_remaining", null)
             
             // 更新显示内容
             views.setTextViewText(R.id.widget_title, "GridTimer")
