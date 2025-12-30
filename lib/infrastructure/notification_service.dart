@@ -170,6 +170,9 @@ class NotificationService implements INotificationService {
       tz.local,
     );
 
+    // 获取声音资源名（必须明确指定，zonedSchedule 不会自动使用通道声音）
+    final soundResource = _soundKeyToResource(config.soundKey);
+
     final androidDetails = AndroidNotificationDetails(
       channelId,
       'Timer Alarm',
@@ -181,6 +184,7 @@ class NotificationService implements INotificationService {
       fullScreenIntent: true,
       // 明确设置播放声音和振动
       playSound: true,
+      sound: RawResourceAndroidNotificationSound(soundResource),
       enableVibration: true,
       // 设置为持续通知，直到用户操作
       ongoing: false,
@@ -267,6 +271,9 @@ class NotificationService implements INotificationService {
       'soundKey': config.soundKey,
     });
 
+    // 获取声音资源名（明确指定声音）
+    final soundResource = _soundKeyToResource(config.soundKey);
+
     final androidDetails = AndroidNotificationDetails(
       channelId,
       'Timer Alarm',
@@ -276,8 +283,9 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      // 确保通知声音播放
+      // 明确设置播放声音和振动
       playSound: true,
+      sound: RawResourceAndroidNotificationSound(soundResource),
       enableVibration: true,
       actions: [
         const AndroidNotificationAction(
