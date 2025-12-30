@@ -243,4 +243,41 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get gridDurationsResetConfirm =>
       'Are you sure you want to reset grid durations to default values?';
+
+  @override
+  String get audioPlaybackSettings => 'Audio Playback Settings';
+
+  @override
+  String get audioPlaybackSettingsDesc => 'Configure alarm audio playback mode';
+
+  @override
+  String get audioPlaybackMode => 'Playback Mode';
+
+  @override
+  String get audioPlaybackModeLoopIndefinitely =>
+      'Loop indefinitely until manually stopped';
+
+  @override
+  String get audioPlaybackModeLoopForDuration =>
+      'Loop for N minutes then auto-stop';
+
+  @override
+  String get audioPlaybackModeLoopWithInterval =>
+      'Loop N min, pause M min, loop N min (once)';
+
+  @override
+  String get audioPlaybackModeLoopWithIntervalRepeating =>
+      'Loop N min, pause M min, repeat until stopped';
+
+  @override
+  String get audioPlaybackModePlayOnce => 'Play once only';
+
+  @override
+  String get loopDuration => 'Loop Duration';
+
+  @override
+  String get intervalPause => 'Interval Pause Duration';
+
+  @override
+  String get minutesUnit => 'minutes';
 }

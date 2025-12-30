@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../types.dart';
+import '../enums.dart';
 
 part 'app_settings.freezed.dart';
 part 'app_settings.g.dart';
@@ -48,6 +49,16 @@ abstract class AppSettings with _$AppSettings {
     /// 默认值：[10秒, 2分, 3分, 5分, 8分, 10分, 15分, 20分, 45分]
     @Default([10, 120, 180, 300, 480, 600, 900, 1200, 2700])
     List<int> gridDurationsInSeconds,
+
+    /// Audio playback mode for alarm.
+    @Default(AudioPlaybackMode.loopIndefinitely)
+    AudioPlaybackMode audioPlaybackMode,
+
+    /// Duration to loop audio in minutes (for loopForDuration, loopWithInterval modes).
+    @Default(5) int audioLoopDurationMinutes,
+
+    /// Interval pause duration in minutes (for loopWithInterval modes).
+    @Default(2) int audioIntervalPauseMinutes,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>

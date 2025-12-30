@@ -541,6 +541,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to reset grid durations to default values?'**
   String get gridDurationsResetConfirm;
+
+  /// Audio playback settings title
+  ///
+  /// In en, this message translates to:
+  /// **'Audio Playback Settings'**
+  String get audioPlaybackSettings;
+
+  /// Audio playback settings description
+  ///
+  /// In en, this message translates to:
+  /// **'Configure alarm audio playback mode'**
+  String get audioPlaybackSettingsDesc;
+
+  /// Audio playback mode label
+  ///
+  /// In en, this message translates to:
+  /// **'Playback Mode'**
+  String get audioPlaybackMode;
+
+  /// Loop indefinitely mode description
+  ///
+  /// In en, this message translates to:
+  /// **'Loop indefinitely until manually stopped'**
+  String get audioPlaybackModeLoopIndefinitely;
+
+  /// Loop for duration mode description
+  ///
+  /// In en, this message translates to:
+  /// **'Loop for N minutes then auto-stop'**
+  String get audioPlaybackModeLoopForDuration;
+
+  /// Loop with interval mode description
+  ///
+  /// In en, this message translates to:
+  /// **'Loop N min, pause M min, loop N min (once)'**
+  String get audioPlaybackModeLoopWithInterval;
+
+  /// Loop with interval repeating mode description
+  ///
+  /// In en, this message translates to:
+  /// **'Loop N min, pause M min, repeat until stopped'**
+  String get audioPlaybackModeLoopWithIntervalRepeating;
+
+  /// Play once mode description
+  ///
+  /// In en, this message translates to:
+  /// **'Play once only'**
+  String get audioPlaybackModePlayOnce;
+
+  /// Loop duration label
+  ///
+  /// In en, this message translates to:
+  /// **'Loop Duration'**
+  String get loopDuration;
+
+  /// Interval pause duration label
+  ///
+  /// In en, this message translates to:
+  /// **'Interval Pause Duration'**
+  String get intervalPause;
+
+  /// Minutes unit label
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get minutesUnit;
 }
 
 class _AppLocalizationsDelegate

@@ -237,4 +237,39 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get gridDurationsResetConfirm => '确定要将九宫格时长恢复为默认值吗？';
+
+  @override
+  String get audioPlaybackSettings => '音频播放设置';
+
+  @override
+  String get audioPlaybackSettingsDesc => '配置闹铃音频播放模式';
+
+  @override
+  String get audioPlaybackMode => '播放模式';
+
+  @override
+  String get audioPlaybackModeLoopIndefinitely => '一直循环直到手动停止';
+
+  @override
+  String get audioPlaybackModeLoopForDuration => '循环播放 N 分钟后自动停止';
+
+  @override
+  String get audioPlaybackModeLoopWithInterval =>
+      '循环 N 分钟，间隔 M 分钟，再循环 N 分钟（共一次）';
+
+  @override
+  String get audioPlaybackModeLoopWithIntervalRepeating =>
+      '循环 N 分钟，间隔 M 分钟，重复直到停止';
+
+  @override
+  String get audioPlaybackModePlayOnce => '只播放一次';
+
+  @override
+  String get loopDuration => '循环时长';
+
+  @override
+  String get intervalPause => '间隔暂停时长';
+
+  @override
+  String get minutesUnit => '分钟';
 }

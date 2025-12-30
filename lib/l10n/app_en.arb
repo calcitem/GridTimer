@@ -393,6 +393,61 @@
   "gridDurationsResetConfirm": "Are you sure you want to reset grid durations to default values?",
   "@gridDurationsResetConfirm": {
     "description": "Reset to default confirmation"
+  },
+
+  "audioPlaybackSettings": "Audio Playback Settings",
+  "@audioPlaybackSettings": {
+    "description": "Audio playback settings title"
+  },
+
+  "audioPlaybackSettingsDesc": "Configure alarm audio playback mode",
+  "@audioPlaybackSettingsDesc": {
+    "description": "Audio playback settings description"
+  },
+
+  "audioPlaybackMode": "Playback Mode",
+  "@audioPlaybackMode": {
+    "description": "Audio playback mode label"
+  },
+
+  "audioPlaybackModeLoopIndefinitely": "Loop indefinitely until manually stopped",
+  "@audioPlaybackModeLoopIndefinitely": {
+    "description": "Loop indefinitely mode description"
+  },
+
+  "audioPlaybackModeLoopForDuration": "Loop for N minutes then auto-stop",
+  "@audioPlaybackModeLoopForDuration": {
+    "description": "Loop for duration mode description"
+  },
+
+  "audioPlaybackModeLoopWithInterval": "Loop N min, pause M min, loop N min (once)",
+  "@audioPlaybackModeLoopWithInterval": {
+    "description": "Loop with interval mode description"
+  },
+
+  "audioPlaybackModeLoopWithIntervalRepeating": "Loop N min, pause M min, repeat until stopped",
+  "@audioPlaybackModeLoopWithIntervalRepeating": {
+    "description": "Loop with interval repeating mode description"
+  },
+
+  "audioPlaybackModePlayOnce": "Play once only",
+  "@audioPlaybackModePlayOnce": {
+    "description": "Play once mode description"
+  },
+
+  "loopDuration": "Loop Duration",
+  "@loopDuration": {
+    "description": "Loop duration label"
+  },
+
+  "intervalPause": "Interval Pause Duration",
+  "@intervalPause": {
+    "description": "Interval pause duration label"
+  },
+
+  "minutesUnit": "minutes",
+  "@minutesUnit": {
+    "description": "Minutes unit label"
   }
 }
 
