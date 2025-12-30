@@ -28,29 +28,15 @@ flutter gen-l10n
 dart run build_runner build --delete-conflicting-outputs
 ```
 
-### Step 2: Add Audio Files (1 min)
+### Step 2: Audio Files (Already Done! ✅)
 
-You need 6 MP3 ringtone files. Quick options:
+**Great news:** Audio files are already included!
 
-**Option A - Use placeholder silence (for testing):**
-Create 1-second silent MP3 files and copy to both locations:
-- `assets/sounds/`
-- `android/app/src/main/res/raw/`
+- ✅ Using Kenney's Interface Sounds (CC0 license)
+- ✅ `confirmation_001.ogg` ready to use
+- ✅ No setup needed
 
-**Option B - Download free sounds:**
-Get royalty-free sounds from:
-- https://freesound.org/
-- https://mixkit.co/free-sound-effects/
-
-Required filenames:
-```
-bell_01.mp3
-bell_02.mp3
-beep_soft.mp3
-chime.mp3
-ding.mp3
-gentle.mp3
-```
+Skip this step!
 
 ### Step 3: Configure Android SDK Path (30 sec)
 

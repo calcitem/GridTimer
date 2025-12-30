@@ -33,3 +33,4 @@ class TimerConfig with _$TimerConfig {
   Duration get presetDuration => Duration(milliseconds: presetDurationMs);
 }
 
+

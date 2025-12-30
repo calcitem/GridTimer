@@ -224,16 +224,8 @@ class NotificationService implements INotificationService {
   }
 
   String _soundKeyToResource(String soundKey) {
-    // Map sound keys to raw resource names
-    final map = {
-      'bell01': 'bell_01',
-      'bell02': 'bell_02',
-      'beep_soft': 'beep_soft',
-      'chime': 'chime',
-      'ding': 'ding',
-      'gentle': 'gentle',
-    };
-    return map[soundKey] ?? 'bell_01';
+    // All timers use the same confirmation sound
+    return 'confirmation_001';
   }
 
   void dispose() {

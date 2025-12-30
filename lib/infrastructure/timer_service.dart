@@ -299,7 +299,7 @@ class TimerService implements ITimerService {
         slotIndex: i,
         name: 'Timer ${i + 1}',
         presetDurationMs: const Duration(minutes: 5).inMilliseconds,
-        soundKey: 'bell01',
+        soundKey: 'default',
         ttsEnabled: true,
       );
     });

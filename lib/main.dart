@@ -38,14 +38,9 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
       final timerService = ref.read(timerServiceProvider);
       await timerService.init();
       
-      // Ensure notification channels for all sound keys
+      // Ensure notification channels (all timers use same sound)
       await notification.ensureAndroidChannels(soundKeys: {
-        'bell01',
-        'bell02',
-        'beep_soft',
-        'chime',
-        'ding',
-        'gentle',
+        'default',
       });
     } catch (e) {
       debugPrint('Initialization error: $e');

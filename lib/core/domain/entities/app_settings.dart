@@ -34,3 +34,4 @@ class AppSettings with _$AppSettings {
       _$AppSettingsFromJson(json);
 }
 
+

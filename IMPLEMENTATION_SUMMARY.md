@@ -116,8 +116,11 @@ The project is **buildable and runnable** right now with these steps:
 - [x] Build scripts
 - [x] Documentation
 
+### Audio Assets ✅ INCLUDED
+- [x] Audio files ready (Kenney's Interface Sounds - CC0)
+- [x] `confirmation_001.ogg` for all timers
+
 ### Requires User Action
-- [ ] Add 6 MP3 audio files
 - [ ] Generate app icons
 - [ ] Create signing keystore (for release)
 - [ ] Add privacy policy (if needed)

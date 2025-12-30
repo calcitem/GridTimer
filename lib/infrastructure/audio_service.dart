@@ -38,16 +38,8 @@ class AudioService implements IAudioService {
   }
 
   String _soundKeyToAssetPath(SoundKey soundKey) {
-    // Map sound keys to asset paths (without 'assets/' prefix for AssetSource)
-    final map = {
-      'bell01': 'sounds/bell_01.mp3',
-      'bell02': 'sounds/bell_02.mp3',
-      'beep_soft': 'sounds/beep_soft.mp3',
-      'chime': 'sounds/chime.mp3',
-      'ding': 'sounds/ding.mp3',
-      'gentle': 'sounds/gentle.mp3',
-    };
-    return map[soundKey] ?? 'sounds/bell_01.mp3';
+    // All timers use the same confirmation sound from Kenney's Interface Sounds
+    return 'sounds/kenney_interface-sounds/Audio/confirmation_001.ogg';
   }
 
   void dispose() {

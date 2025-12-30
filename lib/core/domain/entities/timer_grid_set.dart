@@ -28,3 +28,4 @@ class TimerGridSet with _$TimerGridSet {
   bool get isValid => slots.length == 9;
 }
 
+

@@ -54,3 +54,4 @@ enum BatteryOptState {
   unknown,
 }
 
+

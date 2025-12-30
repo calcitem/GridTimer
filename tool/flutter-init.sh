@@ -36,3 +36,4 @@ echo "  - assets/sounds/"
 echo "  - android/app/src/main/res/raw/"
 echo ""
 
+

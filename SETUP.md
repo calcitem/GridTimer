@@ -29,24 +29,19 @@ This will:
 - Generate Hive adapters and Freezed code
 - Run code analysis
 
-### 2. Add Audio Assets
+### 2. Audio Assets (Already Included!)
 
-**Important:** You must add audio files before building.
+**Good news:** Audio files are already included!
 
-Place MP3 ringtone files in BOTH locations:
+GridTimer uses **Kenney's Interface Sounds** (CC0 license):
+- ✅ `confirmation_001.ogg` - Used for all timer completions
+- ✅ Already in `assets/sounds/kenney_interface-sounds/Audio/`
+- ✅ Already copied to `android/app/src/main/res/raw/`
 
-1. `assets/sounds/` (for Flutter assets)
-2. `android/app/src/main/res/raw/` (for Android notifications)
+**License:** CC0 (Public Domain) - Free to use, no attribution required  
+**Source:** https://kenney.nl/assets/interface-sounds
 
-Required files:
-- `bell_01.mp3`
-- `bell_02.mp3`
-- `beep_soft.mp3`
-- `chime.mp3`
-- `ding.mp3`
-- `gentle.mp3`
-
-**Note:** Files in `res/raw/` must use underscores (not hyphens).
+No action needed! The sound files are ready to use.
 
 ### 3. Run the App
 

@@ -70,22 +70,17 @@
 
 ### Before First Run
 
-1. **Add Audio Assets**
-   - Place MP3 files in `assets/sounds/`
-   - Copy same files to `android/app/src/main/res/raw/`
-   - Required files: bell_01.mp3, bell_02.mp3, beep_soft.mp3, chime.mp3, ding.mp3, gentle.mp3
-
-2. **Generate Code**
+1. **Generate Code**
    ```bash
    chmod +x tool/*.sh
    ./tool/flutter-init.sh
    ```
 
-3. **Create local.properties**
+2. **Create local.properties**
    - Copy `android/local.properties.template` to `android/local.properties`
    - Update Flutter SDK path
 
-4. **Add App Icons**
+3. **Add App Icons**
    - Generate icons for all densities (mdpi, hdpi, xhdpi, xxhdpi, xxxhdpi)
    - Place in `android/app/src/main/res/mipmap-*/`
    - Use flutter_launcher_icons or manual creation
@@ -115,9 +110,10 @@
 
 ## 📋 Known Limitations
 
-1. **Audio Assets Not Included**
-   - You must provide your own MP3 files (licensing)
-   - See `assets/sounds/README.md` for requirements
+1. **Audio Assets** ✅ **SOLVED**
+   - Now using Kenney's Interface Sounds (CC0 license)
+   - `confirmation_001.ogg` included and ready to use
+   - No additional setup required!
 
 2. **App Icons Not Generated**
    - Placeholder directories created
@@ -133,14 +129,13 @@
 
 ## 🚀 Next Steps
 
-1. **Add audio files** → See assets/sounds/README.md
-2. **Run initialization** → `./tool/flutter-init.sh`
-3. **Test on device** → `flutter run`
-4. **Fix any lint errors** → `flutter analyze`
-5. **Add app icons** → Use flutter_launcher_icons
-6. **Configure signing** → For release builds
-7. **Test thoroughly** → Especially on Android 14+
-8. **Build release** → `./tool/build-release.sh`
+1. **Run initialization** → `./tool/flutter-init.sh`
+2. **Test on device** → `flutter run`
+3. **Fix any lint errors** → `flutter analyze`
+4. **Add app icons** → Use flutter_launcher_icons
+5. **Configure signing** → For release builds
+6. **Test thoroughly** → Especially on Android 14+
+7. **Build release** → `./tool/build-release.sh`
 
 ## 📖 Documentation
 
