@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.8.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -13,19 +13,19 @@ dependencies:
     sdk: flutter
 
   # Storage (Hive family - permissive licenses)
-  hive_ce: ^2.10.0
-  hive_ce_flutter: ^2.1.0
-  path_provider: ^2.1.1
+  hive_ce: 2.13.2
+  hive_ce_flutter: 2.3.2
+  path_provider: 2.1.5
 
   # Notifications
   flutter_local_notifications: ^19.0.0
 
   # Audio + TTS
-  audioplayers: ^6.0.0
+  audioplayers: 6.5.1
   flutter_tts: ^4.0.2
 
   # Permissions & Settings
-  permission_handler: ^11.0.1
+  permission_handler: 12.0.1
   app_settings: ^5.1.1
 
   # State Management
@@ -33,21 +33,21 @@ dependencies:
   flutter_riverpod: ^2.4.9
 
   # Utilities
-  intl: any
-  freezed_annotation: ^2.4.1
-  json_annotation: ^4.8.1
+  intl: 0.20.2
+  freezed_annotation: ^3.1.0
+  json_annotation: 4.9.0
   timezone: ^0.10.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: 6.0.0
   
   # Code generation
-  build_runner: ^2.4.0
-  hive_ce_generator: ^1.6.0
-  freezed: ^2.4.6
-  json_serializable: ^6.7.1
+  build_runner: 2.8.0
+  hive_ce_generator: any
+  freezed: ^3.0.0
+  json_serializable: 6.11.1
 
 flutter:
   uses-material-design: true
@@ -58,4 +58,3 @@ flutter:
 
   # Generate localization
   generate: true
-

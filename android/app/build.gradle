@@ -23,20 +23,22 @@ if (flutterVersionName == null) {
 }
 
 android {
+    ndkVersion "28.1.13356709"
+
     namespace "com.gridtimer.app"
-    compileSdk 35
+    compileSdk 36
 
     compileOptions {
         // Enable support for newer Java APIs on older Android versions
         coreLibraryDesugaringEnabled true
-        
-        // Java 11 bytecode
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+
+        // Java 17 bytecode
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
     }
 
     sourceSets {
@@ -46,10 +48,10 @@ android {
     defaultConfig {
         applicationId "com.gridtimer.app"
         minSdkVersion flutter.minSdkVersion
-        targetSdk 35
+        targetSdk 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        
+
         // Required by flutter_local_notifications
         multiDexEnabled true
     }
@@ -66,9 +68,6 @@ flutter {
 }
 
 dependencies {
-    // Required for flutter_local_notifications with compileSdk 35
+    // Required for flutter_local_notifications with compileSdk 36
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
 }
-
-
-
