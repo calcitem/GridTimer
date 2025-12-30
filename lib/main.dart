@@ -31,10 +31,17 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
 
   Future<void> _initializeServices() async {
     try {
-      // Initialize all services
+      // 首先请求通知权限（Android 13+）
       final notification = ref.read(notificationServiceProvider);
       await notification.init();
 
+      // 主动请求通知权限
+      await notification.requestPostNotificationsPermission();
+
+      // 尝试请求精确闹钟权限（Android 14+，用户可能需要手动授予）
+      await notification.requestExactAlarmPermission();
+
+      // Initialize all services
       final audio = ref.read(audioServiceProvider);
       await audio.init();
 

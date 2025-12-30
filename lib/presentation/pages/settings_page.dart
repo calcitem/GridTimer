@@ -139,16 +139,57 @@ class SettingsPage extends ConsumerWidget {
 
             // Permissions Section
             _buildSectionHeader(l10n.permissions),
+            
+            // Notification Permission
             ListTile(
-              leading: const Icon(Icons.notifications),
+              leading: const Icon(Icons.notifications_active),
               title: Text(l10n.notificationPermission),
               subtitle: Text(l10n.notificationPermissionDesc),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () async {
-                final permissionService = ref.read(permissionServiceProvider);
-                await permissionService.openAppSettings();
-              },
+              trailing: ElevatedButton(
+                onPressed: () async {
+                  final notification = ref.read(notificationServiceProvider);
+                  final granted = await notification.requestPostNotificationsPermission();
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(granted ? '通知权限已授予' : '通知权限被拒绝，请在系统设置中手动授予'),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                },
+                child: const Text('授予权限'),
+              ),
             ),
+            
+            // Exact Alarm Permission
+            ListTile(
+              leading: const Icon(Icons.alarm),
+              title: const Text('精确闹钟权限'),
+              subtitle: const Text('确保计时器准时提醒（Android 14+ 需要）'),
+              trailing: ElevatedButton(
+                onPressed: () async {
+                  final permissionService = ref.read(permissionServiceProvider);
+                  await permissionService.openExactAlarmSettings();
+                },
+                child: const Text('设置'),
+              ),
+            ),
+            
+            // Battery Optimization
+            ListTile(
+              leading: const Icon(Icons.battery_saver),
+              title: const Text('电池优化设置'),
+              subtitle: const Text('关闭电池优化以确保后台提醒可靠'),
+              trailing: ElevatedButton(
+                onPressed: () async {
+                  final permissionService = ref.read(permissionServiceProvider);
+                  await permissionService.openBatteryOptimizationSettings();
+                },
+                child: const Text('设置'),
+              ),
+            ),
+            
             const Divider(),
 
             // About Section
