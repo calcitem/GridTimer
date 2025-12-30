@@ -50,6 +50,10 @@ abstract interface class ITimerService {
   
   /// Returns whether any timer is not idle.
   bool hasActiveTimers();
+
+  /// Updates default grid durations from settings.
+  /// Throws if any timer is active.
+  Future<void> updateDefaultGridDurations();
 }
 
 

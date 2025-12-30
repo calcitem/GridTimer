@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../l10n/app_localizations.dart';
+import 'grid_durations_settings_page.dart';
 import 'sound_settings_page.dart';
 import 'tts_settings_page.dart';
 
@@ -106,6 +107,21 @@ class SettingsPage extends ConsumerWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => const TtsSettingsPage(),
+                  ),
+                );
+              },
+            ),
+            
+            // Grid Durations Settings
+            ListTile(
+              leading: const Icon(Icons.grid_on),
+              title: Text(l10n.gridDurationsSettings),
+              subtitle: Text(l10n.gridDurationsSettingsDesc),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const GridDurationsSettingsPage(),
                   ),
                 );
               },

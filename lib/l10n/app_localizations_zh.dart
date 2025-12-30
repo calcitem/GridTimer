@@ -208,4 +208,33 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get testTts => '测试语音';
+
+  @override
+  String get gridDurationsSettings => '九宫格时长配置';
+
+  @override
+  String get gridDurationsSettingsDesc => '自定义每个宫格的倒计时长';
+
+  @override
+  String gridSlot(int index) {
+    return '宫格 $index';
+  }
+
+  @override
+  String get seconds => '秒';
+
+  @override
+  String get hours => '小时';
+
+  @override
+  String get save => '保存';
+
+  @override
+  String get reset => '重置';
+
+  @override
+  String get resetToDefault => '恢复默认';
+
+  @override
+  String get gridDurationsResetConfirm => '确定要将九宫格时长恢复为默认值吗？';
 }

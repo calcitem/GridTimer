@@ -212,4 +212,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get testTts => 'Test Voice';
+
+  @override
+  String get gridDurationsSettings => 'Grid Durations Settings';
+
+  @override
+  String get gridDurationsSettingsDesc =>
+      'Customize duration for each grid cell';
+
+  @override
+  String gridSlot(int index) {
+    return 'Grid $index';
+  }
+
+  @override
+  String get seconds => 'seconds';
+
+  @override
+  String get hours => 'hours';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get resetToDefault => 'Reset to Default';
+
+  @override
+  String get gridDurationsResetConfirm =>
+      'Are you sure you want to reset grid durations to default values?';
 }
