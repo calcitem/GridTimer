@@ -21,7 +21,7 @@ class StorageRepository {
 
   /// Initialize Hive and open boxes.
   Future<void> init() async {
-    await Hive.initFlutter();
+    await Hive.initFlutter("GridTimer");
 
     // Register adapters
     if (!Hive.isAdapterRegistered(1)) {
