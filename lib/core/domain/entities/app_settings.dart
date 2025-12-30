@@ -6,7 +6,7 @@ part 'app_settings.g.dart';
 
 /// Global application settings.
 @freezed
-class AppSettings with _$AppSettings {
+abstract class AppSettings with _$AppSettings {
   const factory AppSettings({
     /// Currently active mode ID.
     required ModeId activeModeId,

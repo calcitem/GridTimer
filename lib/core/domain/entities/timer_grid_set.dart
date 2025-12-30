@@ -7,7 +7,7 @@ part 'timer_grid_set.g.dart';
 
 /// A mode containing 9 timer configurations (3x3 grid).
 @freezed
-class TimerGridSet with _$TimerGridSet {
+abstract class TimerGridSet with _$TimerGridSet {
   const factory TimerGridSet({
     /// Unique mode identifier.
     required ModeId modeId,

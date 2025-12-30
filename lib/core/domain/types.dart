@@ -1,4 +1,4 @@
-/// Core type definitions for GridTimer domain.
+// Core type definitions for GridTimer domain.
 
 /// Unique identifier for a mode (grid set).
 typedef ModeId = String;
