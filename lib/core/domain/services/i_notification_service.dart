@@ -42,6 +42,13 @@ abstract interface class INotificationService {
   /// Cancels all scheduled notifications (e.g., mode switch confirmation).
   Future<void> cancelAll();
 
+  /// Shows an immediate time-up notification (for when timer rings while app is running).
+  /// This is needed to ensure sound plays even when device is locked.
+  Future<void> showTimeUpNow({
+    required TimerSession session,
+    required TimerConfig config,
+  });
+
   /// Stream of notification events (tap, action, full-screen trigger).
   Stream<NotificationEvent> events();
 }

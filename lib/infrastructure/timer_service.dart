@@ -117,6 +117,9 @@ class TimerService implements ITimerService {
       final soundVolume = settings?.soundVolume ?? 1.0;
       await _audio.playLoop(soundKey: config.soundKey, volume: soundVolume);
 
+      // 显示即时通知，确保锁屏时也能发声
+      await _notification.showTimeUpNow(session: session, config: config);
+
       if (config.ttsEnabled && (settings?.ttsGlobalEnabled ?? true)) {
         final ttsVolume = settings?.ttsVolume ?? 1.0;
         final ttsSpeechRate = settings?.ttsSpeechRate ?? 0.5;
@@ -340,6 +343,9 @@ class TimerService implements ITimerService {
       final config = _currentGrid!.slots[session.slotIndex];
       final soundVolume = settings?.soundVolume ?? 1.0;
       await _audio.playLoop(soundKey: config.soundKey, volume: soundVolume);
+
+      // 显示即时通知，确保锁屏时也能发声
+      await _notification.showTimeUpNow(session: updated, config: config);
 
       if (config.ttsEnabled && (settings?.ttsGlobalEnabled ?? true)) {
         final ttsVolume = settings?.ttsVolume ?? 1.0;
