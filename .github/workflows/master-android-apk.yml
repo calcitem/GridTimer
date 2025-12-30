@@ -26,13 +26,14 @@ jobs:
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.29.3'
+      - name: Set up Flutter SDK
+        run: bash -x ./tool/setup-flutter.sh
 
-      - name: Export environment variables
-        run: export
+      - name: Export Flutter to PATH
+        run: |
+          FLUTTER_HOME="${HOME}/flutter-3.38.5"
+          echo "${FLUTTER_HOME}/bin" >> $GITHUB_PATH
+          echo "FLUTTER_HOME=${FLUTTER_HOME}" >> $GITHUB_ENV
 
       - name: Print Flutter SDK version
         run: flutter --version
