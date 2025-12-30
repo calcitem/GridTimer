@@ -73,8 +73,9 @@ class NotificationService implements INotificationService {
 
     // Create one channel per sound key
     for (final soundKey in soundKeys) {
-      // v2: 添加了明确的 playSound 和 enableVibration 配置
-      final channelId = 'gt.alarm.timeup.$soundKey.v2';
+      // v3: Use ALARM audio usage so scheduled notifications can ring while locked.
+      // Note: channel properties cannot be changed after creation; bumping version is required.
+      final channelId = 'gt.alarm.timeup.$soundKey.v3';
       final soundResource = _soundKeyToResource(soundKey);
 
       final channel = AndroidNotificationChannel(
@@ -86,6 +87,7 @@ class NotificationService implements INotificationService {
         sound: RawResourceAndroidNotificationSound(soundResource),
         enableVibration: true,
         groupId: _channelGroupId,
+        audioAttributesUsage: AudioAttributesUsage.alarm,
       );
 
       await androidPlugin.createNotificationChannel(channel);
@@ -152,11 +154,11 @@ class NotificationService implements INotificationService {
     if (session.endAtEpochMs == null) return;
 
     final notificationId = 1000 + session.slotIndex;
-    // 使用 v2 通道（配置了声音和振动）
-    final channelId = 'gt.alarm.timeup.${config.soundKey}.v2';
+    // Use v3 channel (ALARM audio usage).
+    final channelId = 'gt.alarm.timeup.${config.soundKey}.v3';
 
-    // 关键：先取消同 ID 的“已显示通知/已安排通知”，否则 Android 可能把这次当作
-    // “更新现有通知”，从而不播放提示音（只更新状态栏内容）。
+    // Cancel existing notifications with the same ID. Otherwise Android may treat this as an
+    // update and suppress alerting behaviour (sound/vibration).
     if (Platform.isAndroid) {
       await _plugin.cancel(notificationId);
     }
@@ -176,7 +178,7 @@ class NotificationService implements INotificationService {
       tz.local,
     );
 
-    // 获取声音资源名（必须明确指定，zonedSchedule 不会自动使用通道声音）
+    // Explicitly specify the sound resource for scheduled notifications.
     final soundResource = _soundKeyToResource(config.soundKey);
 
     final androidDetails = AndroidNotificationDetails(
@@ -188,11 +190,11 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      // 明确设置播放声音和振动
+      // Ensure sound/vibration is enabled.
       playSound: true,
       sound: RawResourceAndroidNotificationSound(soundResource),
       enableVibration: true,
-      // 明确允许重复提示（避免被系统当作“只提示一次”）
+      // Ensure this notification can alert.
       onlyAlertOnce: false,
       // 设置为持续通知，直到用户操作
       ongoing: false,
@@ -204,6 +206,8 @@ class NotificationService implements INotificationService {
           showsUserInterface: true,
         ),
       ],
+      // Use ALARM audio usage for pre-Android O devices. On Android O+ the channel controls this.
+      audioAttributesUsage: AudioAttributesUsage.alarm,
     );
 
     final details = NotificationDetails(android: androidDetails);
@@ -266,10 +270,10 @@ class NotificationService implements INotificationService {
     }
 
     final notificationId = 1000 + session.slotIndex;
-    // 使用 v2 通道（配置了声音和振动）
-    final channelId = 'gt.alarm.timeup.${config.soundKey}.v2';
+    // Use v3 channel (ALARM audio usage).
+    final channelId = 'gt.alarm.timeup.${config.soundKey}.v3';
 
-    // 到点立即提示时，先取消同 ID 的“已安排通知”，避免重复触发/更新导致不响铃。
+    // Cancel any pending notifications with the same ID to avoid update-suppressed alerting.
     if (Platform.isAndroid) {
       await _plugin.cancel(notificationId);
     }
@@ -284,7 +288,7 @@ class NotificationService implements INotificationService {
       'soundKey': config.soundKey,
     });
 
-    // 获取声音资源名（明确指定声音）
+    // Explicitly specify the sound resource.
     final soundResource = _soundKeyToResource(config.soundKey);
 
     final androidDetails = AndroidNotificationDetails(
@@ -296,7 +300,7 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      // 明确设置播放声音和振动
+      // Ensure sound/vibration is enabled.
       playSound: true,
       sound: RawResourceAndroidNotificationSound(soundResource),
       enableVibration: true,
@@ -308,6 +312,7 @@ class NotificationService implements INotificationService {
           showsUserInterface: true,
         ),
       ],
+      audioAttributesUsage: AudioAttributesUsage.alarm,
     );
 
     final details = NotificationDetails(android: androidDetails);
