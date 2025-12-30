@@ -52,9 +52,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   
-  # Audio assets for ringtones (using Kenney's Interface Sounds)
+  # Audio assets for ringtones
   assets:
-    - assets/sounds/kenney_interface-sounds/Audio/confirmation_001.ogg
+    - assets/sounds/sound.wav
 
   # Generate localization
   generate: true

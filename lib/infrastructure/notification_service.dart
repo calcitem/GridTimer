@@ -49,7 +49,8 @@ class NotificationService implements INotificationService {
     if (Platform.isAndroid) {
       await _plugin
           .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin
+          >()
           ?.createNotificationChannelGroup(
             const AndroidNotificationChannelGroup(
               _channelGroupId,
@@ -64,8 +65,10 @@ class NotificationService implements INotificationService {
   Future<void> ensureAndroidChannels({required Set<String> soundKeys}) async {
     if (!Platform.isAndroid) return;
 
-    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final androidPlugin = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     if (androidPlugin == null) return;
 
     // Create one channel per sound key
@@ -104,8 +107,10 @@ class NotificationService implements INotificationService {
   Future<bool> requestPostNotificationsPermission() async {
     if (!Platform.isAndroid) return true;
 
-    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final androidPlugin = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     if (androidPlugin == null) return false;
 
     final result = await androidPlugin.requestNotificationsPermission();
@@ -116,8 +121,10 @@ class NotificationService implements INotificationService {
   Future<bool> requestExactAlarmPermission() async {
     if (!Platform.isAndroid) return true;
 
-    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final androidPlugin = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     if (androidPlugin == null) return false;
 
     final result = await androidPlugin.requestExactAlarmsPermission();
@@ -244,16 +251,18 @@ class NotificationService implements INotificationService {
       type = NotificationEventType.open;
     }
 
-    _eventController.add(NotificationEvent(
-      type: type,
-      payloadJson: payload,
-      actionId: response.actionId,
-    ));
+    _eventController.add(
+      NotificationEvent(
+        type: type,
+        payloadJson: payload,
+        actionId: response.actionId,
+      ),
+    );
   }
 
   String _soundKeyToResource(String soundKey) {
-    // All timers use the same confirmation sound
-    return 'confirmation_001';
+    // All timers use the same sound file
+    return 'sound';
   }
 
   void dispose() {

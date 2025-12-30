@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import '../core/domain/services/i_audio_service.dart';
 import '../core/domain/types.dart';
 
@@ -15,21 +16,30 @@ class AudioService implements IAudioService {
 
   @override
   Future<void> playLoop({required SoundKey soundKey}) async {
-    // Stop current if playing different sound
-    if (_currentSoundKey != null && _currentSoundKey != soundKey) {
-      await stop();
+    try {
+      // Stop current if playing different sound
+      if (_currentSoundKey != null && _currentSoundKey != soundKey) {
+        await stop();
+      }
+
+      _currentSoundKey = soundKey;
+      final assetPath = _soundKeyToAssetPath(soundKey);
+
+      await _player.play(AssetSource(assetPath));
+    } catch (e) {
+      // 捕获音频播放错误，避免影响应用运行
+      debugPrint('Audio playback error: $e');
     }
-
-    _currentSoundKey = soundKey;
-    final assetPath = _soundKeyToAssetPath(soundKey);
-
-    await _player.play(AssetSource(assetPath));
   }
 
   @override
   Future<void> stop() async {
-    await _player.stop();
-    _currentSoundKey = null;
+    try {
+      await _player.stop();
+      _currentSoundKey = null;
+    } catch (e) {
+      debugPrint('Audio stop error: $e');
+    }
   }
 
   @override
@@ -38,8 +48,8 @@ class AudioService implements IAudioService {
   }
 
   String _soundKeyToAssetPath(SoundKey soundKey) {
-    // All timers use the same confirmation sound from Kenney's Interface Sounds
-    return 'sounds/kenney_interface-sounds/Audio/confirmation_001.ogg';
+    // All timers use the same sound file
+    return 'sounds/sound.wav';
   }
 
   void dispose() {
