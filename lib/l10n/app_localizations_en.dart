@@ -163,4 +163,53 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get confirmStart =>
       'Other timers are running. Continue to start this timer?';
+
+  @override
+  String get flashAnimation => 'Flash Animation';
+
+  @override
+  String get flashAnimationDesc => 'Red flash when timer rings';
+
+  @override
+  String get vibration => 'Vibration';
+
+  @override
+  String get vibrationDesc => 'Vibrate when timer rings';
+
+  @override
+  String get keepScreenOn => 'Keep Screen On';
+
+  @override
+  String get keepScreenOnDesc =>
+      'Prevent screen from sleeping while timer runs';
+
+  @override
+  String get ttsEnabled => 'Voice Announcements';
+
+  @override
+  String get ttsEnabledDesc => 'Announce timer completion with voice';
+
+  @override
+  String get alarmSound => 'Alarm Sound';
+
+  @override
+  String get alarmSoundDesc => 'Choose sound for timer alerts';
+
+  @override
+  String get volume => 'Volume';
+
+  @override
+  String get volumeDesc => 'Adjust alarm volume';
+
+  @override
+  String get ttsLanguage => 'TTS Language';
+
+  @override
+  String get ttsLanguageDesc => 'Choose voice announcement language';
+
+  @override
+  String get testSound => 'Test Sound';
+
+  @override
+  String get testTts => 'Test Voice';
 }

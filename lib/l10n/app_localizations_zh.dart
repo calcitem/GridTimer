@@ -160,4 +160,52 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get confirmStart => '当前已有计时器在运行。要继续启动此计时器吗？';
+
+  @override
+  String get flashAnimation => '闪烁动画';
+
+  @override
+  String get flashAnimationDesc => '响铃时红色闪烁';
+
+  @override
+  String get vibration => '振动';
+
+  @override
+  String get vibrationDesc => '响铃时振动';
+
+  @override
+  String get keepScreenOn => '保持屏幕常亮';
+
+  @override
+  String get keepScreenOnDesc => '计时器运行时防止屏幕休眠';
+
+  @override
+  String get ttsEnabled => '语音播报';
+
+  @override
+  String get ttsEnabledDesc => '计时结束时语音播报';
+
+  @override
+  String get alarmSound => '提醒声音';
+
+  @override
+  String get alarmSoundDesc => '选择计时器提醒声音';
+
+  @override
+  String get volume => '音量';
+
+  @override
+  String get volumeDesc => '调整提醒音量';
+
+  @override
+  String get ttsLanguage => '语音播报语言';
+
+  @override
+  String get ttsLanguageDesc => '选择语音播报语言';
+
+  @override
+  String get testSound => '测试声音';
+
+  @override
+  String get testTts => '测试语音';
 }

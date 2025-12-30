@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../core/domain/entities/app_settings.dart';
 import '../core/domain/services/i_clock.dart';
 import '../core/domain/services/i_timer_service.dart';
 import '../core/domain/services/i_notification_service.dart';
@@ -61,6 +62,68 @@ final gridStateProvider = StreamProvider((ref) {
   final service = ref.watch(timerServiceProvider);
   return service.watchGridState();
 });
+
+/// App settings provider.
+final appSettingsProvider = StateNotifierProvider<AppSettingsNotifier, AsyncValue<AppSettings>>((ref) {
+  return AppSettingsNotifier(storage: ref.watch(storageProvider));
+});
+
+/// Notifier for managing app settings state.
+class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
+  final StorageRepository storage;
+  static const String _defaultModeId = 'default';
+
+  AppSettingsNotifier({required this.storage}) : super(const AsyncValue.loading()) {
+    // Delay loading to ensure storage is initialized by timer service
+    Future.microtask(_loadSettings);
+  }
+
+  /// Load settings from storage.
+  Future<void> _loadSettings() async {
+    try {
+      final settings = await storage.getSettings();
+      state = AsyncValue.data(
+        settings ?? const AppSettings(activeModeId: _defaultModeId),
+      );
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
+  }
+
+  /// Update settings and save to storage.
+  Future<void> updateSettings(AppSettings Function(AppSettings) updater) async {
+    final current = state.value;
+    if (current == null) return;
+
+    try {
+      final updated = updater(current);
+      state = AsyncValue.data(updated);
+      await storage.saveSettings(updated);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
+  }
+
+  /// Toggle flash animation.
+  Future<void> toggleFlash(bool enabled) async {
+    await updateSettings((s) => s.copyWith(flashEnabled: enabled));
+  }
+
+  /// Toggle global TTS.
+  Future<void> toggleTts(bool enabled) async {
+    await updateSettings((s) => s.copyWith(ttsGlobalEnabled: enabled));
+  }
+
+  /// Toggle keep screen on.
+  Future<void> toggleKeepScreenOn(bool enabled) async {
+    await updateSettings((s) => s.copyWith(keepScreenOnWhileRunning: enabled));
+  }
+
+  /// Toggle vibration.
+  Future<void> toggleVibration(bool enabled) async {
+    await updateSettings((s) => s.copyWith(vibrationEnabled: enabled));
+  }
+}
 
 
 
