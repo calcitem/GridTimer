@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
+import '../../core/domain/entities/timer_grid_set.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
 import '../widgets/timer_grid_cell.dart';
@@ -18,7 +19,7 @@ class GridPage extends ConsumerWidget {
         child: gridState.when(
           data: (state) {
             final (grid, sessions) = state;
-            return _buildGrid(context, ref, sessions);
+            return _buildGrid(context, ref, grid, sessions);
           },
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stack) => Center(child: Text('Error: $error')),
@@ -33,7 +34,12 @@ class GridPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildGrid(BuildContext context, WidgetRef ref, List<TimerSession> sessions) {
+  Widget _buildGrid(
+    BuildContext context,
+    WidgetRef ref,
+    TimerGridSet grid,
+    List<TimerSession> sessions,
+  ) {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -52,8 +58,10 @@ class GridPage extends ConsumerWidget {
             status: TimerStatus.idle,
           ),
         );
+        final config = grid.slots[index];
         return TimerGridCell(
           session: session,
+          config: config,
           slotIndex: index,
         );
       },

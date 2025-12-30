@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
+import '../../core/domain/entities/timer_config.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
 
 /// A single cell in the 3x3 timer grid.
 class TimerGridCell extends ConsumerWidget {
   final TimerSession session;
+  final TimerConfig config;
   final int slotIndex;
 
   const TimerGridCell({
     super.key,
     required this.session,
+    required this.config,
     required this.slotIndex,
   });
 
@@ -19,10 +22,10 @@ class TimerGridCell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final clock = ref.watch(clockProvider);
     final remainingMs = session.calculateRemaining(clock.nowEpochMs());
-    
+
     final color = _getStatusColor(session.status);
-    final name = 'Timer ${slotIndex + 1}';
-    
+    final presetMinutes = (config.presetDurationMs / 60000).round();
+
     return GestureDetector(
       onTap: () => _handleTap(context, ref),
       child: Container(
@@ -30,94 +33,179 @@ class TimerGridCell extends ConsumerWidget {
           color: color,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: session.status == TimerStatus.ringing 
-                ? Colors.red 
+            color: session.status == TimerStatus.ringing
+                ? Colors.red
                 : Colors.grey.shade300,
             width: session.status == TimerStatus.ringing ? 4 : 2,
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Name
-            Text(
-              name,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 8),
-            
-            // Time display
-            Expanded(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
+        padding: const EdgeInsets.all(4),
+        child: _buildContent(presetMinutes, remainingMs),
+      ),
+    );
+  }
+
+  /// 构建格子内容，根据状态显示不同信息
+  Widget _buildContent(int presetMinutes, int remainingMs) {
+    switch (session.status) {
+      case TimerStatus.idle:
+        // 初始状态：显示预设时长（如 "5分钟"）
+        return _buildIdleContent(presetMinutes);
+      case TimerStatus.running:
+      case TimerStatus.paused:
+        // 运行/暂停状态：显示总时长和剩余时间
+        return _buildActiveContent(presetMinutes, remainingMs);
+      case TimerStatus.ringing:
+        // 响铃状态
+        return _buildRingingContent(presetMinutes);
+    }
+  }
+
+  /// 初始状态：大字显示预设时长
+  Widget _buildIdleContent(int presetMinutes) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // 预设时长（超大字体）
+        Expanded(
+          child: Center(
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Text(
-                  _formatTime(remainingMs),
+                  '$presetMinutes',
                   style: const TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 120,
+                    fontWeight: FontWeight.w900,
                     color: Colors.white,
+                    height: 1.0,
                   ),
                 ),
               ),
             ),
-            
-            // Status indicator
-            Text(
-              _getStatusText(session.status),
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.white70,
+          ),
+        ),
+        // "分钟" 标签
+        const Text(
+          '分钟',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white70,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// 运行/暂停状态：显示总时长和剩余时间
+  Widget _buildActiveContent(int presetMinutes, int remainingMs) {
+    final remainingSeconds = (remainingMs / 1000).ceil();
+    final isPaused = session.status == TimerStatus.paused;
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // 顶部：预设时长标签
+        Text(
+          '$presetMinutes 分钟',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: isPaused ? Colors.white70 : Colors.white,
+          ),
+        ),
+        // 中间：剩余秒数（超大字体）
+        Expanded(
+          child: Center(
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Text(
+                  '$remainingSeconds',
+                  style: TextStyle(
+                    fontSize: 100,
+                    fontWeight: FontWeight.w900,
+                    color: isPaused ? Colors.white70 : Colors.white,
+                    height: 1.0,
+                  ),
+                ),
               ),
             ),
-          ],
+          ),
         ),
-      ),
+        // 底部：状态标签
+        Text(
+          isPaused ? '暂停中' : '剩余秒',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: isPaused ? Colors.white70 : Colors.white,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// 响铃状态：显示时间到
+  Widget _buildRingingContent(int presetMinutes) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // 顶部：预设时长
+        Text(
+          '$presetMinutes 分钟',
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        // 中间："时间到" 大字
+        const Expanded(
+          child: Center(
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  '时间到',
+                  style: TextStyle(
+                    fontSize: 60,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.yellow,
+                    height: 1.0,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        // 底部：点击停止提示
+        const Text(
+          '点击停止',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ],
     );
   }
 
   Color _getStatusColor(TimerStatus status) {
     switch (status) {
       case TimerStatus.idle:
-        return Colors.grey.shade600;
+        return Colors.blueGrey.shade700;
       case TimerStatus.running:
-        return Colors.green.shade600;
+        return Colors.green.shade700;
       case TimerStatus.paused:
-        return Colors.orange.shade600;
+        return Colors.orange.shade700;
       case TimerStatus.ringing:
-        return Colors.red.shade600;
-    }
-  }
-
-  String _getStatusText(TimerStatus status) {
-    switch (status) {
-      case TimerStatus.idle:
-        return 'Idle';
-      case TimerStatus.running:
-        return 'Running';
-      case TimerStatus.paused:
-        return 'Paused';
-      case TimerStatus.ringing:
-        return 'RINGING';
-    }
-  }
-
-  String _formatTime(int milliseconds) {
-    final seconds = (milliseconds / 1000).floor();
-    final minutes = (seconds / 60).floor();
-    final hours = (minutes / 60).floor();
-    
-    if (hours > 0) {
-      return '${hours.toString().padLeft(2, '0')}:'
-          '${(minutes % 60).toString().padLeft(2, '0')}:'
-          '${(seconds % 60).toString().padLeft(2, '0')}';
-    } else {
-      return '${minutes.toString().padLeft(2, '0')}:'
-          '${(seconds % 60).toString().padLeft(2, '0')}';
+        return Colors.red.shade700;
     }
   }
 
