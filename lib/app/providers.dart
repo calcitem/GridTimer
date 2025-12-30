@@ -14,6 +14,7 @@ import '../infrastructure/notification_service.dart';
 import '../infrastructure/audio_service.dart';
 import '../infrastructure/tts_service.dart';
 import '../infrastructure/permission_service.dart';
+import '../infrastructure/widget_service.dart';
 
 /// Clock provider.
 final clockProvider = Provider<IClock>((ref) => const SystemClock());
@@ -41,6 +42,11 @@ final ttsServiceProvider = Provider<ITtsService>((ref) {
 /// Permission service provider.
 final permissionServiceProvider = Provider<IPermissionService>((ref) {
   return PermissionService();
+});
+
+/// Widget service provider (Android only).
+final widgetServiceProvider = Provider<WidgetService>((ref) {
+  return WidgetService();
 });
 
 /// Mode service provider.

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/widget_background">
+
+    <!-- 标题栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/widget_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="GridTimer"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#333333" />
+
+        <ImageButton
+            android:id="@+id/widget_refresh_button"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_popup_sync"
+            android:contentDescription="刷新"
+            android:scaleType="fitCenter"
+            android:tint="#666666" />
+    </LinearLayout>
+
+    <!-- 状态文本 -->
+    <TextView
+        android:id="@+id/widget_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📱 点击打开应用"
+        android:textSize="16sp"
+        android:textColor="#555555"
+        android:paddingVertical="4dp" />
+
+    <!-- 最近的计时器信息 -->
+    <TextView
+        android:id="@+id/widget_nearest_timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="14sp"
+        android:textColor="#777777"
+        android:paddingVertical="4dp"
+        android:visibility="gone" />
+
+    <!-- 底部提示 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="点击打开应用查看详情"
+        android:textSize="12sp"
+        android:textColor="#999999"
+        android:gravity="center" />
+
+</LinearLayout>
+

@@ -280,6 +280,7 @@ class TimerService implements ITimerService {
   }
 
   /// 更新 default mode 的时长配置（从设置中读取最新配置）
+  @override
   Future<void> updateDefaultGridDurations() async {
     // 只能在没有活动计时器时更新
     if (hasActiveTimers()) {

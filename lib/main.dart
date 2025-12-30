@@ -41,14 +41,31 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
       final tts = ref.read(ttsServiceProvider);
       await tts.init();
 
+      final widget = ref.read(widgetServiceProvider);
+      await widget.init();
+
       final timerService = ref.read(timerServiceProvider);
       await timerService.init();
 
       // Ensure notification channels (all timers use same sound)
       await notification.ensureAndroidChannels(soundKeys: {'default'});
+
+      // 监听计时器状态变化并更新小部件
+      _setupWidgetUpdates();
     } catch (e) {
       debugPrint('Initialization error: $e');
     }
+  }
+
+  /// 设置小部件自动更新
+  void _setupWidgetUpdates() {
+    ref.listen(gridStateProvider, (previous, next) {
+      next.whenData((state) {
+        final (_, sessions) = state;
+        // 更新小部件
+        ref.read(widgetServiceProvider).updateWidget(sessions);
+      });
+    });
   }
 
   @override
