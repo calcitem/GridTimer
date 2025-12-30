@@ -29,7 +29,36 @@
   "permissionExactAlarmBody": "为确保准时提醒，请开启“闹钟和提醒”权限。",
   
   "openSettings": "打开设置",
-  "later": "稍后"
+  "later": "稍后",
+
+  "minutes": "分钟",
+  "remainingSeconds": "剩余秒",
+  "pausing": "暂停中",
+  "timeUp": "时间到",
+  "clickToStop": "点击停止",
+
+  "settings": "设置",
+  "appInformation": "应用信息",
+  "version": "版本",
+  "timerSettings": "计时器设置",
+  "soundSettings": "声音设置",
+  "soundSettingsDesc": "配置提醒声音",
+  "ttsSettings": "语音播报设置",
+  "ttsSettingsDesc": "配置语音播报",
+  "languageSettings": "语言",
+  "languageSettingsDesc": "选择应用语言",
+  "permissions": "权限",
+  "notificationPermission": "通知权限",
+  "notificationPermissionDesc": "允许计时器通知",
+  "about": "关于",
+  "license": "开源许可",
+  "licenseDesc": "查看开源许可证",
+  "comingSoon": "即将推出",
+  "selectLanguage": "选择语言",
+  "languageEnglish": "English",
+  "languageChineseSimplified": "简体中文",
+  "errorText": "错误：{error}",
+  "confirmStart": "当前已有计时器在运行。要继续启动此计时器吗？"
 }
 
 

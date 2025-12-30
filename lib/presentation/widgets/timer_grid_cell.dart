@@ -4,6 +4,7 @@ import '../../app/providers.dart';
 import '../../core/domain/entities/timer_config.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
+import '../../l10n/app_localizations.dart';
 
 /// A single cell in the 3x3 timer grid.
 class TimerGridCell extends ConsumerWidget {
@@ -22,6 +23,7 @@ class TimerGridCell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final clock = ref.watch(clockProvider);
     final remainingMs = session.calculateRemaining(clock.nowEpochMs());
+    final l10n = AppLocalizations.of(context)!;
 
     final color = _getStatusColor(session.status);
     final presetMinutes = (config.presetDurationMs / 60000).round();
@@ -40,33 +42,38 @@ class TimerGridCell extends ConsumerWidget {
           ),
         ),
         padding: const EdgeInsets.all(4),
-        child: _buildContent(presetMinutes, remainingMs),
+        child: _buildContent(context, l10n, presetMinutes, remainingMs),
       ),
     );
   }
 
-  /// 构建格子内容，根据状态显示不同信息
-  Widget _buildContent(int presetMinutes, int remainingMs) {
+  /// Build cell content based on timer status
+  Widget _buildContent(
+    BuildContext context,
+    AppLocalizations l10n,
+    int presetMinutes,
+    int remainingMs,
+  ) {
     switch (session.status) {
       case TimerStatus.idle:
-        // 初始状态：显示预设时长（如 "5分钟"）
-        return _buildIdleContent(presetMinutes);
+        // Initial state: show preset duration
+        return _buildIdleContent(l10n, presetMinutes);
       case TimerStatus.running:
       case TimerStatus.paused:
-        // 运行/暂停状态：显示总时长和剩余时间
-        return _buildActiveContent(presetMinutes, remainingMs);
+        // Running/paused state: show total and remaining time
+        return _buildActiveContent(l10n, presetMinutes, remainingMs);
       case TimerStatus.ringing:
-        // 响铃状态
-        return _buildRingingContent(presetMinutes);
+        // Ringing state
+        return _buildRingingContent(l10n, presetMinutes);
     }
   }
 
-  /// 初始状态：大字显示预设时长
-  Widget _buildIdleContent(int presetMinutes) {
+  /// Build idle state content: show preset duration
+  Widget _buildIdleContent(AppLocalizations l10n, int presetMinutes) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // 预设时长（超大字体）
+        // Preset duration (large font)
         Expanded(
           child: Center(
             child: FittedBox(
@@ -88,10 +95,10 @@ class TimerGridCell extends ConsumerWidget {
             ),
           ),
         ),
-        // "分钟" 标签
-        const Text(
-          '分钟',
-          style: TextStyle(
+        // "minutes" label
+        Text(
+          l10n.minutes,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white70,
@@ -101,17 +108,21 @@ class TimerGridCell extends ConsumerWidget {
     );
   }
 
-  /// 运行/暂停状态：显示总时长和剩余时间
-  Widget _buildActiveContent(int presetMinutes, int remainingMs) {
+  /// Build running/paused state content: show total and remaining time
+  Widget _buildActiveContent(
+    AppLocalizations l10n,
+    int presetMinutes,
+    int remainingMs,
+  ) {
     final remainingSeconds = (remainingMs / 1000).ceil();
     final isPaused = session.status == TimerStatus.paused;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // 顶部：预设时长标签
+        // Top: preset duration label
         Text(
-          '$presetMinutes 分钟',
+          '$presetMinutes ${l10n.minutes}',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -120,7 +131,7 @@ class TimerGridCell extends ConsumerWidget {
             fontFeatures: const [FontFeature.tabularFigures()],
           ),
         ),
-        // 中间：剩余秒数（超大字体）
+        // Middle: remaining seconds (large font)
         Expanded(
           child: Center(
             child: FittedBox(
@@ -142,9 +153,9 @@ class TimerGridCell extends ConsumerWidget {
             ),
           ),
         ),
-        // 底部：状态标签
+        // Bottom: status label
         Text(
-          isPaused ? '暂停中' : '剩余秒',
+          isPaused ? l10n.pausing : l10n.remainingSeconds,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -155,14 +166,14 @@ class TimerGridCell extends ConsumerWidget {
     );
   }
 
-  /// 响铃状态：显示时间到
-  Widget _buildRingingContent(int presetMinutes) {
+  /// Build ringing state content: show time up
+  Widget _buildRingingContent(AppLocalizations l10n, int presetMinutes) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // 顶部：预设时长
+        // Top: preset duration
         Text(
-          '$presetMinutes 分钟',
+          '$presetMinutes ${l10n.minutes}',
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -171,16 +182,16 @@ class TimerGridCell extends ConsumerWidget {
             fontFeatures: [FontFeature.tabularFigures()],
           ),
         ),
-        // 中间："时间到" 大字
-        const Expanded(
+        // Middle: "Time's Up" large text
+        Expanded(
           child: Center(
             child: FittedBox(
               fit: BoxFit.contain,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  '时间到',
-                  style: TextStyle(
+                  l10n.timeUp,
+                  style: const TextStyle(
                     fontSize: 60,
                     fontWeight: FontWeight.w900,
                     color: Colors.yellow,
@@ -191,10 +202,10 @@ class TimerGridCell extends ConsumerWidget {
             ),
           ),
         ),
-        // 底部：点击停止提示
-        const Text(
-          '点击停止',
-          style: TextStyle(
+        // Bottom: click to stop instruction
+        Text(
+          l10n.clickToStop,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -245,25 +256,24 @@ class TimerGridCell extends ConsumerWidget {
   }
 
   void _showStartConfirmation(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Start?'),
-        content: const Text(
-          'Other timers are running. Continue to start this timer?',
-        ),
+        title: Text(l10n.confirmStartTitle),
+        content: Text(l10n.confirmStart),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(l10n.actionCancel),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               _startTimer(ref);
             },
-            child: const Text('Start'),
+            child: Text(l10n.actionStart),
           ),
         ],
       ),
@@ -276,11 +286,12 @@ class TimerGridCell extends ConsumerWidget {
   }
 
   void _showRunningActions(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text('Timer Actions'),
+        title: Text(l10n.timerActions),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -289,7 +300,7 @@ class TimerGridCell extends ConsumerWidget {
                 Navigator.pop(context);
                 ref.read(timerServiceProvider).pause(session.timerId);
               },
-              child: const Text('Pause'),
+              child: Text(l10n.actionPause),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
@@ -297,12 +308,12 @@ class TimerGridCell extends ConsumerWidget {
                 Navigator.pop(context);
                 ref.read(timerServiceProvider).reset(session.timerId);
               },
-              child: const Text('Reset'),
+              child: Text(l10n.actionReset),
             ),
             const SizedBox(height: 8),
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(l10n.actionCancel),
             ),
           ],
         ),
@@ -311,11 +322,12 @@ class TimerGridCell extends ConsumerWidget {
   }
 
   void _showPausedActions(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text('Timer Actions'),
+        title: Text(l10n.timerActions),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -324,7 +336,7 @@ class TimerGridCell extends ConsumerWidget {
                 Navigator.pop(context);
                 ref.read(timerServiceProvider).resume(session.timerId);
               },
-              child: const Text('Resume'),
+              child: Text(l10n.actionResume),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
@@ -332,12 +344,12 @@ class TimerGridCell extends ConsumerWidget {
                 Navigator.pop(context);
                 ref.read(timerServiceProvider).reset(session.timerId);
               },
-              child: const Text('Reset'),
+              child: Text(l10n.actionReset),
             ),
             const SizedBox(height: 8),
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(l10n.actionCancel),
             ),
           ],
         ),
@@ -346,11 +358,12 @@ class TimerGridCell extends ConsumerWidget {
   }
 
   void _showRingingActions(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text('Timer Ringing'),
+        title: Text(l10n.timerRinging),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -363,12 +376,12 @@ class TimerGridCell extends ConsumerWidget {
                 backgroundColor: Colors.red,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Stop Alarm'),
+              child: Text(l10n.stopAlarm),
             ),
             const SizedBox(height: 8),
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(l10n.actionCancel),
             ),
           ],
         ),

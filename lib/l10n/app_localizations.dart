@@ -229,6 +229,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Later'**
   String get later;
+
+  /// Label for minutes
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get minutes;
+
+  /// Label for remaining seconds
+  ///
+  /// In en, this message translates to:
+  /// **'seconds left'**
+  String get remainingSeconds;
+
+  /// Label when timer is paused
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get pausing;
+
+  /// Label when timer rings
+  ///
+  /// In en, this message translates to:
+  /// **'Time\'s Up'**
+  String get timeUp;
+
+  /// Instruction to stop alarm
+  ///
+  /// In en, this message translates to:
+  /// **'Click to stop'**
+  String get clickToStop;
+
+  /// Settings page title
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// Section: App Information
+  ///
+  /// In en, this message translates to:
+  /// **'App Information'**
+  String get appInformation;
+
+  /// Label for app version
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
+  /// Section: Timer Settings
+  ///
+  /// In en, this message translates to:
+  /// **'Timer Settings'**
+  String get timerSettings;
+
+  /// Sound settings option
+  ///
+  /// In en, this message translates to:
+  /// **'Sound Settings'**
+  String get soundSettings;
+
+  /// Description for sound settings
+  ///
+  /// In en, this message translates to:
+  /// **'Configure alarm sound'**
+  String get soundSettingsDesc;
+
+  /// TTS settings option
+  ///
+  /// In en, this message translates to:
+  /// **'TTS Settings'**
+  String get ttsSettings;
+
+  /// Description for TTS settings
+  ///
+  /// In en, this message translates to:
+  /// **'Configure voice announcements'**
+  String get ttsSettingsDesc;
+
+  /// Language settings option
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageSettings;
+
+  /// Description for language settings
+  ///
+  /// In en, this message translates to:
+  /// **'Choose app language'**
+  String get languageSettingsDesc;
+
+  /// Section: Permissions
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get permissions;
+
+  /// Notification permission option
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Permission'**
+  String get notificationPermission;
+
+  /// Description for notification permission
+  ///
+  /// In en, this message translates to:
+  /// **'Allow timer notifications'**
+  String get notificationPermissionDesc;
+
+  /// Section: About
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// License option
+  ///
+  /// In en, this message translates to:
+  /// **'License'**
+  String get license;
+
+  /// Description for license
+  ///
+  /// In en, this message translates to:
+  /// **'View open source licenses'**
+  String get licenseDesc;
+
+  /// Message for unimplemented features
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get comingSoon;
+
+  /// Dialog title for language selection
+  ///
+  /// In en, this message translates to:
+  /// **'Select Language'**
+  String get selectLanguage;
+
+  /// English language name
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// Simplified Chinese language name
+  ///
+  /// In en, this message translates to:
+  /// **'简体中文'**
+  String get languageChineseSimplified;
+
+  /// Error message template
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String errorText(String error);
+
+  /// Confirmation message when starting timer with others running
+  ///
+  /// In en, this message translates to:
+  /// **'Other timers are running. Continue to start this timer?'**
+  String get confirmStart;
 }
 
 class _AppLocalizationsDelegate

@@ -4,7 +4,9 @@ import '../../app/providers.dart';
 import '../../core/domain/entities/timer_grid_set.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
+import '../../l10n/app_localizations.dart';
 import '../widgets/timer_grid_cell.dart';
+import 'settings_page.dart';
 
 /// Main grid page showing 3x3 timer grid.
 class GridPage extends ConsumerWidget {
@@ -13,15 +15,19 @@ class GridPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gridState = ref.watch(gridStateProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GridTimer'),
+        title: Text(l10n.appTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              // TODO: Navigate to settings
+              // Navigate to settings page
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
             },
           ),
         ],
@@ -32,7 +38,8 @@ class GridPage extends ConsumerWidget {
           return _buildGrid(context, ref, grid, sessions);
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(child: Text('Error: $error')),
+        error: (error, stack) =>
+            Center(child: Text(l10n.errorText(error.toString()))),
       ),
     );
   }
@@ -83,13 +90,6 @@ class GridPage extends ConsumerWidget {
       ),
     );
     final config = grid.slots[index];
-    return TimerGridCell(
-      session: session,
-      config: config,
-      slotIndex: index,
-    );
+    return TimerGridCell(session: session, config: config, slotIndex: index);
   }
 }
-
-
-

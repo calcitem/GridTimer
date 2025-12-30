@@ -77,4 +77,87 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get later => '稍后';
+
+  @override
+  String get minutes => '分钟';
+
+  @override
+  String get remainingSeconds => '剩余秒';
+
+  @override
+  String get pausing => '暂停中';
+
+  @override
+  String get timeUp => '时间到';
+
+  @override
+  String get clickToStop => '点击停止';
+
+  @override
+  String get settings => '设置';
+
+  @override
+  String get appInformation => '应用信息';
+
+  @override
+  String get version => '版本';
+
+  @override
+  String get timerSettings => '计时器设置';
+
+  @override
+  String get soundSettings => '声音设置';
+
+  @override
+  String get soundSettingsDesc => '配置提醒声音';
+
+  @override
+  String get ttsSettings => '语音播报设置';
+
+  @override
+  String get ttsSettingsDesc => '配置语音播报';
+
+  @override
+  String get languageSettings => '语言';
+
+  @override
+  String get languageSettingsDesc => '选择应用语言';
+
+  @override
+  String get permissions => '权限';
+
+  @override
+  String get notificationPermission => '通知权限';
+
+  @override
+  String get notificationPermissionDesc => '允许计时器通知';
+
+  @override
+  String get about => '关于';
+
+  @override
+  String get license => '开源许可';
+
+  @override
+  String get licenseDesc => '查看开源许可证';
+
+  @override
+  String get comingSoon => '即将推出';
+
+  @override
+  String get selectLanguage => '选择语言';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageChineseSimplified => '简体中文';
+
+  @override
+  String errorText(String error) {
+    return '错误：$error';
+  }
+
+  @override
+  String get confirmStart => '当前已有计时器在运行。要继续启动此计时器吗？';
 }
