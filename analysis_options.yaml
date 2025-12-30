@@ -1,6 +1,6 @@
 analyzer:
   errors:
-    prefer_single_quotes: ignore ignore
+    prefer_single_quotes: ignore
 include: package:flutter_lints/flutter.yaml
 
 linter:
