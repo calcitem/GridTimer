@@ -236,6 +236,62 @@ class NotificationService implements INotificationService {
   }
 
   @override
+  Future<void> showTimeUpNow({
+    required TimerSession session,
+    required TimerConfig config,
+  }) async {
+    // 仅在支持的平台上显示通知
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      return;
+    }
+
+    final notificationId = 1000 + session.slotIndex;
+    final channelId = 'gt.alarm.timeup.${config.soundKey}.v1';
+
+    final payload = jsonEncode({
+      'v': 1,
+      'type': 'time_up',
+      'modeId': session.modeId,
+      'slotIndex': session.slotIndex,
+      'timerId': session.timerId,
+      'endAtEpochMs': session.endAtEpochMs,
+      'soundKey': config.soundKey,
+    });
+
+    final androidDetails = AndroidNotificationDetails(
+      channelId,
+      'Timer Alarm',
+      channelDescription: 'Time up notification',
+      importance: Importance.max,
+      priority: Priority.max,
+      category: AndroidNotificationCategory.alarm,
+      visibility: NotificationVisibility.public,
+      fullScreenIntent: true,
+      // 确保通知声音播放
+      playSound: true,
+      enableVibration: true,
+      actions: [
+        const AndroidNotificationAction(
+          _actionIdStop,
+          'Stop',
+          showsUserInterface: true,
+        ),
+      ],
+    );
+
+    final details = NotificationDetails(android: androidDetails);
+
+    // 立即显示通知
+    await _plugin.show(
+      notificationId,
+      config.name,
+      'Time is up!',
+      details,
+      payload: payload,
+    );
+  }
+
+  @override
   Stream<NotificationEvent> events() => _eventController.stream;
 
   void _onNotificationResponse(NotificationResponse response) {

@@ -14,6 +14,23 @@ class AudioService implements IAudioService {
     // Set release mode to loop
     await _player.setReleaseMode(ReleaseMode.loop);
     await _player.setVolume(_currentVolume);
+
+    // 设置音频上下文为闹钟/通知，确保锁屏时也能播放
+    await _player.setAudioContext(
+      AudioContext(
+        android: AudioContextAndroid(
+          isSpeakerphoneOn: false,
+          stayAwake: true,
+          contentType: AndroidContentType.sonification,
+          usageType: AndroidUsageType.alarm,
+          audioFocus: AndroidAudioFocus.gain,
+        ),
+        iOS: AudioContextIOS(
+          category: AVAudioSessionCategory.playback,
+          options: {AVAudioSessionOptions.mixWithOthers},
+        ),
+      ),
+    );
   }
 
   @override
