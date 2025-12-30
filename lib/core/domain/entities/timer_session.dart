@@ -7,7 +7,7 @@ part 'timer_session.g.dart';
 
 /// Runtime state of a single timer instance.
 @freezed
-class TimerSession with _$TimerSession {
+abstract class TimerSession with _$TimerSession {
   const factory TimerSession({
     /// Unique timer ID: "{modeId}:{slotIndex}"
     required TimerId timerId,
