@@ -68,10 +68,23 @@ class TimerService implements ITimerService {
 
     // Start UI refresh timer
     _uiRefreshTimer = Timer.periodic(const Duration(milliseconds: 500), (_) {
+      _checkActiveTimers();
       _emitState();
     });
 
     _emitState();
+  }
+
+  void _checkActiveTimers() {
+    final nowMs = _clock.nowEpochMs();
+    for (final session in _sessions.values) {
+      if (session.shouldBeRinging(nowMs)) {
+        handleTimeUpEvent(
+          timerId: session.timerId,
+          firedAtEpochMs: session.endAtEpochMs!,
+        );
+      }
+    }
   }
 
   @override
