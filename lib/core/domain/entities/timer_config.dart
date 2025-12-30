@@ -6,7 +6,7 @@ part 'timer_config.g.dart';
 
 /// Configuration for a single timer slot in the grid.
 @freezed
-class TimerConfig with _$TimerConfig {
+abstract class TimerConfig with _$TimerConfig {
   const factory TimerConfig({
     /// Slot index in the grid (0..8).
     required int slotIndex,
