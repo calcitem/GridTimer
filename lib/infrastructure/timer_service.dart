@@ -1,4 +1,5 @@
 import 'dart:async';
+import '../core/domain/entities/app_settings.dart';
 import '../core/domain/entities/timer_config.dart';
 import '../core/domain/entities/timer_grid_set.dart';
 import '../core/domain/entities/timer_session.dart';
@@ -52,8 +53,8 @@ class TimerService implements ITimerService {
 
     _currentGrid = await _storage.getMode(activeModeId);
     if (_currentGrid == null) {
-      // Create default mode
-      _currentGrid = _createDefaultGrid();
+      // Create default mode using configured durations
+      _currentGrid = _createDefaultGrid(settings);
       await _storage.saveMode(_currentGrid!);
     }
 
@@ -278,6 +279,26 @@ class TimerService implements ITimerService {
     _emitState();
   }
 
+  /// 更新 default mode 的时长配置（从设置中读取最新配置）
+  Future<void> updateDefaultGridDurations() async {
+    // 只能在没有活动计时器时更新
+    if (hasActiveTimers()) {
+      throw Exception('Cannot update grid durations while timers are active');
+    }
+
+    final settings = await _storage.getSettings();
+    if (_currentGrid?.modeId == 'default') {
+      // 重新创建 default grid
+      _currentGrid = _createDefaultGrid(settings);
+      await _storage.saveMode(_currentGrid!);
+      
+      // 重新初始化 sessions
+      _initializeIdleSessions();
+      
+      _emitState();
+    }
+  }
+
   @override
   Future<void> refreshFromClock() async {
     await _recoverSessions();
@@ -386,22 +407,42 @@ class TimerService implements ITimerService {
     _stateController.add((_currentGrid!, sessions));
   }
 
-  TimerGridSet _createDefaultGrid() {
-    // 默认时间配置：1, 2, 3, 5, 10, 15, 20, 45, 60 分钟
-    const defaultDurations = [1, 2, 3, 5, 10, 15, 20, 45, 60];
+  TimerGridSet _createDefaultGrid(AppSettings? settings) {
+    // 从设置中获取配置的时长，如果没有则使用默认值
+    // 默认时间配置（单位：秒）：10秒, 2分, 3分, 5分, 8分, 10分, 15分, 20分, 45分
+    final durationsInSeconds = settings?.gridDurationsInSeconds ?? 
+        [10, 120, 180, 300, 480, 600, 900, 1200, 2700];
+    
+    assert(durationsInSeconds.length == 9, '九宫格时长配置必须包含9个元素');
 
     final configs = List.generate(9, (i) {
-      final minutes = defaultDurations[i];
+      final seconds = durationsInSeconds[i];
+      // 根据秒数生成显示名称
+      final name = _formatDurationName(seconds);
+      
       return TimerConfig(
         slotIndex: i,
-        name: '$minutes min',
-        presetDurationMs: Duration(minutes: minutes).inMilliseconds,
+        name: name,
+        presetDurationMs: Duration(seconds: seconds).inMilliseconds,
         soundKey: 'default',
         ttsEnabled: true,
       );
     });
 
     return TimerGridSet(modeId: 'default', modeName: 'Default', slots: configs);
+  }
+
+  /// 根据秒数格式化显示名称
+  String _formatDurationName(int seconds) {
+    if (seconds < 60) {
+      return '$seconds s';
+    } else if (seconds < 3600) {
+      final minutes = seconds ~/ 60;
+      return '$minutes min';
+    } else {
+      final hours = seconds ~/ 3600;
+      return '$hours h';
+    }
   }
 
   void dispose() {

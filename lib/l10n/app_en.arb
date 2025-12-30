@@ -342,6 +342,57 @@
   "testTts": "Test Voice",
   "@testTts": {
     "description": "Test TTS button"
+  },
+
+  "gridDurationsSettings": "Grid Durations Settings",
+  "@gridDurationsSettings": {
+    "description": "Grid durations settings option"
+  },
+
+  "gridDurationsSettingsDesc": "Customize duration for each grid cell",
+  "@gridDurationsSettingsDesc": {
+    "description": "Description for grid durations settings"
+  },
+
+  "gridSlot": "Grid {index}",
+  "@gridSlot": {
+    "description": "Grid slot label",
+    "placeholders": {
+      "index": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+
+  "seconds": "seconds",
+  "@seconds": {
+    "description": "Seconds unit"
+  },
+
+  "hours": "hours",
+  "@hours": {
+    "description": "Hours unit"
+  },
+
+  "save": "Save",
+  "@save": {
+    "description": "Save button"
+  },
+
+  "reset": "Reset",
+  "@reset": {
+    "description": "Reset button"
+  },
+
+  "resetToDefault": "Reset to Default",
+  "@resetToDefault": {
+    "description": "Reset to default button"
+  },
+
+  "gridDurationsResetConfirm": "Are you sure you want to reset grid durations to default values?",
+  "@gridDurationsResetConfirm": {
+    "description": "Reset to default confirmation"
   }
 }
 

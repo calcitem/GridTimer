@@ -42,6 +42,9 @@ class AppSettingsHive {
   @HiveField(11, defaultValue: 1.0)
   final double ttsPitch;
 
+  @HiveField(12, defaultValue: [10, 120, 180, 300, 480, 600, 900, 1200, 2700])
+  final List<int> gridDurationsInSeconds;
+
   AppSettingsHive({
     required this.activeModeId,
     required this.flashEnabled,
@@ -55,6 +58,7 @@ class AppSettingsHive {
     required this.ttsVolume,
     required this.ttsSpeechRate,
     required this.ttsPitch,
+    required this.gridDurationsInSeconds,
   });
 
   /// Convert from domain entity.
@@ -72,6 +76,7 @@ class AppSettingsHive {
       ttsVolume: settings.ttsVolume,
       ttsSpeechRate: settings.ttsSpeechRate,
       ttsPitch: settings.ttsPitch,
+      gridDurationsInSeconds: settings.gridDurationsInSeconds,
     );
   }
 
@@ -90,6 +95,7 @@ class AppSettingsHive {
       ttsVolume: ttsVolume,
       ttsSpeechRate: ttsSpeechRate,
       ttsPitch: ttsPitch,
+      gridDurationsInSeconds: gridDurationsInSeconds,
     );
   }
 }

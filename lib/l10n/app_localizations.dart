@@ -487,6 +487,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Test Voice'**
   String get testTts;
+
+  /// Grid durations settings option
+  ///
+  /// In en, this message translates to:
+  /// **'Grid Durations Settings'**
+  String get gridDurationsSettings;
+
+  /// Description for grid durations settings
+  ///
+  /// In en, this message translates to:
+  /// **'Customize duration for each grid cell'**
+  String get gridDurationsSettingsDesc;
+
+  /// Grid slot label
+  ///
+  /// In en, this message translates to:
+  /// **'Grid {index}'**
+  String gridSlot(int index);
+
+  /// Seconds unit
+  ///
+  /// In en, this message translates to:
+  /// **'seconds'**
+  String get seconds;
+
+  /// Hours unit
+  ///
+  /// In en, this message translates to:
+  /// **'hours'**
+  String get hours;
+
+  /// Save button
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// Reset button
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// Reset to default button
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to Default'**
+  String get resetToDefault;
+
+  /// Reset to default confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to reset grid durations to default values?'**
+  String get gridDurationsResetConfirm;
 }
 
 class _AppLocalizationsDelegate
