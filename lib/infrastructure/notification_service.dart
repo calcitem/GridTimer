@@ -218,12 +218,20 @@ class NotificationService implements INotificationService {
     required TimerId timerId,
     required int slotIndex,
   }) async {
+    // 仅在支持的平台上取消通知
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      return;
+    }
     final notificationId = 1000 + slotIndex;
     await _plugin.cancel(notificationId);
   }
 
   @override
   Future<void> cancelAll() async {
+    // 仅在支持的平台上取消通知
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      return;
+    }
     await _plugin.cancelAll();
   }
 

@@ -78,6 +78,7 @@ class TimerGridCell extends ConsumerWidget {
                   style: const TextStyle(
                     fontSize: 120,
                     fontWeight: FontWeight.w900,
+                    fontFamily: 'monospace',
                     color: Colors.white,
                     height: 1.0,
                     fontFeatures: [FontFeature.tabularFigures()],
@@ -114,6 +115,7 @@ class TimerGridCell extends ConsumerWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
+            fontFamily: 'monospace',
             color: isPaused ? Colors.white70 : Colors.white,
             fontFeatures: const [FontFeature.tabularFigures()],
           ),
@@ -130,6 +132,7 @@ class TimerGridCell extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 100,
                     fontWeight: FontWeight.w900,
+                    fontFamily: 'monospace',
                     color: isPaused ? Colors.white70 : Colors.white,
                     height: 1.0,
                     fontFeatures: const [FontFeature.tabularFigures()],
@@ -163,6 +166,7 @@ class TimerGridCell extends ConsumerWidget {
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
+            fontFamily: 'monospace',
             color: Colors.white,
             fontFeatures: [FontFeature.tabularFigures()],
           ),
@@ -215,7 +219,7 @@ class TimerGridCell extends ConsumerWidget {
 
   void _handleTap(BuildContext context, WidgetRef ref) {
     final timerService = ref.read(timerServiceProvider);
-    
+
     switch (session.status) {
       case TimerStatus.idle:
         // Start timer (with confirmation if others running)
@@ -225,15 +229,15 @@ class TimerGridCell extends ConsumerWidget {
           _startTimer(ref);
         }
         break;
-      
+
       case TimerStatus.running:
         _showRunningActions(context, ref);
         break;
-      
+
       case TimerStatus.paused:
         _showPausedActions(context, ref);
         break;
-      
+
       case TimerStatus.ringing:
         _showRingingActions(context, ref);
         break;
@@ -246,7 +250,9 @@ class TimerGridCell extends ConsumerWidget {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: const Text('Confirm Start?'),
-        content: const Text('Other timers are running. Continue to start this timer?'),
+        content: const Text(
+          'Other timers are running. Continue to start this timer?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -370,6 +376,3 @@ class TimerGridCell extends ConsumerWidget {
     );
   }
 }
-
-
-
