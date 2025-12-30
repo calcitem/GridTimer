@@ -19,10 +19,10 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Decode signing key
-        run: echo $SIGNING_KEY | base64 -d > android/app/key.jks
+        run: echo "$SIGNING_KEY" | base64 -d > android/app/key.jks
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
 
