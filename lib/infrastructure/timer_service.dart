@@ -22,6 +22,9 @@ class TimerService implements ITimerService {
   TimerGridSet? _currentGrid;
   final Map<TimerId, TimerSession> _sessions = {};
   
+  /// 用于防止重复触发响铃的锁
+  final Set<TimerId> _pendingRinging = {};
+  
   final StreamController<(TimerGridSet, List<TimerSession>)> _stateController =
       StreamController<(TimerGridSet, List<TimerSession>)>.broadcast();
 
@@ -33,20 +36,20 @@ class TimerService implements ITimerService {
     required IAudioService audio,
     required ITtsService tts,
     required IClock clock,
-  })  : _storage = storage,
-        _notification = notification,
-        _audio = audio,
-        _tts = tts,
-        _clock = clock;
+  }) : _storage = storage,
+       _notification = notification,
+       _audio = audio,
+       _tts = tts,
+       _clock = clock;
 
   @override
   Future<void> init() async {
     await _storage.init();
-    
+
     // Load active mode
     final settings = await _storage.getSettings();
     final activeModeId = settings?.activeModeId ?? 'default';
-    
+
     _currentGrid = await _storage.getMode(activeModeId);
     if (_currentGrid == null) {
       // Create default mode
@@ -54,17 +57,10 @@ class TimerService implements ITimerService {
       await _storage.saveMode(_currentGrid!);
     }
 
-    // Load or initialize sessions
-    final loadedSessions = await _storage.getAllSessions();
-    if (loadedSessions.isEmpty) {
-      _initializeIdleSessions();
-    } else {
-      for (final session in loadedSessions) {
-        _sessions[session.timerId] = session;
-      }
-      // Perform recovery
-      await _recoverSessions();
-    }
+    // 清理旧的 session 数据，重新初始化为 idle 状态
+    // 避免启动时因为脏数据导致的问题
+    await _storage.clearAllSessions();
+    _initializeIdleSessions();
 
     // Start UI refresh timer
     _uiRefreshTimer = Timer.periodic(const Duration(milliseconds: 500), (_) {
@@ -76,14 +72,56 @@ class TimerService implements ITimerService {
   }
 
   void _checkActiveTimers() {
+    if (_currentGrid == null) return;
+
     final nowMs = _clock.nowEpochMs();
-    for (final session in _sessions.values) {
-      if (session.shouldBeRinging(nowMs)) {
-        handleTimeUpEvent(
-          timerId: session.timerId,
-          firedAtEpochMs: session.endAtEpochMs!,
+    for (final entry in _sessions.entries.toList()) {
+      final session = entry.value;
+      final timerId = entry.key;
+      
+      // 只处理状态为 RUNNING 且时间已到、且不在处理中的计时器
+      if (session.status == TimerStatus.running &&
+          session.shouldBeRinging(nowMs) &&
+          !_pendingRinging.contains(timerId)) {
+        // 加锁，防止重复触发
+        _pendingRinging.add(timerId);
+        
+        // 立即同步更新内存中的状态为 ringing，避免下次检查时重复触发
+        final updated = session.copyWith(
+          status: TimerStatus.ringing,
+          remainingMsAtPause: 0,
+          lastUpdatedEpochMs: nowMs,
+        );
+        _sessions[timerId] = updated;
+        
+        // 异步执行响铃逻辑（保存状态、播放声音）
+        _triggerRingingAsync(timerId, session.slotIndex);
+      }
+    }
+  }
+  
+  Future<void> _triggerRingingAsync(TimerId timerId, int slotIndex) async {
+    try {
+      final session = _sessions[timerId];
+      if (session == null) return;
+      
+      // 保存状态到存储
+      await _storage.saveSession(session);
+
+      // 播放声音和 TTS
+      final config = _currentGrid!.slots[slotIndex];
+      await _audio.playLoop(soundKey: config.soundKey);
+      
+      if (config.ttsEnabled) {
+        await _tts.speak(
+          text: '${config.name} time is up',
+          localeTag: 'en-US',
+          interrupt: true,
         );
       }
+    } finally {
+      // 释放锁
+      _pendingRinging.remove(timerId);
     }
   }
 
@@ -141,7 +179,10 @@ class TimerService implements ITimerService {
 
     _sessions[timerId] = updated;
     await _storage.saveSession(updated);
-    await _notification.cancelTimeUp(timerId: timerId, slotIndex: session.slotIndex);
+    await _notification.cancelTimeUp(
+      timerId: timerId,
+      slotIndex: session.slotIndex,
+    );
 
     _emitState();
   }
@@ -186,7 +227,10 @@ class TimerService implements ITimerService {
 
     _sessions[timerId] = updated;
     await _storage.saveSession(updated);
-    await _notification.cancelTimeUp(timerId: timerId, slotIndex: session.slotIndex);
+    await _notification.cancelTimeUp(
+      timerId: timerId,
+      slotIndex: session.slotIndex,
+    );
 
     // Stop audio/TTS if ringing
     if (session.status == TimerStatus.ringing) {
@@ -235,30 +279,42 @@ class TimerService implements ITimerService {
   }) async {
     final session = _sessions[timerId];
     if (session == null) return;
-
-    final nowMs = _clock.nowEpochMs();
-    final updated = session.copyWith(
-      status: TimerStatus.ringing,
-      remainingMsAtPause: 0,
-      lastUpdatedEpochMs: nowMs,
-    );
-
-    _sessions[timerId] = updated;
-    await _storage.saveSession(updated);
-
-    // Play audio and TTS
-    final config = _currentGrid!.slots[session.slotIndex];
-    await _audio.playLoop(soundKey: config.soundKey);
     
-    if (config.ttsEnabled) {
-      await _tts.speak(
-        text: '${config.name} time is up',
-        localeTag: 'en-US',
-        interrupt: true,
-      );
+    // 如果已经在响铃或处理中，跳过
+    if (session.status == TimerStatus.ringing || 
+        _pendingRinging.contains(timerId)) {
+      return;
     }
 
-    _emitState();
+    _pendingRinging.add(timerId);
+    
+    try {
+      final nowMs = _clock.nowEpochMs();
+      final updated = session.copyWith(
+        status: TimerStatus.ringing,
+        remainingMsAtPause: 0,
+        lastUpdatedEpochMs: nowMs,
+      );
+
+      _sessions[timerId] = updated;
+      await _storage.saveSession(updated);
+
+      // Play audio and TTS
+      final config = _currentGrid!.slots[session.slotIndex];
+      await _audio.playLoop(soundKey: config.soundKey);
+
+      if (config.ttsEnabled) {
+        await _tts.speak(
+          text: '${config.name} time is up',
+          localeTag: 'en-US',
+          interrupt: true,
+        );
+      }
+
+      _emitState();
+    } finally {
+      _pendingRinging.remove(timerId);
+    }
   }
 
   @override
@@ -321,11 +377,7 @@ class TimerService implements ITimerService {
       );
     });
 
-    return TimerGridSet(
-      modeId: 'default',
-      modeName: 'Default',
-      slots: configs,
-    );
+    return TimerGridSet(modeId: 'default', modeName: 'Default', slots: configs);
   }
 
   void dispose() {
@@ -333,4 +385,3 @@ class TimerService implements ITimerService {
     _stateController.close();
   }
 }
-
