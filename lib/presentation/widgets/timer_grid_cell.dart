@@ -292,30 +292,41 @@ class TimerGridCell extends ConsumerWidget {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text(l10n.timerActions),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                ref.read(timerServiceProvider).pause(session.timerId);
-              },
-              child: Text(l10n.actionPause),
-            ),
-            const SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                ref.read(timerServiceProvider).reset(session.timerId);
-              },
-              child: Text(l10n.actionReset),
-            ),
-            const SizedBox(height: 8),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(l10n.actionCancel),
-            ),
-          ],
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  ref.read(timerServiceProvider).pause(session.timerId);
+                },
+                child: Text(l10n.actionPause),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  ref.read(timerServiceProvider).reset(session.timerId);
+                },
+                child: Text(l10n.actionReset),
+              ),
+              const SizedBox(height: 16),
+              OutlinedButton(
+                onPressed: () => Navigator.pop(context),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  textStyle: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                child: Text(l10n.actionCancel),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -328,30 +339,41 @@ class TimerGridCell extends ConsumerWidget {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text(l10n.timerActions),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                ref.read(timerServiceProvider).resume(session.timerId);
-              },
-              child: Text(l10n.actionResume),
-            ),
-            const SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                ref.read(timerServiceProvider).reset(session.timerId);
-              },
-              child: Text(l10n.actionReset),
-            ),
-            const SizedBox(height: 8),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(l10n.actionCancel),
-            ),
-          ],
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  ref.read(timerServiceProvider).resume(session.timerId);
+                },
+                child: Text(l10n.actionResume),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  ref.read(timerServiceProvider).reset(session.timerId);
+                },
+                child: Text(l10n.actionReset),
+              ),
+              const SizedBox(height: 16),
+              OutlinedButton(
+                onPressed: () => Navigator.pop(context),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  textStyle: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                child: Text(l10n.actionCancel),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -364,26 +386,41 @@ class TimerGridCell extends ConsumerWidget {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text(l10n.timerRinging),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                ref.read(timerServiceProvider).stopRinging(session.timerId);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  ref.read(timerServiceProvider).stopRinging(session.timerId);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 24), // 更大的停止按钮
+                ),
+                child: Text(
+                  l10n.stopAlarm,
+                  style: const TextStyle(fontSize: 24), // 更大的字体
+                ),
               ),
-              child: Text(l10n.stopAlarm),
-            ),
-            const SizedBox(height: 8),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(l10n.actionCancel),
-            ),
-          ],
+              const SizedBox(height: 16),
+              OutlinedButton(
+                onPressed: () => Navigator.pop(context),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  textStyle: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                child: Text(l10n.actionCancel),
+              ),
+            ],
+          ),
         ),
       ),
     );
