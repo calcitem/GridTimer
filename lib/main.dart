@@ -51,6 +51,7 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'GridTimer',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
