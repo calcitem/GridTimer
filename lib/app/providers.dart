@@ -19,7 +19,9 @@ import '../infrastructure/permission_service.dart';
 final clockProvider = Provider<IClock>((ref) => const SystemClock());
 
 /// Storage repository provider.
-final storageProvider = Provider<StorageRepository>((ref) => StorageRepository());
+final storageProvider = Provider<StorageRepository>(
+  (ref) => StorageRepository(),
+);
 
 /// Notification service provider.
 final notificationServiceProvider = Provider<INotificationService>((ref) {
@@ -64,16 +66,18 @@ final gridStateProvider = StreamProvider((ref) {
 });
 
 /// App settings provider.
-final appSettingsProvider = StateNotifierProvider<AppSettingsNotifier, AsyncValue<AppSettings>>((ref) {
-  return AppSettingsNotifier(storage: ref.watch(storageProvider));
-});
+final appSettingsProvider =
+    StateNotifierProvider<AppSettingsNotifier, AsyncValue<AppSettings>>((ref) {
+      return AppSettingsNotifier(storage: ref.watch(storageProvider));
+    });
 
 /// Notifier for managing app settings state.
 class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
   final StorageRepository storage;
   static const String _defaultModeId = 'default';
 
-  AppSettingsNotifier({required this.storage}) : super(const AsyncValue.loading()) {
+  AppSettingsNotifier({required this.storage})
+    : super(const AsyncValue.loading()) {
     // Delay loading to ensure storage is initialized by timer service
     Future.microtask(_loadSettings);
   }
@@ -123,7 +127,42 @@ class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
   Future<void> toggleVibration(bool enabled) async {
     await updateSettings((s) => s.copyWith(vibrationEnabled: enabled));
   }
+
+  /// Update sound volume.
+  Future<void> updateSoundVolume(double volume) async {
+    assert(
+      volume >= 0.0 && volume <= 1.0,
+      'Volume must be between 0.0 and 1.0',
+    );
+    await updateSettings((s) => s.copyWith(soundVolume: volume));
+  }
+
+  /// Update selected sound key.
+  Future<void> updateSelectedSoundKey(String soundKey) async {
+    await updateSettings((s) => s.copyWith(selectedSoundKey: soundKey));
+  }
+
+  /// Update TTS volume.
+  Future<void> updateTtsVolume(double volume) async {
+    assert(
+      volume >= 0.0 && volume <= 1.0,
+      'Volume must be between 0.0 and 1.0',
+    );
+    await updateSettings((s) => s.copyWith(ttsVolume: volume));
+  }
+
+  /// Update TTS speech rate.
+  Future<void> updateTtsSpeechRate(double rate) async {
+    assert(
+      rate >= 0.0 && rate <= 1.0,
+      'Speech rate must be between 0.0 and 1.0',
+    );
+    await updateSettings((s) => s.copyWith(ttsSpeechRate: rate));
+  }
+
+  /// Update TTS pitch.
+  Future<void> updateTtsPitch(double pitch) async {
+    assert(pitch >= 0.5 && pitch <= 2.0, 'Pitch must be between 0.5 and 2.0');
+    await updateSettings((s) => s.copyWith(ttsPitch: pitch));
+  }
 }
-
-
-

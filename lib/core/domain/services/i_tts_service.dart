@@ -4,7 +4,7 @@ abstract interface class ITtsService {
   Future<void> init();
 
   /// Speaks text. Must interrupt any current utterance by default.
-  /// 
+  ///
   /// [text] - The text to speak.
   /// [localeTag] - Locale tag (e.g., "zh-CN", "en-US").
   /// [interrupt] - Whether to stop current speech before speaking.
@@ -16,7 +16,13 @@ abstract interface class ITtsService {
 
   /// Stops speaking immediately.
   Future<void> stop();
+
+  /// Set the volume for TTS (0.0 - 1.0).
+  Future<void> setVolume(double volume);
+
+  /// Set the speech rate for TTS (0.0 - 1.0, where 0.5 is normal).
+  Future<void> setSpeechRate(double rate);
+
+  /// Set the pitch for TTS (0.5 - 2.0, where 1.0 is normal).
+  Future<void> setPitch(double pitch);
 }
-
-
-
