@@ -28,20 +28,18 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
       // Initialize all services
       final notification = ref.read(notificationServiceProvider);
       await notification.init();
-      
+
       final audio = ref.read(audioServiceProvider);
       await audio.init();
-      
+
       final tts = ref.read(ttsServiceProvider);
       await tts.init();
-      
+
       final timerService = ref.read(timerServiceProvider);
       await timerService.init();
-      
+
       // Ensure notification channels (all timers use same sound)
-      await notification.ensureAndroidChannels(soundKeys: {
-        'default',
-      });
+      await notification.ensureAndroidChannels(soundKeys: {'default'});
     } catch (e) {
       debugPrint('Initialization error: $e');
     }
@@ -60,4 +58,3 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
     );
   }
 }
-
