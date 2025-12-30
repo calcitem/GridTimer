@@ -4,73 +4,148 @@ import '../../app/providers.dart';
 import '../../l10n/app_localizations.dart';
 
 /// Sound settings page for configuring alarm sound and volume.
-class SoundSettingsPage extends ConsumerWidget {
+class SoundSettingsPage extends ConsumerStatefulWidget {
   const SoundSettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+  ConsumerState<SoundSettingsPage> createState() => _SoundSettingsPageState();
+}
+
+class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
+  bool _isPlaying = false;
+
+  Future<void> _testSound(double volume) async {
+    if (_isPlaying) return;
+
     final audioService = ref.read(audioServiceProvider);
+    final l10n = AppLocalizations.of(context)!;
+
+    setState(() => _isPlaying = true);
+
+    try {
+      // Play test sound with current volume
+      await audioService.playLoop(soundKey: 'default', volume: volume);
+
+      // Stop after 2 seconds
+      await Future.delayed(const Duration(seconds: 2));
+      await audioService.stop();
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.errorText(e.toString())),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isPlaying = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final settingsAsync = ref.watch(appSettingsProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.soundSettings),
       ),
-      body: ListView(
-        children: [
-          // Test Sound Section
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  l10n.testSound,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    try {
-                      // Play test sound
-                      await audioService.playLoop(soundKey: 'default');
-                      
-                      // Stop after 2 seconds
-                      await Future.delayed(const Duration(seconds: 2));
-                      await audioService.stop();
-                    } catch (e) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.errorText(e.toString())),
-                          ),
-                        );
-                      }
-                    }
-                  },
-                  icon: const Icon(Icons.play_arrow),
-                  label: Text(l10n.testSound),
-                ),
-              ],
+      body: settingsAsync.when(
+        data: (settings) => ListView(
+          children: [
+            // Test Sound Section
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    l10n.testSound,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  ElevatedButton.icon(
+                    onPressed: _isPlaying 
+                        ? null 
+                        : () => _testSound(settings.soundVolume),
+                    icon: _isPlaying
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.play_arrow),
+                    label: Text(_isPlaying ? '播放中...' : l10n.testSound),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const Divider(),
-          
-          // Sound Information
-          ListTile(
-            leading: const Icon(Icons.info_outline),
-            title: Text(l10n.alarmSound),
-            subtitle: const Text('Default'),
-          ),
-          
-          // Volume Note
-          ListTile(
-            leading: const Icon(Icons.volume_up),
-            title: Text(l10n.volume),
-            subtitle: Text(l10n.volumeDesc),
-            trailing: const Text('System'),
-          ),
-        ],
+            const Divider(),
+
+            // Sound Information
+            ListTile(
+              leading: const Icon(Icons.music_note),
+              title: Text(l10n.alarmSound),
+              subtitle: Text(settings.selectedSoundKey),
+            ),
+            const Divider(),
+
+            // Volume Slider
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.volume_up),
+                          const SizedBox(width: 8),
+                          Text(
+                            l10n.volume,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
+                      Text(
+                        '${(settings.soundVolume * 100).round()}%',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Slider(
+                    value: settings.soundVolume,
+                    min: 0.0,
+                    max: 1.0,
+                    divisions: 100,
+                    label: '${(settings.soundVolume * 100).round()}%',
+                    onChanged: (value) {
+                      ref.read(appSettingsProvider.notifier).updateSoundVolume(value);
+                    },
+                  ),
+                  Text(
+                    l10n.volumeDesc,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(
+          child: Text(l10n.errorText(err.toString())),
+        ),
       ),
     );
   }

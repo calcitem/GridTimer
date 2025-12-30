@@ -7,15 +7,30 @@ import '../core/domain/types.dart';
 class AudioService implements IAudioService {
   final AudioPlayer _player = AudioPlayer();
   SoundKey? _currentSoundKey;
+  double _currentVolume = 1.0;
 
   @override
   Future<void> init() async {
     // Set release mode to loop
     await _player.setReleaseMode(ReleaseMode.loop);
+    await _player.setVolume(_currentVolume);
   }
 
   @override
-  Future<void> playLoop({required SoundKey soundKey}) async {
+  Future<void> setVolume(double volume) async {
+    assert(
+      volume >= 0.0 && volume <= 1.0,
+      'Volume must be between 0.0 and 1.0',
+    );
+    _currentVolume = volume;
+    await _player.setVolume(_currentVolume);
+  }
+
+  @override
+  Future<void> playLoop({
+    required SoundKey soundKey,
+    double volume = 1.0,
+  }) async {
     try {
       // Stop current if playing different sound
       if (_currentSoundKey != null && _currentSoundKey != soundKey) {
@@ -25,6 +40,8 @@ class AudioService implements IAudioService {
       _currentSoundKey = soundKey;
       final assetPath = _soundKeyToAssetPath(soundKey);
 
+      // Set volume before playing
+      await setVolume(volume);
       await _player.play(AssetSource(assetPath));
     } catch (e) {
       // 捕获音频播放错误，避免影响应用运行

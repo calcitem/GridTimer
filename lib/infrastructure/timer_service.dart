@@ -108,11 +108,23 @@ class TimerService implements ITimerService {
       // 保存状态到存储
       await _storage.saveSession(session);
 
+      // 加载设置以获取音量参数
+      final settings = await _storage.getSettings();
+
       // 播放声音和 TTS
       final config = _currentGrid!.slots[slotIndex];
-      await _audio.playLoop(soundKey: config.soundKey);
+      final soundVolume = settings?.soundVolume ?? 1.0;
+      await _audio.playLoop(soundKey: config.soundKey, volume: soundVolume);
 
-      if (config.ttsEnabled) {
+      if (config.ttsEnabled && (settings?.ttsGlobalEnabled ?? true)) {
+        final ttsVolume = settings?.ttsVolume ?? 1.0;
+        final ttsSpeechRate = settings?.ttsSpeechRate ?? 0.5;
+        final ttsPitch = settings?.ttsPitch ?? 1.0;
+
+        await _tts.setVolume(ttsVolume);
+        await _tts.setSpeechRate(ttsSpeechRate);
+        await _tts.setPitch(ttsPitch);
+
         await _tts.speak(
           text: '${config.name} time is up',
           localeTag: 'en-US',
@@ -299,11 +311,23 @@ class TimerService implements ITimerService {
       _sessions[timerId] = updated;
       await _storage.saveSession(updated);
 
+      // 加载设置以获取音量参数
+      final settings = await _storage.getSettings();
+
       // Play audio and TTS
       final config = _currentGrid!.slots[session.slotIndex];
-      await _audio.playLoop(soundKey: config.soundKey);
+      final soundVolume = settings?.soundVolume ?? 1.0;
+      await _audio.playLoop(soundKey: config.soundKey, volume: soundVolume);
 
-      if (config.ttsEnabled) {
+      if (config.ttsEnabled && (settings?.ttsGlobalEnabled ?? true)) {
+        final ttsVolume = settings?.ttsVolume ?? 1.0;
+        final ttsSpeechRate = settings?.ttsSpeechRate ?? 0.5;
+        final ttsPitch = settings?.ttsPitch ?? 1.0;
+
+        await _tts.setVolume(ttsVolume);
+        await _tts.setSpeechRate(ttsSpeechRate);
+        await _tts.setPitch(ttsPitch);
+
         await _tts.speak(
           text: '${config.name} time is up',
           localeTag: 'en-US',

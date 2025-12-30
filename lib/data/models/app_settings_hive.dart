@@ -27,6 +27,21 @@ class AppSettingsHive {
   @HiveField(6)
   final bool onboardingCompleted;
 
+  @HiveField(7, defaultValue: 1.0)
+  final double soundVolume;
+
+  @HiveField(8, defaultValue: 'default')
+  final String selectedSoundKey;
+
+  @HiveField(9, defaultValue: 1.0)
+  final double ttsVolume;
+
+  @HiveField(10, defaultValue: 0.5)
+  final double ttsSpeechRate;
+
+  @HiveField(11, defaultValue: 1.0)
+  final double ttsPitch;
+
   AppSettingsHive({
     required this.activeModeId,
     required this.flashEnabled,
@@ -35,6 +50,11 @@ class AppSettingsHive {
     required this.alarmReliabilityHintDismissed,
     required this.vibrationEnabled,
     required this.onboardingCompleted,
+    required this.soundVolume,
+    required this.selectedSoundKey,
+    required this.ttsVolume,
+    required this.ttsSpeechRate,
+    required this.ttsPitch,
   });
 
   /// Convert from domain entity.
@@ -47,6 +67,11 @@ class AppSettingsHive {
       alarmReliabilityHintDismissed: settings.alarmReliabilityHintDismissed,
       vibrationEnabled: settings.vibrationEnabled,
       onboardingCompleted: settings.onboardingCompleted,
+      soundVolume: settings.soundVolume,
+      selectedSoundKey: settings.selectedSoundKey,
+      ttsVolume: settings.ttsVolume,
+      ttsSpeechRate: settings.ttsSpeechRate,
+      ttsPitch: settings.ttsPitch,
     );
   }
 
@@ -60,6 +85,11 @@ class AppSettingsHive {
       alarmReliabilityHintDismissed: alarmReliabilityHintDismissed,
       vibrationEnabled: vibrationEnabled,
       onboardingCompleted: onboardingCompleted,
+      soundVolume: soundVolume,
+      selectedSoundKey: selectedSoundKey,
+      ttsVolume: ttsVolume,
+      ttsSpeechRate: ttsSpeechRate,
+      ttsPitch: ttsPitch,
     );
   }
 }
