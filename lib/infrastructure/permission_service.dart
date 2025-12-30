@@ -1,10 +1,15 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app_settings/app_settings.dart';
 import '../core/domain/services/i_permission_service.dart';
 
 /// Permission service implementation.
 class PermissionService implements IPermissionService {
+  static const MethodChannel _systemSettingsChannel = MethodChannel(
+    'com.gridtimer.app/system_settings',
+  );
+
   @override
   Future<bool> canPostNotifications() async {
     if (!Platform.isAndroid) return true;
@@ -37,6 +42,19 @@ class PermissionService implements IPermissionService {
     if (Platform.isAndroid || Platform.isIOS) {
       await AppSettings.openAppSettings(type: AppSettingsType.notification);
     }
+  }
+
+  @override
+  Future<void> openNotificationChannelSettings({
+    required String channelId,
+  }) async {
+    if (!Platform.isAndroid) return;
+    assert(channelId.isNotEmpty, 'channelId 不能为空');
+
+    await _systemSettingsChannel.invokeMethod<void>(
+      'openNotificationChannelSettings',
+      {'channelId': channelId},
+    );
   }
 
   @override
