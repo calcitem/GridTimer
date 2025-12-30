@@ -262,7 +262,7 @@ class TimerGridCell extends ConsumerWidget {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text(l10n.confirmStartTitle),
-        content: Text(l10n.confirmStart),
+        content: SingleChildScrollView(child: Text(l10n.confirmStart)),
         actionsPadding: const EdgeInsets.all(16),
         actions: [
           Row(
@@ -308,48 +308,52 @@ class TimerGridCell extends ConsumerWidget {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text(l10n.timerActions),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: _buildTileButton(
-                    icon: Icons.pause,
-                    label: l10n.actionPause,
-                    color: Colors.orange.shade700,
-                    onPressed: () {
-                      Navigator.pop(context);
-                      ref.read(timerServiceProvider).pause(session.timerId);
-                    },
-                  ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IntrinsicHeight(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _buildTileButton(
+                        icon: Icons.pause,
+                        label: l10n.actionPause,
+                        color: Colors.orange.shade700,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          ref.read(timerServiceProvider).pause(session.timerId);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _buildTileButton(
+                        icon: Icons.refresh,
+                        label: l10n.actionReset,
+                        color: Colors.blue.shade700,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          ref.read(timerServiceProvider).reset(session.timerId);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildTileButton(
-                    icon: Icons.refresh,
-                    label: l10n.actionReset,
-                    color: Colors.blue.shade700,
-                    onPressed: () {
-                      Navigator.pop(context);
-                      ref.read(timerServiceProvider).reset(session.timerId);
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: _buildTileButton(
-                icon: Icons.close,
-                label: l10n.actionCancel,
-                color: Colors.grey.shade600,
-                onPressed: () => Navigator.pop(context),
-                isHorizontal: true,
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: _buildTileButton(
+                  icon: Icons.close,
+                  label: l10n.actionCancel,
+                  color: Colors.grey.shade600,
+                  onPressed: () => Navigator.pop(context),
+                  isHorizontal: true,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -362,48 +366,54 @@ class TimerGridCell extends ConsumerWidget {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text(l10n.timerActions),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: _buildTileButton(
-                    icon: Icons.play_arrow,
-                    label: l10n.actionResume,
-                    color: Colors.green.shade700,
-                    onPressed: () {
-                      Navigator.pop(context);
-                      ref.read(timerServiceProvider).resume(session.timerId);
-                    },
-                  ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IntrinsicHeight(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _buildTileButton(
+                        icon: Icons.play_arrow,
+                        label: l10n.actionResume,
+                        color: Colors.green.shade700,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          ref
+                              .read(timerServiceProvider)
+                              .resume(session.timerId);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _buildTileButton(
+                        icon: Icons.refresh,
+                        label: l10n.actionReset,
+                        color: Colors.blue.shade700,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          ref.read(timerServiceProvider).reset(session.timerId);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildTileButton(
-                    icon: Icons.refresh,
-                    label: l10n.actionReset,
-                    color: Colors.blue.shade700,
-                    onPressed: () {
-                      Navigator.pop(context);
-                      ref.read(timerServiceProvider).reset(session.timerId);
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: _buildTileButton(
-                icon: Icons.close,
-                label: l10n.actionCancel,
-                color: Colors.grey.shade600,
-                onPressed: () => Navigator.pop(context),
-                isHorizontal: true,
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: _buildTileButton(
+                  icon: Icons.close,
+                  label: l10n.actionCancel,
+                  color: Colors.grey.shade600,
+                  onPressed: () => Navigator.pop(context),
+                  isHorizontal: true,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -416,29 +426,31 @@ class TimerGridCell extends ConsumerWidget {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text(l10n.timerRinging),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildTileButton(
-              icon: Icons.stop_circle_outlined,
-              label: l10n.stopAlarm,
-              color: Colors.red.shade700,
-              onPressed: () {
-                Navigator.pop(context);
-                ref.read(timerServiceProvider).stopRinging(session.timerId);
-              },
-              isLarge: true,
-            ),
-            const SizedBox(height: 16),
-            _buildTileButton(
-              icon: Icons.close,
-              label: l10n.actionCancel,
-              color: Colors.grey.shade600,
-              onPressed: () => Navigator.pop(context),
-              isHorizontal: true,
-            ),
-          ],
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildTileButton(
+                icon: Icons.stop_circle_outlined,
+                label: l10n.stopAlarm,
+                color: Colors.red.shade700,
+                onPressed: () {
+                  Navigator.pop(context);
+                  ref.read(timerServiceProvider).stopRinging(session.timerId);
+                },
+                isLarge: true,
+              ),
+              const SizedBox(height: 16),
+              _buildTileButton(
+                icon: Icons.close,
+                label: l10n.actionCancel,
+                color: Colors.grey.shade600,
+                onPressed: () => Navigator.pop(context),
+                isHorizontal: true,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -463,41 +475,49 @@ class TimerGridCell extends ConsumerWidget {
         child: isHorizontal
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(icon, size: 32, color: Colors.white),
                   const SizedBox(width: 16),
-                  Text(
-                    label,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  Flexible(
+                    child: Text(
+                      label,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
               )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    icon,
-                    size: isLarge ? 80 : 56,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: isLarge ? 28 : 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      height: 1.1,
+            : FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(icon, size: isLarge ? 80 : 56, color: Colors.white),
+                    const SizedBox(height: 12),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 200),
+                      child: Text(
+                        label,
+                        style: TextStyle(
+                          fontSize: isLarge ? 28 : 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          height: 1.1,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+                  ],
+                ),
               ),
       ),
     );
