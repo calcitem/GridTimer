@@ -22,9 +22,12 @@ jobs:
           java-version: '17'
 
       - name: Decode signing key
+        shell: bash
         run: |
-          echo "$SIGNING_KEY" | base64 --decode --ignore-garbage > android/app/key.jks
+          mkdir -p android/app
+          printf '%s' "$SIGNING_KEY" | base64 --decode > android/app/key.jks
           ls -l android/app/key.jks
+          test -s android/app/key.jks
 
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}

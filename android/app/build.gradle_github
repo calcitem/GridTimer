@@ -22,6 +22,56 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+def resolveReleaseKeystoreFile() {
+    def keyPath = System.getenv("KEY_PATH")
+    return file(keyPath ?: "key.jks")
+}
+
+def detectKeystoreType(File keystoreFile) {
+    if (keystoreFile == null || !keystoreFile.exists()) {
+        return null
+    }
+
+    try {
+        return keystoreFile.withInputStream { is ->
+            byte[] header = new byte[4]
+            int readCount = is.read(header)
+            if (readCount < 1) {
+                return null
+            }
+
+            // JKS files start with 0xFEEDFEED.
+            if (readCount >= 4
+                    && (header[0] & 0xFF) == 0xFE
+                    && (header[1] & 0xFF) == 0xED
+                    && (header[2] & 0xFF) == 0xFE
+                    && (header[3] & 0xFF) == 0xED) {
+                return "JKS"
+            }
+
+            // PKCS12 is an ASN.1 SEQUENCE (0x30) at top-level.
+            if ((header[0] & 0xFF) == 0x30) {
+                return "PKCS12"
+            }
+
+            return null
+        }
+    } catch (Exception ignored) {
+        return null
+    }
+}
+
+def resolveKeystoreType(File keystoreFile) {
+    def envType = System.getenv("KEY_STORE_TYPE")
+    if (envType != null && !envType.trim().isEmpty()) {
+        return envType.trim()
+    }
+    return detectKeystoreType(keystoreFile)
+}
+
+def releaseKeystoreFile = resolveReleaseKeystoreFile()
+def releaseKeystoreType = resolveKeystoreType(releaseKeystoreFile)
+
 android {
     ndkVersion "28.1.13356709"
 
@@ -58,7 +108,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(System.getenv("KEY_PATH") ?: "key.jks")
+            storeFile releaseKeystoreFile
+            if (releaseKeystoreType != null) {
+                storeType releaseKeystoreType
+            }
             storePassword System.getenv("KEY_STORE_PASSWORD")
             keyAlias System.getenv("ALIAS")
             keyPassword System.getenv("KEY_PASSWORD")
