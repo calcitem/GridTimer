@@ -15,21 +15,24 @@ class GridPage extends ConsumerWidget {
     final gridState = ref.watch(gridStateProvider);
 
     return Scaffold(
-      body: SafeArea(
-        child: gridState.when(
-          data: (state) {
-            final (grid, sessions) = state;
-            return _buildGrid(context, ref, grid, sessions);
-          },
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stack) => Center(child: Text('Error: $error')),
-        ),
+      appBar: AppBar(
+        title: const Text('GridTimer'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              // TODO: Navigate to settings
+            },
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: Navigate to settings
+      body: gridState.when(
+        data: (state) {
+          final (grid, sessions) = state;
+          return _buildGrid(context, ref, grid, sessions);
         },
-        child: const Icon(Icons.settings),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(child: Text('Error: $error')),
       ),
     );
   }
@@ -40,31 +43,50 @@ class GridPage extends ConsumerWidget {
     TimerGridSet grid,
     List<TimerSession> sessions,
   ) {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 4,
-        mainAxisSpacing: 4,
-      ),
+    return Padding(
       padding: const EdgeInsets.all(4),
-      itemCount: 9,
-      itemBuilder: (context, index) {
-        final session = sessions.firstWhere(
-          (s) => s.slotIndex == index,
-          orElse: () => TimerSession(
-            timerId: 'unknown:$index',
-            modeId: 'unknown',
-            slotIndex: index,
-            status: TimerStatus.idle,
-          ),
-        );
-        final config = grid.slots[index];
-        return TimerGridCell(
-          session: session,
-          config: config,
-          slotIndex: index,
-        );
-      },
+      child: Column(
+        children: [
+          for (int row = 0; row < 3; row++)
+            Expanded(
+              child: Row(
+                children: [
+                  for (int col = 0; col < 3; col++)
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: _buildCell(row, col, grid, sessions),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCell(
+    int row,
+    int col,
+    TimerGridSet grid,
+    List<TimerSession> sessions,
+  ) {
+    final index = row * 3 + col;
+    final session = sessions.firstWhere(
+      (s) => s.slotIndex == index,
+      orElse: () => TimerSession(
+        timerId: 'unknown:$index',
+        modeId: 'unknown',
+        slotIndex: index,
+        status: TimerStatus.idle,
+      ),
+    );
+    final config = grid.slots[index];
+    return TimerGridCell(
+      session: session,
+      config: config,
+      slotIndex: index,
     );
   }
 }
