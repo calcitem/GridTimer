@@ -4,6 +4,7 @@ import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../core/config/environment_config.dart';
 import '../../l10n/app_localizations.dart';
+import '../dialogs/safety_disclaimer_dialog.dart';
 import 'audio_playback_settings_page.dart';
 import 'audio_test_page.dart';
 import 'gesture_settings_page.dart';
@@ -208,6 +209,14 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               subtitle: Text(_getLanguageName(currentLocale, l10n)),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () => _showLanguageDialog(context, ref, l10n),
+            ),
+
+            // Safety Disclaimer
+            ListTile(
+              leading: const Icon(Icons.info_outline, color: Colors.orange),
+              title: Text(l10n.aboutDisclaimer),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => SafetyDisclaimerDialog.show(context),
             ),
             const Divider(),
 
