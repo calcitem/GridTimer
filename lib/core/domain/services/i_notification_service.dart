@@ -39,6 +39,9 @@ abstract interface class INotificationService {
     bool repeatSoundUntilStopped = false,
     /// Whether vibration should be enabled for this notification.
     bool enableVibration = true,
+    /// TTS language for notification content (e.g., 'zh-CN', 'en-US').
+    /// If null, falls back to name-based detection.
+    String? ttsLanguage,
   });
 
   /// Cancels the scheduled notification for a timer.

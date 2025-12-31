@@ -207,11 +207,13 @@ class NotificationService implements INotificationService {
   }
 
   @override
+  @override
   Future<void> scheduleTimeUp({
     required TimerSession session,
     required TimerConfig config,
     bool repeatSoundUntilStopped = false,
     bool enableVibration = true,
+    String? ttsLanguage,
   }) async {
     // Schedule notification only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -283,13 +285,23 @@ class NotificationService implements INotificationService {
 
     final details = NotificationDetails(android: androidDetails);
 
+    // Determine notification body text based on language setting
+    final String notificationBody;
+    if (ttsLanguage != null) {
+      notificationBody = ttsLanguage.startsWith('zh') ? '时间到!' : 'Time is up!';
+    } else {
+      // Fall back to name-based detection
+      final isChineseName = RegExp(r'[\u4e00-\u9fa5]').hasMatch(config.name);
+      notificationBody = isChineseName ? '时间到!' : 'Time is up!';
+    }
+
     // MIUI/Android 15 can delay or silence scheduled notifications unless they are scheduled
     // as alarm clocks. Try alarmClock first for best lockscreen reliability.
     try {
       await _plugin.zonedSchedule(
         notificationId,
         config.name,
-        'Time is up!',
+        notificationBody,
         scheduledDate,
         details,
         androidScheduleMode: AndroidScheduleMode.alarmClock,
@@ -301,7 +313,7 @@ class NotificationService implements INotificationService {
         await _plugin.zonedSchedule(
           notificationId,
           config.name,
-          'Time is up!',
+          notificationBody,
           scheduledDate,
           details,
           androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -311,7 +323,7 @@ class NotificationService implements INotificationService {
         await _plugin.zonedSchedule(
           notificationId,
           config.name,
-          'Time is up!',
+          notificationBody,
           scheduledDate,
           details,
           androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
@@ -390,8 +402,9 @@ class NotificationService implements INotificationService {
       // On Android 8+ the channel controls the actual sound, but playSound still
       // controls whether sound is enabled for the notification instance.
       playSound: playSound,
-      sound:
-          playSound ? RawResourceAndroidNotificationSound(soundResource) : null,
+      sound: playSound
+          ? RawResourceAndroidNotificationSound(soundResource)
+          : null,
       // Control vibration based on user settings.
       enableVibration: enableVibration,
       onlyAlertOnce: false,
@@ -407,8 +420,8 @@ class NotificationService implements INotificationService {
       // Repeat the sound until the user cancels the notification (Android only).
       additionalFlags:
           Platform.isAndroid && playSound && repeatSoundUntilStopped
-              ? Int32List.fromList(const <int>[_androidFlagInsistent])
-              : null,
+          ? Int32List.fromList(const <int>[_androidFlagInsistent])
+          : null,
     );
 
     final details = NotificationDetails(android: androidDetails);

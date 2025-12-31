@@ -273,12 +273,27 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         await _tts.setSpeechRate(ttsSpeechRate);
         await _tts.setPitch(ttsPitch);
 
-        // Determine TTS locale (simple logic: check if name contains Chinese characters).
-        final isChineseName = RegExp(r'[\u4e00-\u9fa5]').hasMatch(config.name);
-        final localeTag = isChineseName ? 'zh-CN' : 'en-US';
-        final ttsText = isChineseName
-            ? '${config.name} 时间到'
-            : '${config.name} time is up';
+        // Use user-selected TTS language, or fall back to name-based detection
+        final userTtsLanguage = settings?.ttsLanguage;
+        final String localeTag;
+        final String ttsText;
+
+        if (userTtsLanguage != null) {
+          // User has explicitly set a TTS language
+          localeTag = userTtsLanguage;
+          ttsText = userTtsLanguage.startsWith('zh')
+              ? '${config.name} 时间到'
+              : '${config.name} time is up';
+        } else {
+          // Fall back to name-based detection
+          final isChineseName = RegExp(
+            r'[\u4e00-\u9fa5]',
+          ).hasMatch(config.name);
+          localeTag = isChineseName ? 'zh-CN' : 'en-US';
+          ttsText = isChineseName
+              ? '${config.name} 时间到'
+              : '${config.name} time is up';
+        }
 
         await _tts.speak(text: ttsText, localeTag: localeTag, interrupt: true);
       }
@@ -337,6 +352,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       config: config,
       repeatSoundUntilStopped: repeatSoundUntilStopped,
       enableVibration: settings?.vibrationEnabled ?? true,
+      ttsLanguage: settings?.ttsLanguage,
     );
 
     _emitState();
@@ -395,6 +411,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       config: config,
       repeatSoundUntilStopped: repeatSoundUntilStopped,
       enableVibration: settings?.vibrationEnabled ?? true,
+      ttsLanguage: settings?.ttsLanguage,
     );
 
     _emitState();
@@ -578,12 +595,27 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         await _tts.setSpeechRate(ttsSpeechRate);
         await _tts.setPitch(ttsPitch);
 
-        // Determine TTS locale (simple logic: check if name contains Chinese characters).
-        final isChineseName = RegExp(r'[\u4e00-\u9fa5]').hasMatch(config.name);
-        final localeTag = isChineseName ? 'zh-CN' : 'en-US';
-        final ttsText = isChineseName
-            ? '${config.name} 时间到'
-            : '${config.name} time is up';
+        // Use user-selected TTS language, or fall back to name-based detection
+        final userTtsLanguage = settings?.ttsLanguage;
+        final String localeTag;
+        final String ttsText;
+
+        if (userTtsLanguage != null) {
+          // User has explicitly set a TTS language
+          localeTag = userTtsLanguage;
+          ttsText = userTtsLanguage.startsWith('zh')
+              ? '${config.name} 时间到'
+              : '${config.name} time is up';
+        } else {
+          // Fall back to name-based detection
+          final isChineseName = RegExp(
+            r'[\u4e00-\u9fa5]',
+          ).hasMatch(config.name);
+          localeTag = isChineseName ? 'zh-CN' : 'en-US';
+          ttsText = isChineseName
+              ? '${config.name} 时间到'
+              : '${config.name} time is up';
+        }
 
         await _tts.speak(text: ttsText, localeTag: localeTag, interrupt: true);
       }
@@ -641,6 +673,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
             config: config,
             repeatSoundUntilStopped: repeatSoundUntilStopped,
             enableVibration: settings?.vibrationEnabled ?? true,
+            ttsLanguage: settings?.ttsLanguage,
           );
         }
       }
