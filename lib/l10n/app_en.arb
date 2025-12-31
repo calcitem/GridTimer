@@ -659,5 +659,105 @@
   "developerModeDisabled": "Developer mode disabled",
   "@developerModeDisabled": {
     "description": "Developer mode disabled message"
+  },
+
+  "speaking": "Speaking...",
+  "@speaking": {
+    "description": "TTS speaking indicator"
+  },
+
+  "ttsSpeechRate": "Speech Rate",
+  "@ttsSpeechRate": {
+    "description": "TTS speech rate label"
+  },
+
+  "ttsPitch": "Pitch",
+  "@ttsPitch": {
+    "description": "TTS pitch label"
+  },
+
+  "ttsVolumeDesc": "Adjust voice announcement volume",
+  "@ttsVolumeDesc": {
+    "description": "TTS volume description"
+  },
+
+  "ttsSpeechRateDesc": "Adjust voice announcement speed (0.5 is normal speed)",
+  "@ttsSpeechRateDesc": {
+    "description": "TTS speech rate description"
+  },
+
+  "ttsPitchDesc": "Adjust voice announcement pitch (1.0 is normal pitch)",
+  "@ttsPitchDesc": {
+    "description": "TTS pitch description"
+  },
+
+  "ttsLanguageNote": "Voice announcement language follows app language setting.",
+  "@ttsLanguageNote": {
+    "description": "TTS language note"
+  },
+
+  "followSystem": "Follow System",
+  "@followSystem": {
+    "description": "Follow system setting"
+  },
+
+  "simplifiedChinese": "Simplified Chinese",
+  "@simplifiedChinese": {
+    "description": "Simplified Chinese language name"
+  },
+
+  "english": "English",
+  "@english": {
+    "description": "English language name"
+  },
+
+  "speedVerySlow": "Very Slow",
+  "@speedVerySlow": {
+    "description": "Very slow speed label"
+  },
+
+  "speedSlow": "Slow",
+  "@speedSlow": {
+    "description": "Slow speed label"
+  },
+
+  "speedNormal": "Normal",
+  "@speedNormal": {
+    "description": "Normal speed label"
+  },
+
+  "speedFast": "Fast",
+  "@speedFast": {
+    "description": "Fast speed label"
+  },
+
+  "speedVeryFast": "Very Fast",
+  "@speedVeryFast": {
+    "description": "Very fast speed label"
+  },
+
+  "pitchVeryLow": "Very Low",
+  "@pitchVeryLow": {
+    "description": "Very low pitch label"
+  },
+
+  "pitchLow": "Low",
+  "@pitchLow": {
+    "description": "Low pitch label"
+  },
+
+  "pitchNormal": "Normal",
+  "@pitchNormal": {
+    "description": "Normal pitch label"
+  },
+
+  "pitchHigh": "High",
+  "@pitchHigh": {
+    "description": "High pitch label"
+  },
+
+  "pitchVeryHigh": "Very High",
+  "@pitchVeryHigh": {
+    "description": "Very high pitch label"
   }
 }
