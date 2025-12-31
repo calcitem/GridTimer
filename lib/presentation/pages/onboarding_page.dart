@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../app/providers.dart';
+import '../../l10n/app_localizations.dart';
 import 'grid_page.dart';
 
 /// Onboarding page for first-time users.
