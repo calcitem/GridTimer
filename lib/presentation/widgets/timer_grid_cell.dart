@@ -376,7 +376,10 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
 
   void _startTimer(WidgetRef ref) {
     final timerService = ref.read(timerServiceProvider);
-    timerService.start(modeId: widget.session.modeId, slotIndex: widget.slotIndex);
+    timerService.start(
+      modeId: widget.session.modeId,
+      slotIndex: widget.slotIndex,
+    );
   }
 
   void _showRunningActions(BuildContext context, WidgetRef ref) {
@@ -402,7 +405,9 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                         textColor: Colors.black, // Black text
                         onPressed: () {
                           Navigator.pop(context);
-                          ref.read(timerServiceProvider).pause(widget.session.timerId);
+                          ref
+                              .read(timerServiceProvider)
+                              .pause(widget.session.timerId);
                         },
                       ),
                     ),
@@ -414,7 +419,9 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                         color: const Color(0xFF2979FF), // Bright blue
                         onPressed: () {
                           Navigator.pop(context);
-                          ref.read(timerServiceProvider).reset(widget.session.timerId);
+                          ref
+                              .read(timerServiceProvider)
+                              .reset(widget.session.timerId);
                         },
                       ),
                     ),
@@ -477,7 +484,9 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                         color: Colors.blue.shade700,
                         onPressed: () {
                           Navigator.pop(context);
-                          ref.read(timerServiceProvider).reset(widget.session.timerId);
+                          ref
+                              .read(timerServiceProvider)
+                              .reset(widget.session.timerId);
                         },
                       ),
                     ),
@@ -521,7 +530,9 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                 color: const Color(0xFFD50000), // Bright red
                 onPressed: () {
                   Navigator.pop(context);
-                  ref.read(timerServiceProvider).stopRinging(widget.session.timerId);
+                  ref
+                      .read(timerServiceProvider)
+                      .stopRinging(widget.session.timerId);
                 },
                 isLarge: true,
               ),
