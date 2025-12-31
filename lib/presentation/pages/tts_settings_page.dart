@@ -502,40 +502,32 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: Text(l10n.ttsLanguage),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<String?>(
-              title: Text(l10n.followSystem),
-              subtitle: Text(l10n.ttsLanguageAutoDesc),
-              value: null,
-              groupValue: currentLanguage,
-              onChanged: (value) {
-                Navigator.of(dialogContext).pop();
-                ref.read(appSettingsProvider.notifier).updateTtsLanguage(value);
-              },
-            ),
-            RadioListTile<String?>(
-              title: Text(l10n.simplifiedChinese),
-              subtitle: const Text('zh-CN'),
-              value: 'zh-CN',
-              groupValue: currentLanguage,
-              onChanged: (value) {
-                Navigator.of(dialogContext).pop();
-                ref.read(appSettingsProvider.notifier).updateTtsLanguage(value);
-              },
-            ),
-            RadioListTile<String?>(
-              title: Text(l10n.english),
-              subtitle: const Text('en-US'),
-              value: 'en-US',
-              groupValue: currentLanguage,
-              onChanged: (value) {
-                Navigator.of(dialogContext).pop();
-                ref.read(appSettingsProvider.notifier).updateTtsLanguage(value);
-              },
-            ),
-          ],
+        content: RadioGroup<String?>(
+          groupValue: currentLanguage,
+          onChanged: (value) {
+            Navigator.of(dialogContext).pop();
+            ref.read(appSettingsProvider.notifier).updateTtsLanguage(value);
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RadioListTile<String?>(
+                title: Text(l10n.followSystem),
+                subtitle: Text(l10n.ttsLanguageAutoDesc),
+                value: null,
+              ),
+              RadioListTile<String?>(
+                title: Text(l10n.simplifiedChinese),
+                subtitle: const Text('zh-CN'),
+                value: 'zh-CN',
+              ),
+              RadioListTile<String?>(
+                title: Text(l10n.english),
+                subtitle: const Text('en-US'),
+                value: 'en-US',
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
