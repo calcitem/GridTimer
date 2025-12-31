@@ -346,10 +346,28 @@ void Win32Window::ShowTrayMenu() {
 
   HMENU hMenu = CreatePopupMenu();
   if (hMenu) {
+    // Get system UI language to determine menu text.
+    LANGID langId = GetUserDefaultUILanguage();
+    WORD primaryLangId = PRIMARYLANGID(langId);
+
+    // Menu text based on language.
+    const wchar_t* showText;
+    const wchar_t* exitText;
+
+    if (primaryLangId == LANG_CHINESE) {
+      // Chinese: U+663E U+793A U+7A97 U+53E3 = Show Window
+      //          U+9000 U+51FA = Exit
+      showText = L"\x663E\x793A\x7A97\x53E3";
+      exitText = L"\x9000\x51FA";
+    } else {
+      showText = L"Show Window";
+      exitText = L"Exit";
+    }
+
     // Add menu items.
-    AppendMenuW(hMenu, MF_STRING, IDM_TRAY_SHOW, L"Show Window");
+    AppendMenuW(hMenu, MF_STRING, IDM_TRAY_SHOW, showText);
     AppendMenuW(hMenu, MF_SEPARATOR, 0, nullptr);
-    AppendMenuW(hMenu, MF_STRING, IDM_TRAY_EXIT, L"Exit");
+    AppendMenuW(hMenu, MF_STRING, IDM_TRAY_EXIT, exitText);
 
     // Set foreground window to ensure menu closes properly.
     SetForegroundWindow(window_handle_);

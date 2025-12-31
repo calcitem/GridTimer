@@ -4,6 +4,8 @@
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
 #endif
+#include <locale.h>
+#include <string.h>
 
 #include "flutter/generated_plugin_registrant.h"
 
@@ -13,6 +15,23 @@ struct _MyApplication {
 };
 
 G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
+
+// Get localized window title based on system language.
+static const gchar* get_localized_window_title() {
+  const gchar* lang = g_getenv("LANG");
+  if (lang == NULL) {
+    lang = setlocale(LC_ALL, NULL);
+  }
+
+  // Check if system language is Chinese.
+  if (lang != NULL && (g_str_has_prefix(lang, "zh_") ||
+                       g_str_has_prefix(lang, "zh-") ||
+                       g_strcmp0(lang, "zh") == 0)) {
+    // Chinese: "Nine-grid Timer" in Chinese
+    return "\xe4\xb9\x9d\xe5\xae\xab\xe6\xa0\xbc\xe8\xae\xa1\xe6\x97\xb6\xe5\x99\xa8";
+  }
+  return "GridTimer";
+}
 
 // Called when first Flutter frame received.
 static void first_frame_cb(MyApplication* self, FlView* view) {
@@ -42,14 +61,16 @@ static void my_application_activate(GApplication* application) {
     }
   }
 #endif
+
+  const gchar* title = get_localized_window_title();
   if (use_header_bar) {
     GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
     gtk_widget_show(GTK_WIDGET(header_bar));
-    gtk_header_bar_set_title(header_bar, "grid_timer");
+    gtk_header_bar_set_title(header_bar, title);
     gtk_header_bar_set_show_close_button(header_bar, TRUE);
     gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
   } else {
-    gtk_window_set_title(window, "grid_timer");
+    gtk_window_set_title(window, title);
   }
 
   gtk_window_set_default_size(window, 1280, 720);
