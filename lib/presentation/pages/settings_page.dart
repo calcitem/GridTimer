@@ -342,6 +342,17 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               const Divider(),
               _buildSectionHeader('Debug Tools'),
 
+              // 10-Second Test Timer
+              ListTile(
+                leading: const Icon(Icons.timer_10, color: Colors.blue),
+                title: const Text('10s Test Timer (Debug)'),
+                subtitle: const Text('Start a real 10-second timer'),
+                trailing: ElevatedButton(
+                  onPressed: () => _start10SecondTestTimer(ref),
+                  child: const Text('Start'),
+                ),
+              ),
+
               // Audio Test (for debugging)
               ListTile(
                 leading: const Icon(Icons.bug_report, color: Colors.orange),
@@ -419,6 +430,72 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         ),
       ),
     );
+  }
+
+  /// Start a 10-second test timer (Debug Tool).
+  Future<void> _start10SecondTestTimer(WidgetRef ref) async {
+    try {
+      final timerService = ref.read(timerServiceProvider);
+
+      // Check if any timer is already running
+      if (timerService.hasActiveTimers()) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Please stop all active timers before starting test timer',
+              ),
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+        return;
+      }
+
+      // Get current settings
+      final currentSettings = await ref.read(appSettingsProvider.future);
+      final currentDurations = List<int>.from(
+        currentSettings.gridDurationsInSeconds,
+      );
+
+      // Temporarily modify first slot to 10 seconds
+      final testDurations = List<int>.from(currentDurations);
+      testDurations[0] = 10;
+
+      // Update settings with test duration
+      await ref
+          .read(appSettingsProvider.notifier)
+          .updateGridDurations(testDurations);
+
+      // Refresh timer grid with new configuration
+      await timerService.updateDefaultGridDurations();
+
+      // Start first timer (slot 0)
+      await timerService.start(modeId: 'default', slotIndex: 0);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              '10-second test timer started! First slot now set to 10s.',
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+
+        // Close settings and return to main page
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to start test timer: $e'),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    }
   }
 
   /// Get display name for current language.

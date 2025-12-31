@@ -265,4 +265,15 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     );
     await updateSettings((s) => s.copyWith(shakeSensitivity: sensitivity));
   }
+
+  /// Update grid durations configuration (for debugging/testing).
+  Future<void> updateGridDurations(List<int> durationsInSeconds) async {
+    assert(
+      durationsInSeconds.length == 9,
+      'Grid durations must contain exactly 9 elements',
+    );
+    await updateSettings(
+      (s) => s.copyWith(gridDurationsInSeconds: durationsInSeconds),
+    );
+  }
 }
