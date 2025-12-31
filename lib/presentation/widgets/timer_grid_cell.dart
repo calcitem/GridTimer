@@ -33,12 +33,14 @@ class TimerGridCell extends ConsumerWidget {
       child: Container(
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(16), // 更圆润的角
           border: Border.all(
             color: session.status == TimerStatus.ringing
-                ? Colors.red
-                : Colors.grey.shade300,
-            width: session.status == TimerStatus.ringing ? 4 : 2,
+                ? const Color(0xFFFFD600) // 响铃时使用亮黄色边框，最高警示对比
+                : (session.status == TimerStatus.idle 
+                    ? Colors.white54 
+                    : Colors.white), // 其他状态使用白色边框
+            width: session.status == TimerStatus.ringing ? 6 : 2, // 加粗响铃边框
           ),
         ),
         padding: const EdgeInsets.all(4),
@@ -99,9 +101,9 @@ class TimerGridCell extends ConsumerWidget {
         Text(
           l10n.minutes,
           style: const TextStyle(
-            fontSize: 20,
+            fontSize: 24, // 增大字号
             fontWeight: FontWeight.bold,
-            color: Colors.white70,
+            color: Color(0xFFFFD600), // 亮黄色标签，高对比度
           ),
         ),
       ],
@@ -124,10 +126,10 @@ class TimerGridCell extends ConsumerWidget {
         Text(
           '$presetMinutes ${l10n.minutes}',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 22, // 增大字号
             fontWeight: FontWeight.bold,
             fontFamily: 'monospace',
-            color: isPaused ? Colors.white70 : Colors.white,
+            color: const Color(0xFFFFD600), // 亮黄色
             fontFeatures: const [FontFeature.tabularFigures()],
           ),
         ),
@@ -144,7 +146,7 @@ class TimerGridCell extends ConsumerWidget {
                     fontSize: 100,
                     fontWeight: FontWeight.w900,
                     fontFamily: 'monospace',
-                    color: isPaused ? Colors.white70 : Colors.white,
+                    color: Colors.white, // 始终纯白，保持最高对比度
                     height: 1.0,
                     fontFeatures: const [FontFeature.tabularFigures()],
                   ),
@@ -157,9 +159,9 @@ class TimerGridCell extends ConsumerWidget {
         Text(
           isPaused ? l10n.pausing : l10n.remainingSeconds,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 24, // 增大
             fontWeight: FontWeight.bold,
-            color: isPaused ? Colors.white70 : Colors.white,
+            color: isPaused ? const Color(0xFFFFD600) : Colors.white, // 暂停时显示亮黄色提醒
           ),
         ),
       ],
@@ -218,13 +220,17 @@ class TimerGridCell extends ConsumerWidget {
   Color _getStatusColor(TimerStatus status) {
     switch (status) {
       case TimerStatus.idle:
-        return Colors.blueGrey.shade700;
+        // 闲置状态：深灰色背景，高对比度
+        return const Color(0xFF212121);
       case TimerStatus.running:
-        return Colors.green.shade700;
+        // 运行中：深绿色背景 (避免过亮刺眼，但保持色相明确)
+        return const Color(0xFF1B5E20);
       case TimerStatus.paused:
-        return Colors.orange.shade700;
+        // 暂停：深琥珀色/褐色背景
+        return const Color(0xFFBF360C); // 深橙色，比黄色更适合做背景文字反白
       case TimerStatus.ringing:
-        return Colors.red.shade700;
+        // 响铃：深红色背景
+        return const Color(0xFFB71C1C);
     }
   }
 

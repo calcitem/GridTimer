@@ -298,9 +298,9 @@ class SettingsPage extends ConsumerWidget {
       child: Text(
         title,
         style: const TextStyle(
-          fontSize: 14,
+          fontSize: 18, // 增大字号
           fontWeight: FontWeight.bold,
-          color: Colors.grey,
+          color: Color(0xFFFFD600), // 高对比度黄色
         ),
       ),
     );
