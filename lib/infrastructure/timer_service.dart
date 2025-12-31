@@ -199,7 +199,6 @@ class TimerService implements ITimerService {
         mode: settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
         loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
         intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
-        customAudioPath: settings?.customAudioPath,
       );
 
       // Show immediate notification to ensure sound on lockscreen
@@ -509,7 +508,6 @@ class TimerService implements ITimerService {
         mode: settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
         loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
         intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
-        customAudioPath: settings?.customAudioPath,
       );
 
       // Show immediate notification to ensure sound even when locked
