@@ -9,6 +9,7 @@ import '../core/domain/services/i_tts_service.dart';
 import '../core/domain/services/i_permission_service.dart';
 import '../core/domain/services/i_mode_service.dart';
 import '../core/domain/services/i_gesture_service.dart';
+import '../core/domain/services/i_vibration_service.dart';
 import '../data/repositories/storage_repository.dart';
 import '../infrastructure/timer_service.dart';
 import '../infrastructure/mode_service.dart';
@@ -18,6 +19,7 @@ import '../infrastructure/tts_service.dart';
 import '../infrastructure/permission_service.dart';
 import '../infrastructure/widget_service.dart';
 import '../infrastructure/gesture_service.dart';
+import '../infrastructure/vibration_service.dart';
 
 /// Clock provider.
 final clockProvider = Provider<IClock>((ref) => const SystemClock());
@@ -57,6 +59,11 @@ final gestureServiceProvider = Provider<IGestureService>((ref) {
   return GestureService();
 });
 
+/// Vibration service provider.
+final vibrationServiceProvider = Provider<IVibrationService>((ref) {
+  return VibrationService();
+});
+
 /// Mode service provider.
 final modeServiceProvider = Provider<IModeService>((ref) {
   return ModeService(storage: ref.watch(storageProvider));
@@ -71,6 +78,7 @@ final timerServiceProvider = Provider<ITimerService>((ref) {
     tts: ref.watch(ttsServiceProvider),
     clock: ref.watch(clockProvider),
     gesture: ref.watch(gestureServiceProvider),
+    vibration: ref.watch(vibrationServiceProvider),
   );
 });
 

@@ -22,7 +22,7 @@ class AppSettingsHive {
   @HiveField(4)
   final bool alarmReliabilityHintDismissed;
 
-  @HiveField(5)
+  @HiveField(5, defaultValue: false)
   final bool vibrationEnabled;
 
   @HiveField(6)

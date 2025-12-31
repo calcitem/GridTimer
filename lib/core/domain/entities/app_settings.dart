@@ -25,7 +25,7 @@ abstract class AppSettings with _$AppSettings {
     @Default(false) bool alarmReliabilityHintDismissed,
 
     /// Whether vibration is enabled.
-    @Default(true) bool vibrationEnabled,
+    @Default(false) bool vibrationEnabled,
 
     /// Whether the onboarding permission wizard has been completed.
     @Default(false) bool onboardingCompleted,
