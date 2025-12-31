@@ -20,7 +20,7 @@ class MainActivity: FlutterActivity() {
                 "openNotificationChannelSettings" -> {
                     val channelId = call.argument<String>("channelId")
                     if (channelId.isNullOrBlank()) {
-                        result.error("invalid_args", "channelId 不能为空", null)
+                        result.error("invalid_args", "channelId must not be empty", null)
                         return@setMethodCallHandler
                     }
 
@@ -33,7 +33,8 @@ class MainActivity: FlutterActivity() {
                         startActivity(intent)
                         result.success(true)
                     } catch (e: Exception) {
-                        // 兜底：打开应用通知设置页（不同 ROM/版本可能不支持频道设置 Intent）
+                        // Fallback: open the app notification settings page (some OEM ROMs/versions
+                        // may not support the channel settings intent).
                         try {
                             val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
                                 putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
