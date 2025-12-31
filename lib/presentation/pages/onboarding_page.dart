@@ -90,12 +90,14 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     // Only Android needs complex permissions for this app usually.
     // iOS handles notifications, but exact alarm/battery/overlay are Android specific concepts.
     final isAndroid = Platform.isAndroid;
+    final l10n = AppLocalizations.of(context)!;
 
     final steps = <Widget>[
       _buildWelcomeStep(),
       _buildNotificationStep(isAndroid),
       if (isAndroid) _buildExactAlarmStep(),
       if (isAndroid) _buildBatteryStep(),
+      if (isAndroid) _buildAlarmSoundStep(l10n),
       // Full screen intent is implicitly handled or less critical to nag about upfront if exact alarm works
       // but let's include it if we want to be "comprehensive"
       _buildCompletionStep(),
@@ -261,6 +263,32 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               icon: const Icon(Icons.settings_power),
               label: const Text('打开电池优化设置'),
             ),
+    );
+  }
+
+  Widget _buildAlarmSoundStep(AppLocalizations l10n) {
+    return _buildStepContainer(
+      title: l10n.onboardingCheckSoundTitle,
+      description: l10n.onboardingCheckSoundDesc,
+      icon: Icons.volume_up,
+      action: ElevatedButton.icon(
+        onPressed: () async {
+          final service = ref.read(permissionServiceProvider);
+          try {
+            await service.openNotificationChannelSettings(
+              channelId: 'gt.alarm.timeup.default.v2',
+            );
+          } catch (e) {
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l10n.errorText(e.toString()))),
+              );
+            }
+          }
+        },
+        icon: const Icon(Icons.settings_voice),
+        label: Text(l10n.onboardingCheckSoundBtn),
+      ),
     );
   }
 

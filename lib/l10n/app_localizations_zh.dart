@@ -344,4 +344,14 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get gestureHint => '长辈友好：建议开启触摸屏幕、音量键和翻转手机';
+
+  @override
+  String get onboardingCheckSoundTitle => '重要：检查声音';
+
+  @override
+  String get onboardingCheckSoundDesc =>
+      '请点击下方按钮，确保 \"Timer Alarm (default)\" 的声音**不是**“无”或“静音”。\n\n如果设为静音，倒计时结束时您将只收到通知而听不到铃声。';
+
+  @override
+  String get onboardingCheckSoundBtn => '去检查声音设置';
 }

@@ -568,8 +568,20 @@
   "gestureHint": "Senior-friendly: Enable screen tap, volume buttons, and flip phone",
   "@gestureHint": {
     "description": "Gesture hint for seniors"
+  },
+
+  "onboardingCheckSoundTitle": "Important: Check Sound",
+  "@onboardingCheckSoundTitle": {
+    "description": "Onboarding check sound step title"
+  },
+  
+  "onboardingCheckSoundDesc": "Please check if 'Timer Alarm (default)' sound is NOT 'None' or 'Silent'.\n\nIf silent, you will only receive a notification without sound when time is up.",
+  "@onboardingCheckSoundDesc": {
+    "description": "Onboarding check sound step description"
+  },
+  
+  "onboardingCheckSoundBtn": "Check Sound Settings",
+  "@onboardingCheckSoundBtn": {
+    "description": "Onboarding check sound button label"
   }
 }
-
-
-
