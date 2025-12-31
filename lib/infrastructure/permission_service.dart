@@ -7,7 +7,7 @@ import '../core/domain/services/i_permission_service.dart';
 /// Permission service implementation.
 class PermissionService implements IPermissionService {
   static const MethodChannel _systemSettingsChannel = MethodChannel(
-    'com.gridtimer.app/system_settings',
+    'com.calcitem.gridtimer/system_settings',
   );
 
   @override

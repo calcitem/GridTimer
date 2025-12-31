@@ -75,7 +75,7 @@ def releaseKeystoreType = resolveKeystoreType(releaseKeystoreFile)
 android {
     ndkVersion "28.1.13356709"
 
-    namespace "com.gridtimer.app"
+    namespace "com.calcitem.gridtimer"
     compileSdk 36
 
     compileOptions {
@@ -96,7 +96,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.gridtimer.app"
+        applicationId "com.calcitem.gridtimer"
         minSdkVersion flutter.minSdkVersion
         targetSdk 36
         versionCode flutterVersionCode.toInteger()
