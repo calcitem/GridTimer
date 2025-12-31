@@ -44,13 +44,18 @@ Catcher 2 is an error tracking library that catches and reports crashes and exce
    - Set up PlatformDispatcher error handler
    - Added Catcher2.navigatorKey to MaterialApp
 
+3. **`android/app/src/main/AndroidManifest.xml`**
+   - Added `<queries>` section for email client intent (required for Android 11+)
+   - This allows the app to detect and open email clients
+
 ## Platform Behavior
 
 ### Android
-- **Debug Mode**: Shows error dialog with details + Console + File + Email handlers
-- **Release Mode**: Shows error dialog + File + Email handlers  
-- **Profile Mode**: Shows error dialog with details + Console + File + Email handlers
-- After accepting the error dialog, the system's email app will open automatically to send the error report
+- **Debug Mode**: Shows full error report page with details + Console + File + Email handlers
+- **Release Mode**: Shows full error report page + File + Email handlers  
+- **Profile Mode**: Shows full error report page with details + Console + File + Email handlers
+- Error page displays complete stack trace, device info, and error details
+- After clicking "Accept" button, the system's email app will open automatically to send the error report
 
 ### iOS
 - Catcher is **disabled** (App Store restrictions on crash reporting)
@@ -59,16 +64,28 @@ Catcher 2 is an error tracking library that catches and reports crashes and exce
 - Uses **SilentReportMode** (no UI shown to user)
 - Errors are logged but don't interrupt user experience
 
+## Report Mode: PageReportMode
+
+Uses `PageReportMode()` which shows a full-page error report with:
+- Complete error message
+- Full stack trace
+- Device information
+- Application information
+- "Accept" and "Cancel" buttons
+
+This provides maximum information for debugging compared to simple dialog modes.
+
 ## Email Handler Configuration
 
-The `EmailManualHandler` is configured with the following parameters:
-- **enableDeviceParameters**: Include device information (model, OS version, etc.)
-- **enableStackTrace**: Include full stack trace of the error
-- **enableCustomParameters**: Include custom parameters defined in the app
-- **enableApplicationParameters**: Include app version and build information
-- **sendHtml**: Send email in HTML format for better readability
-- **emailTitle**: Subject line of the error report email
-- **emailHeader**: Header text shown in the email body
+The `EmailManualHandler` is configured with simple parameters:
+- **recipientEmails**: List of support email addresses
+- **printLogs**: true (enables console logging for debugging)
+
+When error occurs and user accepts:
+1. Error details are formatted automatically
+2. System's default email client opens
+3. Email is pre-filled with error report
+4. User can add comments and send
 
 ## Configuration
 
@@ -123,14 +140,20 @@ flutter run --dart-define=test=true
 
 When an error occurs on Android:
 
-1. User sees an error report dialog with details
+1. User sees a full-page error report with:
+   - Error message
+   - Complete stack trace
+   - Device information
+   - Accept and Cancel buttons
 2. User can choose to:
    - **Accept**: Opens the system's default email app with pre-filled error report
-   - **Cancel**: Dismisses the dialog and continues using the app
+   - **Cancel**: Closes the error page and continues using the app
 3. Error is automatically saved to a file for later retrieval
 4. If no email app is installed, the system will prompt the user to install one
 
 **Note**: Make sure your device has an email app (Gmail, Outlook, etc.) installed to send error reports.
+
+**Android 11+ Requirement**: The app declares email client query intent in AndroidManifest.xml to enable email functionality.
 
 ## Testing
 
@@ -145,7 +168,7 @@ Note: The error test button is only visible when Catcher is enabled (Environment
 
 ## Troubleshooting
 
-### Email Dialog Not Appearing
+### Email App Not Opening
 
 If clicking "Accept" doesn't open an email app:
 
@@ -157,12 +180,16 @@ If clicking "Accept" doesn't open an email app:
    - Go to Settings → Apps → Default apps → Email
    - Set a default email application
 
-3. **Check File Logs**
+3. **Android 11+ Requirements**
+   - The app must declare email client query in AndroidManifest.xml (already added)
+   - Reinstall the app if you just added the queries section
+
+4. **Check File Logs**
    - Error logs are still saved to file even if email doesn't work
    - Location: `{ExternalStorageDirectory}/GridTimer-crash-logs.txt`
    - Users can manually retrieve and send this file
 
-4. **Alternative on Desktop**
+5. **Alternative on Desktop**
    - Desktop platforms use SilentReportMode
    - Check the crash logs file in the app directory
 
@@ -170,9 +197,20 @@ If clicking "Accept" doesn't open an email app:
 
 1. Navigate to Settings → Debug Tools
 2. Tap "Error Test (Debug)"
-3. You should see a dialog with error details
+3. You should see a full error report page with:
+   - Error message at the top
+   - Complete stack trace
+   - Device information
+   - Accept and Cancel buttons at the bottom
 4. Tap "Accept" to trigger email sending
 5. System's email app should open with pre-filled error report
+
+### Still Not Working?
+
+- Try uninstalling and reinstalling the app (to apply AndroidManifest changes)
+- Check if other apps can open email clients
+- Enable "printLogs: true" in EmailManualHandler to see console output
+- Check Android logcat for error messages
 
 ## Notes
 
@@ -180,7 +218,8 @@ If clicking "Accept" doesn't open an email app:
 - All uncaught errors and exceptions are automatically captured
 - The crash log file persists across app sessions
 - Users can manually send crash reports via email at any time
-- DialogReportMode is used instead of PageReportMode for better email integration
+- PageReportMode is used to show complete error details including stack trace
+- Android 11+ requires `<queries>` declaration in AndroidManifest.xml for email functionality
 
 ## Reference
 
