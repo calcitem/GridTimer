@@ -14,6 +14,7 @@ class TtsService implements ITtsService {
       StreamController<bool>.broadcast();
 
   /// Stream that emits when TTS completes speaking
+  @override
   Stream<bool> get completionStream => _completionController.stream;
 
   @override
@@ -36,7 +37,7 @@ class TtsService implements ITtsService {
       _completionController.add(true);
     });
 
-    _tts.setErrorHandler((String message) {
+    _tts.setErrorHandler((dynamic message) {
       // Notify completion even on error to prevent UI from hanging
       _completionController.add(false);
     });

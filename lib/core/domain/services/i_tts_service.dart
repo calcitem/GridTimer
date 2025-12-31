@@ -25,4 +25,8 @@ abstract interface class ITtsService {
 
   /// Set the pitch for TTS (0.5 - 2.0, where 1.0 is normal).
   Future<void> setPitch(double pitch);
+
+  /// Stream that emits when TTS completes speaking.
+  /// Returns true on successful completion, false on error.
+  Stream<bool> get completionStream;
 }

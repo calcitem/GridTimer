@@ -23,7 +23,7 @@ class VibrationService implements IVibrationService {
     }
 
     try {
-      _hasVibrator = await Vibration.hasVibrator() ?? false;
+      _hasVibrator = await Vibration.hasVibrator();
       debugPrint('VibrationService: Vibrator available = $_hasVibrator');
     } catch (e) {
       debugPrint('VibrationService init error: $e');
@@ -55,7 +55,7 @@ class VibrationService implements IVibrationService {
     try {
       // Check if custom vibration patterns are supported.
       final hasCustomVibrationsSupport =
-          await Vibration.hasCustomVibrationsSupport() ?? false;
+          await Vibration.hasCustomVibrationsSupport();
 
       if (hasCustomVibrationsSupport) {
         await Vibration.vibrate(pattern: pattern);

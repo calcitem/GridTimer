@@ -31,16 +31,17 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return;
 
+    // Get locale tag for TTS before any async operations
+    final localeTag =
+        currentLocale?.toLanguageTag() ??
+        Localizations.localeOf(context).toLanguageTag();
+
     setState(() => _isSpeaking = true);
 
     // Cancel any existing subscription
     await _ttsCompletionSubscription?.cancel();
 
     try {
-      // Get locale tag for TTS
-      final localeTag =
-          currentLocale?.toLanguageTag() ??
-          Localizations.localeOf(context).toLanguageTag();
 
       // Apply current settings
       await ttsService.setVolume(volume);
