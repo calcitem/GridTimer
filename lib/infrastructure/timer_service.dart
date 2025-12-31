@@ -59,7 +59,7 @@ class TimerService implements ITimerService {
 
     // Initialize gesture service
     await _gesture.init();
-    
+
     // Listen for gesture events
     _gestureSubscription = _gesture.gestureStream.listen(_onGestureDetected);
 
@@ -154,11 +154,11 @@ class TimerService implements ITimerService {
 
       // Add to ringing timers set
       _ringingTimers.add(timerId);
-      
+
       // Start gesture monitoring when first timer starts ringing
       if (_ringingTimers.length == 1) {
         _gesture.startMonitoring();
-        
+
         // Update shake sensitivity from settings
         final settings = await _storage.getSettings();
         if (settings != null) {
@@ -172,7 +172,7 @@ class TimerService implements ITimerService {
       // Play sound and TTS
       final config = _currentGrid!.slots[slotIndex];
       final soundVolume = settings?.soundVolume ?? 1.0;
-      
+
       // Use configured playback mode
       await _audio.playWithMode(
         soundKey: config.soundKey,
@@ -195,11 +195,18 @@ class TimerService implements ITimerService {
         await _tts.setSpeechRate(ttsSpeechRate);
         await _tts.setPitch(ttsPitch);
 
-        await _tts.speak(
-          text: '${config.name} time is up',
-          localeTag: 'en-US',
-          interrupt: true,
-        );
+        // Determine TTS locale (simple logic: check if name contains Chinese characters)
+        // Ideally we should use the app's current locale, but here we can infer from content or default to a safe fallback.
+        // Or we can check system locale. For now, let's use a simple heuristic or default to system.
+        // Given user requirement "App is for Chinese and English users", we should adapt.
+
+        final isChineseName = RegExp(r'[\u4e00-\u9fa5]').hasMatch(config.name);
+        final localeTag = isChineseName ? 'zh-CN' : 'en-US';
+        final ttsText = isChineseName
+            ? '${config.name} 时间到'
+            : '${config.name} time is up';
+
+        await _tts.speak(text: ttsText, localeTag: localeTag, interrupt: true);
       }
     } finally {
       // 释放锁
@@ -242,7 +249,7 @@ class TimerService implements ITimerService {
     final settings = await _storage.getSettings();
     final repeatSoundUntilStopped =
         (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) ==
-            AudioPlaybackMode.loopIndefinitely;
+        AudioPlaybackMode.loopIndefinitely;
 
     // Schedule notification
     await _notification.scheduleTimeUp(
@@ -299,7 +306,7 @@ class TimerService implements ITimerService {
     final settings = await _storage.getSettings();
     final repeatSoundUntilStopped =
         (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) ==
-            AudioPlaybackMode.loopIndefinitely;
+        AudioPlaybackMode.loopIndefinitely;
 
     final config = _currentGrid!.slots[session.slotIndex];
     await _notification.scheduleTimeUp(
@@ -339,10 +346,10 @@ class TimerService implements ITimerService {
     if (session.status == TimerStatus.ringing) {
       await _audio.stop();
       await _tts.stop();
-      
+
       // Remove from ringing timers
       _ringingTimers.remove(timerId);
-      
+
       // Stop gesture monitoring if no more ringing timers
       if (_ringingTimers.isEmpty) {
         _gesture.stopMonitoring();
@@ -362,7 +369,7 @@ class TimerService implements ITimerService {
 
     // Remove from ringing timers
     _ringingTimers.remove(timerId);
-    
+
     // Stop gesture monitoring if no more ringing timers
     if (_ringingTimers.isEmpty) {
       _gesture.stopMonitoring();
@@ -398,10 +405,10 @@ class TimerService implements ITimerService {
       // 重新创建 default grid
       _currentGrid = _createDefaultGrid(settings);
       await _storage.saveMode(_currentGrid!);
-      
+
       // 重新初始化 sessions
       _initializeIdleSessions();
-      
+
       _emitState();
     }
   }
@@ -443,7 +450,7 @@ class TimerService implements ITimerService {
       _ringingTimers.add(timerId);
       if (_ringingTimers.length == 1) {
         _gesture.startMonitoring();
-        
+
         // Update shake sensitivity from settings
         final settings = await _storage.getSettings();
         if (settings != null) {
@@ -457,7 +464,7 @@ class TimerService implements ITimerService {
       // Play audio and TTS
       final config = _currentGrid!.slots[session.slotIndex];
       final soundVolume = settings?.soundVolume ?? 1.0;
-      
+
       // 使用配置的播放模式
       await _audio.playWithMode(
         soundKey: config.soundKey,
@@ -480,11 +487,18 @@ class TimerService implements ITimerService {
         await _tts.setSpeechRate(ttsSpeechRate);
         await _tts.setPitch(ttsPitch);
 
-        await _tts.speak(
-          text: '${config.name} time is up',
-          localeTag: 'en-US',
-          interrupt: true,
-        );
+        // Determine TTS locale (simple logic: check if name contains Chinese characters)
+        // Ideally we should use the app's current locale, but here we can infer from content or default to a safe fallback.
+        // Or we can check system locale. For now, let's use a simple heuristic or default to system.
+        // Given user requirement "App is for Chinese and English users", we should adapt.
+
+        final isChineseName = RegExp(r'[\u4e00-\u9fa5]').hasMatch(config.name);
+        final localeTag = isChineseName ? 'zh-CN' : 'en-US';
+        final ttsText = isChineseName
+            ? '${config.name} 时间到'
+            : '${config.name} time is up';
+
+        await _tts.speak(text: ttsText, localeTag: localeTag, interrupt: true);
       }
 
       _emitState();
@@ -503,7 +517,7 @@ class TimerService implements ITimerService {
     final settings = await _storage.getSettings();
     final repeatSoundUntilStopped =
         (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) ==
-            AudioPlaybackMode.loopIndefinitely;
+        AudioPlaybackMode.loopIndefinitely;
 
     for (final session in _sessions.values.toList()) {
       if (session.status == TimerStatus.running) {
@@ -549,16 +563,17 @@ class TimerService implements ITimerService {
   TimerGridSet _createDefaultGrid(AppSettings? settings) {
     // 从设置中获取配置的时长，如果没有则使用默认值
     // 默认时间配置（单位：秒）：10秒, 2分, 3分, 5分, 8分, 10分, 15分, 20分, 45分
-    final durationsInSeconds = settings?.gridDurationsInSeconds ?? 
+    final durationsInSeconds =
+        settings?.gridDurationsInSeconds ??
         [10, 120, 180, 300, 480, 600, 900, 1200, 2700];
-    
+
     assert(durationsInSeconds.length == 9, '九宫格时长配置必须包含9个元素');
 
     final configs = List.generate(9, (i) {
       final seconds = durationsInSeconds[i];
       // 根据秒数生成显示名称
       final name = _formatDurationName(seconds);
-      
+
       return TimerConfig(
         slotIndex: i,
         name: name,
