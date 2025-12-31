@@ -94,8 +94,8 @@ class SettingsPage extends ConsumerWidget {
             // Audio Test (for debugging)
             ListTile(
               leading: const Icon(Icons.bug_report, color: Colors.orange),
-              title: const Text('音频测试 (调试用)'),
-              subtitle: const Text('诊断声音问题'),
+              title: const Text('Audio Test (Debug)'),
+              subtitle: const Text('Diagnose sound issues'),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 Navigator.of(context).push(
@@ -206,51 +206,51 @@ class SettingsPage extends ConsumerWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          granted ? '通知权限已授予' : '通知权限被拒绝，请在系统设置中手动授予',
+                          granted ? 'Notification permission granted' : 'Notification permission denied, please grant manually in system settings',
                         ),
                         duration: const Duration(seconds: 2),
                       ),
                     );
                   }
                 },
-                child: const Text('授予权限'),
+                child: const Text('Grant Permission'),
               ),
             ),
 
             // Exact Alarm Permission
             ListTile(
               leading: const Icon(Icons.alarm),
-              title: const Text('精确闹钟权限'),
-              subtitle: const Text('确保计时器准时提醒（Android 14+ 需要）'),
+              title: const Text('Exact Alarm Permission'),
+              subtitle: const Text('Ensure timers notify on time (Required on Android 14+)'),
               trailing: ElevatedButton(
                 onPressed: () async {
                   final permissionService = ref.read(permissionServiceProvider);
                   await permissionService.openExactAlarmSettings();
                 },
-                child: const Text('设置'),
+                child: const Text('Settings'),
               ),
             ),
 
             // Battery Optimization
             ListTile(
               leading: const Icon(Icons.battery_saver),
-              title: const Text('电池优化设置'),
-              subtitle: const Text('关闭电池优化以确保后台提醒可靠'),
+              title: const Text('Battery Optimization Settings'),
+              subtitle: const Text('Disable battery optimization to ensure reliable background alarms'),
               trailing: ElevatedButton(
                 onPressed: () async {
                   final permissionService = ref.read(permissionServiceProvider);
                   await permissionService.openBatteryOptimizationSettings();
                 },
-                child: const Text('设置'),
+                child: const Text('Settings'),
               ),
             ),
 
             // Alarm Channel Sound (Android 8+)
             ListTile(
               leading: const Icon(Icons.volume_up),
-              title: const Text('提醒声音设置'),
+              title: const Text('Alarm Sound Settings'),
               subtitle: const Text(
-                "如果 'Timer Alarm (default)' 的声音为“无”，到点只会显示通知不会响",
+                "If 'Timer Alarm (default)' sound is set to 'None', timer will only show notification without sound",
               ),
               trailing: ElevatedButton(
                 onPressed: () async {
@@ -263,11 +263,11 @@ class SettingsPage extends ConsumerWidget {
                     if (context.mounted) {
                       ScaffoldMessenger.of(
                         context,
-                      ).showSnackBar(SnackBar(content: Text('打开通知频道设置失败：$e')));
+                      ).showSnackBar(SnackBar(content: Text('Failed to open notification channel settings: $e')));
                     }
                   }
                 },
-                child: const Text('去设置'),
+                child: const Text('Go to Settings'),
               ),
             ),
 
@@ -300,14 +300,14 @@ class SettingsPage extends ConsumerWidget {
   /// Build a section header widget.
   Widget _buildSectionHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 12), // 增加垂直间距
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 12), // Increased vertical spacing
       child: Text(
         title,
         style: const TextStyle(
-          fontSize: 26, // 再次增大字号 (18 -> 26)
-          fontWeight: FontWeight.w900, // 更粗的字体
-          color: Color(0xFFFFD600), // 高对比度黄色
-          letterSpacing: 1.2, // 增加字间距
+          fontSize: 26, // Increased font size (18 -> 26)
+          fontWeight: FontWeight.w900, // Bolder font
+          color: Color(0xFFFFD600), // High contrast yellow
+          letterSpacing: 1.2, // Increased letter spacing
         ),
       ),
     );

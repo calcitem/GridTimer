@@ -45,8 +45,8 @@ abstract class AppSettings with _$AppSettings {
     /// TTS pitch (0.5 - 2.0, where 1.0 is normal).
     @Default(1.0) double ttsPitch,
 
-    /// 九宫格的自定义时长配置（单位：秒），9个元素分别对应9个宫格
-    /// 默认值：[10秒, 2分, 3分, 5分, 8分, 10分, 15分, 20分, 45分]
+    /// Grid custom duration configuration (in seconds), 9 elements for 9 grid slots
+    /// Default values: [10s, 2min, 3min, 5min, 8min, 10min, 15min, 20min, 45min]
     @Default([10, 120, 180, 300, 480, 600, 900, 1200, 2700])
     List<int> gridDurationsInSeconds,
 

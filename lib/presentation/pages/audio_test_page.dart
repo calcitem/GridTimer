@@ -5,7 +5,7 @@ import '../../app/providers.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
 
-/// 音频测试页面 - 用于诊断声音问题
+/// Audio test page - for diagnosing sound issues
 class AudioTestPage extends ConsumerStatefulWidget {
   const AudioTestPage({super.key});
 
@@ -34,59 +34,59 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('音频测试'),
+        title: const Text('Audio Test'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // 测试说明
+            // Test instructions
             const Card(
               child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Text(
-                  '请依次测试以下功能，观察是否有声音输出。\n'
-                  '如果某项测试失败，说明对应的功能有问题。',
+                  'Please test the following features in order and observe if sound is output.\n'
+                  'If a test fails, the corresponding feature has a problem.',
                   style: TextStyle(fontSize: 16),
                 ),
               ),
             ),
             const SizedBox(height: 16),
 
-            // 测试 1: 直接播放音频文件
+            // Test 1: Play audio file directly
             _buildTestButton(
-              title: '测试 1: AudioPlayer 播放',
-              description: '直接使用 AudioPlayer 播放 sound.wav',
+              title: 'Test 1: AudioPlayer Playback',
+              description: 'Directly play sound.wav using AudioPlayer',
               onPressed: _testDirectAudioPlay,
             ),
 
-            // 测试 2: 使用服务播放
+            // Test 2: Play using service
             _buildTestButton(
-              title: '测试 2: AudioService 播放',
-              description: '通过 AudioService 播放（应用内使用的方式）',
+              title: 'Test 2: AudioService Playback',
+              description: 'Play through AudioService (method used in app)',
               onPressed: _testAudioServicePlay,
             ),
 
-            // 测试 3: 显示即时通知
+            // Test 3: Show immediate notification
             _buildTestButton(
-              title: '测试 3: 显示即时通知',
-              description: '显示通知并播放通知声音',
+              title: 'Test 3: Show Immediate Notification',
+              description: 'Display notification and play notification sound',
               onPressed: _testShowNotification,
             ),
 
-            // 测试 4: 真实计时器测试（锁屏场景）
+            // Test 4: Real timer test (lockscreen scenario)
             _buildTestButton(
-              title: '测试 4: 启动10秒计时器',
-              description: '启动真实计时器，完整测试播放模式和自定义音频（可锁屏测试）',
+              title: 'Test 4: Start 10-Second Timer',
+              description: 'Start real timer, fully test playback modes and custom audio (can test with lockscreen)',
               onPressed: _testScheduleNotification,
             ),
 
             const SizedBox(height: 24),
 
-            // 日志输出
+            // Log output
             const Text(
-              '测试日志:',
+              'Test Log:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -103,7 +103,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
               padding: const EdgeInsets.all(12),
               child: SingleChildScrollView(
                 child: Text(
-                  _log.isEmpty ? '等待测试...' : _log,
+                  _log.isEmpty ? 'Waiting for test...' : _log,
                   style: const TextStyle(
                     fontSize: 12,
                     fontFamily: 'Courier',
@@ -120,7 +120,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
                   _log = '';
                 });
               },
-              child: const Text('清空日志'),
+              child: const Text('Clear Log'),
             ),
           ],
         ),
@@ -154,7 +154,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: onPressed,
-              child: const Text('开始测试'),
+              child: const Text('Start Test'),
             ),
           ],
         ),
@@ -162,41 +162,41 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
     );
   }
 
-  // 测试 1: 直接播放音频
+  // Test 1: Play audio directly
   Future<void> _testDirectAudioPlay() async {
-    _addLog('【测试1】开始直接播放 sound.wav');
+    _addLog('[Test 1] Starting direct playback of sound.wav');
     try {
       await _testPlayer.stop();
       await _testPlayer.play(AssetSource('sounds/sound.wav'));
-      _addLog('【测试1】✅ 播放命令已发送');
-      _addLog('【测试1】请确认是否听到声音');
+      _addLog('[Test 1] ✅ Playback command sent');
+      _addLog('[Test 1] Please confirm if you hear sound');
     } catch (e) {
-      _addLog('【测试1】❌ 错误: $e');
+      _addLog('[Test 1] ❌ Error: $e');
     }
   }
 
-  // 测试 2: 通过服务播放
+  // Test 2: Play through service
   Future<void> _testAudioServicePlay() async {
-    _addLog('【测试2】开始通过 AudioService 播放');
+    _addLog('[Test 2] Starting playback through AudioService');
     try {
       final audioService = ref.read(audioServiceProvider);
       await audioService.playLoop(soundKey: 'default', volume: 1.0);
-      _addLog('【测试2】✅ AudioService.playLoop 已调用');
-      _addLog('【测试2】请确认是否听到声音（应该循环播放）');
+      _addLog('[Test 2] ✅ AudioService.playLoop called');
+      _addLog('[Test 2] Please confirm if you hear sound (should loop)');
       
-      // 5秒后停止
+      // Stop after 5 seconds
       Future.delayed(const Duration(seconds: 5), () async {
         await audioService.stop();
-        _addLog('【测试2】已停止播放');
+        _addLog('[Test 2] Playback stopped');
       });
     } catch (e) {
-      _addLog('【测试2】❌ 错误: $e');
+      _addLog('[Test 2] ❌ Error: $e');
     }
   }
 
-  // 测试 3: 显示即时通知
+  // Test 3: Show immediate notification
   Future<void> _testShowNotification() async {
-    _addLog('【测试3】开始显示即时通知');
+    _addLog('[Test 3] Starting to show immediate notification');
     try {
       final notificationService = ref.read(notificationServiceProvider);
       final (grid, _) = ref.read(timerServiceProvider).getSnapshot();
@@ -216,34 +216,34 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
         config: testConfig,
       );
       
-      _addLog('【测试3】✅ 即时通知已显示');
-      _addLog('【测试3】请检查：');
-      _addLog('  - 是否看到通知？');
-      _addLog('  - 是否听到通知声音？');
-      _addLog('  - 是否有振动？');
+      _addLog('[Test 3] ✅ Immediate notification displayed');
+      _addLog('[Test 3] Please check:');
+      _addLog('  - Do you see the notification?');
+      _addLog('  - Do you hear notification sound?');
+      _addLog('  - Is there vibration?');
     } catch (e) {
-      _addLog('【测试3】❌ 错误: $e');
+      _addLog('[Test 3] ❌ Error: $e');
     }
   }
 
-  // 测试 4: 启动真实计时器（完整响铃测试，支持所有播放模式和自定义音频）
+  // Test 4: Start real timer (full ringing test, supports all playback modes and custom audio)
   Future<void> _testScheduleNotification() async {
-    _addLog('【测试4】启动 5 秒计时器（完整响铃测试）');
+    _addLog('[Test 4] Starting 10-second timer (full ringing test)');
     try {
       final timerService = ref.read(timerServiceProvider);
       final audioService = ref.read(audioServiceProvider);
       final settings = ref.read(appSettingsProvider).value;
       
-      // Start a real 5-second timer (slot 1: 2 minutes by default, but we override)
-      await timerService.start(modeId: 'default', slotIndex: 0); // Slot 0 is 10 seconds
+      // Start a real 10-second timer (slot 0 is 10 seconds)
+      await timerService.start(modeId: 'default', slotIndex: 0);
       
-      _addLog('【测试4】✅ 已启动 10 秒计时器');
-      _addLog('【测试4】💡 这是真实的计时器，会：');
-      _addLog('  - 使用你配置的播放模式: ${_getModeDescription(settings)}');
-      _addLog('  - 支持自定义音频文件');
-      _addLog('  - 锁屏时显示通知');
-      _addLog('  - 点击通知或屏幕停止');
-      _addLog('【测试4】现在可以锁屏，等待 10 秒...');
+      _addLog('[Test 4] ✅ 10-second timer started');
+      _addLog('[Test 4] 💡 This is a real timer that will:');
+      _addLog('  - Use your configured playback mode: ${_getModeDescription(settings)}');
+      _addLog('  - Support custom audio files');
+      _addLog('  - Show notification when locked');
+      _addLog('  - Stop by tapping notification or screen');
+      _addLog('[Test 4] You can lock screen now, wait 10 seconds...');
       
       // Wait for timer to complete (10 seconds + 1 second buffer)
       await Future.delayed(const Duration(seconds: 11));
@@ -251,32 +251,32 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       // Check if alarm is ringing
       final isPlaying = await audioService.isPlaying();
       if (isPlaying) {
-        _addLog('【测试4】✅ 音频正在播放中');
-        _addLog('【测试4】请点击屏幕或通知的 Stop 按钮停止');
+        _addLog('[Test 4] ✅ Audio is playing');
+        _addLog('[Test 4] Please tap screen or notification Stop button to stop');
       } else {
-        _addLog('【测试4】⚠️ 音频未播放（可能已自动停止）');
+        _addLog('[Test 4] ⚠️ Audio not playing (may have auto-stopped)');
       }
     } catch (e) {
-      _addLog('【测试4】❌ 错误: $e');
+      _addLog('[Test 4] ❌ Error: $e');
     }
   }
   
   String _getModeDescription(dynamic settings) {
-    if (settings == null) return '默认（一直循环）';
+    if (settings == null) return 'Default (loop indefinitely)';
     final mode = settings.audioPlaybackMode;
     switch (mode) {
       case AudioPlaybackMode.loopIndefinitely:
-        return '一直循环直到手动停止';
+        return 'Loop indefinitely until manually stopped';
       case AudioPlaybackMode.loopForDuration:
-        return '循环播放 ${settings.audioLoopDurationMinutes} 分钟后自动停止';
+        return 'Loop for ${settings.audioLoopDurationMinutes} minutes then auto-stop';
       case AudioPlaybackMode.loopWithInterval:
-        return '循环 N 分钟，间隔 M 分钟，再循环（共一次）';
+        return 'Loop N minutes, pause M minutes, loop once more';
       case AudioPlaybackMode.loopWithIntervalRepeating:
-        return '循环 N 分钟，间隔 M 分钟，重复直到停止';
+        return 'Loop N minutes, pause M minutes, repeat until stopped';
       case AudioPlaybackMode.playOnce:
-        return '只播放一次';
+        return 'Play once only';
       default:
-        return '未知模式';
+        return 'Unknown mode';
     }
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
 import '../../l10n/app_localizations.dart';
 
-/// 九宫格时长配置页面
+/// Grid durations configuration page
 class GridDurationsSettingsPage extends ConsumerStatefulWidget {
   const GridDurationsSettingsPage({super.key});
 
@@ -15,7 +15,7 @@ class GridDurationsSettingsPage extends ConsumerStatefulWidget {
 
 class _GridDurationsSettingsPageState
     extends ConsumerState<GridDurationsSettingsPage> {
-  // 默认时长配置（单位：秒）
+  // Default duration configuration (in seconds)
   static const List<int> _defaultDurations = [
     10,
     120,
@@ -56,7 +56,7 @@ class _GridDurationsSettingsPageState
     super.dispose();
   }
 
-  /// 保存配置
+  /// Save configuration
   Future<void> _saveDurations() async {
     final newDurations = <int>[];
     bool hasError = false;
@@ -69,7 +69,7 @@ class _GridDurationsSettingsPageState
         hasError = true;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('宫格 ${i + 1} 的时长必须是大于 0 的整数'),
+            content: Text('Grid ${i + 1} duration must be a positive integer'),
             backgroundColor: Colors.red,
           ),
         );
@@ -80,43 +80,43 @@ class _GridDurationsSettingsPageState
     }
 
     if (!hasError) {
-      // 先保存配置
+      // Save configuration first
       await ref.read(appSettingsProvider.notifier).updateSettings(
             (s) => s.copyWith(gridDurationsInSeconds: newDurations),
           );
 
-      // 尝试立即更新 default grid 的时长配置
+      // Try to immediately update default grid duration configuration
       try {
         final timerService = ref.read(timerServiceProvider);
         if (timerService.hasActiveTimers()) {
-          // 有活动计时器，不能立即更新
+          // Active timers exist, cannot update immediately
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('有活动的计时器正在运行，配置将在下次启动应用时生效'),
+                content: Text('Active timers are running, configuration will take effect on next app launch'),
                 backgroundColor: Colors.orange,
                 duration: Duration(seconds: 3),
               ),
             );
           }
         } else {
-          // 没有活动计时器，立即更新
+          // No active timers, update immediately
           await timerService.updateDefaultGridDurations();
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('保存成功，九宫格时长已更新'),
+                content: Text('Saved successfully, grid durations updated'),
                 backgroundColor: Colors.green,
               ),
             );
           }
         }
       } catch (e) {
-        // 出错时显示警告，但不阻止保存
+        // Show warning on error, but don't prevent saving
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('配置已保存，但应用更新时出错：$e'),
+              content: Text('Configuration saved, but error during app update: $e'),
               backgroundColor: Colors.orange,
             ),
           );
@@ -129,7 +129,7 @@ class _GridDurationsSettingsPageState
     }
   }
 
-  /// 恢复默认值
+  /// Reset to default values
   Future<void> _resetToDefault() async {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return;
@@ -162,7 +162,7 @@ class _GridDurationsSettingsPageState
     }
   }
 
-  /// 格式化显示时长
+  /// Format duration for display
   String _formatDuration(int seconds) {
     if (seconds < 60) {
       return '$seconds s';
@@ -245,7 +245,7 @@ class _GridDurationsSettingsPageState
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            // 宫格标签
+            // Grid label
             SizedBox(
               width: 80,
               child: Text(
@@ -257,7 +257,7 @@ class _GridDurationsSettingsPageState
               ),
             ),
             const SizedBox(width: 16),
-            // 输入框
+            // Input field
             Expanded(
               child: TextField(
                 controller: _controllers[index],
@@ -272,7 +272,7 @@ class _GridDurationsSettingsPageState
                   suffixText: l10n.seconds,
                 ),
                 onChanged: (value) {
-                  // 实时预览
+                  // Real-time preview
                   final seconds = int.tryParse(value);
                   if (seconds != null && seconds > 0) {
                     setState(() {
@@ -283,7 +283,7 @@ class _GridDurationsSettingsPageState
               ),
             ),
             const SizedBox(width: 16),
-            // 显示格式化的时长
+            // Display formatted duration
             SizedBox(
               width: 100,
               child: Text(

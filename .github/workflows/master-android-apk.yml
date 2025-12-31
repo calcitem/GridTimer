@@ -47,7 +47,12 @@ jobs:
       - name: Install dependencies
         run: bash -x ./tool/flutter-init.sh
 
-      # Build release Android APK only (no lint check, no AAB, no external uploads)
+      # Run lint check but don't fail the build
+      - name: Run Flutter analyze (non-blocking)
+        run: flutter analyze || true
+        continue-on-error: true
+
+      # Build release Android APK only (no AAB, no external uploads)
       - name: Build release Android APK
         run: |
           rm android/app/build.gradle
