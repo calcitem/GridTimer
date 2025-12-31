@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/domain/entities/app_settings.dart';
+import '../core/domain/enums.dart';
 import '../core/domain/services/i_clock.dart';
 import '../core/domain/services/i_timer_service.dart';
 import '../core/domain/services/i_notification_service.dart';
@@ -7,6 +8,7 @@ import '../core/domain/services/i_audio_service.dart';
 import '../core/domain/services/i_tts_service.dart';
 import '../core/domain/services/i_permission_service.dart';
 import '../core/domain/services/i_mode_service.dart';
+import '../core/domain/services/i_gesture_service.dart';
 import '../data/repositories/storage_repository.dart';
 import '../infrastructure/timer_service.dart';
 import '../infrastructure/mode_service.dart';
@@ -15,6 +17,7 @@ import '../infrastructure/audio_service.dart';
 import '../infrastructure/tts_service.dart';
 import '../infrastructure/permission_service.dart';
 import '../infrastructure/widget_service.dart';
+import '../infrastructure/gesture_service.dart';
 
 /// Clock provider.
 final clockProvider = Provider<IClock>((ref) => const SystemClock());
@@ -49,6 +52,11 @@ final widgetServiceProvider = Provider<WidgetService>((ref) {
   return WidgetService();
 });
 
+/// Gesture service provider.
+final gestureServiceProvider = Provider<IGestureService>((ref) {
+  return GestureService();
+});
+
 /// Mode service provider.
 final modeServiceProvider = Provider<IModeService>((ref) {
   return ModeService(storage: ref.watch(storageProvider));
@@ -62,6 +70,7 @@ final timerServiceProvider = Provider<ITimerService>((ref) {
     audio: ref.watch(audioServiceProvider),
     tts: ref.watch(ttsServiceProvider),
     clock: ref.watch(clockProvider),
+    gesture: ref.watch(gestureServiceProvider),
   );
 });
 
@@ -170,5 +179,50 @@ class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
   Future<void> updateTtsPitch(double pitch) async {
     assert(pitch >= 0.5 && pitch <= 2.0, 'Pitch must be between 0.5 and 2.0');
     await updateSettings((s) => s.copyWith(ttsPitch: pitch));
+  }
+
+  /// Update audio playback mode.
+  Future<void> updateAudioPlaybackMode(AudioPlaybackMode mode) async {
+    await updateSettings((s) => s.copyWith(audioPlaybackMode: mode));
+  }
+
+  /// Update audio loop duration (in minutes).
+  Future<void> updateAudioLoopDuration(int minutes) async {
+    assert(minutes > 0, 'Loop duration must be greater than 0');
+    await updateSettings((s) => s.copyWith(audioLoopDurationMinutes: minutes));
+  }
+
+  /// Update audio interval pause duration (in minutes).
+  Future<void> updateAudioIntervalPause(int minutes) async {
+    assert(minutes > 0, 'Interval pause must be greater than 0');
+    await updateSettings((s) => s.copyWith(audioIntervalPauseMinutes: minutes));
+  }
+
+  /// Update custom audio path.
+  Future<void> updateCustomAudioPath(String? path) async {
+    await updateSettings((s) => s.copyWith(customAudioPath: path));
+  }
+
+  /// Update gesture action for a specific gesture type.
+  Future<void> updateGestureAction(
+    AlarmGestureType gesture,
+    AlarmGestureAction action,
+  ) async {
+    await updateSettings((s) {
+      final newActions = Map<AlarmGestureType, AlarmGestureAction>.from(
+        s.gestureActions,
+      );
+      newActions[gesture] = action;
+      return s.copyWith(gestureActions: newActions);
+    });
+  }
+
+  /// Update shake sensitivity (1.0 - 5.0).
+  Future<void> updateShakeSensitivity(double sensitivity) async {
+    assert(
+      sensitivity >= 1.0 && sensitivity <= 5.0,
+      'Shake sensitivity must be between 1.0 and 5.0',
+    );
+    await updateSettings((s) => s.copyWith(shakeSensitivity: sensitivity));
   }
 }

@@ -85,8 +85,43 @@
   "save": "保存",
   "reset": "重置",
   "resetToDefault": "恢复默认",
-  "gridDurationsResetConfirm": "确定要将九宫格时长恢复为默认值吗？"
+  "gridDurationsResetConfirm": "确定要将九宫格时长恢复为默认值吗？",
+
+  "audioPlaybackSettings": "音频播放设置",
+  "audioPlaybackSettingsDesc": "配置闹铃音频播放模式",
+  "audioPlaybackMode": "播放模式",
+  "audioPlaybackModeLoopIndefinitely": "一直循环直到手动停止",
+  "audioPlaybackModeLoopForDuration": "循环播放 N 分钟后自动停止",
+  "audioPlaybackModeLoopWithInterval": "循环 N 分钟，间隔 M 分钟，再循环 N 分钟（共一次）",
+  "audioPlaybackModeLoopWithIntervalRepeating": "循环 N 分钟，间隔 M 分钟，重复直到停止",
+  "audioPlaybackModePlayOnce": "只播放一次",
+  "loopDuration": "循环时长",
+  "intervalPause": "间隔暂停时长",
+  "minutesUnit": "分钟",
+
+  "customAudio": "自定义闹铃声音",
+  "customAudioDesc": "上传自己的音频文件作为闹铃声音（支持 MP3、WAV 等格式）",
+  "uploadCustomAudio": "上传音频文件",
+  "changeCustomAudio": "更换音频文件",
+  "clearCustomAudio": "清除",
+  "customAudioActive": "当前使用自定义音频",
+  "customAudioSelected": "自定义音频已设置",
+  "customAudioCleared": "已恢复使用默认声音",
+
+  "gestureSettings": "手势控制设置",
+  "gestureSettingsDesc": "配置闹铃响起时的手势操作",
+  "gestureActions": "手势动作",
+  "gestureTypeScreenTap": "触摸屏幕",
+  "gestureTypeVolumeUp": "音量+ 键",
+  "gestureTypeVolumeDown": "音量- 键",
+  "gestureTypeShake": "摇晃手机",
+  "gestureTypeFlip": "翻转手机（屏幕朝下）",
+  "gestureActionStopAndReset": "停止并重置",
+  "gestureActionPause": "暂停",
+  "gestureActionNone": "无动作",
+  "shakeSensitivity": "摇晃灵敏度",
+  "shakeSensitivityLow": "低（需要用力摇）",
+  "shakeSensitivityHigh": "高（轻轻摇即可）",
+  "shakeSensitivityDesc": "调整摇晃手机的灵敏度",
+  "gestureHint": "长辈友好：建议开启触摸屏幕、音量键和翻转手机"
 }
-
-
-

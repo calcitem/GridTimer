@@ -237,4 +237,111 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get gridDurationsResetConfirm => '确定要将九宫格时长恢复为默认值吗？';
+
+  @override
+  String get audioPlaybackSettings => '音频播放设置';
+
+  @override
+  String get audioPlaybackSettingsDesc => '配置闹铃音频播放模式';
+
+  @override
+  String get audioPlaybackMode => '播放模式';
+
+  @override
+  String get audioPlaybackModeLoopIndefinitely => '一直循环直到手动停止';
+
+  @override
+  String get audioPlaybackModeLoopForDuration => '循环播放 N 分钟后自动停止';
+
+  @override
+  String get audioPlaybackModeLoopWithInterval =>
+      '循环 N 分钟，间隔 M 分钟，再循环 N 分钟（共一次）';
+
+  @override
+  String get audioPlaybackModeLoopWithIntervalRepeating =>
+      '循环 N 分钟，间隔 M 分钟，重复直到停止';
+
+  @override
+  String get audioPlaybackModePlayOnce => '只播放一次';
+
+  @override
+  String get loopDuration => '循环时长';
+
+  @override
+  String get intervalPause => '间隔暂停时长';
+
+  @override
+  String get minutesUnit => '分钟';
+
+  @override
+  String get customAudio => '自定义闹铃声音';
+
+  @override
+  String get customAudioDesc => '上传自己的音频文件作为闹铃声音（支持 MP3、WAV 等格式）';
+
+  @override
+  String get uploadCustomAudio => '上传音频文件';
+
+  @override
+  String get changeCustomAudio => '更换音频文件';
+
+  @override
+  String get clearCustomAudio => '清除';
+
+  @override
+  String get customAudioActive => '当前使用自定义音频';
+
+  @override
+  String get customAudioSelected => '自定义音频已设置';
+
+  @override
+  String get customAudioCleared => '已恢复使用默认声音';
+
+  @override
+  String get gestureSettings => '手势控制设置';
+
+  @override
+  String get gestureSettingsDesc => '配置闹铃响起时的手势操作';
+
+  @override
+  String get gestureActions => '手势动作';
+
+  @override
+  String get gestureTypeScreenTap => '触摸屏幕';
+
+  @override
+  String get gestureTypeVolumeUp => '音量+ 键';
+
+  @override
+  String get gestureTypeVolumeDown => '音量- 键';
+
+  @override
+  String get gestureTypeShake => '摇晃手机';
+
+  @override
+  String get gestureTypeFlip => '翻转手机（屏幕朝下）';
+
+  @override
+  String get gestureActionStopAndReset => '停止并重置';
+
+  @override
+  String get gestureActionPause => '暂停';
+
+  @override
+  String get gestureActionNone => '无动作';
+
+  @override
+  String get shakeSensitivity => '摇晃灵敏度';
+
+  @override
+  String get shakeSensitivityLow => '低（需要用力摇）';
+
+  @override
+  String get shakeSensitivityHigh => '高（轻轻摇即可）';
+
+  @override
+  String get shakeSensitivityDesc => '调整摇晃手机的灵敏度';
+
+  @override
+  String get gestureHint => '长辈友好：建议开启触摸屏幕、音量键和翻转手机';
 }

@@ -243,4 +243,116 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get gridDurationsResetConfirm =>
       'Are you sure you want to reset grid durations to default values?';
+
+  @override
+  String get audioPlaybackSettings => 'Audio Playback Settings';
+
+  @override
+  String get audioPlaybackSettingsDesc => 'Configure alarm audio playback mode';
+
+  @override
+  String get audioPlaybackMode => 'Playback Mode';
+
+  @override
+  String get audioPlaybackModeLoopIndefinitely =>
+      'Loop indefinitely until manually stopped';
+
+  @override
+  String get audioPlaybackModeLoopForDuration =>
+      'Loop for N minutes then auto-stop';
+
+  @override
+  String get audioPlaybackModeLoopWithInterval =>
+      'Loop N min, pause M min, loop N min (once)';
+
+  @override
+  String get audioPlaybackModeLoopWithIntervalRepeating =>
+      'Loop N min, pause M min, repeat until stopped';
+
+  @override
+  String get audioPlaybackModePlayOnce => 'Play once only';
+
+  @override
+  String get loopDuration => 'Loop Duration';
+
+  @override
+  String get intervalPause => 'Interval Pause Duration';
+
+  @override
+  String get minutesUnit => 'minutes';
+
+  @override
+  String get customAudio => 'Custom Alarm Sound';
+
+  @override
+  String get customAudioDesc =>
+      'Upload your own audio file as alarm sound (supports MP3, WAV, etc.)';
+
+  @override
+  String get uploadCustomAudio => 'Upload Audio File';
+
+  @override
+  String get changeCustomAudio => 'Change Audio File';
+
+  @override
+  String get clearCustomAudio => 'Clear';
+
+  @override
+  String get customAudioActive => 'Currently using custom audio';
+
+  @override
+  String get customAudioSelected => 'Custom audio has been set';
+
+  @override
+  String get customAudioCleared => 'Restored to default sound';
+
+  @override
+  String get gestureSettings => 'Gesture Control Settings';
+
+  @override
+  String get gestureSettingsDesc =>
+      'Configure gesture actions when alarm rings';
+
+  @override
+  String get gestureActions => 'Gesture Actions';
+
+  @override
+  String get gestureTypeScreenTap => 'Tap Screen';
+
+  @override
+  String get gestureTypeVolumeUp => 'Volume+ Button';
+
+  @override
+  String get gestureTypeVolumeDown => 'Volume- Button';
+
+  @override
+  String get gestureTypeShake => 'Shake Phone';
+
+  @override
+  String get gestureTypeFlip => 'Flip Phone (Face Down)';
+
+  @override
+  String get gestureActionStopAndReset => 'Stop & Reset';
+
+  @override
+  String get gestureActionPause => 'Pause';
+
+  @override
+  String get gestureActionNone => 'No Action';
+
+  @override
+  String get shakeSensitivity => 'Shake Sensitivity';
+
+  @override
+  String get shakeSensitivityLow => 'Low (Shake hard)';
+
+  @override
+  String get shakeSensitivityHigh => 'High (Shake gently)';
+
+  @override
+  String get shakeSensitivityDesc => 'Adjust shake detection sensitivity';
+
+  @override
+  String get gestureHint =>
+      'Senior-friendly: Enable screen tap, volume buttons, and flip phone';
 }
