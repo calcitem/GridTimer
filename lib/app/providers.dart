@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/domain/entities/app_settings.dart';
 import '../core/domain/enums.dart';
@@ -167,7 +168,9 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
 
   /// Set safety disclaimer accepted.
   Future<void> updateSafetyDisclaimerAccepted(bool accepted) async {
+    debugPrint('AppSettingsNotifier: Updating safetyDisclaimerAccepted to $accepted');
     await updateSettings((s) => s.copyWith(safetyDisclaimerAccepted: accepted));
+    debugPrint('AppSettingsNotifier: safetyDisclaimerAccepted saved successfully');
   }
 
   /// Update sound volume.

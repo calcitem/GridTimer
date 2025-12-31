@@ -93,11 +93,38 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
   }
 
   /// Set up automatic widget updates
+  /// 
+  /// Listen to timer state changes and update home screen widgets accordingly.
+  /// Only updates when there are actual changes to avoid unnecessary updates.
   void _setupWidgetUpdates() {
     ref.listen(gridStateProvider, (previous, next) {
       next.whenData((state) {
         final (_, sessions) = state;
-        // Update widgets
+        
+        // Only update widget if there are changes from previous state
+        if (previous?.value != null) {
+          final (_, prevSessions) = previous!.value!;
+          
+          // Check if sessions have actually changed
+          bool hasChanged = false;
+          if (sessions.length != prevSessions.length) {
+            hasChanged = true;
+          } else {
+            for (int i = 0; i < sessions.length; i++) {
+              if (sessions[i].status != prevSessions[i].status ||
+                  sessions[i].endAtEpochMs != prevSessions[i].endAtEpochMs) {
+                hasChanged = true;
+                break;
+              }
+            }
+          }
+          
+          if (!hasChanged) {
+            return; // Skip update if nothing changed
+          }
+        }
+        
+        // Update widgets when state changes
         ref.read(widgetServiceProvider).updateWidget(sessions);
       });
     });

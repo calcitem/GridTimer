@@ -95,9 +95,12 @@ class WidgetService {
         androidName: 'GridTimerWidgetProvider',
       );
 
-      debugPrint(
-        'WidgetService: Updated widget (active: ${activeSessions.length}, ringing: ${ringingSessions.length})',
-      );
+      // Only log in debug mode to avoid log spam
+      if (kDebugMode) {
+        debugPrint(
+          'WidgetService: Updated widget (active: ${activeSessions.length}, ringing: ${ringingSessions.length})',
+        );
+      }
     } catch (e) {
       debugPrint('WidgetService update failed: $e');
     }

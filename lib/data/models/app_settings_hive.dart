@@ -28,6 +28,9 @@ class AppSettingsHive {
   @HiveField(6)
   final bool onboardingCompleted;
 
+  @HiveField(16, defaultValue: false)
+  final bool safetyDisclaimerAccepted;
+
   @HiveField(7, defaultValue: 1.0)
   final double soundVolume;
 
@@ -78,6 +81,7 @@ class AppSettingsHive {
     required this.alarmReliabilityHintDismissed,
     required this.vibrationEnabled,
     required this.onboardingCompleted,
+    required this.safetyDisclaimerAccepted,
     required this.soundVolume,
     required this.selectedSoundKey,
     required this.ttsVolume,
@@ -108,6 +112,7 @@ class AppSettingsHive {
       alarmReliabilityHintDismissed: settings.alarmReliabilityHintDismissed,
       vibrationEnabled: settings.vibrationEnabled,
       onboardingCompleted: settings.onboardingCompleted,
+      safetyDisclaimerAccepted: settings.safetyDisclaimerAccepted,
       soundVolume: settings.soundVolume,
       selectedSoundKey: settings.selectedSoundKey,
       ttsVolume: settings.ttsVolume,
@@ -143,6 +148,7 @@ class AppSettingsHive {
       alarmReliabilityHintDismissed: alarmReliabilityHintDismissed,
       vibrationEnabled: vibrationEnabled,
       onboardingCompleted: onboardingCompleted,
+      safetyDisclaimerAccepted: safetyDisclaimerAccepted,
       soundVolume: soundVolume,
       selectedSoundKey: selectedSoundKey,
       ttsVolume: ttsVolume,

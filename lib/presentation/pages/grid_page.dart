@@ -53,20 +53,36 @@ class _GridPageState extends ConsumerState<GridPage> {
     // Now read the loaded settings
     final settings = ref.read(appSettingsProvider).value;
 
+    if (settings == null) {
+      debugPrint('GridPage: Settings not loaded, skipping disclaimer check');
+      return;
+    }
+
+    debugPrint(
+      'GridPage: Safety disclaimer accepted = ${settings.safetyDisclaimerAccepted}',
+    );
+
     // Only show disclaimer if not yet accepted
-    if (settings != null && !settings.safetyDisclaimerAccepted) {
+    if (!settings.safetyDisclaimerAccepted) {
       // Wait for first frame to complete to avoid showing during build
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (!mounted) return;
 
+        debugPrint('GridPage: Showing safety disclaimer dialog');
+
         // Show the disclaimer dialog
         final accepted = await SafetyDisclaimerDialog.show(context);
+
+        debugPrint(
+          'GridPage: User ${accepted ? "accepted" : "dismissed"} disclaimer',
+        );
 
         // Save the acceptance status only if user clicked "I Understand, Continue"
         if (accepted && mounted) {
           await ref
               .read(appSettingsProvider.notifier)
               .updateSafetyDisclaimerAccepted(true);
+          debugPrint('GridPage: Saved disclaimer acceptance to storage');
         }
       });
     }
