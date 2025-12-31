@@ -313,6 +313,9 @@ class TimerService implements ITimerService {
 
   @override
   Future<void> reset(TimerId timerId) async {
+    // Ensure we clear the pending flag to prevent lock-up
+    _pendingRinging.remove(timerId);
+
     final session = _sessions[timerId];
     if (session == null) return;
 
