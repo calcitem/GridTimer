@@ -253,23 +253,14 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         }
       }
 
-      // Load settings for alarm behaviours.
+      // IMPORTANT: Do NOT call showTimeUpNow() here!
+      // The scheduled notification from scheduleTimeUp() will trigger and play sound.
+      // Calling showTimeUpNow() would cancel the scheduled notification, and immediate
+      // notifications don't play sound reliably when app is in foreground/background.
+
+      // Load settings for TTS.
       final settings = await _storage.getSettings();
       final config = _currentGrid!.slots[slotIndex];
-
-      final enableVibration = settings?.vibrationEnabled ?? true;
-      final repeatSoundUntilStopped =
-          (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
-          AudioPlaybackMode.playOnce;
-
-      // Always rely on system notification sound for alarm playback.
-      await _notification.showTimeUpNow(
-        session: session,
-        config: config,
-        enableVibration: enableVibration,
-        playSound: true,
-        repeatSoundUntilStopped: repeatSoundUntilStopped,
-      );
 
       // TTS is only reliable when the app is in the foreground.
       if (_isInForeground &&
@@ -567,23 +558,14 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         }
       }
 
-      // Load settings for alarm behaviours.
+      // IMPORTANT: Do NOT call showTimeUpNow() here!
+      // The scheduled notification from scheduleTimeUp() will trigger and play sound.
+      // Calling showTimeUpNow() would cancel the scheduled notification, and immediate
+      // notifications don't play sound reliably when app is in foreground/background.
+
+      // Load settings for TTS.
       final settings = await _storage.getSettings();
       final config = _currentGrid!.slots[session.slotIndex];
-
-      final enableVibration = settings?.vibrationEnabled ?? true;
-      final repeatSoundUntilStopped =
-          (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
-          AudioPlaybackMode.playOnce;
-
-      // Always rely on system notification sound for alarm playback.
-      await _notification.showTimeUpNow(
-        session: updated,
-        config: config,
-        enableVibration: enableVibration,
-        playSound: true,
-        repeatSoundUntilStopped: repeatSoundUntilStopped,
-      );
 
       // TTS is only reliable when the app is in the foreground.
       if (_isInForeground &&
