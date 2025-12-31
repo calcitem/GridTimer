@@ -56,10 +56,10 @@ Future<void> _initCatcher(Catcher2 catcher) async {
 
   final Catcher2Options profileOptions =
       Catcher2Options(PageReportMode(), <ReportHandler>[
-    ConsoleHandler(),
-    FileHandler(File(path), printLogs: true),
-    EmailManualHandler(Constants.recipientEmails, printLogs: true),
-  ], customParameters: customParameters);
+        ConsoleHandler(),
+        FileHandler(File(path), printLogs: true),
+        EmailManualHandler(Constants.recipientEmails, printLogs: true),
+      ], customParameters: customParameters);
 
   /// Pass root widget (GridTimerApp) along with Catcher configuration:
   catcher.updateConfig(
