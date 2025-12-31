@@ -49,7 +49,7 @@ aplay sound.wav  # 或 afplay sound.wav (Mac)
 
 ```bash
 # 卸载应用（包括数据）
-adb uninstall com.gridtimer.app
+adb uninstall com.calcitem.gridtimer
 
 # 清理 Flutter 构建缓存
 flutter clean
@@ -62,7 +62,7 @@ flutter run
 
 ```bash
 # 重装后运行应用，然后检查通知通道
-adb shell cmd notification list_channels com.gridtimer.app
+adb shell cmd notification list_channels com.calcitem.gridtimer
 ```
 
 **预期输出**：
@@ -81,9 +81,9 @@ gt.alarm.timeup.default.v2:
 **如果看到 v1 通道**：说明卸载不彻底，需要：
 ```bash
 # 强制清除应用数据
-adb shell pm clear com.gridtimer.app
+adb shell pm clear com.calcitem.gridtimer
 # 然后卸载
-adb uninstall com.gridtimer.app
+adb uninstall com.calcitem.gridtimer
 ```
 
 ### 步骤 4: 检查系统音量
@@ -191,7 +191,7 @@ ElevatedButton(
 **解决方案**：
 ```bash
 # 1. 完全卸载
-adb uninstall com.gridtimer.app
+adb uninstall com.calcitem.gridtimer
 
 # 2. 检查是否卸载干净
 adb shell pm list packages | grep gridtimer
@@ -263,7 +263,7 @@ adb shell dumpsys notification | grep gridtimer
 
 在报告问题之前，请确认以下所有项：
 
-- [ ] 已完全卸载旧版本（`adb uninstall com.gridtimer.app`）
+- [ ] 已完全卸载旧版本（`adb uninstall com.calcitem.gridtimer`）
 - [ ] 已清理构建缓存（`flutter clean`）
 - [ ] 已重新安装应用
 - [ ] 已授予通知权限

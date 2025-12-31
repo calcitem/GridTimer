@@ -14,7 +14,7 @@
 
 ```bash
 # 方法 1: 使用 ADB 卸载
-adb uninstall com.gridtimer.app
+adb uninstall com.calcitem.gridtimer
 
 # 方法 2: 在手机上手动卸载
 # 长按应用图标 → 卸载
@@ -124,7 +124,7 @@ adb install build/app/outputs/flutter-apk/app-release.apk
 **解决方案**：
 ```bash
 # 完全卸载应用（包括数据）
-adb uninstall com.gridtimer.app
+adb uninstall com.calcitem.gridtimer
 
 # 或者在手机上：
 # 设置 → 应用 → GridTimer → 存储 → 清除数据 → 卸载
@@ -200,7 +200,7 @@ adb logcat | grep -i "notification"
 
 ```bash
 # 列出所有通知通道
-adb shell cmd notification list_channels com.gridtimer.app
+adb shell cmd notification list_channels com.calcitem.gridtimer
 ```
 
 应该看到类似输出：

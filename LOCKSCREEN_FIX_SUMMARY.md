@@ -75,7 +75,7 @@ final androidDetails = AndroidNotificationDetails(
 
 ```bash
 # 步骤 1: 卸载旧版本（包括数据）
-adb uninstall com.gridtimer.app
+adb uninstall com.calcitem.gridtimer
 
 # 步骤 2: 清理构建缓存
 flutter clean
@@ -96,7 +96,7 @@ flutter run
 ### 1. 卸载并重装应用
 
 ```bash
-adb uninstall com.gridtimer.app
+adb uninstall com.calcitem.gridtimer
 flutter run
 ```
 
@@ -148,7 +148,7 @@ flutter run
 ### 卸载重装后，检查新通道：
 
 ```bash
-adb shell cmd notification list_channels com.gridtimer.app
+adb shell cmd notification list_channels com.calcitem.gridtimer
 ```
 
 **应该看到**：
@@ -167,10 +167,10 @@ gt.alarm.timeup.default.v2:    ← 注意是 v2
 
 ```bash
 # 完全卸载包括数据
-adb uninstall com.gridtimer.app
+adb uninstall com.calcitem.gridtimer
 
 # 或者清除设备上的所有应用数据
-adb shell pm clear com.gridtimer.app
+adb shell pm clear com.calcitem.gridtimer
 ```
 
 ## 💡 如果测试失败

@@ -64,7 +64,7 @@ final androidDetails = AndroidNotificationDetails(
 
 ```bash
 # 卸载
-adb uninstall com.gridtimer.app
+adb uninstall com.calcitem.gridtimer
 
 # 清理
 flutter clean

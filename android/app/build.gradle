@@ -59,6 +59,9 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.debug
+            // 开源应用通常不需要混淆/压缩；显式关闭以避免资源被裁剪导致的运行时问题（如通知图标/声音）。
+            minifyEnabled false
+            shrinkResources false
         }
     }
 }
