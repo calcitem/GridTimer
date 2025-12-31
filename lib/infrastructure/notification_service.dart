@@ -75,16 +75,24 @@ class NotificationService implements INotificationService {
         >();
     if (androidPlugin == null) return;
 
-    // Ensure channel group exists before creating channels that reference it.
-    // This handles the case where ensureAndroidChannels is called before init()
-    // or when the channel group was somehow not created.
-    await androidPlugin.createNotificationChannelGroup(
-      const AndroidNotificationChannelGroup(
-        _channelGroupId,
-        'Timers',
-        description: 'Timer notifications',
-      ),
-    );
+    // Try to create channel group first.
+    // On some OEM ROMs (e.g., MIUI on Android 15), channel group creation may
+    // silently fail or be delayed, causing subsequent channel creation with
+    // groupId to fail with "NotificationChannelGroup doesn't exist".
+    bool groupCreated = false;
+    try {
+      await androidPlugin.createNotificationChannelGroup(
+        const AndroidNotificationChannelGroup(
+          _channelGroupId,
+          'Timers',
+          description: 'Timer notifications',
+        ),
+      );
+      groupCreated = true;
+    } catch (e) {
+      // Channel group creation failed; we'll create channels without groupId.
+      groupCreated = false;
+    }
 
     // Create one channel per sound key
     for (final soundKey in soundKeys) {
@@ -94,7 +102,9 @@ class NotificationService implements INotificationService {
       final channelId = 'gt.alarm.timeup.$soundKey.v2';
       final soundResource = _soundKeyToResource(soundKey);
 
-      final channel = AndroidNotificationChannel(
+      // Try with groupId first, fall back to without groupId if it fails.
+      // This handles OEM ROMs where NotificationChannelGroup creation may fail.
+      final channelWithGroup = AndroidNotificationChannel(
         channelId,
         'Timer Alarm ($soundKey)',
         description: 'Time up notifications for $soundKey ringtone',
@@ -102,23 +112,60 @@ class NotificationService implements INotificationService {
         playSound: true,
         sound: RawResourceAndroidNotificationSound(soundResource),
         enableVibration: true,
-        groupId: _channelGroupId,
+        groupId: groupCreated ? _channelGroupId : null,
       );
 
-      await androidPlugin.createNotificationChannel(channel);
+      try {
+        await androidPlugin.createNotificationChannel(channelWithGroup);
+      } catch (e) {
+        // If channel creation with groupId fails, try without groupId.
+        if (groupCreated) {
+          final channelWithoutGroup = AndroidNotificationChannel(
+            channelId,
+            'Timer Alarm ($soundKey)',
+            description: 'Time up notifications for $soundKey ringtone',
+            importance: Importance.max,
+            playSound: true,
+            sound: RawResourceAndroidNotificationSound(soundResource),
+            enableVibration: true,
+          );
+          await androidPlugin.createNotificationChannel(channelWithoutGroup);
+        } else {
+          rethrow;
+        }
+      }
     }
 
     // Create general channel (silent)
-    const generalChannel = AndroidNotificationChannel(
+    // Also use conditional groupId based on whether group creation succeeded.
+    final generalChannel = AndroidNotificationChannel(
       'gt.general.v1',
       'General',
       description: 'General app notifications',
       importance: Importance.low,
       playSound: false,
       enableVibration: false,
-      groupId: _channelGroupId,
+      groupId: groupCreated ? _channelGroupId : null,
     );
-    await androidPlugin.createNotificationChannel(generalChannel);
+
+    try {
+      await androidPlugin.createNotificationChannel(generalChannel);
+    } catch (e) {
+      // Fallback: create without groupId
+      if (groupCreated) {
+        const generalChannelNoGroup = AndroidNotificationChannel(
+          'gt.general.v1',
+          'General',
+          description: 'General app notifications',
+          importance: Importance.low,
+          playSound: false,
+          enableVibration: false,
+        );
+        await androidPlugin.createNotificationChannel(generalChannelNoGroup);
+      } else {
+        rethrow;
+      }
+    }
   }
 
   @override
