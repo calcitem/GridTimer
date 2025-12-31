@@ -1,0 +1,33 @@
+GridTimer
+Copyright 2026 Calcitem Studio
+
+This product includes software developed by Calcitem Studio.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+---
+
+This product includes the following third-party components:
+
+Sound Effects:
+- Kenney's Interface Sounds (CC0 License - Public Domain)
+  https://kenney.nl/assets/interface-sounds
+
+Flutter and Dart SDK:
+- Copyright Google LLC
+- BSD-3-Clause License
+
+Third-party Flutter packages used in this project are listed in
+pubspec.yaml. Each package is used under its respective license
+(MIT, BSD-3-Clause, or Apache-2.0).
+

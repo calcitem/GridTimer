@@ -756,7 +756,7 @@ tool/
 
 ### 0.1 Target SDK / Play Store requirement
 
-* **targetSdkVersion = 35 (Android 15)** and **compileSdk = 35** for Play submission after **Aug 31, 2025**. ([Google Help][1])
+* **targetSdkVersion = 35 (Android 15)** and **compileSdk = 35** for Play submission after **Aug 31, 2026**. ([Google Help][1])
 * `flutter_local_notifications` also requires **compileSdk ≥ 35**.
 
 ### 0.2 Android 14+ key restrictions (must design around)
@@ -1139,7 +1139,7 @@ AndroidScheduleMode semantics reference: `alarmClock` requires `SCHEDULE_EXACT_A
 
 * Use `NotificationManager.canUseFullScreenIntent()` check (platform side; plugin exposes request method).
 * If not allowed: open settings via `ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT`.
-* Play Console declaration is required starting May 31, 2024; after Jan 22, 2025 only calling/alarm apps are enabled by default.
+* Play Console declaration is required starting May 31, 2024; after Jan 22, 2026 only calling/alarm apps are enabled by default.
 
 ---
 

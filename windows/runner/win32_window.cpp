@@ -2,6 +2,7 @@
 
 #include <dwmapi.h>
 #include <flutter_windows.h>
+#include <shellapi.h>
 
 #include "resource.h"
 
@@ -179,7 +180,18 @@ Win32Window::MessageHandler(HWND hwnd,
                             WPARAM const wparam,
                             LPARAM const lparam) noexcept {
   switch (message) {
+    case WM_CLOSE:
+      // Minimize to tray instead of closing if enabled.
+      if (minimize_to_tray_) {
+        MinimizeToTray();
+        return 0;
+      }
+      // Otherwise perform default close behavior.
+      break;
+
     case WM_DESTROY:
+      // Remove tray icon.
+      RemoveTrayIcon();
       window_handle_ = nullptr;
       Destroy();
       if (quit_on_close_) {
@@ -216,6 +228,34 @@ Win32Window::MessageHandler(HWND hwnd,
     case WM_DWMCOLORIZATIONCOLORCHANGED:
       UpdateTheme(hwnd);
       return 0;
+
+    // Handle tray icon messages.
+    case WM_TRAYICON:
+      switch (lparam) {
+        case WM_LBUTTONDBLCLK:
+          // Double-click tray icon to restore window.
+          RestoreFromTray();
+          return 0;
+        case WM_RBUTTONUP:
+          // Right-click to show context menu.
+          ShowTrayMenu();
+          return 0;
+      }
+      return 0;
+
+    // Handle tray menu commands.
+    case WM_COMMAND:
+      switch (LOWORD(wparam)) {
+        case IDM_TRAY_SHOW:
+          RestoreFromTray();
+          return 0;
+        case IDM_TRAY_EXIT:
+          // Actually exit the application.
+          RemoveTrayIcon();
+          DestroyWindow(hwnd);
+          return 0;
+      }
+      break;
   }
 
   return DefWindowProc(window_handle_, message, wparam, lparam);
@@ -261,6 +301,83 @@ HWND Win32Window::GetHandle() {
 
 void Win32Window::SetQuitOnClose(bool quit_on_close) {
   quit_on_close_ = quit_on_close;
+}
+
+void Win32Window::SetMinimizeToTray(bool minimize_to_tray) {
+  minimize_to_tray_ = minimize_to_tray;
+  if (minimize_to_tray_ && window_handle_ && !tray_icon_created_) {
+    CreateTrayIcon();
+  }
+}
+
+void Win32Window::CreateTrayIcon() {
+  if (tray_icon_created_ || !window_handle_) {
+    return;
+  }
+
+  ZeroMemory(&tray_icon_data_, sizeof(tray_icon_data_));
+  tray_icon_data_.cbSize = sizeof(NOTIFYICONDATAW);
+  tray_icon_data_.hWnd = window_handle_;
+  tray_icon_data_.uID = 1;
+  tray_icon_data_.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
+  tray_icon_data_.uCallbackMessage = WM_TRAYICON;
+
+  // Load application icon.
+  tray_icon_data_.hIcon = LoadIcon(GetModuleHandle(nullptr),
+                                    MAKEINTRESOURCE(IDI_APP_ICON));
+
+  // Set tooltip text.
+  wcscpy_s(tray_icon_data_.szTip, L"GridTimer");
+
+  Shell_NotifyIconW(NIM_ADD, &tray_icon_data_);
+  tray_icon_created_ = true;
+}
+
+void Win32Window::RemoveTrayIcon() {
+  if (tray_icon_created_) {
+    Shell_NotifyIconW(NIM_DELETE, &tray_icon_data_);
+    tray_icon_created_ = false;
+  }
+}
+
+void Win32Window::ShowTrayMenu() {
+  POINT pt;
+  GetCursorPos(&pt);
+
+  HMENU hMenu = CreatePopupMenu();
+  if (hMenu) {
+    // Add menu items.
+    AppendMenuW(hMenu, MF_STRING, IDM_TRAY_SHOW, L"Show Window");
+    AppendMenuW(hMenu, MF_SEPARATOR, 0, nullptr);
+    AppendMenuW(hMenu, MF_STRING, IDM_TRAY_EXIT, L"Exit");
+
+    // Set foreground window to ensure menu closes properly.
+    SetForegroundWindow(window_handle_);
+
+    // Show menu.
+    TrackPopupMenu(hMenu, TPM_BOTTOMALIGN | TPM_LEFTALIGN,
+                   pt.x, pt.y, 0, window_handle_, nullptr);
+
+    DestroyMenu(hMenu);
+  }
+}
+
+void Win32Window::MinimizeToTray() {
+  if (!tray_icon_created_) {
+    CreateTrayIcon();
+  }
+  // Hide window.
+  ShowWindow(window_handle_, SW_HIDE);
+}
+
+void Win32Window::RestoreFromTray() {
+  // Show and activate window.
+  ShowWindow(window_handle_, SW_SHOW);
+  SetForegroundWindow(window_handle_);
+  // Restore if minimized.
+  if (IsIconic(window_handle_)) {
+    ShowWindow(window_handle_, SW_RESTORE);
+  }
 }
 
 bool Win32Window::OnCreate() {

@@ -50,12 +50,12 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     // Let's check using Permission.ignoreBatteryOptimizations.status
     final batteryStatus = await Permission.ignoreBatteryOptimizations.status;
     final batteryIgnored = batteryStatus.isGranted;
-    
+
     // Full screen intent (Android 14+)
     // Permission.scheduleExactAlarm covers exact alarms.
     // Full screen intent is special.
     // We'll trust the service or basic checks.
-    
+
     if (mounted) {
       setState(() {
         _notificationGranted = notification;
@@ -79,9 +79,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Future<void> _completeOnboarding() async {
     await ref.read(appSettingsProvider.notifier).setOnboardingCompleted(true);
     if (mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const GridPage()),
-      );
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (_) => const GridPage()));
     }
   }
 
@@ -246,7 +246,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Widget _buildBatteryStep() {
     return _buildStepContainer(
       title: '电池优化',
-      description: '为了防止系统在后台关闭计时器，建议将 GridTimer 设为“不优化电池使用”。\n\n这能确保长时间计时不会被中断。',
+      description:
+          '为了防止系统在后台关闭计时器，建议将 GridTimer 设为“不优化电池使用”。\n\n这能确保长时间计时不会被中断。',
       icon: Icons.battery_alert,
       action: _batteryOptimizationIgnored
           ? const _GrantedLabel()
@@ -285,17 +286,14 @@ class _GrantedLabel extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.green),
       ),
-      child: Row(
+      child: const Row(
         mainAxisSize: MainAxisSize.min,
-        children: const [
+        children: [
           Icon(Icons.check, color: Colors.green),
           SizedBox(width: 8),
           Text(
             '已授权',
-            style: TextStyle(
-              color: Colors.green,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -315,4 +313,3 @@ class _LifecycleObserver extends WidgetsBindingObserver {
     }
   }
 }
-
