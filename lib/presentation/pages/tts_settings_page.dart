@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/locale_provider.dart';
@@ -14,6 +15,13 @@ class TtsSettingsPage extends ConsumerStatefulWidget {
 
 class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
   bool _isSpeaking = false;
+  StreamSubscription<bool>? _ttsCompletionSubscription;
+
+  @override
+  void dispose() {
+    _ttsCompletionSubscription?.cancel();
+    super.dispose();
+  }
 
   Future<void> _testTts(double volume, double speechRate, double pitch) async {
     if (_isSpeaking) return;
@@ -24,6 +32,9 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
     if (l10n == null) return;
 
     setState(() => _isSpeaking = true);
+
+    // Cancel any existing subscription
+    await _ttsCompletionSubscription?.cancel();
 
     try {
       // Get locale tag for TTS
@@ -37,20 +48,34 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
       await ttsService.setPitch(pitch);
 
       // Test TTS with sample message
-      final testMessage = l10n.timeUpTts('Timer 1');
+      // Use localized test message based on current locale
+      final testMessage = localeTag.startsWith('zh')
+          ? '计时器 1 时间到了'
+          : 'Timer 1 time is up';
 
+      // Listen for completion
+      _ttsCompletionSubscription = ttsService.completionStream.listen(
+        (completed) {
+          if (mounted) {
+            setState(() => _isSpeaking = false);
+          }
+        },
+      );
+
+      // Speak the test message
       await ttsService.speak(text: testMessage, localeTag: localeTag);
 
-      // Wait a bit before resetting speaking state
-      await Future.delayed(const Duration(seconds: 2));
+      // Add a timeout in case completion handler doesn't fire
+      Future.delayed(const Duration(seconds: 10), () {
+        if (mounted && _isSpeaking) {
+          setState(() => _isSpeaking = false);
+        }
+      });
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(l10n.errorText(e.toString()))));
-      }
-    } finally {
-      if (mounted) {
         setState(() => _isSpeaking = false);
       }
     }
@@ -97,7 +122,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(Icons.record_voice_over),
-                    label: Text(_isSpeaking ? 'Speaking...' : l10n.testTts),
+                    label: Text(_isSpeaking ? l10n.speaking : l10n.testTts),
                   ),
                 ],
               ),
@@ -157,7 +182,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                     },
                   ),
                   Text(
-                    'Adjust voice announcement volume',
+                    l10n.ttsVolumeDesc,
                     style: Theme.of(
                       context,
                     ).textTheme.bodySmall?.copyWith(color: Colors.white70),
@@ -184,7 +209,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                           const Icon(Icons.speed),
                           const SizedBox(width: 8),
                           Text(
-                            'Speech Rate',
+                            l10n.ttsSpeechRate,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ],
@@ -211,7 +236,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                     },
                   ),
                   Text(
-                    'Adjust voice announcement speed (0.5 is normal speed)',
+                    l10n.ttsSpeechRateDesc,
                     style: Theme.of(
                       context,
                     ).textTheme.bodySmall?.copyWith(color: Colors.white70),
@@ -238,7 +263,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                           const Icon(Icons.graphic_eq),
                           const SizedBox(width: 8),
                           Text(
-                            'Pitch',
+                            l10n.ttsPitch,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ],
@@ -265,7 +290,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                     },
                   ),
                   Text(
-                    'Adjust voice announcement pitch (1.0 is normal pitch)',
+                    l10n.ttsPitchDesc,
                     style: Theme.of(
                       context,
                     ).textTheme.bodySmall?.copyWith(color: Colors.white70),
@@ -278,7 +303,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Voice announcement language follows app language setting.',
+                l10n.ttsLanguageNote,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Colors.white70,
                   fontStyle: FontStyle.italic,
@@ -295,32 +320,41 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
   }
 
   String _getLanguageName(Locale? locale) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return '';
+    
     if (locale == null) {
-      return 'Follow System';
+      return l10n.followSystem;
     }
     switch (locale.languageCode) {
       case 'zh':
-        return 'Simplified Chinese';
+        return l10n.simplifiedChinese;
       case 'en':
-        return 'English';
+        return l10n.english;
       default:
         return locale.languageCode;
     }
   }
 
   String _getSpeechRateLabel(double rate) {
-    if (rate < 0.3) return 'Very Slow';
-    if (rate < 0.45) return 'Slow';
-    if (rate < 0.55) return 'Normal';
-    if (rate < 0.7) return 'Fast';
-    return 'Very Fast';
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return '';
+    
+    if (rate < 0.3) return l10n.speedVerySlow;
+    if (rate < 0.45) return l10n.speedSlow;
+    if (rate < 0.55) return l10n.speedNormal;
+    if (rate < 0.7) return l10n.speedFast;
+    return l10n.speedVeryFast;
   }
 
   String _getPitchLabel(double pitch) {
-    if (pitch < 0.8) return 'Very Low';
-    if (pitch < 0.95) return 'Low';
-    if (pitch < 1.05) return 'Normal';
-    if (pitch < 1.2) return 'High';
-    return 'Very High';
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return '';
+    
+    if (pitch < 0.8) return l10n.pitchVeryLow;
+    if (pitch < 0.95) return l10n.pitchLow;
+    if (pitch < 1.05) return l10n.pitchNormal;
+    if (pitch < 1.2) return l10n.pitchHigh;
+    return l10n.pitchVeryHigh;
   }
 }

@@ -7,7 +7,7 @@ import '../../core/domain/enums.dart';
 import '../../l10n/app_localizations.dart';
 
 /// A single cell in the 3x3 timer grid.
-class TimerGridCell extends ConsumerWidget {
+class TimerGridCell extends ConsumerStatefulWidget {
   final TimerSession session;
   final TimerConfig config;
   final int slotIndex;
@@ -20,39 +20,99 @@ class TimerGridCell extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TimerGridCell> createState() => _TimerGridCellState();
+}
+
+class _TimerGridCellState extends ConsumerState<TimerGridCell>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _flashController;
+  late Animation<Color?> _colorAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize flash animation controller for red flashing effect
+    _flashController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+
+    // Define color animation from deep red to bright red
+    _colorAnimation = ColorTween(
+      begin: const Color(0xFFB71C1C), // Deep red
+      end: const Color(0xFFFF1744), // Bright red
+    ).animate(_flashController);
+
+    // Start animation if currently ringing
+    if (widget.session.status == TimerStatus.ringing) {
+      _flashController.repeat(reverse: true);
+    }
+  }
+
+  @override
+  void didUpdateWidget(TimerGridCell oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Control animation based on ringing status
+    if (widget.session.status == TimerStatus.ringing &&
+        oldWidget.session.status != TimerStatus.ringing) {
+      // Start flashing when entering ringing state
+      _flashController.repeat(reverse: true);
+    } else if (widget.session.status != TimerStatus.ringing &&
+        oldWidget.session.status == TimerStatus.ringing) {
+      // Stop flashing when leaving ringing state
+      _flashController.stop();
+      _flashController.reset();
+    }
+  }
+
+  @override
+  void dispose() {
+    _flashController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final clock = ref.watch(clockProvider);
-    final remainingMs = session.calculateRemaining(clock.nowEpochMs());
+    final remainingMs = widget.session.calculateRemaining(clock.nowEpochMs());
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
       return const SizedBox.shrink();
     }
     final l10n = l10nNullable;
 
-    final color = _getStatusColor(session.status);
-    final presetMinutes = (config.presetDurationMs / 60000).round();
+    final color = _getStatusColor(widget.session.status);
+    final presetMinutes = (widget.config.presetDurationMs / 60000).round();
 
     return GestureDetector(
       onTap: () => _handleTap(context, ref),
-      child: Container(
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(16), // Rounder corners
-          border: Border.all(
-            color: session.status == TimerStatus.ringing
-                ? const Color(
-                    0xFFFFD600,
-                  ) // Bright yellow border when ringing, highest alert contrast
-                : (session.status == TimerStatus.idle
-                      ? Colors.white54
-                      : Colors.white), // White border for other states
-            width: session.status == TimerStatus.ringing
-                ? 6
-                : 2, // Thicker border when ringing
-          ),
-        ),
-        padding: const EdgeInsets.all(4),
-        child: _buildContent(context, l10n, presetMinutes, remainingMs),
+      child: AnimatedBuilder(
+        animation: _flashController,
+        builder: (context, child) {
+          return Container(
+            decoration: BoxDecoration(
+              // Use animated color for ringing state, static color for others
+              color: widget.session.status == TimerStatus.ringing
+                  ? _colorAnimation.value
+                  : color,
+              borderRadius: BorderRadius.circular(16), // Rounder corners
+              border: Border.all(
+                color: widget.session.status == TimerStatus.ringing
+                    ? const Color(
+                        0xFFFFD600,
+                      ) // Bright yellow border when ringing, highest alert contrast
+                    : (widget.session.status == TimerStatus.idle
+                          ? Colors.white54
+                          : Colors.white), // White border for other states
+                width: widget.session.status == TimerStatus.ringing
+                    ? 6
+                    : 2, // Thicker border when ringing
+              ),
+            ),
+            padding: const EdgeInsets.all(4),
+            child: _buildContent(context, l10n, presetMinutes, remainingMs),
+          );
+        },
       ),
     );
   }
@@ -64,7 +124,7 @@ class TimerGridCell extends ConsumerWidget {
     int presetMinutes,
     int remainingMs,
   ) {
-    switch (session.status) {
+    switch (widget.session.status) {
       case TimerStatus.idle:
         // Initial state: show preset duration
         return _buildIdleContent(l10n, presetMinutes);
@@ -125,7 +185,7 @@ class TimerGridCell extends ConsumerWidget {
     int remainingMs,
   ) {
     final remainingSeconds = (remainingMs / 1000).ceil();
-    final isPaused = session.status == TimerStatus.paused;
+    final isPaused = widget.session.status == TimerStatus.paused;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -250,7 +310,7 @@ class TimerGridCell extends ConsumerWidget {
   void _handleTap(BuildContext context, WidgetRef ref) {
     final timerService = ref.read(timerServiceProvider);
 
-    switch (session.status) {
+    switch (widget.session.status) {
       case TimerStatus.idle:
         // Start timer (with confirmation if others running)
         if (timerService.hasActiveTimers()) {
@@ -319,7 +379,7 @@ class TimerGridCell extends ConsumerWidget {
 
   void _startTimer(WidgetRef ref) {
     final timerService = ref.read(timerServiceProvider);
-    timerService.start(modeId: session.modeId, slotIndex: slotIndex);
+    timerService.start(modeId: widget.session.modeId, slotIndex: widget.slotIndex);
   }
 
   void _showRunningActions(BuildContext context, WidgetRef ref) {
@@ -345,7 +405,7 @@ class TimerGridCell extends ConsumerWidget {
                         textColor: Colors.black, // Black text
                         onPressed: () {
                           Navigator.pop(context);
-                          ref.read(timerServiceProvider).pause(session.timerId);
+                          ref.read(timerServiceProvider).pause(widget.session.timerId);
                         },
                       ),
                     ),
@@ -357,7 +417,7 @@ class TimerGridCell extends ConsumerWidget {
                         color: const Color(0xFF2979FF), // Bright blue
                         onPressed: () {
                           Navigator.pop(context);
-                          ref.read(timerServiceProvider).reset(session.timerId);
+                          ref.read(timerServiceProvider).reset(widget.session.timerId);
                         },
                       ),
                     ),
@@ -408,7 +468,7 @@ class TimerGridCell extends ConsumerWidget {
                           Navigator.pop(context);
                           ref
                               .read(timerServiceProvider)
-                              .resume(session.timerId);
+                              .resume(widget.session.timerId);
                         },
                       ),
                     ),
@@ -420,7 +480,7 @@ class TimerGridCell extends ConsumerWidget {
                         color: Colors.blue.shade700,
                         onPressed: () {
                           Navigator.pop(context);
-                          ref.read(timerServiceProvider).reset(session.timerId);
+                          ref.read(timerServiceProvider).reset(widget.session.timerId);
                         },
                       ),
                     ),
@@ -464,7 +524,7 @@ class TimerGridCell extends ConsumerWidget {
                 color: const Color(0xFFD50000), // Bright red
                 onPressed: () {
                   Navigator.pop(context);
-                  ref.read(timerServiceProvider).stopRinging(session.timerId);
+                  ref.read(timerServiceProvider).stopRinging(widget.session.timerId);
                 },
                 isLarge: true,
               ),
