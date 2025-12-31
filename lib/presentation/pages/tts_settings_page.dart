@@ -20,7 +20,8 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
 
     final ttsService = ref.read(ttsServiceProvider);
     final currentLocale = ref.read(localeProvider);
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
 
     setState(() => _isSpeaking = true);
 
@@ -61,7 +62,13 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10nNullable = AppLocalizations.of(context);
+    if (l10nNullable == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    final l10n = l10nNullable;
     final settingsAsync = ref.watch(appSettingsProvider);
     final currentLocale = ref.watch(localeProvider);
 

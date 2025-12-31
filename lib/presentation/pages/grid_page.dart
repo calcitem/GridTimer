@@ -15,7 +15,13 @@ class GridPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gridState = ref.watch(gridStateProvider);
-    final l10n = AppLocalizations.of(context)!;
+    final l10nNullable = AppLocalizations.of(context);
+    if (l10nNullable == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    final l10n = l10nNullable;
 
     return Scaffold(
       appBar: AppBar(
