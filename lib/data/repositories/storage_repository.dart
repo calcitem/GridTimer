@@ -19,8 +19,18 @@ class StorageRepository {
   Box<TimerSessionHive>? _sessionsBox;
   Box<AppSettingsHive>? _settingsBox;
 
+  /// Ensure storage is initialized
+  Future<void> _ensureInitialized() async {
+    if (_modesBox != null && _sessionsBox != null && _settingsBox != null) return;
+    await init();
+  }
+
   /// Initialize Hive and open boxes.
   Future<void> init() async {
+    // Prevent concurrent initialization or double init if possible, 
+    // though Hive.initFlutter is idempotent usually.
+    if (_modesBox != null) return;
+    
     await Hive.initFlutter('GridTimer');
 
     // Register adapters
@@ -46,22 +56,26 @@ class StorageRepository {
   // ========== Modes ==========
 
   Future<List<TimerGridSet>> getAllModes() async {
+    await _ensureInitialized();
     final box = _modesBox!;
     return box.values.map((h) => h.toDomain()).toList();
   }
 
   Future<TimerGridSet?> getMode(ModeId modeId) async {
+    await _ensureInitialized();
     final box = _modesBox!;
     final hive = box.get(modeId);
     return hive?.toDomain();
   }
 
   Future<void> saveMode(TimerGridSet gridSet) async {
+    await _ensureInitialized();
     final box = _modesBox!;
     await box.put(gridSet.modeId, TimerGridSetHive.fromDomain(gridSet));
   }
 
   Future<void> deleteMode(ModeId modeId) async {
+    await _ensureInitialized();
     final box = _modesBox!;
     await box.delete(modeId);
   }
@@ -69,27 +83,32 @@ class StorageRepository {
   // ========== Sessions ==========
 
   Future<List<TimerSession>> getAllSessions() async {
+    await _ensureInitialized();
     final box = _sessionsBox!;
     return box.values.map((h) => h.toDomain()).toList();
   }
 
   Future<TimerSession?> getSession(TimerId timerId) async {
+    await _ensureInitialized();
     final box = _sessionsBox!;
     final hive = box.get(timerId);
     return hive?.toDomain();
   }
 
   Future<void> saveSession(TimerSession session) async {
+    await _ensureInitialized();
     final box = _sessionsBox!;
     await box.put(session.timerId, TimerSessionHive.fromDomain(session));
   }
 
   Future<void> deleteSession(TimerId timerId) async {
+    await _ensureInitialized();
     final box = _sessionsBox!;
     await box.delete(timerId);
   }
 
   Future<void> clearAllSessions() async {
+    await _ensureInitialized();
     final box = _sessionsBox!;
     await box.clear();
   }
@@ -97,12 +116,14 @@ class StorageRepository {
   // ========== Settings ==========
 
   Future<AppSettings?> getSettings() async {
+    await _ensureInitialized();
     final box = _settingsBox!;
     final hive = box.get(_keySettings);
     return hive?.toDomain();
   }
 
   Future<void> saveSettings(AppSettings settings) async {
+    await _ensureInitialized();
     final box = _settingsBox!;
     await box.put(_keySettings, AppSettingsHive.fromDomain(settings));
   }

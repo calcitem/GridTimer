@@ -131,7 +131,9 @@ class _GridDurationsSettingsPageState
 
   /// 恢复默认值
   Future<void> _resetToDefault() async {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
+    
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -185,7 +187,13 @@ class _GridDurationsSettingsPageState
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10nNullable = AppLocalizations.of(context);
+    if (l10nNullable == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    final l10n = l10nNullable;
 
     return Scaffold(
       appBar: AppBar(

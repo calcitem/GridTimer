@@ -20,7 +20,8 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
     if (_isPlaying) return;
 
     final audioService = ref.read(audioServiceProvider);
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
     
     // Read current audio playback mode from settings
     final settingsAsync = ref.read(appSettingsProvider);
@@ -58,7 +59,8 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
   }
 
   Future<void> _pickAudioFile() async {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
     
     try {
       final result = await FilePicker.platform.pickFiles(
@@ -94,7 +96,8 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
   }
 
   Future<void> _clearCustomAudio() async {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
     
     await ref
         .read(appSettingsProvider.notifier)
@@ -112,7 +115,13 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10nNullable = AppLocalizations.of(context);
+    if (l10nNullable == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    final l10n = l10nNullable;
     final settingsAsync = ref.watch(appSettingsProvider);
 
     return Scaffold(

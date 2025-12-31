@@ -16,7 +16,13 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10nNullable = AppLocalizations.of(context);
+    if (l10nNullable == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    final l10n = l10nNullable;
     final currentLocale = ref.watch(localeProvider);
     final settingsAsync = ref.watch(appSettingsProvider);
 

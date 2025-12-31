@@ -23,7 +23,11 @@ class TimerGridCell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final clock = ref.watch(clockProvider);
     final remainingMs = session.calculateRemaining(clock.nowEpochMs());
-    final l10n = AppLocalizations.of(context)!;
+    final l10nNullable = AppLocalizations.of(context);
+    if (l10nNullable == null) {
+      return const SizedBox.shrink();
+    }
+    final l10n = l10nNullable;
 
     final color = _getStatusColor(session.status);
     final presetMinutes = (config.presetDurationMs / 60000).round();
@@ -264,7 +268,8 @@ class TimerGridCell extends ConsumerWidget {
   }
 
   void _showStartConfirmation(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -311,7 +316,8 @@ class TimerGridCell extends ConsumerWidget {
   }
 
   void _showRunningActions(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -370,7 +376,8 @@ class TimerGridCell extends ConsumerWidget {
   }
 
   void _showPausedActions(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -430,7 +437,8 @@ class TimerGridCell extends ConsumerWidget {
   }
 
   void _showRingingActions(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
     showDialog(
       context: context,
       barrierDismissible: false,
