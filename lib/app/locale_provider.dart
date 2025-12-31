@@ -3,19 +3,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 /// Provider for managing app locale (language) settings.
-final localeProvider = StateNotifierProvider<LocaleNotifier, Locale?>((ref) {
-  return LocaleNotifier();
-});
+final localeProvider = NotifierProvider<LocaleNotifier, Locale?>(LocaleNotifier.new);
 
 /// Notifier for managing locale state.
-class LocaleNotifier extends StateNotifier<Locale?> {
+class LocaleNotifier extends Notifier<Locale?> {
   static const String _boxName = 'settings';
   static const String _localeKey = 'app_locale';
   bool _initialized = false;
 
-  LocaleNotifier() : super(null) {
+  @override
+  Locale? build() {
     // Don't load immediately, wait for Hive to be initialized
     Future.microtask(_loadLocale);
+    return null;
   }
 
   /// Load saved locale from storage
@@ -55,4 +55,3 @@ class LocaleNotifier extends StateNotifier<Locale?> {
     await setLocale(null);
   }
 }
-

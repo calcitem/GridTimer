@@ -82,30 +82,26 @@ final gridStateProvider = StreamProvider((ref) {
 
 /// App settings provider.
 final appSettingsProvider =
-    StateNotifierProvider<AppSettingsNotifier, AsyncValue<AppSettings>>((ref) {
-      return AppSettingsNotifier(storage: ref.watch(storageProvider));
-    });
+    AsyncNotifierProvider<AppSettingsNotifier, AppSettings>(AppSettingsNotifier.new);
 
 /// Notifier for managing app settings state.
-class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
-  final StorageRepository storage;
+class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
   static const String _defaultModeId = 'default';
 
-  AppSettingsNotifier({required this.storage})
-    : super(const AsyncValue.loading()) {
-    // Delay loading to ensure storage is initialized by timer service
-    Future.microtask(_loadSettings);
-  }
-
-  /// Load settings from storage.
-  Future<void> _loadSettings() async {
+  @override
+  Future<AppSettings> build() async {
+    final storage = ref.watch(storageProvider);
+    // Delay loading to ensure storage is initialized by timer service logic if needed?
+    // Actually storage.getSettings() should be fine.
+    // Previous code had: Future.microtask(_loadSettings); and initial state loading.
+    // Here build() is async, so it starts loading immediately.
     try {
       final settings = await storage.getSettings();
-      state = AsyncValue.data(
-        settings ?? const AppSettings(activeModeId: _defaultModeId),
-      );
-    } catch (e, st) {
-      state = AsyncValue.error(e, st);
+      return settings ?? const AppSettings(activeModeId: _defaultModeId);
+    } catch (e) {
+      // Return default on error or rethrow?
+      // AsyncNotifier handles error state.
+      rethrow;
     }
   }
 
@@ -116,10 +112,10 @@ class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
 
     try {
       final updated = updater(current);
-      state = AsyncValue.data(updated);
-      await storage.saveSettings(updated);
+      state = AsyncData(updated);
+      await ref.read(storageProvider).saveSettings(updated);
     } catch (e, st) {
-      state = AsyncValue.error(e, st);
+      state = AsyncError(e, st);
     }
   }
 
