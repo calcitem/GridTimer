@@ -70,15 +70,23 @@ Catcher 2 error reporting has been successfully integrated into the GridTimer ap
 
 To test the error reporting:
 1. Run the app in debug mode: `flutter run`
-2. Navigate to **Settings** → **Debug Tools**
-3. Tap **"Error Test (Debug)"**
-4. Full error report page should appear with:
+2. Navigate to **Settings**
+3. **Enable developer mode**: Quickly tap version number 5 times within 3 seconds
+4. Scroll down to **Debug Tools** section (now visible at the bottom)
+5. Tap **"Error Test (Debug)"**
+6. Full error report page should appear with:
    - Error message
    - Complete stack trace
    - Device information
    - Accept and Cancel buttons
-5. Tap **"Accept"**
-6. Email app should open with pre-filled error report
+7. Tap **"Accept"**
+8. Email app should open with pre-filled error report
+
+**Developer Mode**:
+- Hidden by default for better UX
+- Activated by tapping version number 5 times
+- Debug Tools appear at bottom of settings page
+- Can exit developer mode from Debug Tools section
 
 **If email doesn't open**: Reinstall the app to apply AndroidManifest changes
 

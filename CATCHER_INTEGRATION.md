@@ -160,11 +160,16 @@ When an error occurs on Android:
 To test catcher functionality:
 
 1. Navigate to **Settings Page** in the app
-2. Scroll to the **Debug Tools** section
-3. Tap on **"Error Test (Debug)"**
-4. This will throw a test exception and trigger Catcher's error reporting UI
+2. **Quickly tap the version number 5 times** to enable developer mode
+3. Scroll down to the **Debug Tools** section (now visible at the bottom)
+4. Tap on **"Error Test (Debug)"**
+5. This will throw a test exception and trigger Catcher's error reporting UI
 
-Note: The error test button is only visible when Catcher is enabled (EnvironmentConfig.catcher = true)
+**Developer Mode**:
+- Tap version number 5 times within 3 seconds to enable
+- Debug Tools section appears at the bottom of settings
+- Includes "Exit Developer Mode" option to hide debug tools
+- Error test button only visible when Catcher is enabled (EnvironmentConfig.catcher = true)
 
 ## Troubleshooting
 
@@ -195,15 +200,17 @@ If clicking "Accept" doesn't open an email app:
 
 ### Verify Catcher is Working
 
-1. Navigate to Settings → Debug Tools
-2. Tap "Error Test (Debug)"
-3. You should see a full error report page with:
+1. Navigate to Settings
+2. Quickly tap version number 5 times to enable developer mode
+3. Scroll to Debug Tools section at the bottom
+4. Tap "Error Test (Debug)"
+5. You should see a full error report page with:
    - Error message at the top
    - Complete stack trace
    - Device information
    - Accept and Cancel buttons at the bottom
-4. Tap "Accept" to trigger email sending
-5. System's email app should open with pre-filled error report
+6. Tap "Accept" to trigger email sending
+7. System's email app should open with pre-filled error report
 
 ### Still Not Working?
 
