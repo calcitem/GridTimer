@@ -1,0 +1,213 @@
+# GridTimer Project - AI Agent Guidelines
+
+## Project Overview
+
+GridTimer is a 9-grid parallel timer app optimized for seniors with reliable alarm system and minimalist UI, built with Flutter following Clean Architecture principles.
+
+## Critical Development Rules
+
+### Language Requirements
+
+**MANDATORY**: All source code comments MUST be in **English**.
+- ❌ NEVER use Chinese in code comments
+- ✅ Use English for all inline comments, documentation comments, and code explanations
+- ℹ️ Chinese is ONLY allowed in:
+  - Localization files (`lib/l10n/*.arb`)
+  - Runtime UI strings (when displaying to Chinese users)
+  - Platform-specific localized resources (Android `values-zh`, macOS `zh-Hans.lproj`, etc.)
+  - App Store metadata (`fastlane/metadata/android/zh-CN/`)
+
+### Architecture Principles
+
+This project follows **Clean Architecture**:
+
+```
+Domain Layer (lib/core/domain/)
+  ↓
+Data Layer (lib/data/)
+  ↓
+Infrastructure Layer (lib/infrastructure/)
+  ↓
+Presentation Layer (lib/presentation/)
+```
+
+**Strict Rules:**
+- Domain layer MUST be 100% Flutter-independent
+- Use interfaces for ALL services (define in `lib/core/domain/services/`)
+- ALL business logic goes in domain/infrastructure layers
+- UI should be thin - delegate to services
+- Use dependency injection via Riverpod providers
+
+### Code Quality Standards
+
+1. **Error Handling**: Use asserts for error handling instead of fallback schemes, so errors are surfaced rather than masked.
+
+2. **Code Style**:
+   - Follow `analysis_options.yaml` rules strictly
+   - Use `const` constructors where possible
+   - Prefer single quotes for strings
+   - Run `flutter analyze` before committing
+   - No linter warnings allowed
+
+3. **Code Generation**:
+   - Run `./tool/gen.sh` after modifying:
+     - Hive models (`@HiveType`)
+     - Freezed entities (`@freezed`)
+     - Localization files (`*.arb`)
+
+4. **Maintainability**:
+   - Generated code should prioritize high maintainability, generality, extensibility, and reusability
+   - Use Chinese for code comments in this project (as per user rules)
+   - Keep functions focused and small
+
+### Git Commit Guidelines
+
+- Use conventional commits format:
+  ```
+  feat: add timer pause functionality
+  fix: correct time calculation on resume
+  docs: update setup instructions
+  refactor: extract timer cell widget
+  test: add timer service tests
+  ```
+- Commit messages should be wrapped at 72 ASCII characters
+
+### Testing Requirements
+
+- Write unit tests for domain logic
+- Test on physical Android 14+ device when possible
+- Verify exact alarm permissions work correctly
+- Test TTS in both Chinese and English
+
+### Platform-Specific Considerations
+
+#### Android
+- **Target SDK**: Android 15 (API 36)
+- **Min SDK**: Determined by Flutter SDK
+- **Critical Permissions**:
+  - POST_NOTIFICATIONS (Android 13+)
+  - SCHEDULE_EXACT_ALARM (Android 14+)
+  - USE_FULL_SCREEN_INTENT (Android 14+)
+- **MIUI/OEM Compatibility**: Always test notification channels and TTS on Xiaomi devices
+
+#### iOS/macOS
+- Window titles should be localized based on system language
+- Use appropriate entitlements
+
+### State Management
+
+- **Provider**: Riverpod
+- **Local Storage**: Hive CE
+- State should be persistent and recoverable
+- Timer state MUST survive app kills and device restarts
+
+### Localization
+
+- ALL user-facing text MUST go through ARB files (`lib/l10n/`)
+- Supported languages: English (`en`), Simplified Chinese (`zh`)
+- Use `AppLocalizations.of(context)` for all UI text
+- Never hardcode user-facing strings in UI code
+
+### Performance
+
+- Minimize widget rebuilds
+- Use `const` widgets wherever possible
+- Notification scheduling must be reliable even on low-end devices
+- TTS should not block UI
+
+### What to Avoid
+
+❌ **Never**:
+- Use Chinese in code comments or documentation
+- Bypass .gitignore with workarounds
+- Commit generated files (except those required for build)
+- Use global mutable state
+- Mix business logic into UI widgets
+- Ignore linter warnings
+- Use `// ignore` comments without good reason
+
+### When Working on Features
+
+**Before making changes:**
+1. Check if tests exist and run them
+2. Review the domain layer interfaces
+3. Understand the data flow through layers
+
+**When implementing:**
+1. Define domain entities/interfaces first
+2. Implement infrastructure services
+3. Update data repositories if needed
+4. Build UI last
+5. Add localization strings
+6. Write tests
+
+**Before committing:**
+1. Run `flutter analyze` (must be clean)
+2. Run `flutter test`
+3. Run `./tool/gen.sh` if needed
+4. Ensure no Chinese comments in code
+5. Check that all UI text is localized
+
+### File Organization
+
+```
+lib/
+├── app/              # App configuration, state management, providers
+├── core/
+│   ├── config/       # Constants, environment config
+│   ├── domain/       # Entities, service interfaces, enums, types
+│   └── services/     # Core services (error handling)
+├── data/             # Hive models, repositories
+├── infrastructure/   # Service implementations (notifications, audio, TTS)
+├── presentation/     # UI (pages, dialogs, widgets)
+└── l10n/             # Internationalization (ARB files)
+```
+
+### Common Patterns
+
+**Service Definition** (in `lib/core/domain/services/`):
+```dart
+/// Interface for notification service.
+abstract class INotificationService {
+  Future<void> init();
+  Future<void> scheduleTimeUp({required TimerSession session});
+  // ... more methods
+}
+```
+
+**Service Implementation** (in `lib/infrastructure/`):
+```dart
+/// Android notification service implementation.
+class NotificationService implements INotificationService {
+  @override
+  Future<void> init() async {
+    // Implementation
+  }
+}
+```
+
+**Provider Registration** (in `lib/app/providers.dart`):
+```dart
+final notificationServiceProvider = Provider<INotificationService>((ref) {
+  return NotificationService();
+});
+```
+
+### Debugging Tips
+
+- Enable verbose logging for TTS and notification issues
+- Check Android logcat for native errors
+- MIUI devices may require special handling for notifications
+- TTS may fail silently - always check completion handlers
+
+### Resources
+
+- Main README: See project structure and tech stack
+- CONTRIBUTING.md: Detailed contribution guidelines
+- analysis_options.yaml: Linter rules
+- l10n.yaml: Localization configuration
+
+---
+
+**Remember**: This is a production app for seniors. Reliability and clarity are paramount. Every feature must work flawlessly even after app kills, device restarts, and on problematic OEM ROMs like MIUI.
+
