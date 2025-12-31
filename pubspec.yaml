@@ -43,6 +43,10 @@ dependencies:
   # State Management
   riverpod: ^3.1.0
   flutter_riverpod: ^3.1.0
+  
+  # Error Tracking
+  catcher_2: 2.1.5
+  flutter_email_sender: 8.0.0
 
   # Utilities
   intl: 0.20.2

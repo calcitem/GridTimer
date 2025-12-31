@@ -26,14 +26,29 @@ public final class GeneratedPluginRegistrant {
       Log.e(TAG, "Error registering plugin audioplayers_android, xyz.luan.audioplayers.AudioplayersPlugin", e);
     }
     try {
+      flutterEngine.getPlugins().add(new dev.fluttercommunity.plus.device_info.DeviceInfoPlusPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin device_info_plus, dev.fluttercommunity.plus.device_info.DeviceInfoPlusPlugin", e);
+    }
+    try {
       flutterEngine.getPlugins().add(new com.mr.flutter.plugin.filepicker.FilePickerPlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin file_picker, com.mr.flutter.plugin.filepicker.FilePickerPlugin", e);
     }
     try {
+      flutterEngine.getPlugins().add(new com.sidlatau.flutteremailsender.FlutterEmailSenderPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin flutter_email_sender, com.sidlatau.flutteremailsender.FlutterEmailSenderPlugin", e);
+    }
+    try {
       flutterEngine.getPlugins().add(new com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin flutter_local_notifications, com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.dataxad.flutter_mailer.FlutterMailerPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin flutter_mailer, com.dataxad.flutter_mailer.FlutterMailerPlugin", e);
     }
     try {
       flutterEngine.getPlugins().add(new io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin());
@@ -46,9 +61,19 @@ public final class GeneratedPluginRegistrant {
       Log.e(TAG, "Error registering plugin flutter_tts, com.tundralabs.fluttertts.FlutterTtsPlugin", e);
     }
     try {
+      flutterEngine.getPlugins().add(new io.github.ponnamkarthik.toast.fluttertoast.FlutterToastPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin fluttertoast, io.github.ponnamkarthik.toast.fluttertoast.FlutterToastPlugin", e);
+    }
+    try {
       flutterEngine.getPlugins().add(new es.antonborri.home_widget.HomeWidgetPlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin home_widget, es.antonborri.home_widget.HomeWidgetPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new dev.fluttercommunity.plus.packageinfo.PackageInfoPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin package_info_plus, dev.fluttercommunity.plus.packageinfo.PackageInfoPlugin", e);
     }
     try {
       flutterEngine.getPlugins().add(new io.flutter.plugins.pathprovider.PathProviderPlugin());
