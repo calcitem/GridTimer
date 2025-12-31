@@ -31,7 +31,9 @@ class MainActivity: FlutterActivity() {
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         }
                         startActivity(intent)
-                        result.success(true)
+                        // Dart 端使用 invokeMethod<void>()，这里必须返回 null，
+                        // 否则会触发类型转换异常，导致看起来“跳转后又立刻返回”。
+                        result.success(null)
                     } catch (e: Exception) {
                         // Fallback: open the app notification settings page (some OEM ROMs/versions
                         // may not support the channel settings intent).
@@ -41,7 +43,8 @@ class MainActivity: FlutterActivity() {
                                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             }
                             startActivity(intent)
-                            result.success(true)
+                            // 同上：保持与 invokeMethod<void>() 兼容
+                            result.success(null)
                         } catch (e2: Exception) {
                             result.error("open_failed", e2.toString(), null)
                         }

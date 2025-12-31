@@ -18,6 +18,7 @@ class OnboardingPage extends ConsumerStatefulWidget {
 class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  late final _LifecycleObserver _lifecycleObserver;
 
   // Permission statuses
   bool _notificationGranted = false;
@@ -29,12 +30,14 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     super.initState();
     _checkPermissions();
     // Re-check permissions when returning from settings
-    WidgetsBinding.instance.addObserver(_LifecycleObserver(this));
+    _lifecycleObserver = _LifecycleObserver(this);
+    WidgetsBinding.instance.addObserver(_lifecycleObserver);
   }
 
   @override
   void dispose() {
     _pageController.dispose();
+    WidgetsBinding.instance.removeObserver(_lifecycleObserver);
     super.dispose();
   }
 
