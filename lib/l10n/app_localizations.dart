@@ -769,6 +769,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check Sound Settings'**
   String get onboardingCheckSoundBtn;
+
+  /// Grant permission button
+  ///
+  /// In en, this message translates to:
+  /// **'Grant Permission'**
+  String get grantPermission;
+
+  /// Notification permission granted message
+  ///
+  /// In en, this message translates to:
+  /// **'Notification permission granted'**
+  String get notificationPermissionGranted;
+
+  /// Notification permission denied message
+  ///
+  /// In en, this message translates to:
+  /// **'Notification permission denied, please grant manually in system settings'**
+  String get notificationPermissionDenied;
+
+  /// Exact alarm permission option
+  ///
+  /// In en, this message translates to:
+  /// **'Exact Alarm Permission'**
+  String get exactAlarmPermission;
+
+  /// Description for exact alarm permission
+  ///
+  /// In en, this message translates to:
+  /// **'Ensure timers notify on time (Required on Android 14+)'**
+  String get exactAlarmPermissionDesc;
+
+  /// Battery optimization settings option
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Optimization Settings'**
+  String get batteryOptimizationSettings;
+
+  /// Description for battery optimization
+  ///
+  /// In en, this message translates to:
+  /// **'Disable battery optimization to ensure reliable background alarms'**
+  String get batteryOptimizationDesc;
+
+  /// Alarm sound settings option
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm Sound Settings'**
+  String get alarmSoundSettings;
+
+  /// Description for alarm sound settings
+  ///
+  /// In en, this message translates to:
+  /// **'If \'Timer Alarm (default)\' sound is set to \'None\', timer will only show notification without sound'**
+  String get alarmSoundSettingsDesc;
+
+  /// Go to settings button
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Settings'**
+  String get goToSettings;
+
+  /// Settings button label
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsButton;
+
+  /// Error message when opening channel settings fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to open notification channel settings: {error}'**
+  String failedToOpenChannelSettings(String error);
+
+  /// Developer mode enabled message
+  ///
+  /// In en, this message translates to:
+  /// **'Developer mode enabled'**
+  String get developerModeEnabled;
+
+  /// Developer mode disabled message
+  ///
+  /// In en, this message translates to:
+  /// **'Developer mode disabled'**
+  String get developerModeDisabled;
 }
 
 class _AppLocalizationsDelegate

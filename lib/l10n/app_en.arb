@@ -583,5 +583,81 @@
   "onboardingCheckSoundBtn": "Check Sound Settings",
   "@onboardingCheckSoundBtn": {
     "description": "Onboarding check sound button label"
+  },
+
+  "grantPermission": "Grant Permission",
+  "@grantPermission": {
+    "description": "Grant permission button"
+  },
+
+  "notificationPermissionGranted": "Notification permission granted",
+  "@notificationPermissionGranted": {
+    "description": "Notification permission granted message"
+  },
+
+  "notificationPermissionDenied": "Notification permission denied, please grant manually in system settings",
+  "@notificationPermissionDenied": {
+    "description": "Notification permission denied message"
+  },
+
+  "exactAlarmPermission": "Exact Alarm Permission",
+  "@exactAlarmPermission": {
+    "description": "Exact alarm permission option"
+  },
+
+  "exactAlarmPermissionDesc": "Ensure timers notify on time (Required on Android 14+)",
+  "@exactAlarmPermissionDesc": {
+    "description": "Description for exact alarm permission"
+  },
+
+  "batteryOptimizationSettings": "Battery Optimization Settings",
+  "@batteryOptimizationSettings": {
+    "description": "Battery optimization settings option"
+  },
+
+  "batteryOptimizationDesc": "Disable battery optimization to ensure reliable background alarms",
+  "@batteryOptimizationDesc": {
+    "description": "Description for battery optimization"
+  },
+
+  "alarmSoundSettings": "Alarm Sound Settings",
+  "@alarmSoundSettings": {
+    "description": "Alarm sound settings option"
+  },
+
+  "alarmSoundSettingsDesc": "If 'Timer Alarm (default)' sound is set to 'None', timer will only show notification without sound",
+  "@alarmSoundSettingsDesc": {
+    "description": "Description for alarm sound settings"
+  },
+
+  "goToSettings": "Go to Settings",
+  "@goToSettings": {
+    "description": "Go to settings button"
+  },
+
+  "settingsButton": "Settings",
+  "@settingsButton": {
+    "description": "Settings button label"
+  },
+
+  "failedToOpenChannelSettings": "Failed to open notification channel settings: {error}",
+  "@failedToOpenChannelSettings": {
+    "description": "Error message when opening channel settings fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permission denied"
+      }
+    }
+  },
+
+  "developerModeEnabled": "Developer mode enabled",
+  "@developerModeEnabled": {
+    "description": "Developer mode enabled message"
+  },
+
+  "developerModeDisabled": "Developer mode disabled",
+  "@developerModeDisabled": {
+    "description": "Developer mode disabled message"
   }
 }

@@ -365,4 +365,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingCheckSoundBtn => 'Check Sound Settings';
+
+  @override
+  String get grantPermission => 'Grant Permission';
+
+  @override
+  String get notificationPermissionGranted => 'Notification permission granted';
+
+  @override
+  String get notificationPermissionDenied =>
+      'Notification permission denied, please grant manually in system settings';
+
+  @override
+  String get exactAlarmPermission => 'Exact Alarm Permission';
+
+  @override
+  String get exactAlarmPermissionDesc =>
+      'Ensure timers notify on time (Required on Android 14+)';
+
+  @override
+  String get batteryOptimizationSettings => 'Battery Optimization Settings';
+
+  @override
+  String get batteryOptimizationDesc =>
+      'Disable battery optimization to ensure reliable background alarms';
+
+  @override
+  String get alarmSoundSettings => 'Alarm Sound Settings';
+
+  @override
+  String get alarmSoundSettingsDesc =>
+      'If \'Timer Alarm (default)\' sound is set to \'None\', timer will only show notification without sound';
+
+  @override
+  String get goToSettings => 'Go to Settings';
+
+  @override
+  String get settingsButton => 'Settings';
+
+  @override
+  String failedToOpenChannelSettings(String error) {
+    return 'Failed to open notification channel settings: $error';
+  }
+
+  @override
+  String get developerModeEnabled => 'Developer mode enabled';
+
+  @override
+  String get developerModeDisabled => 'Developer mode disabled';
 }

@@ -27,6 +27,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   // Tap on version to enable developer mode (5 taps within 3 seconds)
   void _onVersionTap() {
+    final l10nNullable = AppLocalizations.of(context);
+    if (l10nNullable == null) return;
+    final l10n = l10nNullable;
+
     final now = DateTime.now();
     if (_lastTapTime == null ||
         now.difference(_lastTapTime!) > const Duration(seconds: 3)) {
@@ -42,9 +46,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         _isDeveloperMode = true;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Developer mode enabled'),
-          duration: Duration(seconds: 2),
+        SnackBar(
+          content: Text(l10n.developerModeEnabled),
+          duration: const Duration(seconds: 2),
         ),
       );
     }
@@ -225,57 +229,51 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       SnackBar(
                         content: Text(
                           granted
-                              ? 'Notification permission granted'
-                              : 'Notification permission denied, please grant manually in system settings',
+                              ? l10n.notificationPermissionGranted
+                              : l10n.notificationPermissionDenied,
                         ),
                         duration: const Duration(seconds: 2),
                       ),
                     );
                   }
                 },
-                child: const Text('Grant Permission'),
+                child: Text(l10n.grantPermission),
               ),
             ),
 
             // Exact Alarm Permission
             ListTile(
               leading: const Icon(Icons.alarm),
-              title: const Text('Exact Alarm Permission'),
-              subtitle: const Text(
-                'Ensure timers notify on time (Required on Android 14+)',
-              ),
+              title: Text(l10n.exactAlarmPermission),
+              subtitle: Text(l10n.exactAlarmPermissionDesc),
               trailing: ElevatedButton(
                 onPressed: () async {
                   final permissionService = ref.read(permissionServiceProvider);
                   await permissionService.openExactAlarmSettings();
                 },
-                child: const Text('Settings'),
+                child: Text(l10n.settingsButton),
               ),
             ),
 
             // Battery Optimization
             ListTile(
               leading: const Icon(Icons.battery_saver),
-              title: const Text('Battery Optimization Settings'),
-              subtitle: const Text(
-                'Disable battery optimization to ensure reliable background alarms',
-              ),
+              title: Text(l10n.batteryOptimizationSettings),
+              subtitle: Text(l10n.batteryOptimizationDesc),
               trailing: ElevatedButton(
                 onPressed: () async {
                   final permissionService = ref.read(permissionServiceProvider);
                   await permissionService.openBatteryOptimizationSettings();
                 },
-                child: const Text('Settings'),
+                child: Text(l10n.settingsButton),
               ),
             ),
 
             // Alarm Channel Sound (Android 8+)
             ListTile(
               leading: const Icon(Icons.volume_up),
-              title: const Text('Alarm Sound Settings'),
-              subtitle: const Text(
-                "If 'Timer Alarm (default)' sound is set to 'None', timer will only show notification without sound",
-              ),
+              title: Text(l10n.alarmSoundSettings),
+              subtitle: Text(l10n.alarmSoundSettingsDesc),
               trailing: ElevatedButton(
                 onPressed: () async {
                   final permissionService = ref.read(permissionServiceProvider);
@@ -288,14 +286,14 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            'Failed to open notification channel settings: $e',
+                            l10n.failedToOpenChannelSettings(e.toString()),
                           ),
                         ),
                       );
                     }
                   }
                 },
-                child: const Text('Go to Settings'),
+                child: Text(l10n.goToSettings),
               ),
             ),
 
@@ -363,9 +361,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     _versionTapCount = 0;
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Developer mode disabled'),
-                      duration: Duration(seconds: 2),
+                    SnackBar(
+                      content: Text(l10n.developerModeDisabled),
+                      duration: const Duration(seconds: 2),
                     ),
                   );
                 },
