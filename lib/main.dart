@@ -1,19 +1,51 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:ui';
+
+import 'package:catcher_2/catcher_2.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'app/locale_provider.dart';
 import 'app/providers.dart';
+import 'core/config/constants.dart';
+import 'core/config/environment_config.dart';
 import 'l10n/app_localizations.dart';
 import 'presentation/pages/grid_page.dart';
 import 'presentation/pages/onboarding_page.dart';
 
-void main() async {
+part 'core/services/catcher_service.dart';
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  debugPrint('Environment [catcher]: ${EnvironmentConfig.catcher}');
+  debugPrint('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
+  debugPrint('Environment [test]: ${EnvironmentConfig.test}');
 
   // Initialize Hive before anything else
   await Hive.initFlutter('GridTimer');
 
-  runApp(const ProviderScope(child: GridTimerApp()));
+  if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
+    catcher = Catcher2(
+      rootWidget: const ProviderScope(child: GridTimerApp()),
+      ensureInitialized: true,
+    );
+
+    await _initCatcher(catcher);
+
+    PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+      if (EnvironmentConfig.catcher == true) {
+        Catcher2.reportCheckedError(error, stack);
+      }
+      return true;
+    };
+  } else {
+    runApp(const ProviderScope(child: GridTimerApp()));
+  }
 }
 
 class GridTimerApp extends ConsumerStatefulWidget {
@@ -77,6 +109,11 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
     final settingsAsync = ref.watch(appSettingsProvider);
 
     return MaterialApp(
+      /// Add navigator key from Catcher.
+      /// It will be used to navigate user to report page or to show dialog.
+      navigatorKey: (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
+          ? Catcher2.navigatorKey
+          : null,
       title: 'GridTimer',
       debugShowCheckedModeBanner: false,
       locale: locale,

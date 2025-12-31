@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
+import '../../core/config/environment_config.dart';
 import '../../l10n/app_localizations.dart';
 import 'audio_playback_settings_page.dart';
 import 'audio_test_page.dart';
@@ -18,9 +19,7 @@ class SettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final l10n = l10nNullable;
     final currentLocale = ref.watch(localeProvider);
@@ -91,6 +90,9 @@ class SettingsPage extends ConsumerWidget {
 
             const Divider(),
 
+            // Debug Tools Section
+            _buildSectionHeader('Debug Tools'),
+
             // Audio Test (for debugging)
             ListTile(
               leading: const Icon(Icons.bug_report, color: Colors.orange),
@@ -105,6 +107,21 @@ class SettingsPage extends ConsumerWidget {
                 );
               },
             ),
+
+            // Catcher Error Test (only shown when catcher is enabled)
+            if (EnvironmentConfig.catcher)
+              ListTile(
+                leading: const Icon(Icons.error_outline, color: Colors.red),
+                title: const Text('Error Test (Debug)'),
+                subtitle: const Text('Test error reporting system'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: () {
+                  // Throw a test exception to verify Catcher is working
+                  throw Exception(
+                    'This is a test exception to verify Catcher error reporting system is working properly',
+                  );
+                },
+              ),
 
             const Divider(),
 
@@ -206,7 +223,9 @@ class SettingsPage extends ConsumerWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          granted ? 'Notification permission granted' : 'Notification permission denied, please grant manually in system settings',
+                          granted
+                              ? 'Notification permission granted'
+                              : 'Notification permission denied, please grant manually in system settings',
                         ),
                         duration: const Duration(seconds: 2),
                       ),
@@ -221,7 +240,9 @@ class SettingsPage extends ConsumerWidget {
             ListTile(
               leading: const Icon(Icons.alarm),
               title: const Text('Exact Alarm Permission'),
-              subtitle: const Text('Ensure timers notify on time (Required on Android 14+)'),
+              subtitle: const Text(
+                'Ensure timers notify on time (Required on Android 14+)',
+              ),
               trailing: ElevatedButton(
                 onPressed: () async {
                   final permissionService = ref.read(permissionServiceProvider);
@@ -235,7 +256,9 @@ class SettingsPage extends ConsumerWidget {
             ListTile(
               leading: const Icon(Icons.battery_saver),
               title: const Text('Battery Optimization Settings'),
-              subtitle: const Text('Disable battery optimization to ensure reliable background alarms'),
+              subtitle: const Text(
+                'Disable battery optimization to ensure reliable background alarms',
+              ),
               trailing: ElevatedButton(
                 onPressed: () async {
                   final permissionService = ref.read(permissionServiceProvider);
@@ -261,9 +284,13 @@ class SettingsPage extends ConsumerWidget {
                     );
                   } catch (e) {
                     if (context.mounted) {
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text('Failed to open notification channel settings: $e')));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Failed to open notification channel settings: $e',
+                          ),
+                        ),
+                      );
                     }
                   }
                 },
@@ -300,7 +327,12 @@ class SettingsPage extends ConsumerWidget {
   /// Build a section header widget.
   Widget _buildSectionHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 12), // Increased vertical spacing
+      padding: const EdgeInsets.fromLTRB(
+        16,
+        24,
+        16,
+        12,
+      ), // Increased vertical spacing
       child: Text(
         title,
         style: const TextStyle(
