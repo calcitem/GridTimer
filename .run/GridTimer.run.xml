@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <!-- Default debug configuration for GridTimer -->
+  <configuration default="false" name="GridTimer" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+    <method v="2" />
+  </configuration>
+</component>
+

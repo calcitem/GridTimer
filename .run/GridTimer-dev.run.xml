@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <!-- Development mode with additional debugging features enabled -->
+  <configuration default="false" name="GridTimer-dev" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="additionalArgs" value="--dart-define dev_mode=true --dart-define DEV_MODE=true" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+    <method v="2" />
+  </configuration>
+</component>
+
