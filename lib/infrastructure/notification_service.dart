@@ -75,6 +75,17 @@ class NotificationService implements INotificationService {
         >();
     if (androidPlugin == null) return;
 
+    // Ensure channel group exists before creating channels that reference it.
+    // This handles the case where ensureAndroidChannels is called before init()
+    // or when the channel group was somehow not created.
+    await androidPlugin.createNotificationChannelGroup(
+      const AndroidNotificationChannelGroup(
+        _channelGroupId,
+        'Timers',
+        description: 'Timer notifications',
+      ),
+    );
+
     // Create one channel per sound key
     for (final soundKey in soundKeys) {
       // v2: Stable channel ID. On Android 8+, channel settings are controlled by the user.
