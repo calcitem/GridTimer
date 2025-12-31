@@ -127,6 +127,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   Widget _buildBottomControls(int totalPages) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Row(
@@ -159,7 +161,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               }
             },
             child: Text(
-              _currentPage == totalPages - 1 ? 'Start Using' : 'Next',
+              _currentPage == totalPages - 1
+                  ? l10n.onboardingStartUsing
+                  : l10n.onboardingNext,
             ),
           ),
         ],
@@ -199,20 +203,22 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   Widget _buildWelcomeStep() {
+    final l10n = AppLocalizations.of(context)!;
+
     return _buildStepContainer(
-      title: 'Welcome to GridTimer',
-      description:
-          'To ensure the timer runs accurately, we need to configure some simple settings.\n\nThis will only take a minute.',
+      title: l10n.onboardingWelcomeTitle,
+      description: l10n.onboardingWelcomeDesc,
       icon: Icons.timer,
       action: const SizedBox.shrink(),
     );
   }
 
   Widget _buildNotificationStep(bool isAndroid) {
+    final l10n = AppLocalizations.of(context)!;
+
     return _buildStepContainer(
-      title: 'Notification Permission',
-      description:
-          'GridTimer needs notification permission to remind you when countdown ends.\n\nWithout this permission, you may miss timer completion alerts.',
+      title: l10n.onboardingNotificationTitle,
+      description: l10n.onboardingNotificationDesc,
       icon: Icons.notifications_active,
       action: _notificationGranted
           ? const _GrantedLabel()
@@ -225,16 +231,17 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 await _checkPermissions();
               },
               icon: const Icon(Icons.check),
-              label: const Text('Grant Notification Permission'),
+              label: Text(l10n.onboardingGrantNotification),
             ),
     );
   }
 
   Widget _buildExactAlarmStep() {
+    final l10n = AppLocalizations.of(context)!;
+
     return _buildStepContainer(
-      title: 'Exact Alarm Permission',
-      description:
-          'To ensure timer accuracy to the second, GridTimer needs "exact alarm" permission.\n\nPlease allow in the upcoming dialog or settings.',
+      title: l10n.onboardingExactAlarmTitle,
+      description: l10n.onboardingExactAlarmDesc,
       icon: Icons.access_alarm,
       action: _exactAlarmGranted
           ? const _GrantedLabel()
@@ -246,16 +253,17 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 await _checkPermissions();
               },
               icon: const Icon(Icons.settings),
-              label: const Text('Grant Exact Alarm Permission'),
+              label: Text(l10n.onboardingGrantExactAlarm),
             ),
     );
   }
 
   Widget _buildBatteryStep() {
+    final l10n = AppLocalizations.of(context)!;
+
     return _buildStepContainer(
-      title: 'Battery Optimization',
-      description:
-          'To prevent system from closing timer in background, recommend setting GridTimer to "Don\'t optimize battery usage".\n\nThis ensures long-duration timers won\'t be interrupted.',
+      title: l10n.onboardingBatteryTitle,
+      description: l10n.onboardingBatteryDesc,
       icon: Icons.battery_alert,
       action: _batteryOptimizationIgnored
           ? const _GrantedLabel()
@@ -267,7 +275,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 // but checking on resume helps.
               },
               icon: const Icon(Icons.settings_power),
-              label: const Text('Open Battery Optimization Settings'),
+              label: Text(l10n.onboardingOpenBatterySettings),
             ),
     );
   }
@@ -299,10 +307,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   Widget _buildCompletionStep() {
+    final l10n = AppLocalizations.of(context)!;
+
     return _buildStepContainer(
-      title: 'Ready to Go',
-      description:
-          'All settings are complete!\n\nYou can reconfigure these options anytime in settings page.',
+      title: l10n.onboardingCompletionTitle,
+      description: l10n.onboardingCompletionDesc,
       icon: Icons.check_circle_outline,
       action: const SizedBox.shrink(), // Button is in bottom bar
     );
@@ -314,6 +323,8 @@ class _GrantedLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
@@ -321,14 +332,17 @@ class _GrantedLabel extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.green),
       ),
-      child: const Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check, color: Colors.green),
-          SizedBox(width: 8),
+          const Icon(Icons.check, color: Colors.green),
+          const SizedBox(width: 8),
           Text(
-            'Granted',
-            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+            l10n.onboardingGranted,
+            style: const TextStyle(
+              color: Colors.green,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),

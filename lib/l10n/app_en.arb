@@ -759,5 +759,85 @@
   "pitchVeryHigh": "Very High",
   "@pitchVeryHigh": {
     "description": "Very high pitch label"
+  },
+
+  "onboardingNext": "Next",
+  "@onboardingNext": {
+    "description": "Onboarding next button"
+  },
+
+  "onboardingStartUsing": "Start Using",
+  "@onboardingStartUsing": {
+    "description": "Onboarding start using button"
+  },
+
+  "onboardingWelcomeTitle": "Welcome to GridTimer",
+  "@onboardingWelcomeTitle": {
+    "description": "Onboarding welcome step title"
+  },
+
+  "onboardingWelcomeDesc": "To ensure the timer runs accurately, we need to configure some simple settings.\n\nThis will only take a minute.",
+  "@onboardingWelcomeDesc": {
+    "description": "Onboarding welcome step description"
+  },
+
+  "onboardingNotificationTitle": "Notification Permission",
+  "@onboardingNotificationTitle": {
+    "description": "Onboarding notification step title"
+  },
+
+  "onboardingNotificationDesc": "GridTimer needs notification permission to remind you when countdown ends.\n\nWithout this permission, you may miss timer completion alerts.",
+  "@onboardingNotificationDesc": {
+    "description": "Onboarding notification step description"
+  },
+
+  "onboardingGrantNotification": "Grant Notification Permission",
+  "@onboardingGrantNotification": {
+    "description": "Grant notification permission button"
+  },
+
+  "onboardingExactAlarmTitle": "Exact Alarm Permission",
+  "@onboardingExactAlarmTitle": {
+    "description": "Onboarding exact alarm step title"
+  },
+
+  "onboardingExactAlarmDesc": "To ensure timer accuracy to the second, GridTimer needs \"exact alarm\" permission.\n\nPlease allow in the upcoming dialog or settings.",
+  "@onboardingExactAlarmDesc": {
+    "description": "Onboarding exact alarm step description"
+  },
+
+  "onboardingGrantExactAlarm": "Grant Exact Alarm Permission",
+  "@onboardingGrantExactAlarm": {
+    "description": "Grant exact alarm permission button"
+  },
+
+  "onboardingBatteryTitle": "Battery Optimization",
+  "@onboardingBatteryTitle": {
+    "description": "Onboarding battery optimization step title"
+  },
+
+  "onboardingBatteryDesc": "To prevent system from closing timer in background, recommend setting GridTimer to \"Don't optimize battery usage\".\n\nThis ensures long-duration timers won't be interrupted.",
+  "@onboardingBatteryDesc": {
+    "description": "Onboarding battery optimization step description"
+  },
+
+  "onboardingOpenBatterySettings": "Open Battery Optimization Settings",
+  "@onboardingOpenBatterySettings": {
+    "description": "Open battery optimization settings button"
+  },
+
+  "onboardingCompletionTitle": "Ready to Go",
+  "@onboardingCompletionTitle": {
+    "description": "Onboarding completion step title"
+  },
+
+  "onboardingCompletionDesc": "All settings are complete!\n\nYou can reconfigure these options anytime in settings page.",
+  "@onboardingCompletionDesc": {
+    "description": "Onboarding completion step description"
+  },
+
+  "onboardingGranted": "Granted",
+  "@onboardingGranted": {
+    "description": "Permission granted label"
   }
 }
