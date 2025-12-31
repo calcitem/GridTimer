@@ -48,6 +48,10 @@ abstract class AppSettings with _$AppSettings {
     /// TTS pitch (0.5 - 2.0, where 1.0 is normal).
     @Default(1.0) double ttsPitch,
 
+    /// TTS language override. Null means follow system/app language.
+    /// Values: 'zh-CN', 'en-US', or null for auto.
+    String? ttsLanguage,
+
     /// Grid custom duration configuration (in seconds), 9 elements for 9 grid slots
     /// Default values: [10s, 2min, 3min, 5min, 8min, 10min, 15min, 20min, 45min]
     @Default([10, 120, 180, 300, 480, 600, 900, 1200, 2700])

@@ -67,6 +67,9 @@ class AppSettingsHive {
   @HiveField(18, defaultValue: 2.5)
   final double shakeSensitivity;
 
+  @HiveField(19)
+  final String? ttsLanguage;
+
   AppSettingsHive({
     required this.activeModeId,
     required this.flashEnabled,
@@ -86,6 +89,7 @@ class AppSettingsHive {
     required this.audioIntervalPauseMinutes,
     required this.gestureActionsMap,
     required this.shakeSensitivity,
+    this.ttsLanguage,
   });
 
   /// Convert from domain entity.
@@ -115,6 +119,7 @@ class AppSettingsHive {
       audioIntervalPauseMinutes: settings.audioIntervalPauseMinutes,
       gestureActionsMap: gestureActionsMap,
       shakeSensitivity: settings.shakeSensitivity,
+      ttsLanguage: settings.ttsLanguage,
     );
   }
 
@@ -149,6 +154,7 @@ class AppSettingsHive {
       audioIntervalPauseMinutes: audioIntervalPauseMinutes,
       gestureActions: gestureActions,
       shakeSensitivity: shakeSensitivity,
+      ttsLanguage: ttsLanguage,
     );
   }
 }

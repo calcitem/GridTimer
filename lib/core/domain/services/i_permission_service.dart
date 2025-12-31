@@ -20,6 +20,9 @@ abstract interface class IPermissionService {
   Future<void> openFullScreenIntentSettings();
   Future<void> openBatteryOptimizationSettings();
   Future<void> openAppSettings();
+
+  /// Opens the system TTS (Text-to-Speech) settings.
+  Future<void> openTtsSettings();
 }
 
 

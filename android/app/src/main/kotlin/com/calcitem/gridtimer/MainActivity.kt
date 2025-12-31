@@ -32,7 +32,7 @@ class MainActivity: FlutterActivity() {
                         }
                         startActivity(intent)
                         // Dart 端使用 invokeMethod<void>()，这里必须返回 null，
-                        // 否则会触发类型转换异常，导致看起来“跳转后又立刻返回”。
+                        // 否则会触发类型转换异常，导致看起来"跳转后又立刻返回"。
                         result.success(null)
                     } catch (e: Exception) {
                         // Fallback: open the app notification settings page (some OEM ROMs/versions
@@ -48,6 +48,51 @@ class MainActivity: FlutterActivity() {
                         } catch (e2: Exception) {
                             result.error("open_failed", e2.toString(), null)
                         }
+                    }
+                }
+
+                "openTtsSettings" -> {
+                    // Try multiple methods to open TTS settings, as different Android versions
+                    // and OEM ROMs may require different intents
+                    val intentsToTry = listOf(
+                        // Standard TTS settings action
+                        Intent("com.android.settings.TTS_SETTINGS"),
+                        // Alternative: TextToSpeech settings activity
+                        Intent().apply {
+                            action = Intent.ACTION_MAIN
+                            setClassName(
+                                "com.android.settings",
+                                "com.android.settings.Settings\$TextToSpeechSettingsActivity"
+                            )
+                        },
+                        // Xiaomi/MIUI specific
+                        Intent().apply {
+                            action = Intent.ACTION_MAIN
+                            setClassName(
+                                "com.android.settings",
+                                "com.android.settings.Settings\$AccessibilitySettingsActivity"
+                            )
+                        },
+                        // Final fallback: accessibility settings
+                        Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                    )
+
+                    var success = false
+                    for (intent in intentsToTry) {
+                        try {
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            success = true
+                            break
+                        } catch (e: Exception) {
+                            // Try next intent
+                        }
+                    }
+
+                    if (success) {
+                        result.success(null)
+                    } else {
+                        result.error("open_failed", "Could not open TTS settings", null)
                     }
                 }
 

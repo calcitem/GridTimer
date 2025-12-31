@@ -208,6 +208,12 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     await updateSettings((s) => s.copyWith(ttsPitch: pitch));
   }
 
+  /// Update TTS language.
+  /// Pass null to follow system/app language.
+  Future<void> updateTtsLanguage(String? language) async {
+    await updateSettings((s) => s.copyWith(ttsLanguage: language));
+  }
+
   /// Update audio playback mode.
   Future<void> updateAudioPlaybackMode(AudioPlaybackMode mode) async {
     await updateSettings((s) => s.copyWith(audioPlaybackMode: mode));

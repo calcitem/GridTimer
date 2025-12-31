@@ -29,4 +29,11 @@ abstract interface class ITtsService {
   /// Stream that emits when TTS completes speaking.
   /// Returns true on successful completion, false on error.
   Stream<bool> get completionStream;
+
+  /// Checks if TTS is available for the given locale.
+  /// Returns a status message if unavailable, null if available.
+  Future<String?> checkTtsAvailability(String localeTag);
+
+  /// Get detailed TTS diagnostic information for troubleshooting.
+  Future<Map<String, dynamic>> getDiagnosticInfo();
 }

@@ -23,7 +23,12 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
     super.dispose();
   }
 
-  Future<void> _testTts(double volume, double speechRate, double pitch) async {
+  Future<void> _testTts(
+    double volume,
+    double speechRate,
+    double pitch,
+    String? ttsLanguage,
+  ) async {
     if (_isSpeaking) return;
 
     final ttsService = ref.read(ttsServiceProvider);
@@ -31,8 +36,9 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return;
 
-    // Get locale tag for TTS before any async operations
+    // Use user-selected language, or fall back to app/system language
     final localeTag =
+        ttsLanguage ??
         currentLocale?.toLanguageTag() ??
         Localizations.localeOf(context).toLanguageTag();
 
@@ -42,6 +48,8 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
     await _ttsCompletionSubscription?.cancel();
 
     try {
+      // Log diagnostic info (won't block - we'll try to speak anyway)
+      await ttsService.checkTtsAvailability(localeTag);
 
       // Apply current settings
       await ttsService.setVolume(volume);
@@ -49,27 +57,37 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
       await ttsService.setPitch(pitch);
 
       // Test TTS with sample message
-      // Use localized test message based on current locale
+      // Use localized test message based on selected language
       final testMessage = localeTag.startsWith('zh')
           ? '计时器 1 时间到了'
           : 'Timer 1 time is up';
 
+      // Flag to track if completion was received
+      bool completionReceived = false;
+
       // Listen for completion
-      _ttsCompletionSubscription = ttsService.completionStream.listen(
-        (completed) {
-          if (mounted) {
-            setState(() => _isSpeaking = false);
+      _ttsCompletionSubscription = ttsService.completionStream.listen((
+        completed,
+      ) {
+        completionReceived = true;
+        if (mounted) {
+          setState(() => _isSpeaking = false);
+          if (!completed) {
+            // TTS failed - show diagnostic dialog
+            _showTtsFailedDialog();
           }
-        },
-      );
+        }
+      });
 
       // Speak the test message
       await ttsService.speak(text: testMessage, localeTag: localeTag);
 
       // Add a timeout in case completion handler doesn't fire
-      Future.delayed(const Duration(seconds: 10), () {
-        if (mounted && _isSpeaking) {
+      Future.delayed(const Duration(seconds: 5), () {
+        if (mounted && _isSpeaking && !completionReceived) {
           setState(() => _isSpeaking = false);
+          // Show diagnostic dialog on timeout
+          _showTtsFailedDialog();
         }
       });
     } catch (e) {
@@ -82,6 +100,125 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
     }
   }
 
+  Future<void> _openTtsSettings() async {
+    final permissionService = ref.read(permissionServiceProvider);
+    await permissionService.openTtsSettings();
+  }
+
+  void _showTtsFailedDialog() {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.ttsTestFailedTitle),
+        content: Text(l10n.ttsTestFailedMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(l10n.actionCancel),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              _showDiagnosticInfo();
+            },
+            child: Text(l10n.viewDiagnostics),
+          ),
+          FilledButton.icon(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              _openTtsSettings();
+            },
+            icon: const Icon(Icons.settings),
+            label: Text(l10n.openTtsSettings),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showDiagnosticInfo() async {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
+
+    final ttsService = ref.read(ttsServiceProvider);
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      final info = await ttsService.getDiagnosticInfo();
+
+      if (!mounted) return;
+      Navigator.of(context).pop(); // Close loading dialog
+
+      final engines = info['engines'];
+      final defaultEngine = info['defaultEngine'];
+      final languages = info['languages'];
+
+      // Format diagnostic info
+      final buffer = StringBuffer();
+      buffer.writeln('${l10n.ttsEngine}: $defaultEngine');
+      buffer.writeln('');
+      buffer.writeln('${l10n.availableEngines}:');
+      if (engines is List) {
+        for (final engine in engines) {
+          buffer.writeln('  • $engine');
+        }
+      }
+      buffer.writeln('');
+      buffer.writeln('${l10n.availableLanguages}:');
+      if (languages is List) {
+        final langList = languages.take(20).toList();
+        for (final lang in langList) {
+          buffer.writeln('  • $lang');
+        }
+        if (languages.length > 20) {
+          buffer.writeln('  ... ${l10n.andMore((languages.length - 20))}');
+        }
+      }
+
+      showDialog(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: Text(l10n.ttsDiagnostics),
+          content: SingleChildScrollView(
+            child: SelectableText(
+              buffer.toString(),
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(l10n.close),
+            ),
+            FilledButton.icon(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                _openTtsSettings();
+              },
+              icon: const Icon(Icons.settings),
+              label: Text(l10n.openTtsSettings),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      Navigator.of(context).pop(); // Close loading dialog
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.errorText(e.toString()))));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10nNullable = AppLocalizations.of(context);
@@ -90,7 +227,6 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
     }
     final l10n = l10nNullable;
     final settingsAsync = ref.watch(appSettingsProvider);
-    final currentLocale = ref.watch(localeProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.ttsSettings)),
@@ -115,6 +251,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                             settings.ttsVolume,
                             settings.ttsSpeechRate,
                             settings.ttsPitch,
+                            settings.ttsLanguage,
                           ),
                     icon: _isSpeaking
                         ? const SizedBox(
@@ -130,12 +267,13 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
             ),
             const Divider(),
 
-            // Language Information
+            // Language Selection
             ListTile(
               leading: const Icon(Icons.language),
               title: Text(l10n.ttsLanguage),
-              subtitle: Text(_getLanguageName(currentLocale)),
-              trailing: const Icon(Icons.info_outline),
+              subtitle: Text(_getTtsLanguageName(settings.ttsLanguage, l10n)),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => _showLanguageSelector(settings.ttsLanguage),
             ),
             const Divider(),
 
@@ -320,27 +458,10 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
     );
   }
 
-  String _getLanguageName(Locale? locale) {
-    final l10n = AppLocalizations.of(context);
-    if (l10n == null) return '';
-    
-    if (locale == null) {
-      return l10n.followSystem;
-    }
-    switch (locale.languageCode) {
-      case 'zh':
-        return l10n.simplifiedChinese;
-      case 'en':
-        return l10n.english;
-      default:
-        return locale.languageCode;
-    }
-  }
-
   String _getSpeechRateLabel(double rate) {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return '';
-    
+
     if (rate < 0.3) return l10n.speedVerySlow;
     if (rate < 0.45) return l10n.speedSlow;
     if (rate < 0.55) return l10n.speedNormal;
@@ -351,11 +472,78 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
   String _getPitchLabel(double pitch) {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return '';
-    
+
     if (pitch < 0.8) return l10n.pitchVeryLow;
     if (pitch < 0.95) return l10n.pitchLow;
     if (pitch < 1.05) return l10n.pitchNormal;
     if (pitch < 1.2) return l10n.pitchHigh;
     return l10n.pitchVeryHigh;
+  }
+
+  String _getTtsLanguageName(String? ttsLanguage, AppLocalizations l10n) {
+    if (ttsLanguage == null) {
+      return l10n.followSystem;
+    }
+    switch (ttsLanguage) {
+      case 'zh-CN':
+        return l10n.simplifiedChinese;
+      case 'en-US':
+        return l10n.english;
+      default:
+        return ttsLanguage;
+    }
+  }
+
+  void _showLanguageSelector(String? currentLanguage) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.ttsLanguage),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RadioListTile<String?>(
+              title: Text(l10n.followSystem),
+              subtitle: Text(l10n.ttsLanguageAutoDesc),
+              value: null,
+              groupValue: currentLanguage,
+              onChanged: (value) {
+                Navigator.of(dialogContext).pop();
+                ref.read(appSettingsProvider.notifier).updateTtsLanguage(value);
+              },
+            ),
+            RadioListTile<String?>(
+              title: Text(l10n.simplifiedChinese),
+              subtitle: const Text('zh-CN'),
+              value: 'zh-CN',
+              groupValue: currentLanguage,
+              onChanged: (value) {
+                Navigator.of(dialogContext).pop();
+                ref.read(appSettingsProvider.notifier).updateTtsLanguage(value);
+              },
+            ),
+            RadioListTile<String?>(
+              title: Text(l10n.english),
+              subtitle: const Text('en-US'),
+              value: 'en-US',
+              groupValue: currentLanguage,
+              onChanged: (value) {
+                Navigator.of(dialogContext).pop();
+                ref.read(appSettingsProvider.notifier).updateTtsLanguage(value);
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(l10n.actionCancel),
+          ),
+        ],
+      ),
+    );
   }
 }

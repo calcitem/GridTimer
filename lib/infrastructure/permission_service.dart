@@ -90,4 +90,19 @@ class PermissionService implements IPermissionService {
       await AppSettings.openAppSettings();
     }
   }
+
+  @override
+  Future<void> openTtsSettings() async {
+    if (Platform.isAndroid) {
+      try {
+        await _systemSettingsChannel.invokeMethod<void>('openTtsSettings');
+      } catch (e) {
+        // Fallback to accessibility settings via app_settings
+        await AppSettings.openAppSettings(type: AppSettingsType.accessibility);
+      }
+    } else if (Platform.isIOS) {
+      // iOS doesn't have a direct TTS settings page, open accessibility
+      await AppSettings.openAppSettings(type: AppSettingsType.accessibility);
+    }
+  }
 }

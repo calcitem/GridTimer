@@ -696,6 +696,102 @@
     "description": "TTS speaking indicator"
   },
 
+  "ttsTestFailed": "Voice test failed. Please check device TTS settings.",
+  "@ttsTestFailed": {
+    "description": "TTS test failed message"
+  },
+
+  "ttsTestTimeout": "Voice test timed out. Please check if TTS engine is working.",
+  "@ttsTestTimeout": {
+    "description": "TTS test timeout message"
+  },
+
+  "ttsTestFailedTitle": "Voice Test Unsuccessful",
+  "@ttsTestFailedTitle": {
+    "description": "TTS test failed dialog title"
+  },
+
+  "ttsTestFailedMessage": "Could not hear voice announcement. Possible reasons:\n\n• TTS engine not properly configured\n• Language pack not installed\n• System volume muted\n• Media volume too low\n\nPlease check system settings or view diagnostics.",
+  "@ttsTestFailedMessage": {
+    "description": "TTS test failed dialog message"
+  },
+
+  "viewDiagnostics": "View Diagnostics",
+  "@viewDiagnostics": {
+    "description": "Button to view TTS diagnostics"
+  },
+
+  "ttsDiagnostics": "TTS Diagnostics",
+  "@ttsDiagnostics": {
+    "description": "TTS diagnostics dialog title"
+  },
+
+  "ttsEngine": "Current Engine",
+  "@ttsEngine": {
+    "description": "Current TTS engine label"
+  },
+
+  "availableEngines": "Available Engines",
+  "@availableEngines": {
+    "description": "Available TTS engines label"
+  },
+
+  "availableLanguages": "Available Languages",
+  "@availableLanguages": {
+    "description": "Available TTS languages label"
+  },
+
+  "andMore": "and {count} more...",
+  "@andMore": {
+    "description": "And more items",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+
+  "ttsNoEngineTitle": "No Voice Engine Detected",
+  "@ttsNoEngineTitle": {
+    "description": "No TTS engine dialog title"
+  },
+
+  "ttsNoEngineMessage": "No TTS (Text-to-Speech) engine is available on your device. This is common on some Xiaomi/MIUI devices.",
+  "@ttsNoEngineMessage": {
+    "description": "No TTS engine dialog message"
+  },
+
+  "ttsNoEngineSteps": "Please follow these steps:\n\n1. Open \"App Store\"\n2. Search for \"Google Text-to-Speech\"\n3. Install the voice engine\n4. After installation, go to \"Settings → Accessibility → Text-to-Speech\"\n5. Select the installed engine and download language pack",
+  "@ttsNoEngineSteps": {
+    "description": "Steps to install TTS engine"
+  },
+
+  "ttsUnavailableTitle": "Voice Feature Unavailable",
+  "@ttsUnavailableTitle": {
+    "description": "TTS unavailable dialog title"
+  },
+
+  "ttsUnavailableMessage": "Your device may not have a voice package installed.\n\nPlease follow these steps:\n1. Open System Settings\n2. Search for \"Text-to-Speech\" or \"TTS\"\n3. Make sure a voice engine is installed\n4. Set your language as default",
+  "@ttsUnavailableMessage": {
+    "description": "TTS unavailable dialog message"
+  },
+
+  "ttsUnavailableHint": "Tip: On Xiaomi/MIUI devices, check \"Xiao AI Voice Engine\" settings, or install Google TTS engine.",
+  "@ttsUnavailableHint": {
+    "description": "TTS unavailable hint for Xiaomi devices"
+  },
+
+  "openTtsSettings": "Open TTS Settings",
+  "@openTtsSettings": {
+    "description": "Button to open system TTS settings"
+  },
+
+  "ok": "OK",
+  "@ok": {
+    "description": "OK button"
+  },
+
   "ttsSpeechRate": "Speech Rate",
   "@ttsSpeechRate": {
     "description": "TTS speech rate label"
@@ -721,9 +817,14 @@
     "description": "TTS pitch description"
   },
 
-  "ttsLanguageNote": "Voice announcement language follows app language setting.",
+  "ttsLanguageNote": "Tip: You can manually select language if auto-detection is inaccurate.",
   "@ttsLanguageNote": {
     "description": "TTS language note"
+  },
+
+  "ttsLanguageAutoDesc": "Auto-select based on app language",
+  "@ttsLanguageAutoDesc": {
+    "description": "TTS auto language description"
   },
 
   "followSystem": "Follow System",
