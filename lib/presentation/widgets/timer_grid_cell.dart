@@ -43,26 +43,13 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       end: const Color(0xFFFF1744), // Bright red
     ).animate(_flashController);
 
-    // Start animation if currently ringing
-    if (widget.session.status == TimerStatus.ringing) {
-      _flashController.repeat(reverse: true);
-    }
+    // Note: Animation will be started in build() after settings are available
   }
 
   @override
   void didUpdateWidget(TimerGridCell oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Control animation based on ringing status
-    if (widget.session.status == TimerStatus.ringing &&
-        oldWidget.session.status != TimerStatus.ringing) {
-      // Start flashing when entering ringing state
-      _flashController.repeat(reverse: true);
-    } else if (widget.session.status != TimerStatus.ringing &&
-        oldWidget.session.status == TimerStatus.ringing) {
-      // Stop flashing when leaving ringing state
-      _flashController.stop();
-      _flashController.reset();
-    }
+    // Animation control is now handled in build() to access settings
   }
 
   @override
@@ -74,12 +61,26 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
   @override
   Widget build(BuildContext context) {
     final clock = ref.watch(clockProvider);
+    final settingsAsync = ref.watch(appSettingsProvider);
+    // Default to true (flash enabled) if settings are not yet loaded
+    final flashEnabled = settingsAsync.value?.flashEnabled ?? true;
     final remainingMs = widget.session.calculateRemaining(clock.nowEpochMs());
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
       return const SizedBox.shrink();
     }
     final l10n = l10nNullable;
+
+    final isRinging = widget.session.status == TimerStatus.ringing;
+    final shouldFlash = isRinging && flashEnabled;
+
+    // Control flash animation based on ringing status and settings
+    if (shouldFlash && !_flashController.isAnimating) {
+      _flashController.repeat(reverse: true);
+    } else if (!shouldFlash && _flashController.isAnimating) {
+      _flashController.stop();
+      _flashController.reset();
+    }
 
     final color = _getStatusColor(widget.session.status);
     final presetMinutes = (widget.config.presetDurationMs / 60000).round();
@@ -91,22 +92,18 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
         builder: (context, child) {
           return Container(
             decoration: BoxDecoration(
-              // Use animated color for ringing state, static color for others
-              color: widget.session.status == TimerStatus.ringing
-                  ? _colorAnimation.value
-                  : color,
+              // Use animated color only when flash is enabled and ringing
+              color: shouldFlash ? _colorAnimation.value : color,
               borderRadius: BorderRadius.circular(16), // Rounder corners
               border: Border.all(
-                color: widget.session.status == TimerStatus.ringing
+                color: isRinging
                     ? const Color(
                         0xFFFFD600,
                       ) // Bright yellow border when ringing, highest alert contrast
                     : (widget.session.status == TimerStatus.idle
                           ? Colors.white54
                           : Colors.white), // White border for other states
-                width: widget.session.status == TimerStatus.ringing
-                    ? 6
-                    : 2, // Thicker border when ringing
+                width: isRinging ? 6 : 2, // Thicker border when ringing
               ),
             ),
             padding: const EdgeInsets.all(4),
