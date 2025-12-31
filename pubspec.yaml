@@ -31,6 +31,12 @@ dependencies:
   # File Picker
   file_picker: ^8.1.4
   
+  # Sensors for shake and flip detection
+  sensors_plus: ^6.1.1
+  
+  # Volume button detection
+  volume_controller: ^2.0.7
+  
   # Home Screen Widget
   home_widget: ^0.7.0
 

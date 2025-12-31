@@ -305,4 +305,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get customAudioCleared => 'Restored to default sound';
+
+  @override
+  String get gestureSettings => 'Gesture Control Settings';
+
+  @override
+  String get gestureSettingsDesc =>
+      'Configure gesture actions when alarm rings';
+
+  @override
+  String get gestureActions => 'Gesture Actions';
+
+  @override
+  String get gestureTypeScreenTap => 'Tap Screen';
+
+  @override
+  String get gestureTypeVolumeUp => 'Volume+ Button';
+
+  @override
+  String get gestureTypeVolumeDown => 'Volume- Button';
+
+  @override
+  String get gestureTypeShake => 'Shake Phone';
+
+  @override
+  String get gestureTypeFlip => 'Flip Phone (Face Down)';
+
+  @override
+  String get gestureActionStopAndReset => 'Stop & Reset';
+
+  @override
+  String get gestureActionPause => 'Pause';
+
+  @override
+  String get gestureActionNone => 'No Action';
+
+  @override
+  String get shakeSensitivity => 'Shake Sensitivity';
+
+  @override
+  String get shakeSensitivityLow => 'Low (Shake hard)';
+
+  @override
+  String get shakeSensitivityHigh => 'High (Shake gently)';
+
+  @override
+  String get shakeSensitivityDesc => 'Adjust shake detection sensitivity';
+
+  @override
+  String get gestureHint =>
+      'Senior-friendly: Enable screen tap, volume buttons, and flip phone';
 }

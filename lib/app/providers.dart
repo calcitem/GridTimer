@@ -8,6 +8,7 @@ import '../core/domain/services/i_audio_service.dart';
 import '../core/domain/services/i_tts_service.dart';
 import '../core/domain/services/i_permission_service.dart';
 import '../core/domain/services/i_mode_service.dart';
+import '../core/domain/services/i_gesture_service.dart';
 import '../data/repositories/storage_repository.dart';
 import '../infrastructure/timer_service.dart';
 import '../infrastructure/mode_service.dart';
@@ -16,6 +17,7 @@ import '../infrastructure/audio_service.dart';
 import '../infrastructure/tts_service.dart';
 import '../infrastructure/permission_service.dart';
 import '../infrastructure/widget_service.dart';
+import '../infrastructure/gesture_service.dart';
 
 /// Clock provider.
 final clockProvider = Provider<IClock>((ref) => const SystemClock());
@@ -50,6 +52,11 @@ final widgetServiceProvider = Provider<WidgetService>((ref) {
   return WidgetService();
 });
 
+/// Gesture service provider.
+final gestureServiceProvider = Provider<IGestureService>((ref) {
+  return GestureService();
+});
+
 /// Mode service provider.
 final modeServiceProvider = Provider<IModeService>((ref) {
   return ModeService(storage: ref.watch(storageProvider));
@@ -63,6 +70,7 @@ final timerServiceProvider = Provider<ITimerService>((ref) {
     audio: ref.watch(audioServiceProvider),
     tts: ref.watch(ttsServiceProvider),
     clock: ref.watch(clockProvider),
+    gesture: ref.watch(gestureServiceProvider),
   );
 });
 
@@ -193,5 +201,28 @@ class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
   /// Update custom audio path.
   Future<void> updateCustomAudioPath(String? path) async {
     await updateSettings((s) => s.copyWith(customAudioPath: path));
+  }
+
+  /// Update gesture action for a specific gesture type.
+  Future<void> updateGestureAction(
+    AlarmGestureType gesture,
+    AlarmGestureAction action,
+  ) async {
+    await updateSettings((s) {
+      final newActions = Map<AlarmGestureType, AlarmGestureAction>.from(
+        s.gestureActions,
+      );
+      newActions[gesture] = action;
+      return s.copyWith(gestureActions: newActions);
+    });
+  }
+
+  /// Update shake sensitivity (1.0 - 5.0).
+  Future<void> updateShakeSensitivity(double sensitivity) async {
+    assert(
+      sensitivity >= 1.0 && sensitivity <= 5.0,
+      'Shake sensitivity must be between 1.0 and 5.0',
+    );
+    await updateSettings((s) => s.copyWith(shakeSensitivity: sensitivity));
   }
 }

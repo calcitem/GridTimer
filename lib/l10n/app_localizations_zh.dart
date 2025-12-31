@@ -296,4 +296,52 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get customAudioCleared => '已恢复使用默认声音';
+
+  @override
+  String get gestureSettings => '手势控制设置';
+
+  @override
+  String get gestureSettingsDesc => '配置闹铃响起时的手势操作';
+
+  @override
+  String get gestureActions => '手势动作';
+
+  @override
+  String get gestureTypeScreenTap => '触摸屏幕';
+
+  @override
+  String get gestureTypeVolumeUp => '音量+ 键';
+
+  @override
+  String get gestureTypeVolumeDown => '音量- 键';
+
+  @override
+  String get gestureTypeShake => '摇晃手机';
+
+  @override
+  String get gestureTypeFlip => '翻转手机（屏幕朝下）';
+
+  @override
+  String get gestureActionStopAndReset => '停止并重置';
+
+  @override
+  String get gestureActionPause => '暂停';
+
+  @override
+  String get gestureActionNone => '无动作';
+
+  @override
+  String get shakeSensitivity => '摇晃灵敏度';
+
+  @override
+  String get shakeSensitivityLow => '低（需要用力摇）';
+
+  @override
+  String get shakeSensitivityHigh => '高（轻轻摇即可）';
+
+  @override
+  String get shakeSensitivityDesc => '调整摇晃手机的灵敏度';
+
+  @override
+  String get gestureHint => '长辈友好：建议开启触摸屏幕、音量键和翻转手机';
 }

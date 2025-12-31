@@ -58,6 +58,18 @@ class AppSettingsHive {
   @HiveField(16)
   final String? customAudioPath;
 
+  @HiveField(17, defaultValue: {
+    0: 0, // screenTap -> stopAndReset
+    1: 0, // volumeUp -> stopAndReset
+    2: 0, // volumeDown -> stopAndReset
+    3: 2, // shake -> none
+    4: 2, // flip -> none
+  })
+  final Map<int, int> gestureActionsMap;
+
+  @HiveField(18, defaultValue: 2.5)
+  final double shakeSensitivity;
+
   AppSettingsHive({
     required this.activeModeId,
     required this.flashEnabled,
@@ -76,10 +88,18 @@ class AppSettingsHive {
     required this.audioLoopDurationMinutes,
     required this.audioIntervalPauseMinutes,
     this.customAudioPath,
+    required this.gestureActionsMap,
+    required this.shakeSensitivity,
   });
 
   /// Convert from domain entity.
   factory AppSettingsHive.fromDomain(AppSettings settings) {
+    // Convert enum map to int map for Hive storage
+    final gestureActionsMap = <int, int>{};
+    settings.gestureActions.forEach((gesture, action) {
+      gestureActionsMap[gesture.index] = action.index;
+    });
+
     return AppSettingsHive(
       activeModeId: settings.activeModeId,
       flashEnabled: settings.flashEnabled,
@@ -98,11 +118,23 @@ class AppSettingsHive {
       audioLoopDurationMinutes: settings.audioLoopDurationMinutes,
       audioIntervalPauseMinutes: settings.audioIntervalPauseMinutes,
       customAudioPath: settings.customAudioPath,
+      gestureActionsMap: gestureActionsMap,
+      shakeSensitivity: settings.shakeSensitivity,
     );
   }
 
   /// Convert to domain entity.
   AppSettings toDomain() {
+    // Convert int map back to enum map
+    final gestureActions = <AlarmGestureType, AlarmGestureAction>{};
+    gestureActionsMap.forEach((gestureIndex, actionIndex) {
+      if (gestureIndex >= 0 && gestureIndex < AlarmGestureType.values.length &&
+          actionIndex >= 0 && actionIndex < AlarmGestureAction.values.length) {
+        gestureActions[AlarmGestureType.values[gestureIndex]] =
+            AlarmGestureAction.values[actionIndex];
+      }
+    });
+
     return AppSettings(
       activeModeId: activeModeId,
       flashEnabled: flashEnabled,
@@ -121,6 +153,8 @@ class AppSettingsHive {
       audioLoopDurationMinutes: audioLoopDurationMinutes,
       audioIntervalPauseMinutes: audioIntervalPauseMinutes,
       customAudioPath: customAudioPath,
+      gestureActions: gestureActions,
+      shakeSensitivity: shakeSensitivity,
     );
   }
 }
