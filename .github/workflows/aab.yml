@@ -1,13 +1,33 @@
-name: Android Release Build on Master Merge
+name: AAB Release Build
 
 on:
   push:
-    branches: [master]
+    branches: [release]
 
 jobs:
-  build-android:
-    # Build release Android APK when PR is merged to master branch
+  linter:
     runs-on: ubuntu-latest
+    name: Lint flutter code
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.5'
+
+      - name: Initialize Flutter
+        run: bash -x ./flutter-init.sh
+
+      - name: Analyze Flutter
+        uses: ValentinVignal/action-dart-analyze@v0.17
+        with:
+          fail-on: 'format'
+
+  build:
+    runs-on: ubuntu-latest
+    needs: linter
 
     steps:
       - name: Checkout repository
@@ -28,7 +48,6 @@ jobs:
           printf '%s' "$SIGNING_KEY" | base64 --decode > android/app/key.jks
           ls -l android/app/key.jks
           test -s android/app/key.jks
-
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
 
@@ -57,27 +76,47 @@ jobs:
       - name: Install dependencies
         run: bash -x ./flutter-init.sh
 
-      # Run lint check but don't fail the build
-      - name: Run Flutter analyze (non-blocking)
-        run: flutter analyze || true
-        continue-on-error: true
+      - name: Run Flutter analyze
+        run: flutter analyze
 
-      # Build release Android APK only (no AAB, no external uploads)
-      - name: Build release Android APK
+      # Build APK and AAB for release
+      - name: Build APK and AAB
         run: |
           rm android/app/build.gradle
           mv android/app/build.gradle_github android/app/build.gradle
           flutter build apk -v
+          flutter build appbundle -v
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           ALIAS: ${{ secrets.ALIAS }}
           KEY_PATH: key.jks
 
-      # Upload release APK as GitHub Actions artifact for download
-      - name: Upload release APK artifact
+      # Archive APK
+      - name: Archive APK
         uses: actions/upload-artifact@v4
         with:
-          name: gridtimer-android-apk-release-master
+          name: gridtimer-flutter-apk-release
           path: build/app/outputs/flutter-apk/app-release.apk
+
+      # Archive AAB
+      - name: Archive AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: gridtimer-flutter-aab-release
+          path: build/app/outputs/bundle/release/app-release.aab
+
+      # Archive mapping file for crash analysis
+      - name: Archive Proguard mapping file
+        uses: actions/upload-artifact@v4
+        with:
+          name: gridtimer-mapping-release
+          path: build/app/outputs/mapping/release/mapping.txt
+
+      # Archive native debug symbols
+      - name: Archive native debug symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: gridtimer-native-debug-symbols-release
+          path: build/app/outputs/native-debug-symbols/release/native-debug-symbols.zip
 
