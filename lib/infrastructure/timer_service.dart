@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io' show Platform;
 import 'package:flutter/widgets.dart';
 import '../core/domain/entities/app_settings.dart';
 import '../core/domain/entities/timer_config.dart';
@@ -273,7 +274,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         await _tts.setSpeechRate(ttsSpeechRate);
         await _tts.setPitch(ttsPitch);
 
-        // Use user-selected TTS language, or fall back to name-based detection
+        // Use user-selected TTS language, or fall back to system language detection
         final userTtsLanguage = settings?.ttsLanguage;
         final String localeTag;
         final String ttsText;
@@ -285,12 +286,11 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
               ? '${config.name} 时间到'
               : '${config.name} time is up';
         } else {
-          // Fall back to name-based detection
-          final isChineseName = RegExp(
-            r'[\u4e00-\u9fa5]',
-          ).hasMatch(config.name);
-          localeTag = isChineseName ? 'zh-CN' : 'en-US';
-          ttsText = isChineseName
+          // Fall back to system language detection
+          final systemLocale = Platform.localeName;
+          final isChineseSystem = systemLocale.startsWith('zh');
+          localeTag = isChineseSystem ? 'zh-CN' : 'en-US';
+          ttsText = isChineseSystem
               ? '${config.name} 时间到'
               : '${config.name} time is up';
         }
@@ -595,7 +595,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         await _tts.setSpeechRate(ttsSpeechRate);
         await _tts.setPitch(ttsPitch);
 
-        // Use user-selected TTS language, or fall back to name-based detection
+        // Use user-selected TTS language, or fall back to system language detection
         final userTtsLanguage = settings?.ttsLanguage;
         final String localeTag;
         final String ttsText;
@@ -607,12 +607,11 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
               ? '${config.name} 时间到'
               : '${config.name} time is up';
         } else {
-          // Fall back to name-based detection
-          final isChineseName = RegExp(
-            r'[\u4e00-\u9fa5]',
-          ).hasMatch(config.name);
-          localeTag = isChineseName ? 'zh-CN' : 'en-US';
-          ttsText = isChineseName
+          // Fall back to system language detection
+          final systemLocale = Platform.localeName;
+          final isChineseSystem = systemLocale.startsWith('zh');
+          localeTag = isChineseSystem ? 'zh-CN' : 'en-US';
+          ttsText = isChineseSystem
               ? '${config.name} 时间到'
               : '${config.name} time is up';
         }

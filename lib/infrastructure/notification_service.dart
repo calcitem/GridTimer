@@ -250,6 +250,18 @@ class NotificationService implements INotificationService {
     // Explicitly specify the sound resource for scheduled notifications.
     final soundResource = _soundKeyToResource(config.soundKey);
 
+    // Determine language for notification content
+    final bool useChineseText;
+    if (ttsLanguage != null) {
+      useChineseText = ttsLanguage.startsWith('zh');
+    } else {
+      // Fall back to system language detection
+      final systemLocale = Platform.localeName;
+      useChineseText = systemLocale.startsWith('zh');
+    }
+    final notificationBody = useChineseText ? '时间到!' : 'Time is up!';
+    final stopButtonText = useChineseText ? '停止' : 'Stop';
+
     final androidDetails = AndroidNotificationDetails(
       channelId,
       'Timer Alarm',
@@ -269,9 +281,9 @@ class NotificationService implements INotificationService {
       ongoing: false,
       autoCancel: false,
       actions: [
-        const AndroidNotificationAction(
+        AndroidNotificationAction(
           _actionIdStop,
-          'Stop',
+          stopButtonText,
           showsUserInterface: true,
         ),
       ],
@@ -284,16 +296,6 @@ class NotificationService implements INotificationService {
     );
 
     final details = NotificationDetails(android: androidDetails);
-
-    // Determine notification body text based on language setting
-    final String notificationBody;
-    if (ttsLanguage != null) {
-      notificationBody = ttsLanguage.startsWith('zh') ? '时间到!' : 'Time is up!';
-    } else {
-      // Fall back to name-based detection
-      final isChineseName = RegExp(r'[\u4e00-\u9fa5]').hasMatch(config.name);
-      notificationBody = isChineseName ? '时间到!' : 'Time is up!';
-    }
 
     // MIUI/Android 15 can delay or silence scheduled notifications unless they are scheduled
     // as alarm clocks. Try alarmClock first for best lockscreen reliability.
@@ -362,6 +364,7 @@ class NotificationService implements INotificationService {
     bool enableVibration = true,
     bool playSound = false,
     bool repeatSoundUntilStopped = false,
+    String? ttsLanguage,
   }) async {
     // Show notification only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -388,6 +391,18 @@ class NotificationService implements INotificationService {
       'soundKey': config.soundKey,
     });
 
+    // Determine language for notification content
+    final bool useChineseText;
+    if (ttsLanguage != null) {
+      useChineseText = ttsLanguage.startsWith('zh');
+    } else {
+      // Fall back to system language detection
+      final systemLocale = Platform.localeName;
+      useChineseText = systemLocale.startsWith('zh');
+    }
+    final notificationBody = useChineseText ? '时间到!' : 'Time is up!';
+    final stopButtonText = useChineseText ? '停止' : 'Stop';
+
     final androidDetails = AndroidNotificationDetails(
       channelId,
       'Timer Alarm',
@@ -402,16 +417,14 @@ class NotificationService implements INotificationService {
       // On Android 8+ the channel controls the actual sound, but playSound still
       // controls whether sound is enabled for the notification instance.
       playSound: playSound,
-      sound: playSound
-          ? RawResourceAndroidNotificationSound(soundResource)
-          : null,
+      sound: playSound ? RawResourceAndroidNotificationSound(soundResource) : null,
       // Control vibration based on user settings.
       enableVibration: enableVibration,
       onlyAlertOnce: false,
       actions: [
-        const AndroidNotificationAction(
+        AndroidNotificationAction(
           _actionIdStop,
-          'Stop',
+          stopButtonText,
           showsUserInterface: true,
         ),
       ],
@@ -420,8 +433,8 @@ class NotificationService implements INotificationService {
       // Repeat the sound until the user cancels the notification (Android only).
       additionalFlags:
           Platform.isAndroid && playSound && repeatSoundUntilStopped
-          ? Int32List.fromList(const <int>[_androidFlagInsistent])
-          : null,
+              ? Int32List.fromList(const <int>[_androidFlagInsistent])
+              : null,
     );
 
     final details = NotificationDetails(android: androidDetails);
@@ -430,7 +443,7 @@ class NotificationService implements INotificationService {
     await _plugin.show(
       notificationId,
       config.name,
-      'Time is up!',
+      notificationBody,
       details,
       payload: payload,
     );

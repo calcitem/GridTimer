@@ -70,6 +70,9 @@ abstract interface class INotificationService {
     /// On Android this is typically implemented via `Notification.FLAG_INSISTENT`.
     /// Some OEM ROMs may ignore this flag.
     bool repeatSoundUntilStopped = false,
+    /// TTS language for notification content (e.g., 'zh-CN', 'en-US').
+    /// If null, falls back to name-based detection.
+    String? ttsLanguage,
   });
 
   /// Stream of notification events (tap, action, full-screen trigger).
