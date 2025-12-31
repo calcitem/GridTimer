@@ -18,7 +18,9 @@ import '../core/domain/services/i_vibration_service.dart';
 import '../core/domain/types.dart';
 import '../data/repositories/storage_repository.dart';
 
-const _alarmServiceChannel = MethodChannel('com.calcitem.gridtimer/system_settings');
+const _alarmServiceChannel = MethodChannel(
+  'com.calcitem.gridtimer/system_settings',
+);
 
 /// Timer service implementation with full state management and recovery.
 class TimerService with WidgetsBindingObserver implements ITimerService {
@@ -254,7 +256,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         if (settings != null) {
           _gesture.updateShakeSensitivity(settings.shakeSensitivity);
         }
-        
+
         // Start foreground service for reliable alarm playback on MIUI/OEM ROMs
         // where notification sounds are suppressed
         try {
@@ -264,7 +266,9 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
           );
           debugPrint('TimerService: Foreground alarm service started');
         } catch (e) {
-          debugPrint('TimerService: Failed to start foreground alarm service: $e');
+          debugPrint(
+            'TimerService: Failed to start foreground alarm service: $e',
+          );
           // Non-fatal - notification sound may still work on some devices
         }
       }
@@ -469,13 +473,19 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       // Stop gesture monitoring if no more ringing timers
       if (_ringingTimers.isEmpty) {
         _gesture.stopMonitoring();
-        
+
         // Stop foreground alarm service when no timers are ringing
         try {
-          await _alarmServiceChannel.invokeMethod<void>('stopAlarmSoundService');
-          debugPrint('TimerService: Foreground alarm service stopped (from reset)');
+          await _alarmServiceChannel.invokeMethod<void>(
+            'stopAlarmSoundService',
+          );
+          debugPrint(
+            'TimerService: Foreground alarm service stopped (from reset)',
+          );
         } catch (e) {
-          debugPrint('TimerService: Failed to stop foreground alarm service: $e');
+          debugPrint(
+            'TimerService: Failed to stop foreground alarm service: $e',
+          );
         }
       }
     }
@@ -500,15 +510,15 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     // Stop gesture monitoring if no more ringing timers
     if (_ringingTimers.isEmpty) {
       _gesture.stopMonitoring();
-        
-        // Stop foreground alarm service when no timers are ringing
-        try {
-          await _alarmServiceChannel.invokeMethod<void>('stopAlarmSoundService');
-          debugPrint('TimerService: Foreground alarm service stopped');
-        } catch (e) {
-          debugPrint('TimerService: Failed to stop foreground alarm service: $e');
-        }
+
+      // Stop foreground alarm service when no timers are ringing
+      try {
+        await _alarmServiceChannel.invokeMethod<void>('stopAlarmSoundService');
+        debugPrint('TimerService: Foreground alarm service stopped');
+      } catch (e) {
+        debugPrint('TimerService: Failed to stop foreground alarm service: $e');
       }
+    }
 
     await reset(timerId);
   }

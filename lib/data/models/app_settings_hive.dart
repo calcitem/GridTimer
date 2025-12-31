@@ -58,13 +58,16 @@ class AppSettingsHive {
   @HiveField(15, defaultValue: 2)
   final int audioIntervalPauseMinutes;
 
-  @HiveField(17, defaultValue: {
-    0: 0, // screenTap -> stopAndReset
-    1: 0, // volumeUp -> stopAndReset
-    2: 0, // volumeDown -> stopAndReset
-    3: 2, // shake -> none
-    4: 2, // flip -> none
-  })
+  @HiveField(
+    17,
+    defaultValue: {
+      0: 0, // screenTap -> stopAndReset
+      1: 0, // volumeUp -> stopAndReset
+      2: 0, // volumeDown -> stopAndReset
+      3: 2, // shake -> none
+      4: 2, // flip -> none
+    },
+  )
   final Map<int, int> gestureActionsMap;
 
   @HiveField(18, defaultValue: 2.5)
@@ -133,8 +136,10 @@ class AppSettingsHive {
     // Convert int map back to enum map
     final gestureActions = <AlarmGestureType, AlarmGestureAction>{};
     gestureActionsMap.forEach((gestureIndex, actionIndex) {
-      if (gestureIndex >= 0 && gestureIndex < AlarmGestureType.values.length &&
-          actionIndex >= 0 && actionIndex < AlarmGestureAction.values.length) {
+      if (gestureIndex >= 0 &&
+          gestureIndex < AlarmGestureType.values.length &&
+          actionIndex >= 0 &&
+          actionIndex < AlarmGestureAction.values.length) {
         gestureActions[AlarmGestureType.values[gestureIndex]] =
             AlarmGestureAction.values[actionIndex];
       }
@@ -164,6 +169,3 @@ class AppSettingsHive {
     );
   }
 }
-
-
-
