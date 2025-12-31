@@ -150,6 +150,7 @@ class NotificationService implements INotificationService {
     required TimerSession session,
     required TimerConfig config,
     bool repeatSoundUntilStopped = false,
+    bool enableVibration = true,
   }) async {
     // Schedule notification only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -195,10 +196,10 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      // Ensure sound/vibration is enabled.
+      // Enable sound and vibration based on user settings.
       playSound: true,
       sound: RawResourceAndroidNotificationSound(soundResource),
-      enableVibration: true,
+      enableVibration: enableVibration,
       // Ensure this notification can alert.
       onlyAlertOnce: false,
       // Set as non-persistent until user action
@@ -285,6 +286,7 @@ class NotificationService implements INotificationService {
   Future<void> showTimeUpNow({
     required TimerSession session,
     required TimerConfig config,
+    bool enableVibration = true,
   }) async {
     // Show notification only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -322,7 +324,8 @@ class NotificationService implements INotificationService {
       // Don't play sound - let AudioService handle all audio playback with full mode support.
       // This notification is only for visual alert and stop button.
       playSound: false,
-      enableVibration: true,
+      // Control vibration based on user settings.
+      enableVibration: enableVibration,
       onlyAlertOnce: false,
       actions: [
         const AndroidNotificationAction(

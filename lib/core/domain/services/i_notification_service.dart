@@ -37,6 +37,8 @@ abstract interface class INotificationService {
     /// On Android, this is typically implemented via `Notification.FLAG_INSISTENT`.
     /// On other platforms, this may be ignored due to OS limitations.
     bool repeatSoundUntilStopped = false,
+    /// Whether vibration should be enabled for this notification.
+    bool enableVibration = true,
   });
 
   /// Cancels the scheduled notification for a timer.
@@ -53,6 +55,8 @@ abstract interface class INotificationService {
   Future<void> showTimeUpNow({
     required TimerSession session,
     required TimerConfig config,
+    /// Whether vibration should be enabled for this notification.
+    bool enableVibration = true,
   });
 
   /// Stream of notification events (tap, action, full-screen trigger).
