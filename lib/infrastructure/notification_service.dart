@@ -22,12 +22,12 @@ class NotificationService implements INotificationService {
 
   @override
   Future<void> init() async {
-    // 始终初始化时区数据
+    // Always initialize timezone data
     tz_data.initializeTimeZones();
 
-    // 仅在支持的平台上初始化通知插件
+    // Initialize notification plugin only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
-      // Windows 和其他桌面平台暂不支持通知功能
+      // Windows and other desktop platforms don't support notification features yet
       return;
     }
 
@@ -146,7 +146,7 @@ class NotificationService implements INotificationService {
     required TimerSession session,
     required TimerConfig config,
   }) async {
-    // 仅在支持的平台上安排通知
+    // Schedule notification only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
       return;
     }
@@ -196,7 +196,7 @@ class NotificationService implements INotificationService {
       enableVibration: true,
       // Ensure this notification can alert.
       onlyAlertOnce: false,
-      // 设置为持续通知，直到用户操作
+      // Set as non-persistent until user action
       ongoing: false,
       autoCancel: false,
       actions: [
@@ -255,7 +255,7 @@ class NotificationService implements INotificationService {
     required TimerId timerId,
     required int slotIndex,
   }) async {
-    // 仅在支持的平台上取消通知
+    // Cancel notification only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
       return;
     }
@@ -265,7 +265,7 @@ class NotificationService implements INotificationService {
 
   @override
   Future<void> cancelAll() async {
-    // 仅在支持的平台上取消通知
+    // Cancel notifications only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
       return;
     }
@@ -277,7 +277,7 @@ class NotificationService implements INotificationService {
     required TimerSession session,
     required TimerConfig config,
   }) async {
-    // 仅在支持的平台上显示通知
+    // Show notification only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
       return;
     }
@@ -329,7 +329,7 @@ class NotificationService implements INotificationService {
 
     final details = NotificationDetails(android: androidDetails);
 
-    // 立即显示通知
+    // Show notification immediately
     await _plugin.show(
       notificationId,
       config.name,

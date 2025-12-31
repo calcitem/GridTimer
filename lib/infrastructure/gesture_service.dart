@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -18,6 +19,15 @@ class GestureService implements IGestureService {
   bool _isMonitoring = false;
   double _shakeSensitivity = 2.5;
 
+  /// Check if current platform supports sensors (mobile platforms only)
+  /// Note: sensors_plus supports both Android and iOS
+  bool get _isSensorSupported =>
+      !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+
+  /// Check if volume controller is supported (Android only)
+  /// Note: iOS has strict limitations on volume button detection
+  bool get _isVolumeControllerSupported => !kIsWeb && Platform.isAndroid;
+
   // Shake detection variables
   DateTime? _lastShakeTime;
   static const Duration _shakeCooldown = Duration(milliseconds: 500);
@@ -29,6 +39,14 @@ class GestureService implements IGestureService {
 
   @override
   Future<void> init() async {
+    // Volume controller is only available on Android
+    if (!_isVolumeControllerSupported) {
+      debugPrint(
+        'Volume controller not supported on current platform, skipping initialization',
+      );
+      return;
+    }
+
     try {
       _volumeController = VolumeController();
       _volumeController?.showSystemUI = false;
@@ -52,6 +70,14 @@ class GestureService implements IGestureService {
   void startMonitoring() {
     if (_isMonitoring) return;
     _isMonitoring = true;
+
+    // Start sensor monitoring only on supported platforms
+    if (!_isSensorSupported) {
+      debugPrint(
+        'Sensors not supported on current platform, skipping sensor monitoring',
+      );
+      return;
+    }
 
     // Start accelerometer monitoring for shake detection
     _accelerometerSubscription = accelerometerEventStream().listen(
@@ -89,7 +115,7 @@ class GestureService implements IGestureService {
   }
 
   void _onAccelerometerEvent(AccelerometerEvent event) {
-    if (!_isMonitoring) return;
+    if (!_isMonitoring || !_isSensorSupported) return;
 
     // Calculate acceleration magnitude
     final acceleration = sqrt(
@@ -111,7 +137,7 @@ class GestureService implements IGestureService {
   }
 
   void _onGyroscopeEvent(GyroscopeEvent event) {
-    if (!_isMonitoring) return;
+    if (!_isMonitoring || !_isSensorSupported) return;
 
     // Flip detection: check if phone is face down
     // This is a simplified approach - in production you might want to use
@@ -123,23 +149,25 @@ class GestureService implements IGestureService {
     // If device is relatively stable and upside down
     if (rotationMagnitude < 1.0) {
       // Check accelerometer to determine if face down
-      accelerometerEventStream().first.then((accelEvent) {
-        final isFaceDownNow = accelEvent.z < -8.0; // Gravity pointing up
+      accelerometerEventStream().first
+          .then((accelEvent) {
+            final isFaceDownNow = accelEvent.z < -8.0; // Gravity pointing up
 
-        if (isFaceDownNow && !_isFaceDown) {
-          // Phone was just flipped face down
-          final now = DateTime.now();
-          if (_lastFlipTime == null ||
-              now.difference(_lastFlipTime!) > _flipCooldown) {
-            _lastFlipTime = now;
-            _gestureController.add(AlarmGestureType.flip);
-          }
-        }
+            if (isFaceDownNow && !_isFaceDown) {
+              // Phone was just flipped face down
+              final now = DateTime.now();
+              if (_lastFlipTime == null ||
+                  now.difference(_lastFlipTime!) > _flipCooldown) {
+                _lastFlipTime = now;
+                _gestureController.add(AlarmGestureType.flip);
+              }
+            }
 
-        _isFaceDown = isFaceDownNow;
-      }).catchError((error) {
-        debugPrint('Flip detection error: $error');
-      });
+            _isFaceDown = isFaceDownNow;
+          })
+          .catchError((error) {
+            debugPrint('Flip detection error: $error');
+          });
     }
   }
 

@@ -38,7 +38,7 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openNotificationSettings() async {
-    // app_settings 仅在 Android 和 iOS 上可用
+    // app_settings is only available on Android and iOS
     if (Platform.isAndroid || Platform.isIOS) {
       await AppSettings.openAppSettings(type: AppSettingsType.notification);
     }
@@ -59,7 +59,7 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openExactAlarmSettings() async {
-    // app_settings 仅在 Android 和 iOS 上可用
+    // app_settings is only available on Android and iOS
     if (Platform.isAndroid || Platform.isIOS) {
       await AppSettings.openAppSettings(type: AppSettingsType.alarm);
     }
@@ -67,7 +67,7 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openFullScreenIntentSettings() async {
-    // app_settings 仅在 Android 和 iOS 上可用
+    // app_settings is only available on Android and iOS
     if (Platform.isAndroid || Platform.isIOS) {
       await AppSettings.openAppSettings();
     }
@@ -75,7 +75,7 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openBatteryOptimizationSettings() async {
-    // app_settings 仅在 Android 和 iOS 上可用
+    // app_settings is only available on Android and iOS
     if (Platform.isAndroid || Platform.isIOS) {
       await AppSettings.openAppSettings(
         type: AppSettingsType.batteryOptimization,
@@ -85,7 +85,7 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openAppSettings() async {
-    // app_settings 仅在 Android 和 iOS 上可用
+    // app_settings is only available on Android and iOS
     if (Platform.isAndroid || Platform.isIOS) {
       await AppSettings.openAppSettings();
     }
