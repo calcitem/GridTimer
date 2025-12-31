@@ -14,7 +14,6 @@ class GestureService implements IGestureService {
 
   StreamSubscription<AccelerometerEvent>? _accelerometerSubscription;
   StreamSubscription<GyroscopeEvent>? _gyroscopeSubscription;
-  VolumeController? _volumeController;
 
   bool _isMonitoring = false;
   double _shakeSensitivity = 2.5;
@@ -51,9 +50,8 @@ class GestureService implements IGestureService {
     }
 
     try {
-      _volumeController = VolumeController();
-      _volumeController?.showSystemUI = false;
-      _volumeController?.listener((volume) {
+      VolumeController.instance.showSystemUI = false;
+      VolumeController.instance.addListener((volume) {
         // Volume button was pressed (we don't care about the actual volume value)
         if (_isMonitoring) {
           // Emit both volume up and down events
@@ -166,6 +164,8 @@ class GestureService implements IGestureService {
   void dispose() {
     stopMonitoring();
     _gestureController.close();
-    _volumeController?.removeListener();
+    if (_isVolumeControllerSupported) {
+      VolumeController.instance.removeListener();
+    }
   }
 }

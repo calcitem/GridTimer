@@ -13,8 +13,8 @@ dependencies:
     sdk: flutter
 
   # Storage (Hive family - permissive licenses)
-  hive_ce: 2.13.2
-  hive_ce_flutter: 2.3.2
+  hive_ce: 2.16.0
+  hive_ce_flutter: 2.3.3
   path_provider: 2.1.5
 
   # Notifications
@@ -26,23 +26,23 @@ dependencies:
 
   # Permissions & Settings
   permission_handler: 12.0.1
-  app_settings: ^5.1.1
+  app_settings: ^7.0.0
   
   # File Picker
-  file_picker: ^8.1.4
+  file_picker: ^10.3.8
   
   # Sensors for shake and flip detection
-  sensors_plus: ^6.1.1
+  sensors_plus: ^7.0.0
   
   # Volume button detection
-  volume_controller: ^2.0.7
+  volume_controller: ^3.4.1
   
   # Home Screen Widget
-  home_widget: ^0.7.0
+  home_widget: ^0.8.1
 
   # State Management
-  riverpod: ^2.4.9
-  flutter_riverpod: ^2.4.9
+  riverpod: ^3.1.0
+  flutter_riverpod: ^3.1.0
 
   # Utilities
   intl: 0.20.2
@@ -56,8 +56,8 @@ dev_dependencies:
   flutter_lints: 6.0.0
   
   # Code generation
-  build_runner: 2.8.0
-  hive_ce_generator: any
+  build_runner: 2.10.4
+  hive_ce_generator: 1.9.5
   freezed: 3.2.3
   json_serializable: 6.11.1
   flutter_launcher_icons: ^0.14.4
