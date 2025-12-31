@@ -46,7 +46,7 @@ class AppSettingsHive {
   @HiveField(11, defaultValue: 1.0)
   final double ttsPitch;
 
-  @HiveField(12, defaultValue: [10, 120, 180, 300, 480, 600, 900, 1200, 2700])
+  @HiveField(12, defaultValue: [120, 180, 300, 480, 540, 600, 900, 1200, 2700])
   final List<int> gridDurationsInSeconds;
 
   @HiveField(13, defaultValue: 0)

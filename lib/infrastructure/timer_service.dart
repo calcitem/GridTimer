@@ -740,10 +740,10 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
   TimerGridSet _createDefaultGrid(AppSettings? settings) {
     // Get configured durations from settings, use defaults if not available
-    // Default time configuration (in seconds): 10s, 2min, 3min, 5min, 8min, 10min, 15min, 20min, 45min
+    // Default time configuration (in seconds): 2min, 3min, 5min, 8min, 9min, 10min, 15min, 20min, 45min
     final durationsInSeconds =
         settings?.gridDurationsInSeconds ??
-        [10, 120, 180, 300, 480, 600, 900, 1200, 2700];
+        [120, 180, 300, 480, 540, 600, 900, 1200, 2700];
 
     assert(
       durationsInSeconds.length == 9,
