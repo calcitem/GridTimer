@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 
 /// Safety disclaimer dialog shown on first app launch.
-/// 
+///
 /// This dialog serves both legal protection and user education purposes.
 /// It clearly communicates the app's limitations while maintaining a
 /// friendly, non-alarming tone.
-/// 
+///
 /// The dialog will only be shown once - when the user first installs and
 /// launches the app. After clicking "I Understand, Continue", the acceptance
 /// is saved and the dialog will not appear again on subsequent launches.
@@ -14,7 +14,7 @@ class SafetyDisclaimerDialog extends StatelessWidget {
   const SafetyDisclaimerDialog({super.key});
 
   /// Show the safety disclaimer dialog.
-  /// 
+  ///
   /// Returns true if user clicks "I Understand, Continue", false otherwise.
   /// The dialog cannot be dismissed by tapping outside (barrierDismissible: false).
   static Future<bool> show(BuildContext context) async {
@@ -57,7 +57,7 @@ class SafetyDisclaimerDialog extends StatelessWidget {
               style: const TextStyle(fontSize: 15),
             ),
             const SizedBox(height: 16),
-            
+
             // Recommended uses (green box)
             Container(
               padding: const EdgeInsets.all(12),
@@ -71,7 +71,11 @@ class SafetyDisclaimerDialog extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.check_circle, color: Colors.green, size: 20),
+                      const Icon(
+                        Icons.check_circle,
+                        color: Colors.green,
+                        size: 20,
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         l10n.safetyRecommendedUses,
@@ -91,7 +95,7 @@ class SafetyDisclaimerDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            
+
             // Not recommended uses (red box)
             Container(
               padding: const EdgeInsets.all(12),
@@ -125,14 +129,11 @@ class SafetyDisclaimerDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // Best practices
             Text(
               l10n.safetyBestPractices,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
             Text(
