@@ -61,5 +61,8 @@ android/key.properties
 lib/generated/
 lib/l10n/generated/
 
+# Auto-generated localization files (from flutter gen-l10n)
+lib/l10n/app_localizations*.dart
+
 # Secret
 key*
