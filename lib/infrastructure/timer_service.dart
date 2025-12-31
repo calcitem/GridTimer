@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import '../core/domain/entities/app_settings.dart';
 import '../core/domain/entities/timer_config.dart';
@@ -16,6 +17,8 @@ import '../core/domain/services/i_gesture_service.dart';
 import '../core/domain/services/i_vibration_service.dart';
 import '../core/domain/types.dart';
 import '../data/repositories/storage_repository.dart';
+
+const _alarmServiceChannel = MethodChannel('com.calcitem.gridtimer/system_settings');
 
 /// Timer service implementation with full state management and recovery.
 class TimerService with WidgetsBindingObserver implements ITimerService {
@@ -251,12 +254,23 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         if (settings != null) {
           _gesture.updateShakeSensitivity(settings.shakeSensitivity);
         }
+        
+        // Start foreground service for reliable alarm playback on MIUI/OEM ROMs
+        // where notification sounds are suppressed
+        try {
+          await _alarmServiceChannel.invokeMethod<Map<dynamic, dynamic>>(
+            'startAlarmSoundService',
+            {'sound': 'raw', 'loop': true},
+          );
+          debugPrint('TimerService: Foreground alarm service started');
+        } catch (e) {
+          debugPrint('TimerService: Failed to start foreground alarm service: $e');
+          // Non-fatal - notification sound may still work on some devices
+        }
       }
 
-      // IMPORTANT: Do NOT call showTimeUpNow() here!
-      // The scheduled notification from scheduleTimeUp() will trigger and play sound.
-      // Calling showTimeUpNow() would cancel the scheduled notification, and immediate
-      // notifications don't play sound reliably when app is in foreground/background.
+      // IMPORTANT: Notifications are now used primarily for visual alerts.
+      // Audio playback is handled by the foreground service for reliability on MIUI.
 
       // Load settings for TTS.
       final settings = await _storage.getSettings();
@@ -455,6 +469,14 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       // Stop gesture monitoring if no more ringing timers
       if (_ringingTimers.isEmpty) {
         _gesture.stopMonitoring();
+        
+        // Stop foreground alarm service when no timers are ringing
+        try {
+          await _alarmServiceChannel.invokeMethod<void>('stopAlarmSoundService');
+          debugPrint('TimerService: Foreground alarm service stopped (from reset)');
+        } catch (e) {
+          debugPrint('TimerService: Failed to stop foreground alarm service: $e');
+        }
       }
     }
 
@@ -478,7 +500,15 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     // Stop gesture monitoring if no more ringing timers
     if (_ringingTimers.isEmpty) {
       _gesture.stopMonitoring();
-    }
+        
+        // Stop foreground alarm service when no timers are ringing
+        try {
+          await _alarmServiceChannel.invokeMethod<void>('stopAlarmSoundService');
+          debugPrint('TimerService: Foreground alarm service stopped');
+        } catch (e) {
+          debugPrint('TimerService: Failed to stop foreground alarm service: $e');
+        }
+      }
 
     await reset(timerId);
   }

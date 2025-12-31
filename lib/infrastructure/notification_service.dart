@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
@@ -20,9 +19,6 @@ class NotificationService implements INotificationService {
 
   static const String _channelGroupId = 'gt.group.timers';
   static const String _actionIdStop = 'gt.action.stop';
-  // Android Notification.FLAG_INSISTENT = 0x00000004.
-  // When set, the notification sound/vibration will repeat until cancelled.
-  static const int _androidFlagInsistent = 4;
 
   @override
   Future<void> init() async {
@@ -104,7 +100,6 @@ class NotificationService implements INotificationService {
       // We keep the channel ID stable so users don't have to reconfigure lockscreen/sound
       // settings after upgrades (especially on OEM ROMs like MIUI).
       final channelId = 'gt.alarm.timeup.$soundKey.v2';
-      final soundResource = _soundKeyToResource(soundKey);
 
       // Try with groupId first, fall back to without groupId if it fails.
       // This handles OEM ROMs where NotificationChannelGroup creation may fail.
@@ -114,7 +109,9 @@ class NotificationService implements INotificationService {
         description: 'Time up notifications for $soundKey ringtone',
         importance: Importance.max,
         playSound: true,
-        sound: RawResourceAndroidNotificationSound(soundResource),
+        sound: RawResourceAndroidNotificationSound(
+          _soundKeyToResource(soundKey),
+        ),
         enableVibration: true,
         groupId: groupCreated ? _channelGroupId : null,
       );
@@ -130,7 +127,9 @@ class NotificationService implements INotificationService {
             description: 'Time up notifications for $soundKey ringtone',
             importance: Importance.max,
             playSound: true,
-            sound: RawResourceAndroidNotificationSound(soundResource),
+            sound: RawResourceAndroidNotificationSound(
+              _soundKeyToResource(soundKey),
+            ),
             enableVibration: true,
           );
           await androidPlugin.createNotificationChannel(channelWithoutGroup);
@@ -248,9 +247,6 @@ class NotificationService implements INotificationService {
       tz.local,
     );
 
-    // Explicitly specify the sound resource for scheduled notifications.
-    final soundResource = _soundKeyToResource(config.soundKey);
-
     // Determine language for notification content
     final bool useChineseText;
     if (ttsLanguage != null) {
@@ -272,9 +268,11 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      // Enable sound and vibration based on user settings.
-      playSound: true,
-      sound: RawResourceAndroidNotificationSound(soundResource),
+      // Audio playback is handled by AlarmSoundService (foreground service)
+      // for reliable lockscreen/background playback on all devices (especially MIUI).
+      // Notification is used for visual alert and user interaction (Stop button).
+      playSound: false,
+      sound: null,
       enableVibration: enableVibration,
       // Ensure this notification can alert.
       onlyAlertOnce: false,
@@ -290,10 +288,6 @@ class NotificationService implements INotificationService {
       ],
       // Use ALARM audio usage for pre-Android O devices. On Android O+ the channel controls this.
       audioAttributesUsage: AudioAttributesUsage.alarm,
-      // Repeat the sound until the user cancels the notification (Android only).
-      additionalFlags: Platform.isAndroid && repeatSoundUntilStopped
-          ? Int32List.fromList(const <int>[_androidFlagInsistent])
-          : null,
     );
 
     final details = NotificationDetails(android: androidDetails);
@@ -322,7 +316,7 @@ class NotificationService implements INotificationService {
           androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
           payload: payload,
         );
-      } catch (_) {
+      } catch (e2) {
         await _plugin.zonedSchedule(
           notificationId,
           config.name,
@@ -375,7 +369,6 @@ class NotificationService implements INotificationService {
     final notificationId = 1000 + session.slotIndex;
     // Use v2 channel (user-configured on Android 8+).
     final channelId = 'gt.alarm.timeup.${config.soundKey}.v2';
-    final soundResource = _soundKeyToResource(config.soundKey);
 
     // Cancel any pending notifications with the same ID to avoid update-suppressed alerting.
     if (Platform.isAndroid) {
@@ -413,14 +406,11 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      // Allow caller to decide whether this immediate notification should play sound.
-      //
-      // On Android 8+ the channel controls the actual sound, but playSound still
-      // controls whether sound is enabled for the notification instance.
-      playSound: playSound,
-      sound: playSound
-          ? RawResourceAndroidNotificationSound(soundResource)
-          : null,
+      // Audio playback is handled by AlarmSoundService (foreground service)
+      // for reliable lockscreen/background playback on all devices (especially MIUI).
+      // Notification is used for visual alert and user interaction (Stop button).
+      playSound: false,
+      sound: null,
       // Control vibration based on user settings.
       enableVibration: enableVibration,
       onlyAlertOnce: false,
@@ -433,11 +423,6 @@ class NotificationService implements INotificationService {
       ],
       // Use ALARM audio usage for pre-Android O devices. On Android O+ the channel controls this.
       audioAttributesUsage: AudioAttributesUsage.alarm,
-      // Repeat the sound until the user cancels the notification (Android only).
-      additionalFlags:
-          Platform.isAndroid && playSound && repeatSoundUntilStopped
-          ? Int32List.fromList(const <int>[_androidFlagInsistent])
-          : null,
     );
 
     final details = NotificationDetails(android: androidDetails);

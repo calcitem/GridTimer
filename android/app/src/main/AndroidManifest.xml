@@ -22,6 +22,11 @@
     
     <!-- Keep screen on during alarm (no user prompt needed) -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    
+    <!-- Foreground service for reliable alarm playback on OEM ROMs -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <!-- Android 14+ foreground service type permission (safe on older Android) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
 
     <!-- Queries for email client (Android 11+) - Required for Catcher email error reporting -->
     <!-- Queries for TTS engines (Android 11+) - Required for flutter_tts to detect TTS engines -->
@@ -98,6 +103,12 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- Foreground service used for reliable looping alarm playback on some OEM ROMs -->
+        <service
+            android:name=".AlarmSoundService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
     </application>
 </manifest>
 
