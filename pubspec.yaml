@@ -37,6 +37,9 @@ dependencies:
   # Volume button detection
   volume_controller: ^3.4.1
   
+  # Vibration
+  vibration: ^3.1.5
+  
   # Home Screen Widget
   home_widget: ^0.8.1
 
