@@ -490,9 +490,9 @@
     "description": "List of best practices"
   },
 
-  "safetyViewFullDisclaimer": "View Full Disclaimer",
+  "safetyViewFullDisclaimer": "View Disclaimer",
   "@safetyViewFullDisclaimer": {
-    "description": "Button to view full legal disclaimer"
+    "description": "Button to view legal disclaimer"
   },
 
   "safetyAcceptAndContinue": "I Understand, Continue",
@@ -500,14 +500,14 @@
     "description": "Button to accept disclaimer and continue"
   },
 
-  "fullDisclaimerTitle": "Full Legal Disclaimer",
+  "fullDisclaimerTitle": "Legal Disclaimer",
   "@fullDisclaimerTitle": {
-    "description": "Full disclaimer dialog title"
+    "description": "Disclaimer dialog title"
   },
 
-  "fullDisclaimerText": "This software is provided \"AS IS\" without warranty of any kind, either expressed or implied.\n\nThe developers are not liable for any consequences arising from the use of this software, including but not limited to: missed reminders, inaccurate timing, app failures, etc.\n\nUsers should assess risks themselves and prepare backup solutions for critical tasks.\n\nFor complete details, see LICENSE_DISCLAIMER.md file.",
+  "fullDisclaimerText": "This software is provided \"AS IS\" without warranty of any kind, either expressed or implied.\n\nThe developers are not liable for any consequences arising from the use of this software, including but not limited to: missed reminders, inaccurate timing, app failures, etc.\n\nUsers should assess risks themselves and prepare backup solutions for critical tasks.",
   "@fullDisclaimerText": {
-    "description": "Full legal disclaimer text"
+    "description": "Legal disclaimer text"
   },
 
   "close": "Close",

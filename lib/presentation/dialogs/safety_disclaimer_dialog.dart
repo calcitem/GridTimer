@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 
-/// Safety disclaimer dialog shown on first launch.
+/// Safety disclaimer dialog shown on first app launch.
 /// 
 /// This dialog serves both legal protection and user education purposes.
 /// It clearly communicates the app's limitations while maintaining a
 /// friendly, non-alarming tone.
+/// 
+/// The dialog will only be shown once - when the user first installs and
+/// launches the app. After clicking "I Understand, Continue", the acceptance
+/// is saved and the dialog will not appear again on subsequent launches.
 class SafetyDisclaimerDialog extends StatelessWidget {
   const SafetyDisclaimerDialog({super.key});
 
   /// Show the safety disclaimer dialog.
   /// 
-  /// Returns true if user accepts, false if dismissed.
+  /// Returns true if user clicks "I Understand, Continue", false otherwise.
+  /// The dialog cannot be dismissed by tapping outside (barrierDismissible: false).
   static Future<bool> show(BuildContext context) async {
     final result = await showDialog<bool>(
       context: context,
-      barrierDismissible: false, // User must explicitly accept
+      barrierDismissible: false, // User must explicitly click a button
       builder: (context) => const SafetyDisclaimerDialog(),
     );
     return result ?? false;
@@ -138,15 +143,14 @@ class SafetyDisclaimerDialog extends StatelessWidget {
         ),
       ),
       actions: [
-        // View full disclaimer button
+        // View full disclaimer button - does not close the main dialog
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop(false);
             _showFullDisclaimer(context);
           },
           child: Text(l10n.safetyViewFullDisclaimer),
         ),
-        // Accept button
+        // Accept button - closes dialog and saves acceptance
         FilledButton(
           onPressed: () {
             Navigator.of(context).pop(true);

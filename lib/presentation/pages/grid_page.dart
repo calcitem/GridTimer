@@ -24,23 +24,45 @@ class _GridPageState extends ConsumerState<GridPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     
-    // Check and show safety disclaimer on first launch
+    // Check and show safety disclaimer on first launch only
     if (!_disclaimerChecked) {
       _disclaimerChecked = true;
       _checkAndShowDisclaimer();
     }
   }
 
+  /// Check if safety disclaimer needs to be shown and display it if necessary.
+  /// 
+  /// This will only show the disclaimer if:
+  /// 1. The app is launched for the first time, OR
+  /// 2. The user has not previously accepted the disclaimer
   Future<void> _checkAndShowDisclaimer() async {
+    // Wait for settings to be loaded asynchronously
     final settingsAsync = ref.read(appSettingsProvider);
-    final settings = settingsAsync.value;
     
+    // Wait for the future to complete if still loading
+    await settingsAsync.when(
+      data: (_) async {}, // Already loaded, continue
+      loading: () async {
+        // Wait for settings to load
+        await ref.read(appSettingsProvider.future);
+      },
+      error: (_, __) async {}, // Skip on error
+    );
+    
+    // Now read the loaded settings
+    final settings = ref.read(appSettingsProvider).value;
+    
+    // Only show disclaimer if not yet accepted
     if (settings != null && !settings.safetyDisclaimerAccepted) {
-      // Wait for first frame to complete
+      // Wait for first frame to complete to avoid showing during build
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (!mounted) return;
         
+        // Show the disclaimer dialog
         final accepted = await SafetyDisclaimerDialog.show(context);
+        
+        // Save the acceptance status only if user clicked "I Understand, Continue"
         if (accepted && mounted) {
           await ref
               .read(appSettingsProvider.notifier)
