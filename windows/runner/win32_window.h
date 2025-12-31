@@ -2,6 +2,7 @@
 #define RUNNER_WIN32_WINDOW_H_
 
 #include <windows.h>
+#include <shellapi.h>
 
 #include <functional>
 #include <memory>
@@ -52,6 +53,9 @@ class Win32Window {
   // If true, closing this window will quit the application.
   void SetQuitOnClose(bool quit_on_close);
 
+  // Enable minimize to system tray on close.
+  void SetMinimizeToTray(bool minimize_to_tray);
+
   // Return a RECT representing the bounds of the current client area.
   RECT GetClientArea();
 
@@ -90,7 +94,31 @@ class Win32Window {
   // Update the window frame's theme to match the system theme.
   static void UpdateTheme(HWND const window);
 
+  // Create system tray icon.
+  void CreateTrayIcon();
+
+  // Remove system tray icon.
+  void RemoveTrayIcon();
+
+  // Show tray context menu.
+  void ShowTrayMenu();
+
+  // Minimize window to system tray.
+  void MinimizeToTray();
+
+  // Restore window from tray.
+  void RestoreFromTray();
+
   bool quit_on_close_ = false;
+
+  // Whether to minimize to tray on close.
+  bool minimize_to_tray_ = false;
+
+  // Tray icon data.
+  NOTIFYICONDATAW tray_icon_data_ = {};
+
+  // Whether tray icon has been created.
+  bool tray_icon_created_ = false;
 
   // window handle for top level window.
   HWND window_handle_ = nullptr;

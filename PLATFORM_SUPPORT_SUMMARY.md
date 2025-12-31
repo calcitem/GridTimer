@@ -185,5 +185,5 @@ if (Platform.isAndroid || Platform.isIOS) {
 
 ---
 
-Last Updated: 2025-12-31
+Last Updated: 2026-12-31
 

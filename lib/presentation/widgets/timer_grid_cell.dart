@@ -125,12 +125,12 @@ class TimerGridCell extends ConsumerWidget {
         // Top: preset duration label
         Text(
           '$presetMinutes ${l10n.minutes}',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 22, // 增大字号
             fontWeight: FontWeight.bold,
             fontFamily: 'monospace',
-            color: const Color(0xFFFFD600), // 亮黄色
-            fontFeatures: const [FontFeature.tabularFigures()],
+            color: Color(0xFFFFD600), // 亮黄色
+            fontFeatures: [FontFeature.tabularFigures()],
           ),
         ),
         // Middle: remaining seconds (large font)
@@ -142,13 +142,13 @@ class TimerGridCell extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Text(
                   '$remainingSeconds',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 100,
                     fontWeight: FontWeight.w900,
                     fontFamily: 'monospace',
                     color: Colors.white, // 始终纯白，保持最高对比度
                     height: 1.0,
-                    fontFeatures: const [FontFeature.tabularFigures()],
+                    fontFeatures: [FontFeature.tabularFigures()],
                   ),
                 ),
               ),
