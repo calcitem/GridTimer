@@ -751,6 +751,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Senior-friendly: Enable screen tap, volume buttons, and flip phone'**
   String get gestureHint;
+
+  /// Onboarding check sound step title
+  ///
+  /// In en, this message translates to:
+  /// **'Important: Check Sound'**
+  String get onboardingCheckSoundTitle;
+
+  /// Onboarding check sound step description
+  ///
+  /// In en, this message translates to:
+  /// **'Please check if \'Timer Alarm (default)\' sound is NOT \'None\' or \'Silent\'.\n\nIf silent, you will only receive a notification without sound when time is up.'**
+  String get onboardingCheckSoundDesc;
+
+  /// Onboarding check sound button label
+  ///
+  /// In en, this message translates to:
+  /// **'Check Sound Settings'**
+  String get onboardingCheckSoundBtn;
 }
 
 class _AppLocalizationsDelegate

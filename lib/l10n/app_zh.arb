@@ -123,5 +123,9 @@
   "shakeSensitivityLow": "低（需要用力摇）",
   "shakeSensitivityHigh": "高（轻轻摇即可）",
   "shakeSensitivityDesc": "调整摇晃手机的灵敏度",
-  "gestureHint": "长辈友好：建议开启触摸屏幕、音量键和翻转手机"
+  "gestureHint": "长辈友好：建议开启触摸屏幕、音量键和翻转手机",
+
+  "onboardingCheckSoundTitle": "重要：检查声音",
+  "onboardingCheckSoundDesc": "请点击下方按钮，确保 \"Timer Alarm (default)\" 的声音**不是**“无”或“静音”。\n\n如果设为静音，倒计时结束时您将只收到通知而听不到铃声。",
+  "onboardingCheckSoundBtn": "去检查声音设置"
 }

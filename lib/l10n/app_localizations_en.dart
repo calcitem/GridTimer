@@ -355,4 +355,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get gestureHint =>
       'Senior-friendly: Enable screen tap, volume buttons, and flip phone';
+
+  @override
+  String get onboardingCheckSoundTitle => 'Important: Check Sound';
+
+  @override
+  String get onboardingCheckSoundDesc =>
+      'Please check if \'Timer Alarm (default)\' sound is NOT \'None\' or \'Silent\'.\n\nIf silent, you will only receive a notification without sound when time is up.';
+
+  @override
+  String get onboardingCheckSoundBtn => 'Check Sound Settings';
 }
