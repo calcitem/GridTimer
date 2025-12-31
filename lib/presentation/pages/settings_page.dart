@@ -353,7 +353,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
                     // Throw a test exception to verify Catcher is working
-                    throw Exception(
+                                     throw Exception(
                       'This is a test exception to verify Catcher error reporting system is working properly',
                     );
                   },
