@@ -28,9 +28,6 @@ dependencies:
   permission_handler: 12.0.1
   app_settings: ^7.0.0
   
-  # File Picker
-  file_picker: ^10.3.8
-  
   # Sensors for shake and flip detection
   sensors_plus: ^7.0.0
   

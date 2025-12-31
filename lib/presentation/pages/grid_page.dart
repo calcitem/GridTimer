@@ -5,15 +5,53 @@ import '../../core/domain/entities/timer_grid_set.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
 import '../../l10n/app_localizations.dart';
+import '../dialogs/safety_disclaimer_dialog.dart';
 import '../widgets/timer_grid_cell.dart';
 import 'settings_page.dart';
 
 /// Main grid page showing 3x3 timer grid.
-class GridPage extends ConsumerWidget {
+class GridPage extends ConsumerStatefulWidget {
   const GridPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<GridPage> createState() => _GridPageState();
+}
+
+class _GridPageState extends ConsumerState<GridPage> {
+  bool _disclaimerChecked = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    // Check and show safety disclaimer on first launch
+    if (!_disclaimerChecked) {
+      _disclaimerChecked = true;
+      _checkAndShowDisclaimer();
+    }
+  }
+
+  Future<void> _checkAndShowDisclaimer() async {
+    final settingsAsync = ref.read(appSettingsProvider);
+    final settings = settingsAsync.value;
+    
+    if (settings != null && !settings.safetyDisclaimerAccepted) {
+      // Wait for first frame to complete
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) return;
+        
+        final accepted = await SafetyDisclaimerDialog.show(context);
+        if (accepted && mounted) {
+          await ref
+              .read(appSettingsProvider.notifier)
+              .updateSafetyDisclaimerAccepted(true);
+        }
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final gridState = ref.watch(gridStateProvider);
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {

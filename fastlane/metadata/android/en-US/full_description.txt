@@ -1,0 +1,104 @@
+⚠️ IMPORTANT SAFETY NOTICE
+
+GridTimer is a free open-source timer app for daily reminders and non-critical use.
+
+❌ NOT SUITABLE FOR:
+• Critical medical use (use medical-grade apps for medication reminders)
+• Life-critical reminders
+• Emergency medical situations
+
+✅ RECOMMENDED FOR:
+• Daily cooking timers
+• General life reminders
+• Non-critical occasions after testing
+
+See full disclaimer in-app. Please test thoroughly before relying on this app.
+
+---
+
+🎯 Key Features
+
+GridTimer is a 9-grid parallel timer designed for seniors and caregiving scenarios, making it easy to manage multiple timing tasks.
+
+✨ Core Features
+
+📱 9-Grid Design
+• Fixed 3×3 grid layout, simple and intuitive
+• Extra-large fonts, visible from 1 meter away
+• Ideal for elderly and visually impaired users
+
+⏰ Parallel Timers
+• Run multiple independent timers simultaneously
+• Individual control for each grid (start/pause/reset)
+• No interference, flexible and efficient
+
+🔔 Reliable Reminder System
+• High-priority alarm notifications
+• Works even when screen is locked
+• Background operation maintained
+• Supports vibration and TTS voice announcements
+
+🎨 Mistouch Prevention
+• Proper spacing between grids to avoid accidental taps
+• Simplified operation flow, low learning curve
+• Clear status indicators at a glance
+
+🌐 Bilingual Support
+• Complete Chinese and English interface
+• Chinese voice announcement support
+
+⚙️ Flexible Settings
+• Customizable grid durations (default: 10 seconds to 45 minutes)
+• Multiple audio playback modes (loop/timed/interval)
+• Volume and voice control
+• Gesture configuration (tap/shake/flip)
+• Vibration intensity adjustment
+
+🔒 Privacy Protection
+• Runs completely offline, no internet required
+• No personal information collected
+• Open-source and free, transparent code
+
+📋 Use Cases
+
+👵 Elder Care
+• Medication reminders (as backup, use professional apps for critical reminders)
+• Cooking timers
+• Rest and exercise reminders
+
+👨‍🍳 Cooking Assistant
+• Multiple dishes cooking simultaneously
+• Different ingredients timed separately
+• Avoid overcooking
+
+🏃 Exercise & Fitness
+• Interval training timer
+• Rest period reminders
+• Workout rhythm control
+
+📚 Study & Work
+• Pomodoro Technique
+• Study and break reminders
+• Time management tool
+
+💡 Best Practices
+
+1. Test the alarm before first use
+2. Have backup reminders for critical tasks
+3. Check device Do Not Disturb settings
+4. Ensure notification permissions are granted
+
+🛡️ Disclaimer
+
+This app is provided "AS IS" without warranty. The developers are not liable for any consequences arising from the use of this app. Users should assess risks themselves and prepare backup solutions for critical tasks.
+
+For complete legal disclaimer, please view the Safety Notice page in-app.
+
+📖 Open Source
+
+GridTimer is an open-source project under MIT License.
+Visit GitHub to view source code, report issues, or contribute.
+
+🙏 Acknowledgments
+
+Thanks to all open-source contributors and community support.

@@ -165,6 +165,11 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     await updateSettings((s) => s.copyWith(onboardingCompleted: completed));
   }
 
+  /// Set safety disclaimer accepted.
+  Future<void> updateSafetyDisclaimerAccepted(bool accepted) async {
+    await updateSettings((s) => s.copyWith(safetyDisclaimerAccepted: accepted));
+  }
+
   /// Update sound volume.
   Future<void> updateSoundVolume(double volume) async {
     assert(
@@ -218,11 +223,6 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
   Future<void> updateAudioIntervalPause(int minutes) async {
     assert(minutes > 0, 'Interval pause must be greater than 0');
     await updateSettings((s) => s.copyWith(audioIntervalPauseMinutes: minutes));
-  }
-
-  /// Update custom audio path.
-  Future<void> updateCustomAudioPath(String? path) async {
-    await updateSettings((s) => s.copyWith(customAudioPath: path));
   }
 
   /// Update gesture action for a specific gesture type.

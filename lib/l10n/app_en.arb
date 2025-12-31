@@ -450,44 +450,74 @@
     "description": "Minutes unit label"
   },
 
-  "customAudio": "Custom Alarm Sound",
-  "@customAudio": {
-    "description": "Custom audio section title"
+  "safetyDisclaimerTitle": "Safety Notice",
+  "@safetyDisclaimerTitle": {
+    "description": "Safety disclaimer dialog title"
   },
 
-  "customAudioDesc": "Upload your own audio file as alarm sound (supports MP3, WAV, etc.)",
-  "@customAudioDesc": {
-    "description": "Custom audio description"
+  "safetyDisclaimerMessage": "GridTimer is a free open-source timer app. For your safety, please understand the following:",
+  "@safetyDisclaimerMessage": {
+    "description": "Safety disclaimer message"
   },
 
-  "uploadCustomAudio": "Upload Audio File",
-  "@uploadCustomAudio": {
-    "description": "Upload custom audio button"
+  "safetyRecommendedUses": "✅ Recommended Uses",
+  "@safetyRecommendedUses": {
+    "description": "Recommended uses section title"
   },
 
-  "changeCustomAudio": "Change Audio File",
-  "@changeCustomAudio": {
-    "description": "Change custom audio button"
+  "safetyRecommendedUsesList": "• Daily cooking timers\n• General life reminders\n• Non-critical occasions\n• After testing",
+  "@safetyRecommendedUsesList": {
+    "description": "List of recommended uses"
   },
 
-  "clearCustomAudio": "Clear",
-  "@clearCustomAudio": {
-    "description": "Clear custom audio button"
+  "safetyNotRecommendedUses": "❌ NOT Recommended",
+  "@safetyNotRecommendedUses": {
+    "description": "Not recommended uses section title"
   },
 
-  "customAudioActive": "Currently using custom audio",
-  "@customAudioActive": {
-    "description": "Custom audio active message"
+  "safetyNotRecommendedUsesList": "• Critical medication reminders (use medical-grade apps)\n• Life-critical reminders\n• Emergency medical situations\n• Without prior testing",
+  "@safetyNotRecommendedUsesList": {
+    "description": "List of not recommended uses"
   },
 
-  "customAudioSelected": "Custom audio has been set",
-  "@customAudioSelected": {
-    "description": "Custom audio selected confirmation"
+  "safetyBestPractices": "💡 Best Practices:",
+  "@safetyBestPractices": {
+    "description": "Best practices section title"
   },
 
-  "customAudioCleared": "Restored to default sound",
-  "@customAudioCleared": {
-    "description": "Custom audio cleared confirmation"
+  "safetyBestPracticesList": "• Test the alarm before relying on it\n• Have backup reminders for critical tasks\n• Check Do Not Disturb mode and notification permissions\n• Understand app limitations",
+  "@safetyBestPracticesList": {
+    "description": "List of best practices"
+  },
+
+  "safetyViewFullDisclaimer": "View Full Disclaimer",
+  "@safetyViewFullDisclaimer": {
+    "description": "Button to view full legal disclaimer"
+  },
+
+  "safetyAcceptAndContinue": "I Understand, Continue",
+  "@safetyAcceptAndContinue": {
+    "description": "Button to accept disclaimer and continue"
+  },
+
+  "fullDisclaimerTitle": "Full Legal Disclaimer",
+  "@fullDisclaimerTitle": {
+    "description": "Full disclaimer dialog title"
+  },
+
+  "fullDisclaimerText": "This software is provided \"AS IS\" without warranty of any kind, either expressed or implied.\n\nThe developers are not liable for any consequences arising from the use of this software, including but not limited to: missed reminders, inaccurate timing, app failures, etc.\n\nUsers should assess risks themselves and prepare backup solutions for critical tasks.\n\nFor complete details, see LICENSE_DISCLAIMER.md file.",
+  "@fullDisclaimerText": {
+    "description": "Full legal disclaimer text"
+  },
+
+  "close": "Close",
+  "@close": {
+    "description": "Close button"
+  },
+
+  "aboutDisclaimer": "Safety Notice & Disclaimer",
+  "@aboutDisclaimer": {
+    "description": "Menu item for viewing disclaimer"
   },
 
   "gestureSettings": "Gesture Control Settings",
