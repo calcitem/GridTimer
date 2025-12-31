@@ -8,7 +8,6 @@ import '../core/domain/enums.dart';
 /// Audio playback service implementation with multiple playback modes.
 class AudioService implements IAudioService {
   final AudioPlayer _player = AudioPlayer();
-  SoundKey? _currentSoundKey;
   double _currentVolume = 1.0;
   
   /// Timer for auto-stopping after duration
@@ -17,6 +16,22 @@ class AudioService implements IAudioService {
   /// Timer for interval mode
   Timer? _intervalTimer;
 
+  AudioContext _buildAudioContext() {
+    return AudioContext(
+      android: const AudioContextAndroid(
+        isSpeakerphoneOn: false,
+        stayAwake: true,
+        contentType: AndroidContentType.sonification,
+        usageType: AndroidUsageType.alarm,
+        audioFocus: AndroidAudioFocus.gain,
+      ),
+      iOS: AudioContextIOS(
+        category: AVAudioSessionCategory.playback,
+        options: const <AVAudioSessionOptions>{AVAudioSessionOptions.mixWithOthers},
+      ),
+    );
+  }
+
   @override
   Future<void> init() async {
     // Set release mode to loop (will be adjusted based on playback mode)
@@ -24,21 +39,7 @@ class AudioService implements IAudioService {
     await _player.setVolume(_currentVolume);
 
     // 设置音频上下文为闹钟/通知，确保锁屏时也能播放
-    await _player.setAudioContext(
-      AudioContext(
-        android: const AudioContextAndroid(
-          isSpeakerphoneOn: false,
-          stayAwake: true,
-          contentType: AndroidContentType.sonification,
-          usageType: AndroidUsageType.alarm,
-          audioFocus: AndroidAudioFocus.gain,
-        ),
-        iOS: AudioContextIOS(
-          category: AVAudioSessionCategory.playback,
-          options: const <AVAudioSessionOptions>{AVAudioSessionOptions.mixWithOthers},
-        ),
-      ),
-    );
+    await _player.setAudioContext(_buildAudioContext());
   }
 
   @override
@@ -78,12 +79,11 @@ class AudioService implements IAudioService {
     String? customAudioPath,
   }) async {
     try {
-      // Stop current if playing different sound
-      if (_currentSoundKey != null && _currentSoundKey != soundKey) {
-        await stop();
-      }
-
-      _currentSoundKey = soundKey;
+      // Always stop first to ensure clean state
+      await _player.stop();
+      
+      // Re-apply audio context to ensure we have focus
+      await _player.setAudioContext(_buildAudioContext());
 
       // Set volume before playing
       await setVolume(volume);
@@ -222,7 +222,6 @@ class AudioService implements IAudioService {
   Future<void> stop() async {
     try {
       await _player.stop();
-      _currentSoundKey = null;
       _autoStopTimer?.cancel();
       _intervalTimer?.cancel();
       _autoStopTimer = null;
