@@ -37,9 +37,9 @@ class TimerGridCell extends ConsumerWidget {
           border: Border.all(
             color: session.status == TimerStatus.ringing
                 ? const Color(0xFFFFD600) // 响铃时使用亮黄色边框，最高警示对比
-                : (session.status == TimerStatus.idle 
-                    ? Colors.white54 
-                    : Colors.white), // 其他状态使用白色边框
+                : (session.status == TimerStatus.idle
+                      ? Colors.white54
+                      : Colors.white), // 其他状态使用白色边框
             width: session.status == TimerStatus.ringing ? 6 : 2, // 加粗响铃边框
           ),
         ),
@@ -161,7 +161,9 @@ class TimerGridCell extends ConsumerWidget {
           style: TextStyle(
             fontSize: 24, // 增大
             fontWeight: FontWeight.bold,
-            color: isPaused ? const Color(0xFFFFD600) : Colors.white, // 暂停时显示亮黄色提醒
+            color: isPaused
+                ? const Color(0xFFFFD600)
+                : Colors.white, // 暂停时显示亮黄色提醒
           ),
         ),
       ],
@@ -277,7 +279,7 @@ class TimerGridCell extends ConsumerWidget {
                 child: _buildTileButton(
                   icon: Icons.close,
                   label: l10n.actionCancel,
-                  color: Colors.grey.shade600,
+                  color: const Color(0xFF424242), // 深灰
                   onPressed: () => Navigator.pop(context),
                   isHorizontal: true,
                 ),
@@ -287,7 +289,8 @@ class TimerGridCell extends ConsumerWidget {
                 child: _buildTileButton(
                   icon: Icons.play_arrow,
                   label: l10n.actionStart,
-                  color: Colors.green.shade600,
+                  color: const Color(0xFFFFD600), // 高亮黄
+                  textColor: Colors.black, // 黑字
                   onPressed: () {
                     Navigator.pop(context);
                     _startTimer(ref);
@@ -325,7 +328,8 @@ class TimerGridCell extends ConsumerWidget {
                       child: _buildTileButton(
                         icon: Icons.pause,
                         label: l10n.actionPause,
-                        color: Colors.orange.shade700,
+                        color: const Color(0xFFFFD600), // 高亮黄色
+                        textColor: Colors.black, // 黑字
                         onPressed: () {
                           Navigator.pop(context);
                           ref.read(timerServiceProvider).pause(session.timerId);
@@ -337,7 +341,7 @@ class TimerGridCell extends ConsumerWidget {
                       child: _buildTileButton(
                         icon: Icons.refresh,
                         label: l10n.actionReset,
-                        color: Colors.blue.shade700,
+                        color: const Color(0xFF2979FF), // 鲜亮蓝
                         onPressed: () {
                           Navigator.pop(context);
                           ref.read(timerServiceProvider).reset(session.timerId);
@@ -353,7 +357,7 @@ class TimerGridCell extends ConsumerWidget {
                 child: _buildTileButton(
                   icon: Icons.close,
                   label: l10n.actionCancel,
-                  color: Colors.grey.shade600,
+                  color: const Color(0xFF424242), // 深灰背景，比之前更深，对比文字更强
                   onPressed: () => Navigator.pop(context),
                   isHorizontal: true,
                 ),
@@ -413,7 +417,7 @@ class TimerGridCell extends ConsumerWidget {
                 child: _buildTileButton(
                   icon: Icons.close,
                   label: l10n.actionCancel,
-                  color: Colors.grey.shade600,
+                  color: const Color(0xFF424242), // 深灰
                   onPressed: () => Navigator.pop(context),
                   isHorizontal: true,
                 ),
@@ -440,7 +444,7 @@ class TimerGridCell extends ConsumerWidget {
               _buildTileButton(
                 icon: Icons.stop_circle_outlined,
                 label: l10n.stopAlarm,
-                color: Colors.red.shade700,
+                color: const Color(0xFFD50000), // 鲜亮红
                 onPressed: () {
                   Navigator.pop(context);
                   ref.read(timerServiceProvider).stopRinging(session.timerId);
@@ -451,7 +455,7 @@ class TimerGridCell extends ConsumerWidget {
               _buildTileButton(
                 icon: Icons.close,
                 label: l10n.actionCancel,
-                color: Colors.grey.shade600,
+                color: const Color(0xFF424242), // 深灰
                 onPressed: () => Navigator.pop(context),
                 isHorizontal: true,
               ),
@@ -469,6 +473,7 @@ class TimerGridCell extends ConsumerWidget {
     required String label,
     required Color color,
     required VoidCallback onPressed,
+    Color textColor = Colors.white, // 默认白字
     bool isLarge = false,
     bool isHorizontal = false,
   }) {
@@ -483,15 +488,15 @@ class TimerGridCell extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(icon, size: 32, color: Colors.white),
+                  Icon(icon, size: 32, color: textColor), // 使用自定义文字颜色
                   const SizedBox(width: 16),
                   Flexible(
                     child: Text(
                       label,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: textColor, // 使用自定义文字颜色
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -505,7 +510,7 @@ class TimerGridCell extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(icon, size: isLarge ? 80 : 56, color: Colors.white),
+                    Icon(icon, size: isLarge ? 80 : 56, color: textColor),
                     const SizedBox(height: 12),
                     ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 200),
@@ -514,7 +519,7 @@ class TimerGridCell extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: isLarge ? 28 : 22,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: textColor,
                           height: 1.1,
                         ),
                         textAlign: TextAlign.center,

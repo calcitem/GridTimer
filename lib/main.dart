@@ -163,7 +163,7 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
-          contentTextStyle: TextStyle(fontSize: 20, color: Colors.white70),
+          contentTextStyle: TextStyle(fontSize: 20, color: Color(0xFFEEEEEE)),
           actionsPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         ),
 
@@ -191,6 +191,38 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
               fontWeight: FontWeight.bold,
             ),
           ),
+        ),
+
+        // 列表项主题：大字号，高舒适度
+        listTileTheme: const ListTileThemeData(
+          contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 12), // 增加间距
+          titleTextStyle: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+          subtitleTextStyle: TextStyle(
+            fontSize: 18,
+            color: Colors.white70,
+            height: 1.4, // 增加行高，提升可读性
+          ),
+          iconColor: Colors.white,
+          tileColor: Colors.transparent,
+        ),
+
+        // 全局文本主题调整
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(fontSize: 20, color: Colors.white),
+          bodyMedium: TextStyle(fontSize: 18, color: Colors.white),
+          bodySmall: TextStyle(fontSize: 16, color: Colors.white70), // 增加小字号
+          titleMedium: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+          titleSmall: TextStyle(fontSize: 18, color: Colors.white70),
+        ),
+
+        // 分割线主题
+        dividerTheme: const DividerThemeData(
+          color: Colors.white24,
+          thickness: 1,
         ),
 
         // 增大输入框文字，增强对比度

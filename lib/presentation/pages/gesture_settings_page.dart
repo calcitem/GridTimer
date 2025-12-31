@@ -111,7 +111,7 @@ class GestureSettingsPage extends ConsumerWidget {
                     size: 32,
                     color: currentAction != AlarmGestureAction.none
                         ? Colors.green
-                        : Colors.grey,
+                        : Colors.white54,
                   ),
                   title: Text(_getGestureTypeName(gestureType, l10n)),
                   subtitle: Text(
@@ -119,7 +119,7 @@ class GestureSettingsPage extends ConsumerWidget {
                     style: TextStyle(
                       color: currentAction != AlarmGestureAction.none
                           ? Colors.green
-                          : Colors.grey,
+                          : Colors.white54,
                       fontWeight: currentAction != AlarmGestureAction.none
                           ? FontWeight.bold
                           : FontWeight.normal,
@@ -223,7 +223,7 @@ class GestureSettingsPage extends ConsumerWidget {
                     Text(
                       l10n.shakeSensitivityDesc,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.grey,
+                            color: Colors.white70,
                           ),
                     ),
                   ],

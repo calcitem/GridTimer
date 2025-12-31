@@ -282,7 +282,7 @@ class _GridDurationsSettingsPageState
                 _formatDuration(_durations[index]),
                 style: const TextStyle(
                   fontSize: 14,
-                  color: Colors.grey,
+                  color: Colors.white70,
                 ),
               ),
             ),

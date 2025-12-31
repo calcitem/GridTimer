@@ -294,13 +294,14 @@ class SettingsPage extends ConsumerWidget {
   /// Build a section header widget.
   Widget _buildSectionHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 12), // 增加垂直间距
       child: Text(
         title,
         style: const TextStyle(
-          fontSize: 18, // 增大字号
-          fontWeight: FontWeight.bold,
+          fontSize: 26, // 再次增大字号 (18 -> 26)
+          fontWeight: FontWeight.w900, // 更粗的字体
           color: Color(0xFFFFD600), // 高对比度黄色
+          letterSpacing: 1.2, // 增加字间距
         ),
       ),
     );

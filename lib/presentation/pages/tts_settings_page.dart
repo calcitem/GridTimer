@@ -155,7 +155,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                   Text(
                     '调整语音播报音量',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey,
+                          color: Colors.white70,
                         ),
                   ),
                 ],
@@ -204,7 +204,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                   Text(
                     '调整语音播报速度（0.5 为正常速度）',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey,
+                          color: Colors.white70,
                         ),
                   ),
                 ],
@@ -253,7 +253,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                   Text(
                     '调整语音播报音调（1.0 为正常音调）',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey,
+                          color: Colors.white70,
                         ),
                   ),
                 ],
@@ -266,7 +266,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
               child: Text(
                 '语音播报语言跟随应用语言设置。',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey,
+                      color: Colors.white70,
                       fontStyle: FontStyle.italic,
                     ),
               ),

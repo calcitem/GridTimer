@@ -191,8 +191,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                                 Text(
                                   settings.customAudioPath!.split('/').last,
                                   style: Theme.of(context).textTheme.bodySmall,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                                  // 移除 maxLines 和 ellipsis，允许文件名换行显示
                                 ),
                               ],
                             ),
@@ -232,7 +231,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                   Text(
                     l10n.customAudioDesc,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey,
+                          color: Colors.white70, // 确保高对比度
                         ),
                   ),
                 ],
@@ -289,7 +288,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                   Text(
                     l10n.volumeDesc,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey,
+                          color: Colors.white70, // 确保高对比度
                         ),
                   ),
                 ],
