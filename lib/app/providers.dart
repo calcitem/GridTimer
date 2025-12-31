@@ -74,15 +74,28 @@ final timerServiceProvider = Provider<ITimerService>((ref) {
   );
 });
 
-/// Grid state stream provider.
-final gridStateProvider = StreamProvider((ref) {
+/// Timer service initialization provider.
+/// Ensures timer service is initialized before use.
+final timerServiceInitProvider = FutureProvider<void>((ref) async {
   final service = ref.watch(timerServiceProvider);
-  return service.watchGridState();
+  await service.init();
+});
+
+/// Grid state stream provider.
+/// Waits for timer service initialization before watching state.
+final gridStateProvider = StreamProvider((ref) async* {
+  // Wait for timer service to be initialized first
+  await ref.watch(timerServiceInitProvider.future);
+
+  final service = ref.watch(timerServiceProvider);
+  yield* service.watchGridState();
 });
 
 /// App settings provider.
 final appSettingsProvider =
-    AsyncNotifierProvider<AppSettingsNotifier, AppSettings>(AppSettingsNotifier.new);
+    AsyncNotifierProvider<AppSettingsNotifier, AppSettings>(
+      AppSettingsNotifier.new,
+    );
 
 /// Notifier for managing app settings state.
 class AppSettingsNotifier extends AsyncNotifier<AppSettings> {

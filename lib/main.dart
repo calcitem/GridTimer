@@ -46,8 +46,9 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
       final widget = ref.read(widgetServiceProvider);
       await widget.init();
 
-      final timerService = ref.read(timerServiceProvider);
-      await timerService.init();
+      // Timer service initialization is now handled by timerServiceInitProvider
+      // which is triggered when gridStateProvider is watched.
+      // No need to call timerService.init() here.
 
       // Ensure notification channels (all timers use same sound)
       await notification.ensureAndroidChannels(soundKeys: {'default'});
@@ -109,10 +110,7 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
             fontWeight: FontWeight.bold,
             color: Color(0xFFFFD600),
           ),
-          iconTheme: IconThemeData(
-            color: Color(0xFFFFD600),
-            size: 28,
-          ),
+          iconTheme: IconThemeData(color: Color(0xFFFFD600), size: 28),
         ),
 
         // 卡片主题：增加边框以区分背景
@@ -125,10 +123,7 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
         ),
 
         // 图标主题：默认大尺寸白色
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-          size: 28,
-        ),
+        iconTheme: const IconThemeData(color: Colors.white, size: 28),
 
         // 开关主题：高对比度
         switchTheme: SwitchThemeData(
@@ -191,7 +186,10 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
 
         // 列表项主题：大字号，高舒适度
         listTileTheme: const ListTileThemeData(
-          contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 12), // 增加间距
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 24,
+            vertical: 12,
+          ), // 增加间距
           titleTextStyle: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -211,7 +209,11 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
           bodyLarge: TextStyle(fontSize: 20, color: Colors.white),
           bodyMedium: TextStyle(fontSize: 18, color: Colors.white),
           bodySmall: TextStyle(fontSize: 16, color: Colors.white70), // 增加小字号
-          titleMedium: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+          titleMedium: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
           titleSmall: TextStyle(fontSize: 18, color: Colors.white70),
         ),
 
@@ -226,8 +228,14 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
           filled: true,
           fillColor: const Color(0xFF2C2C2C),
           labelStyle: const TextStyle(fontSize: 18, color: Colors.white70),
-          floatingLabelStyle: const TextStyle(fontSize: 20, color: Color(0xFFFFD600)),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          floatingLabelStyle: const TextStyle(
+            fontSize: 20,
+            color: Color(0xFFFFD600),
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 16,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(color: Colors.white54),
@@ -250,9 +258,8 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
             return const OnboardingPage();
           }
         },
-        loading: () => const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        ),
+        loading: () =>
+            const Scaffold(body: Center(child: CircularProgressIndicator())),
         error: (e, s) => const GridPage(),
       ),
     );
