@@ -10,6 +10,7 @@ import '../core/domain/services/i_audio_service.dart';
 import '../core/domain/services/i_tts_service.dart';
 import '../core/domain/services/i_clock.dart';
 import '../core/domain/services/i_gesture_service.dart';
+import '../core/domain/services/i_vibration_service.dart';
 import '../core/domain/types.dart';
 import '../data/repositories/storage_repository.dart';
 
@@ -21,6 +22,7 @@ class TimerService implements ITimerService {
   final ITtsService _tts;
   final IClock _clock;
   final IGestureService _gesture;
+  final IVibrationService _vibration;
 
   TimerGridSet? _currentGrid;
   final Map<TimerId, TimerSession> _sessions = {};
@@ -46,12 +48,14 @@ class TimerService implements ITimerService {
     required ITtsService tts,
     required IClock clock,
     required IGestureService gesture,
+    required IVibrationService vibration,
   }) : _storage = storage,
        _notification = notification,
        _audio = audio,
        _tts = tts,
        _clock = clock,
-       _gesture = gesture;
+       _gesture = gesture,
+       _vibration = vibration;
 
   bool _initialized = false;
 
@@ -65,6 +69,9 @@ class TimerService implements ITimerService {
 
     // Initialize gesture service
     await _gesture.init();
+
+    // Initialize vibration service
+    await _vibration.init();
 
     // Listen for gesture events
     _gestureSubscription = _gesture.gestureStream.listen(_onGestureDetected);
@@ -175,6 +182,12 @@ class TimerService implements ITimerService {
       // Load settings for volume parameters
       final settings = await _storage.getSettings();
 
+      // Trigger vibration if enabled by user.
+      if (settings?.vibrationEnabled ?? true) {
+        // Use vibration pattern: wait 0ms, vibrate 500ms, wait 200ms, vibrate 500ms.
+        await _vibration.vibrateWithPattern([0, 500, 200, 500]);
+      }
+
       // Play sound and TTS
       final config = _currentGrid!.slots[slotIndex];
       final soundVolume = settings?.soundVolume ?? 1.0;
@@ -190,7 +203,11 @@ class TimerService implements ITimerService {
       );
 
       // Show immediate notification to ensure sound on lockscreen
-      await _notification.showTimeUpNow(session: session, config: config);
+      await _notification.showTimeUpNow(
+        session: session,
+        config: config,
+        enableVibration: settings?.vibrationEnabled ?? true,
+      );
 
       if (config.ttsEnabled && (settings?.ttsGlobalEnabled ?? true)) {
         final ttsVolume = settings?.ttsVolume ?? 1.0;
@@ -262,6 +279,7 @@ class TimerService implements ITimerService {
       session: session,
       config: config,
       repeatSoundUntilStopped: repeatSoundUntilStopped,
+      enableVibration: settings?.vibrationEnabled ?? true,
     );
 
     _emitState();
@@ -319,6 +337,7 @@ class TimerService implements ITimerService {
       session: updated,
       config: config,
       repeatSoundUntilStopped: repeatSoundUntilStopped,
+      enableVibration: settings?.vibrationEnabled ?? true,
     );
 
     _emitState();
@@ -353,6 +372,9 @@ class TimerService implements ITimerService {
       await _audio.stop();
       await _tts.stop();
 
+      // Stop vibration.
+      await _vibration.cancel();
+
       // Remove from ringing timers
       _ringingTimers.remove(timerId);
 
@@ -372,6 +394,9 @@ class TimerService implements ITimerService {
 
     await _audio.stop();
     await _tts.stop();
+
+    // Stop vibration.
+    await _vibration.cancel();
 
     // Remove from ringing timers
     _ringingTimers.remove(timerId);
@@ -467,6 +492,12 @@ class TimerService implements ITimerService {
       // Load settings for volume parameters
       final settings = await _storage.getSettings();
 
+      // Trigger vibration if enabled by user.
+      if (settings?.vibrationEnabled ?? true) {
+        // Use vibration pattern: wait 0ms, vibrate 500ms, wait 200ms, vibrate 500ms.
+        await _vibration.vibrateWithPattern([0, 500, 200, 500]);
+      }
+
       // Play audio and TTS
       final config = _currentGrid!.slots[session.slotIndex];
       final soundVolume = settings?.soundVolume ?? 1.0;
@@ -482,7 +513,11 @@ class TimerService implements ITimerService {
       );
 
       // Show immediate notification to ensure sound even when locked
-      await _notification.showTimeUpNow(session: updated, config: config);
+      await _notification.showTimeUpNow(
+        session: updated,
+        config: config,
+        enableVibration: settings?.vibrationEnabled ?? true,
+      );
 
       if (config.ttsEnabled && (settings?.ttsGlobalEnabled ?? true)) {
         final ttsVolume = settings?.ttsVolume ?? 1.0;
@@ -540,6 +575,7 @@ class TimerService implements ITimerService {
             session: session,
             config: config,
             repeatSoundUntilStopped: repeatSoundUntilStopped,
+            enableVibration: settings?.vibrationEnabled ?? true,
           );
         }
       }
