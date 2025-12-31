@@ -28,29 +28,14 @@ Future<void> _initCatcher(Catcher2 catcher) async {
   final String path = "$externalDirStr/${Constants.crashLogsFile}";
   debugPrint('[env] ExternalStorageDirectory: $externalDirStr');
 
-  // Create EmailManualHandler with full configuration
-  EmailManualHandler createEmailHandler() {
-    return EmailManualHandler(
-      Constants.recipientEmails,
-      enableDeviceParameters: true,
-      enableStackTrace: true,
-      enableCustomParameters: true,
-      enableApplicationParameters: true,
-      sendHtml: true,
-      emailTitle: 'GridTimer Error Report',
-      emailHeader: 'An error occurred in GridTimer app. Error details:',
-      printLogs: true,
-    );
-  }
-
   final Catcher2Options debugOptions = Catcher2Options(
     kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
         ? SilentReportMode()
-        : DialogReportMode(),
+        : PageReportMode(),
     <ReportHandler>[
       ConsoleHandler(),
       FileHandler(File(path), printLogs: true),
-      createEmailHandler(),
+      EmailManualHandler(Constants.recipientEmails, printLogs: true),
     ],
     customParameters: customParameters,
   );
@@ -61,23 +46,20 @@ Future<void> _initCatcher(Catcher2 catcher) async {
   final Catcher2Options releaseOptions = Catcher2Options(
     kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
         ? SilentReportMode()
-        : DialogReportMode(),
+        : PageReportMode(),
     <ReportHandler>[
       FileHandler(File(path), printLogs: true),
-      createEmailHandler(),
+      EmailManualHandler(Constants.recipientEmails, printLogs: true),
     ],
     customParameters: customParameters,
   );
 
-  final Catcher2Options profileOptions = Catcher2Options(
-    DialogReportMode(),
-    <ReportHandler>[
-      ConsoleHandler(),
-      FileHandler(File(path), printLogs: true),
-      createEmailHandler(),
-    ],
-    customParameters: customParameters,
-  );
+  final Catcher2Options profileOptions =
+      Catcher2Options(PageReportMode(), <ReportHandler>[
+    ConsoleHandler(),
+    FileHandler(File(path), printLogs: true),
+    EmailManualHandler(Constants.recipientEmails, printLogs: true),
+  ], customParameters: customParameters);
 
   /// Pass root widget (GridTimerApp) along with Catcher configuration:
   catcher.updateConfig(
@@ -86,4 +68,3 @@ Future<void> _initCatcher(Catcher2 catcher) async {
     profileConfig: profileOptions,
   );
 }
-
