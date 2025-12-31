@@ -71,6 +71,7 @@ Presentation Layer (lib/presentation/)
   test: add timer service tests
   ```
 - Commit messages should be wrapped at 72 ASCII characters
+- ❌ **NEVER** include collaborator information (Co-authored-by, etc.) in commit messages
 
 ### Testing Requirements
 
