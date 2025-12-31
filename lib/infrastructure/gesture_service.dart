@@ -32,10 +32,13 @@ class GestureService implements IGestureService {
   DateTime? _lastShakeTime;
   static const Duration _shakeCooldown = Duration(milliseconds: 500);
 
-  // Flip detection variables
+  // Flip detection variables (using accelerometer only for better reliability)
   bool _isFaceDown = false;
   DateTime? _lastFlipTime;
   static const Duration _flipCooldown = Duration(milliseconds: 500);
+  int _flipConfirmationCount = 0;
+  static const int _flipConfirmationThreshold =
+      3; // Require 3 consecutive readings
 
   @override
   Future<void> init() async {
@@ -79,7 +82,8 @@ class GestureService implements IGestureService {
       return;
     }
 
-    // Start accelerometer monitoring for shake detection
+    // Start accelerometer monitoring for both shake and flip detection
+    // Using only accelerometer is more reliable on lockscreen
     _accelerometerSubscription = accelerometerEventStream().listen(
       _onAccelerometerEvent,
       onError: (error) {
@@ -87,13 +91,7 @@ class GestureService implements IGestureService {
       },
     );
 
-    // Start gyroscope monitoring for flip detection
-    _gyroscopeSubscription = gyroscopeEventStream().listen(
-      _onGyroscopeEvent,
-      onError: (error) {
-        debugPrint('Gyroscope error: $error');
-      },
-    );
+    debugPrint('GestureService: Started monitoring (shake and flip)');
   }
 
   @override
@@ -103,6 +101,9 @@ class GestureService implements IGestureService {
     _gyroscopeSubscription?.cancel();
     _accelerometerSubscription = null;
     _gyroscopeSubscription = null;
+    _flipConfirmationCount = 0;
+    _isFaceDown = false;
+    debugPrint('GestureService: Stopped monitoring');
   }
 
   @override
@@ -134,40 +135,30 @@ class GestureService implements IGestureService {
         _gestureController.add(AlarmGestureType.shake);
       }
     }
-  }
 
-  void _onGyroscopeEvent(GyroscopeEvent event) {
-    if (!_isMonitoring || !_isSensorSupported) return;
+    // Flip detection: check if phone is face down using Z-axis gravity
+    // When phone is face down (screen facing ground), z-axis shows negative gravity
+    // Z < -7.0 means phone is face down (allowing for some sensor noise)
+    final isFaceDownNow = event.z < -7.0;
 
-    // Flip detection: check if phone is face down
-    // This is a simplified approach - in production you might want to use
-    // accelerometer gravity vector for more accurate orientation detection
-    final rotationMagnitude = sqrt(
-      event.x * event.x + event.y * event.y + event.z * event.z,
-    );
+    if (isFaceDownNow) {
+      _flipConfirmationCount++;
 
-    // If device is relatively stable and upside down
-    if (rotationMagnitude < 1.0) {
-      // Check accelerometer to determine if face down
-      accelerometerEventStream().first
-          .then((accelEvent) {
-            final isFaceDownNow = accelEvent.z < -8.0; // Gravity pointing up
-
-            if (isFaceDownNow && !_isFaceDown) {
-              // Phone was just flipped face down
-              final now = DateTime.now();
-              if (_lastFlipTime == null ||
-                  now.difference(_lastFlipTime!) > _flipCooldown) {
-                _lastFlipTime = now;
-                _gestureController.add(AlarmGestureType.flip);
-              }
-            }
-
-            _isFaceDown = isFaceDownNow;
-          })
-          .catchError((error) {
-            debugPrint('Flip detection error: $error');
-          });
+      // Only trigger flip event after consecutive confirmations
+      if (_flipConfirmationCount >= _flipConfirmationThreshold &&
+          !_isFaceDown) {
+        final now = DateTime.now();
+        if (_lastFlipTime == null ||
+            now.difference(_lastFlipTime!) > _flipCooldown) {
+          _lastFlipTime = now;
+          _isFaceDown = true;
+          _gestureController.add(AlarmGestureType.flip);
+          debugPrint('GestureService: Flip detected (face down)');
+        }
+      }
+    } else {
+      _flipConfirmationCount = 0;
+      _isFaceDown = false;
     }
   }
 

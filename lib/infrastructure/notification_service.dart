@@ -310,9 +310,6 @@ class NotificationService implements INotificationService {
       'soundKey': config.soundKey,
     });
 
-    // Explicitly specify the sound resource.
-    final soundResource = _soundKeyToResource(config.soundKey);
-
     final androidDetails = AndroidNotificationDetails(
       channelId,
       'Timer Alarm',
@@ -322,9 +319,9 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      // Ensure sound/vibration is enabled.
-      playSound: true,
-      sound: RawResourceAndroidNotificationSound(soundResource),
+      // Don't play sound - let AudioService handle all audio playback with full mode support.
+      // This notification is only for visual alert and stop button.
+      playSound: false,
       enableVibration: true,
       onlyAlertOnce: false,
       actions: [
