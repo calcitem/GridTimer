@@ -5,8 +5,8 @@ Thank you for considering contributing to GridTimer!
 ## Development Setup
 
 1. Fork and clone the repository
-2. Run initialization script: `./tool/flutter-init.sh`
-3. Add audio assets (see SETUP.md)
+2. Install dependencies: `flutter pub get`
+3. Generate code: `./tool/gen.sh`
 4. Run the app: `flutter run`
 
 ## Code Guidelines
@@ -90,7 +90,7 @@ test: add timer service tests
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the same license as the project (see LICENSE file).
+By contributing, you agree that your contributions will be licensed under the Apache License 2.0 (see LICENSE file).
 
 ## Questions?
 
