@@ -629,7 +629,10 @@ class TimerService implements ITimerService {
   }
 
   void _initializeIdleSessions() {
-    assert(_currentGrid != null, '_initializeIdleSessions() called before grid is set');
+    assert(
+      _currentGrid != null,
+      '_initializeIdleSessions() called before grid is set',
+    );
     _sessions.clear();
     for (int i = 0; i < 9; i++) {
       final timerId = '${_currentGrid!.modeId}:$i';
