@@ -290,6 +290,14 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       icon: Icons.volume_up,
       action: ElevatedButton.icon(
         onPressed: () async {
+          // Ensure notification channel exists before opening settings.
+          // This avoids the issue where Android immediately returns to the app
+          // if the channel doesn't exist.
+          final notificationService = ref.read(notificationServiceProvider);
+          await notificationService.ensureAndroidChannels(
+            soundKeys: {'default'},
+          );
+
           final service = ref.read(permissionServiceProvider);
           try {
             await service.openNotificationChannelSettings(
