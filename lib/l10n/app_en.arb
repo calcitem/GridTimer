@@ -450,6 +450,76 @@
     "description": "Minutes unit label"
   },
 
+  "safetyDisclaimerTitle": "Safety Notice",
+  "@safetyDisclaimerTitle": {
+    "description": "Safety disclaimer dialog title"
+  },
+
+  "safetyDisclaimerMessage": "GridTimer is a free open-source timer app. For your safety, please understand the following:",
+  "@safetyDisclaimerMessage": {
+    "description": "Safety disclaimer message"
+  },
+
+  "safetyRecommendedUses": "✅ Recommended Uses",
+  "@safetyRecommendedUses": {
+    "description": "Recommended uses section title"
+  },
+
+  "safetyRecommendedUsesList": "• Daily cooking timers\n• General life reminders\n• Non-critical occasions\n• After testing",
+  "@safetyRecommendedUsesList": {
+    "description": "List of recommended uses"
+  },
+
+  "safetyNotRecommendedUses": "❌ NOT Recommended",
+  "@safetyNotRecommendedUses": {
+    "description": "Not recommended uses section title"
+  },
+
+  "safetyNotRecommendedUsesList": "• Critical medication reminders (use medical-grade apps)\n• Life-critical reminders\n• Emergency medical situations\n• Without prior testing",
+  "@safetyNotRecommendedUsesList": {
+    "description": "List of not recommended uses"
+  },
+
+  "safetyBestPractices": "💡 Best Practices:",
+  "@safetyBestPractices": {
+    "description": "Best practices section title"
+  },
+
+  "safetyBestPracticesList": "• Test the alarm before relying on it\n• Have backup reminders for critical tasks\n• Check Do Not Disturb mode and notification permissions\n• Understand app limitations",
+  "@safetyBestPracticesList": {
+    "description": "List of best practices"
+  },
+
+  "safetyViewFullDisclaimer": "View Full Disclaimer",
+  "@safetyViewFullDisclaimer": {
+    "description": "Button to view full legal disclaimer"
+  },
+
+  "safetyAcceptAndContinue": "I Understand, Continue",
+  "@safetyAcceptAndContinue": {
+    "description": "Button to accept disclaimer and continue"
+  },
+
+  "fullDisclaimerTitle": "Full Legal Disclaimer",
+  "@fullDisclaimerTitle": {
+    "description": "Full disclaimer dialog title"
+  },
+
+  "fullDisclaimerText": "This software is provided \"AS IS\" without warranty of any kind, either expressed or implied.\n\nThe developers are not liable for any consequences arising from the use of this software, including but not limited to: missed reminders, inaccurate timing, app failures, etc.\n\nUsers should assess risks themselves and prepare backup solutions for critical tasks.\n\nFor complete details, see LICENSE_DISCLAIMER.md file.",
+  "@fullDisclaimerText": {
+    "description": "Full legal disclaimer text"
+  },
+
+  "close": "Close",
+  "@close": {
+    "description": "Close button"
+  },
+
+  "aboutDisclaimer": "Safety Notice & Disclaimer",
+  "@aboutDisclaimer": {
+    "description": "Menu item for viewing disclaimer"
+  },
+
   "gestureSettings": "Gesture Control Settings",
   "@gestureSettings": {
     "description": "Gesture settings title"

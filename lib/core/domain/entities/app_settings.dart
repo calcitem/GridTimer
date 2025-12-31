@@ -30,6 +30,9 @@ abstract class AppSettings with _$AppSettings {
     /// Whether the onboarding permission wizard has been completed.
     @Default(false) bool onboardingCompleted,
 
+    /// Whether the safety disclaimer has been accepted by the user.
+    @Default(false) bool safetyDisclaimerAccepted,
+
     /// Sound volume (0.0 - 1.0).
     @Default(1.0) double soundVolume,
 

@@ -165,6 +165,11 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     await updateSettings((s) => s.copyWith(onboardingCompleted: completed));
   }
 
+  /// Set safety disclaimer accepted.
+  Future<void> updateSafetyDisclaimerAccepted(bool accepted) async {
+    await updateSettings((s) => s.copyWith(safetyDisclaimerAccepted: accepted));
+  }
+
   /// Update sound volume.
   Future<void> updateSoundVolume(double volume) async {
     assert(
