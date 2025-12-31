@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import '../core/domain/entities/app_settings.dart';
 import '../core/domain/entities/timer_config.dart';
 import '../core/domain/entities/timer_grid_set.dart';
@@ -162,6 +163,17 @@ class TimerService implements ITimerService {
       final session = _sessions[timerId];
       if (session == null) return;
 
+      // Safety check: ensure _currentGrid is valid
+      if (_currentGrid == null ||
+          slotIndex < 0 ||
+          slotIndex >= _currentGrid!.slots.length) {
+        debugPrint(
+          'TimerService: Invalid state in _triggerRingingAsync - '
+          'grid=$_currentGrid, slotIndex=$slotIndex',
+        );
+        return;
+      }
+
       // Save state to storage
       await _storage.saveSession(session);
 
@@ -230,6 +242,10 @@ class TimerService implements ITimerService {
 
         await _tts.speak(text: ttsText, localeTag: localeTag, interrupt: true);
       }
+    } catch (e, stackTrace) {
+      // Log error but don't crash the app
+      debugPrint('TimerService: Error in _triggerRingingAsync: $e');
+      debugPrint('Stack trace: $stackTrace');
     } finally {
       // Release lock
       _pendingRinging.remove(timerId);
@@ -466,6 +482,17 @@ class TimerService implements ITimerService {
     _pendingRinging.add(timerId);
 
     try {
+      // Safety check: ensure _currentGrid is valid
+      if (_currentGrid == null ||
+          session.slotIndex < 0 ||
+          session.slotIndex >= _currentGrid!.slots.length) {
+        debugPrint(
+          'TimerService: Invalid state in handleTimeUpEvent - '
+          'grid=$_currentGrid, slotIndex=${session.slotIndex}',
+        );
+        return;
+      }
+
       final nowMs = _clock.nowEpochMs();
       final updated = session.copyWith(
         status: TimerStatus.ringing,
@@ -541,6 +568,10 @@ class TimerService implements ITimerService {
       }
 
       _emitState();
+    } catch (e, stackTrace) {
+      // Log error but don't crash the app
+      debugPrint('TimerService: Error in handleTimeUpEvent: $e');
+      debugPrint('Stack trace: $stackTrace');
     } finally {
       _pendingRinging.remove(timerId);
     }
@@ -552,6 +583,12 @@ class TimerService implements ITimerService {
   }
 
   Future<void> _recoverSessions() async {
+    // Safety check: ensure _currentGrid is valid
+    if (_currentGrid == null) {
+      debugPrint('TimerService: _recoverSessions called with null grid');
+      return;
+    }
+
     final nowMs = _clock.nowEpochMs();
     final settings = await _storage.getSettings();
     final repeatSoundUntilStopped =
@@ -560,6 +597,15 @@ class TimerService implements ITimerService {
 
     for (final session in _sessions.values.toList()) {
       if (session.status == TimerStatus.running) {
+        // Safety check: ensure slotIndex is valid
+        if (session.slotIndex < 0 ||
+            session.slotIndex >= _currentGrid!.slots.length) {
+          debugPrint(
+            'TimerService: Invalid slotIndex ${session.slotIndex} in _recoverSessions',
+          );
+          continue;
+        }
+
         if (session.shouldBeRinging(nowMs)) {
           // Should be ringing
           await handleTimeUpEvent(
