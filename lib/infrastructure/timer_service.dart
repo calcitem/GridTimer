@@ -239,8 +239,17 @@ class TimerService implements ITimerService {
     _sessions[timerId] = session;
     await _storage.saveSession(session);
 
+    final settings = await _storage.getSettings();
+    final repeatSoundUntilStopped =
+        (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) ==
+            AudioPlaybackMode.loopIndefinitely;
+
     // Schedule notification
-    await _notification.scheduleTimeUp(session: session, config: config);
+    await _notification.scheduleTimeUp(
+      session: session,
+      config: config,
+      repeatSoundUntilStopped: repeatSoundUntilStopped,
+    );
 
     _emitState();
   }
@@ -287,8 +296,17 @@ class TimerService implements ITimerService {
     _sessions[timerId] = updated;
     await _storage.saveSession(updated);
 
+    final settings = await _storage.getSettings();
+    final repeatSoundUntilStopped =
+        (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) ==
+            AudioPlaybackMode.loopIndefinitely;
+
     final config = _currentGrid!.slots[session.slotIndex];
-    await _notification.scheduleTimeUp(session: updated, config: config);
+    await _notification.scheduleTimeUp(
+      session: updated,
+      config: config,
+      repeatSoundUntilStopped: repeatSoundUntilStopped,
+    );
 
     _emitState();
   }
@@ -479,6 +497,10 @@ class TimerService implements ITimerService {
 
   Future<void> _recoverSessions() async {
     final nowMs = _clock.nowEpochMs();
+    final settings = await _storage.getSettings();
+    final repeatSoundUntilStopped =
+        (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) ==
+            AudioPlaybackMode.loopIndefinitely;
 
     for (final session in _sessions.values.toList()) {
       if (session.status == TimerStatus.running) {
@@ -491,7 +513,11 @@ class TimerService implements ITimerService {
         } else {
           // Reschedule notification
           final config = _currentGrid!.slots[session.slotIndex];
-          await _notification.scheduleTimeUp(session: session, config: config);
+          await _notification.scheduleTimeUp(
+            session: session,
+            config: config,
+            repeatSoundUntilStopped: repeatSoundUntilStopped,
+          );
         }
       }
     }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
@@ -19,6 +20,9 @@ class NotificationService implements INotificationService {
 
   static const String _channelGroupId = 'gt.group.timers';
   static const String _actionIdStop = 'gt.action.stop';
+  // Android Notification.FLAG_INSISTENT = 0x00000004.
+  // When set, the notification sound/vibration will repeat until cancelled.
+  static const int _androidFlagInsistent = 4;
 
   @override
   Future<void> init() async {
@@ -145,6 +149,7 @@ class NotificationService implements INotificationService {
   Future<void> scheduleTimeUp({
     required TimerSession session,
     required TimerConfig config,
+    bool repeatSoundUntilStopped = false,
   }) async {
     // Schedule notification only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -208,6 +213,10 @@ class NotificationService implements INotificationService {
       ],
       // Use ALARM audio usage for pre-Android O devices. On Android O+ the channel controls this.
       audioAttributesUsage: AudioAttributesUsage.alarm,
+      // Repeat the sound until the user cancels the notification (Android only).
+      additionalFlags: Platform.isAndroid && repeatSoundUntilStopped
+          ? Int32List.fromList(const <int>[_androidFlagInsistent])
+          : null,
     );
 
     final details = NotificationDetails(android: androidDetails);

@@ -75,10 +75,10 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
               onPressed: _testShowNotification,
             ),
 
-            // 测试 4: 安排通知
+            // 测试 4: 真实计时器测试（锁屏场景）
             _buildTestButton(
-              title: '测试 4: 5秒后触发通知',
-              description: '预先安排5秒后的通知（模拟锁屏场景）',
+              title: '测试 4: 启动10秒计时器',
+              description: '启动真实计时器，完整测试播放模式和自定义音频（可锁屏测试）',
               onPressed: _testScheduleNotification,
             ),
 
@@ -226,40 +226,57 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
     }
   }
 
-  // 测试 4: 预先安排通知
+  // 测试 4: 启动真实计时器（完整响铃测试，支持所有播放模式和自定义音频）
   Future<void> _testScheduleNotification() async {
-    _addLog('【测试4】开始安排5秒后的通知');
+    _addLog('【测试4】启动 5 秒计时器（完整响铃测试）');
     try {
-      final notificationService = ref.read(notificationServiceProvider);
-      final (grid, _) = ref.read(timerServiceProvider).getSnapshot();
+      final timerService = ref.read(timerServiceProvider);
+      final audioService = ref.read(audioServiceProvider);
+      final settings = ref.read(appSettingsProvider).value;
       
-      final now = DateTime.now().millisecondsSinceEpoch;
-      final endTime = now + 5000; // 5秒后
+      // Start a real 5-second timer (slot 1: 2 minutes by default, but we override)
+      await timerService.start(modeId: 'default', slotIndex: 0); // Slot 0 is 10 seconds
       
-      final testSession = TimerSession(
-        timerId: 'test:1',
-        modeId: 'default',
-        slotIndex: 1,
-        status: TimerStatus.running,
-        startedAtEpochMs: now,
-        endAtEpochMs: endTime,
-        lastUpdatedEpochMs: now,
-      );
+      _addLog('【测试4】✅ 已启动 10 秒计时器');
+      _addLog('【测试4】💡 这是真实的计时器，会：');
+      _addLog('  - 使用你配置的播放模式: ${_getModeDescription(settings)}');
+      _addLog('  - 支持自定义音频文件');
+      _addLog('  - 锁屏时显示通知');
+      _addLog('  - 点击通知或屏幕停止');
+      _addLog('【测试4】现在可以锁屏，等待 10 秒...');
       
-      final testConfig = grid.slots[1];
+      // Wait for timer to complete (10 seconds + 1 second buffer)
+      await Future.delayed(const Duration(seconds: 11));
       
-      await notificationService.scheduleTimeUp(
-        session: testSession,
-        config: testConfig,
-      );
-      
-      _addLog('【测试4】✅ 通知已安排在 5 秒后触发');
-      _addLog('【测试4】请等待5秒，观察：');
-      _addLog('  - 是否收到通知？');
-      _addLog('  - 是否听到声音？');
-      _addLog('【测试4】💡 提示：现在可以锁屏测试');
+      // Check if alarm is ringing
+      final isPlaying = await audioService.isPlaying();
+      if (isPlaying) {
+        _addLog('【测试4】✅ 音频正在播放中');
+        _addLog('【测试4】请点击屏幕或通知的 Stop 按钮停止');
+      } else {
+        _addLog('【测试4】⚠️ 音频未播放（可能已自动停止）');
+      }
     } catch (e) {
       _addLog('【测试4】❌ 错误: $e');
+    }
+  }
+  
+  String _getModeDescription(dynamic settings) {
+    if (settings == null) return '默认（一直循环）';
+    final mode = settings.audioPlaybackMode;
+    switch (mode) {
+      case AudioPlaybackMode.loopIndefinitely:
+        return '一直循环直到手动停止';
+      case AudioPlaybackMode.loopForDuration:
+        return '循环播放 ${settings.audioLoopDurationMinutes} 分钟后自动停止';
+      case AudioPlaybackMode.loopWithInterval:
+        return '循环 N 分钟，间隔 M 分钟，再循环（共一次）';
+      case AudioPlaybackMode.loopWithIntervalRepeating:
+        return '循环 N 分钟，间隔 M 分钟，重复直到停止';
+      case AudioPlaybackMode.playOnce:
+        return '只播放一次';
+      default:
+        return '未知模式';
     }
   }
 }
