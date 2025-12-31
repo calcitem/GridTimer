@@ -61,7 +61,7 @@ class AudioPlaybackSettingsPage extends ConsumerWidget {
                   Text(
                     l10n.audioPlaybackSettingsDesc,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey,
+                          color: Colors.white70,
                         ),
                   ),
                 ],
