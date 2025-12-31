@@ -12,11 +12,46 @@ import 'sound_settings_page.dart';
 import 'tts_settings_page.dart';
 
 /// Settings page for configuring app preferences and timer settings.
-class SettingsPage extends ConsumerWidget {
+class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends ConsumerState<SettingsPage> {
+  // Developer mode state
+  bool _isDeveloperMode = false;
+  int _versionTapCount = 0;
+  DateTime? _lastTapTime;
+
+  // Tap on version to enable developer mode (5 taps within 3 seconds)
+  void _onVersionTap() {
+    final now = DateTime.now();
+    if (_lastTapTime == null ||
+        now.difference(_lastTapTime!) > const Duration(seconds: 3)) {
+      // Reset if too much time has passed
+      _versionTapCount = 1;
+    } else {
+      _versionTapCount++;
+    }
+    _lastTapTime = now;
+
+    if (_versionTapCount >= 5 && !_isDeveloperMode) {
+      setState(() {
+        _isDeveloperMode = true;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Developer mode enabled'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
@@ -36,6 +71,7 @@ class SettingsPage extends ConsumerWidget {
               leading: const Icon(Icons.info_outline),
               title: Text(l10n.version),
               subtitle: const Text('1.0.0+1'),
+              onTap: _onVersionTap,
             ),
             const Divider(),
 
@@ -87,41 +123,6 @@ class SettingsPage extends ConsumerWidget {
                 ref.read(appSettingsProvider.notifier).toggleTts(value);
               },
             ),
-
-            const Divider(),
-
-            // Debug Tools Section
-            _buildSectionHeader('Debug Tools'),
-
-            // Audio Test (for debugging)
-            ListTile(
-              leading: const Icon(Icons.bug_report, color: Colors.orange),
-              title: const Text('Audio Test (Debug)'),
-              subtitle: const Text('Diagnose sound issues'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AudioTestPage(),
-                  ),
-                );
-              },
-            ),
-
-            // Catcher Error Test (only shown when catcher is enabled)
-            if (EnvironmentConfig.catcher)
-              ListTile(
-                leading: const Icon(Icons.error_outline, color: Colors.red),
-                title: const Text('Error Test (Debug)'),
-                subtitle: const Text('Test error reporting system'),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () {
-                  // Throw a test exception to verify Catcher is working
-                  throw Exception(
-                    'This is a test exception to verify Catcher error reporting system is working properly',
-                  );
-                },
-              ),
 
             const Divider(),
 
@@ -315,6 +316,61 @@ class SettingsPage extends ConsumerWidget {
                 );
               },
             ),
+
+            // Debug Tools Section (only shown in developer mode)
+            if (_isDeveloperMode) ...[
+              const Divider(),
+              _buildSectionHeader('Debug Tools'),
+
+              // Audio Test (for debugging)
+              ListTile(
+                leading: const Icon(Icons.bug_report, color: Colors.orange),
+                title: const Text('Audio Test (Debug)'),
+                subtitle: const Text('Diagnose sound issues'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AudioTestPage(),
+                    ),
+                  );
+                },
+              ),
+
+              // Catcher Error Test (only shown when catcher is enabled)
+              if (EnvironmentConfig.catcher)
+                ListTile(
+                  leading: const Icon(Icons.error_outline, color: Colors.red),
+                  title: const Text('Error Test (Debug)'),
+                  subtitle: const Text('Test error reporting system'),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    // Throw a test exception to verify Catcher is working
+                    throw Exception(
+                      'This is a test exception to verify Catcher error reporting system is working properly',
+                    );
+                  },
+                ),
+
+              // Exit Developer Mode
+              ListTile(
+                leading: const Icon(Icons.exit_to_app, color: Colors.grey),
+                title: const Text('Exit Developer Mode'),
+                subtitle: const Text('Tap to hide debug tools'),
+                onTap: () {
+                  setState(() {
+                    _isDeveloperMode = false;
+                    _versionTapCount = 0;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Developer mode disabled'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                },
+              ),
+            ],
           ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),

@@ -19,11 +19,15 @@ static const List<String> recipientEmails = <String>[
 ## 🧪 Test It Works
 
 1. Run the app: `flutter run`
-2. Go to **Settings** → **Debug Tools**
-3. Tap **"Error Test (Debug)"**
-4. You should see an error dialog
-5. Tap **"Accept"**
-6. Email app should open with error report
+2. Go to **Settings**
+3. **Quickly tap the version number (1.0.0+1) 5 times** to enable developer mode
+4. **Debug Tools** section will appear at the bottom of the settings page
+5. Tap **"Error Test (Debug)"**
+6. You should see a full error report page
+7. Tap **"Accept"**
+8. Email app should open with error report
+
+**Note**: Debug Tools only appear after enabling developer mode!
 
 ## 📱 Requirements
 

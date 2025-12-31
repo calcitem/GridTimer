@@ -77,11 +77,19 @@ Added:
    ```
 
 3. **Test error reporting**:
-   - Navigate to Settings → Debug Tools
+   - Navigate to Settings
+   - **Enable developer mode**: Quickly tap version number 5 times
+   - Scroll down to **Debug Tools** section (now visible at bottom)
    - Tap "Error Test (Debug)"
    - You should see **full error report page** with stack trace
    - Tap "Accept"
    - Email app should open with pre-filled error report
+
+4. **Developer Mode Features**:
+   - Hidden by default to avoid confusion for regular users
+   - Enabled by tapping version number 5 times within 3 seconds
+   - Shows "Developer mode enabled" snackbar when activated
+   - Debug Tools section includes "Exit Developer Mode" button
 
 ## ⚠️ Important Notes
 
