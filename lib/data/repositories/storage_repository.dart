@@ -19,38 +19,62 @@ class StorageRepository {
   Box<TimerSessionHive>? _sessionsBox;
   Box<AppSettingsHive>? _settingsBox;
 
+  Future<void>? _initFuture;
+
+  bool get _isFullyInitialized =>
+      _modesBox != null && _sessionsBox != null && _settingsBox != null;
+
   /// Ensure storage is initialized
   Future<void> _ensureInitialized() async {
-    if (_modesBox != null && _sessionsBox != null && _settingsBox != null) return;
+    if (_isFullyInitialized) return;
     await init();
   }
 
   /// Initialize Hive and open boxes.
   Future<void> init() async {
-    // Prevent concurrent initialization or double init if possible, 
-    // though Hive.initFlutter is idempotent usually.
-    if (_modesBox != null) return;
-    
-    await Hive.initFlutter('GridTimer');
+    // Make initialization concurrency-safe.
+    // Multiple providers/services may call init() at startup (especially in
+    // release mode where timings differ). We must not allow a partially
+    // initialized state where only some boxes are opened, otherwise later code
+    // may hit a null-assert on _sessionsBox/_settingsBox.
+    if (_isFullyInitialized) return;
+    if (_initFuture != null) return _initFuture!;
 
-    // Register adapters
-    if (!Hive.isAdapterRegistered(1)) {
-      Hive.registerAdapter(TimerConfigHiveAdapter());
-    }
-    if (!Hive.isAdapterRegistered(2)) {
-      Hive.registerAdapter(TimerGridSetHiveAdapter());
-    }
-    if (!Hive.isAdapterRegistered(3)) {
-      Hive.registerAdapter(TimerSessionHiveAdapter());
-    }
-    if (!Hive.isAdapterRegistered(4)) {
-      Hive.registerAdapter(AppSettingsHiveAdapter());
-    }
+    _initFuture = () async {
+      try {
+        await Hive.initFlutter('GridTimer');
 
-    // Open boxes
-    _modesBox = await Hive.openBox<TimerGridSetHive>(_boxModes);
-    _sessionsBox = await Hive.openBox<TimerSessionHive>(_boxSessions);
-    _settingsBox = await Hive.openBox<AppSettingsHive>(_boxSettings);
+        // Register adapters
+        if (!Hive.isAdapterRegistered(1)) {
+          Hive.registerAdapter(TimerConfigHiveAdapter());
+        }
+        if (!Hive.isAdapterRegistered(2)) {
+          Hive.registerAdapter(TimerGridSetHiveAdapter());
+        }
+        if (!Hive.isAdapterRegistered(3)) {
+          Hive.registerAdapter(TimerSessionHiveAdapter());
+        }
+        if (!Hive.isAdapterRegistered(4)) {
+          Hive.registerAdapter(AppSettingsHiveAdapter());
+        }
+
+        // Open boxes (all must succeed for init to be considered complete)
+        _modesBox ??= await Hive.openBox<TimerGridSetHive>(_boxModes);
+        _sessionsBox ??= await Hive.openBox<TimerSessionHive>(_boxSessions);
+        _settingsBox ??= await Hive.openBox<AppSettingsHive>(_boxSettings);
+
+        assert(
+          _isFullyInitialized,
+          'StorageRepository.init() completed but boxes are not fully opened',
+        );
+      } catch (e) {
+        // Allow retry on next call if initialization fails.
+        _initFuture = null;
+        rethrow;
+      }
+    }();
+
+    return _initFuture!;
   }
 
   // ========== Modes ==========

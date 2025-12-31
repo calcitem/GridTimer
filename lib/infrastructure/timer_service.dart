@@ -259,6 +259,7 @@ class TimerService implements ITimerService {
 
   @override
   (TimerGridSet, List<TimerSession>) getSnapshot() {
+    assert(_currentGrid != null, 'getSnapshot() called before init()');
     final sessions = List<TimerSession>.from(_sessions.values);
     sessions.sort((a, b) => a.slotIndex.compareTo(b.slotIndex));
     return (_currentGrid!, sessions);
@@ -266,6 +267,7 @@ class TimerService implements ITimerService {
 
   @override
   Future<void> start({required ModeId modeId, required int slotIndex}) async {
+    assert(_currentGrid != null, 'start() called before init()');
     final timerId = '$modeId:$slotIndex';
     final config = _currentGrid!.slots[slotIndex];
     final nowMs = _clock.nowEpochMs();
@@ -627,6 +629,7 @@ class TimerService implements ITimerService {
   }
 
   void _initializeIdleSessions() {
+    assert(_currentGrid != null, '_initializeIdleSessions() called before grid is set');
     _sessions.clear();
     for (int i = 0; i < 9; i++) {
       final timerId = '${_currentGrid!.modeId}:$i';
@@ -641,6 +644,11 @@ class TimerService implements ITimerService {
   }
 
   void _emitState() {
+    // Safety check: don't emit if grid is not initialized yet
+    if (_currentGrid == null) {
+      debugPrint('TimerService: _emitState() skipped - grid not initialized');
+      return;
+    }
     final sessions = List<TimerSession>.from(_sessions.values);
     sessions.sort((a, b) => a.slotIndex.compareTo(b.slotIndex));
     _stateController.add((_currentGrid!, sessions));
