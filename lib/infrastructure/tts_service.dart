@@ -8,6 +8,7 @@ class TtsService implements ITtsService {
   double _currentVolume = 1.0;
   double _currentSpeechRate = 0.5;
   double _currentPitch = 1.0;
+  bool _isInitialized = false;
 
   /// Completion notifier for tracking TTS completion
   final StreamController<bool> _completionController =
@@ -19,6 +20,8 @@ class TtsService implements ITtsService {
 
   @override
   Future<void> init() async {
+    if (_isInitialized) return;
+
     // Try to set default language, prioritize system current language
     // If unable to get system language or setting fails, don't force it,
     // leave it to be dynamically specified when speak() method is called
@@ -42,9 +45,16 @@ class TtsService implements ITtsService {
       _completionController.add(false);
     });
 
-    await _tts.setVolume(_currentVolume);
-    await _tts.setSpeechRate(_currentSpeechRate);
-    await _tts.setPitch(_currentPitch);
+    try {
+      await _tts.setVolume(_currentVolume);
+      await _tts.setSpeechRate(_currentSpeechRate);
+      await _tts.setPitch(_currentPitch);
+      _isInitialized = true;
+    } catch (e) {
+      // 如果初始化失败，记录错误但不阻止应用启动
+      // If initialization fails, log error but don't block app startup
+      _isInitialized = false;
+    }
   }
 
   @override
@@ -80,17 +90,40 @@ class TtsService implements ITtsService {
     required String localeTag,
     bool interrupt = true,
   }) async {
-    if (interrupt) {
-      await stop();
+    // 确保 TTS 已初始化
+    // Ensure TTS is initialized
+    if (!_isInitialized) {
+      await init();
     }
 
-    await _tts.setLanguage(localeTag);
-    await _tts.speak(text);
+    if (!_isInitialized) return; // 如果初始化失败，静默返回
+
+    try {
+      if (interrupt) {
+        await stop();
+      }
+
+      await _tts.setLanguage(localeTag);
+      await _tts.speak(text);
+    } catch (e) {
+      // 记录错误但不抛出异常
+      // Log error but don't throw
+      _completionController.add(false);
+    }
   }
 
   @override
   Future<void> stop() async {
-    await _tts.stop();
+    // 只在初始化后才调用 stop
+    // Only call stop if initialized
+    if (!_isInitialized) return;
+
+    try {
+      await _tts.stop();
+    } catch (e) {
+      // 忽略 stop 错误，避免崩溃
+      // Ignore stop errors to prevent crashes
+    }
   }
 
   void dispose() {
