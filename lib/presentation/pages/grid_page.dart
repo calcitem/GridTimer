@@ -47,7 +47,7 @@ class _GridPageState extends ConsumerState<GridPage> {
         // Wait for settings to load
         await ref.read(appSettingsProvider.future);
       },
-      error: (_, __) async {}, // Skip on error
+      error: (_, _) async {}, // Skip on error
     );
 
     // Now read the loaded settings
