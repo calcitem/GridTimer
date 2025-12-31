@@ -139,6 +139,11 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     await updateSettings((s) => s.copyWith(vibrationEnabled: enabled));
   }
 
+  /// Set onboarding completed.
+  Future<void> setOnboardingCompleted(bool completed) async {
+    await updateSettings((s) => s.copyWith(onboardingCompleted: completed));
+  }
+
   /// Update sound volume.
   Future<void> updateSoundVolume(double volume) async {
     assert(

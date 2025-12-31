@@ -5,6 +5,7 @@ import 'app/locale_provider.dart';
 import 'app/providers.dart';
 import 'l10n/app_localizations.dart';
 import 'presentation/pages/grid_page.dart';
+import 'presentation/pages/onboarding_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,12 +35,6 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
       // 首先请求通知权限（Android 13+）
       final notification = ref.read(notificationServiceProvider);
       await notification.init();
-
-      // 主动请求通知权限
-      await notification.requestPostNotificationsPermission();
-
-      // 尝试请求精确闹钟权限（Android 14+，用户可能需要手动授予）
-      await notification.requestExactAlarmPermission();
 
       // Initialize all services
       final audio = ref.read(audioServiceProvider);
@@ -78,6 +73,7 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
   @override
   Widget build(BuildContext context) {
     final locale = ref.watch(localeProvider);
+    final settingsAsync = ref.watch(appSettingsProvider);
 
     return MaterialApp(
       title: 'GridTimer',
@@ -246,7 +242,19 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
           ),
         ),
       ),
-      home: const GridPage(),
+      home: settingsAsync.when(
+        data: (settings) {
+          if (settings.onboardingCompleted) {
+            return const GridPage();
+          } else {
+            return const OnboardingPage();
+          }
+        },
+        loading: () => const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        ),
+        error: (e, s) => const GridPage(),
+      ),
     );
   }
 }
