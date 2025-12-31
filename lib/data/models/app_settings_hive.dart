@@ -55,9 +55,6 @@ class AppSettingsHive {
   @HiveField(15, defaultValue: 2)
   final int audioIntervalPauseMinutes;
 
-  @HiveField(16)
-  final String? customAudioPath;
-
   @HiveField(17, defaultValue: {
     0: 0, // screenTap -> stopAndReset
     1: 0, // volumeUp -> stopAndReset
@@ -87,7 +84,6 @@ class AppSettingsHive {
     required this.audioPlaybackModeIndex,
     required this.audioLoopDurationMinutes,
     required this.audioIntervalPauseMinutes,
-    this.customAudioPath,
     required this.gestureActionsMap,
     required this.shakeSensitivity,
   });
@@ -117,7 +113,6 @@ class AppSettingsHive {
       audioPlaybackModeIndex: settings.audioPlaybackMode.index,
       audioLoopDurationMinutes: settings.audioLoopDurationMinutes,
       audioIntervalPauseMinutes: settings.audioIntervalPauseMinutes,
-      customAudioPath: settings.customAudioPath,
       gestureActionsMap: gestureActionsMap,
       shakeSensitivity: settings.shakeSensitivity,
     );
@@ -152,7 +147,6 @@ class AppSettingsHive {
       audioPlaybackMode: AudioPlaybackMode.values[audioPlaybackModeIndex],
       audioLoopDurationMinutes: audioLoopDurationMinutes,
       audioIntervalPauseMinutes: audioIntervalPauseMinutes,
-      customAudioPath: customAudioPath,
       gestureActions: gestureActions,
       shakeSensitivity: shakeSensitivity,
     );

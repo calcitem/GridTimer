@@ -56,7 +56,6 @@ class AudioService implements IAudioService {
   Future<void> playLoop({
     required SoundKey soundKey,
     double volume = 1.0,
-    String? customAudioPath,
   }) async {
     // Use default mode for backward compatibility
     await playWithMode(
@@ -65,7 +64,6 @@ class AudioService implements IAudioService {
       mode: AudioPlaybackMode.loopIndefinitely,
       loopDurationMinutes: 5,
       intervalPauseMinutes: 2,
-      customAudioPath: customAudioPath,
     );
   }
 
@@ -76,7 +74,6 @@ class AudioService implements IAudioService {
     double volume = 1.0,
     int loopDurationMinutes = 5,
     int intervalPauseMinutes = 2,
-    String? customAudioPath,
   }) async {
     try {
       // Always stop first to ensure clean state
@@ -97,13 +94,9 @@ class AudioService implements IAudioService {
           await _player.setReleaseMode(ReleaseMode.loop);
       }
 
-      // Start playing (use custom audio if provided, otherwise use default)
-      if (customAudioPath != null && customAudioPath.isNotEmpty) {
-        await _player.play(DeviceFileSource(customAudioPath));
-      } else {
-        final assetPath = _soundKeyToAssetPath(soundKey);
-        await _player.play(AssetSource(assetPath));
-      }
+      // Start playing (use default sound)
+      final assetPath = _soundKeyToAssetPath(soundKey);
+      await _player.play(AssetSource(assetPath));
 
       // Set up timers based on mode (no assetPath needed for timers)
       _setupPlaybackTimers(
