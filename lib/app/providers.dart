@@ -247,4 +247,9 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     );
     await updateSettings((s) => s.copyWith(shakeSensitivity: sensitivity));
   }
+
+  /// Update custom audio path.
+  Future<void> updateCustomAudioPath(String? path) async {
+    await updateSettings((s) => s.copyWith(customAudioPath: path));
+  }
 }

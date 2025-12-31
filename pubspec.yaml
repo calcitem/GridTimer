@@ -23,6 +23,9 @@ dependencies:
   # Audio + TTS
   audioplayers: 6.5.1
   flutter_tts: ^4.0.2
+  
+  # File picker for custom audio
+  file_picker: ^8.0.0
 
   # Permissions & Settings
   permission_handler: 12.0.1

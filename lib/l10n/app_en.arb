@@ -869,5 +869,45 @@
   "onboardingGranted": "Granted",
   "@onboardingGranted": {
     "description": "Permission granted label"
+  },
+
+  "customAudio": "Custom Audio",
+  "@customAudio": {
+    "description": "Custom audio section title"
+  },
+
+  "customAudioActive": "Custom Audio Active",
+  "@customAudioActive": {
+    "description": "Label when custom audio is active"
+  },
+
+  "customAudioSelected": "Custom audio selected",
+  "@customAudioSelected": {
+    "description": "Message when custom audio file is selected"
+  },
+
+  "customAudioCleared": "Custom audio cleared",
+  "@customAudioCleared": {
+    "description": "Message when custom audio is cleared"
+  },
+
+  "changeCustomAudio": "Change Audio",
+  "@changeCustomAudio": {
+    "description": "Button to change custom audio"
+  },
+
+  "uploadCustomAudio": "Upload Audio",
+  "@uploadCustomAudio": {
+    "description": "Button to upload custom audio"
+  },
+
+  "clearCustomAudio": "Clear",
+  "@clearCustomAudio": {
+    "description": "Button to clear custom audio"
+  },
+
+  "customAudioDesc": "Upload your own audio file to use as alarm sound. Supported formats: MP3, WAV, etc.",
+  "@customAudioDesc": {
+    "description": "Description for custom audio feature"
   }
 }

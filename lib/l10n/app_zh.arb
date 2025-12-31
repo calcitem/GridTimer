@@ -186,5 +186,14 @@
   "onboardingOpenBatterySettings": "打开电池优化设置",
   "onboardingCompletionTitle": "准备就绪",
   "onboardingCompletionDesc": "所有设置已完成！\n\n您可以随时在设置页面重新配置这些选项。",
-  "onboardingGranted": "已授予"
+  "onboardingGranted": "已授予",
+
+  "customAudio": "自定义音频",
+  "customAudioActive": "自定义音频已启用",
+  "customAudioSelected": "自定义音频已选择",
+  "customAudioCleared": "自定义音频已清除",
+  "changeCustomAudio": "更换音频",
+  "uploadCustomAudio": "上传音频",
+  "clearCustomAudio": "清除",
+  "customAudioDesc": "上传您自己的音频文件作为闹铃声音。支持格式：MP3、WAV 等。"
 }
