@@ -541,6 +541,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to reset grid durations to default values?'**
   String get gridDurationsResetConfirm;
+
+  /// Audio playback settings title
+  ///
+  /// In en, this message translates to:
+  /// **'Audio Playback Settings'**
+  String get audioPlaybackSettings;
+
+  /// Audio playback settings description
+  ///
+  /// In en, this message translates to:
+  /// **'Configure alarm audio playback mode'**
+  String get audioPlaybackSettingsDesc;
+
+  /// Audio playback mode label
+  ///
+  /// In en, this message translates to:
+  /// **'Playback Mode'**
+  String get audioPlaybackMode;
+
+  /// Loop indefinitely mode description
+  ///
+  /// In en, this message translates to:
+  /// **'Loop indefinitely until manually stopped'**
+  String get audioPlaybackModeLoopIndefinitely;
+
+  /// Loop for duration mode description
+  ///
+  /// In en, this message translates to:
+  /// **'Loop for N minutes then auto-stop'**
+  String get audioPlaybackModeLoopForDuration;
+
+  /// Loop with interval mode description
+  ///
+  /// In en, this message translates to:
+  /// **'Loop N min, pause M min, loop N min (once)'**
+  String get audioPlaybackModeLoopWithInterval;
+
+  /// Loop with interval repeating mode description
+  ///
+  /// In en, this message translates to:
+  /// **'Loop N min, pause M min, repeat until stopped'**
+  String get audioPlaybackModeLoopWithIntervalRepeating;
+
+  /// Play once mode description
+  ///
+  /// In en, this message translates to:
+  /// **'Play once only'**
+  String get audioPlaybackModePlayOnce;
+
+  /// Loop duration label
+  ///
+  /// In en, this message translates to:
+  /// **'Loop Duration'**
+  String get loopDuration;
+
+  /// Interval pause duration label
+  ///
+  /// In en, this message translates to:
+  /// **'Interval Pause Duration'**
+  String get intervalPause;
+
+  /// Minutes unit label
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get minutesUnit;
+
+  /// Custom audio section title
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Alarm Sound'**
+  String get customAudio;
+
+  /// Custom audio description
+  ///
+  /// In en, this message translates to:
+  /// **'Upload your own audio file as alarm sound (supports MP3, WAV, etc.)'**
+  String get customAudioDesc;
+
+  /// Upload custom audio button
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Audio File'**
+  String get uploadCustomAudio;
+
+  /// Change custom audio button
+  ///
+  /// In en, this message translates to:
+  /// **'Change Audio File'**
+  String get changeCustomAudio;
+
+  /// Clear custom audio button
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clearCustomAudio;
+
+  /// Custom audio active message
+  ///
+  /// In en, this message translates to:
+  /// **'Currently using custom audio'**
+  String get customAudioActive;
+
+  /// Custom audio selected confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Custom audio has been set'**
+  String get customAudioSelected;
+
+  /// Custom audio cleared confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Restored to default sound'**
+  String get customAudioCleared;
+
+  /// Gesture settings title
+  ///
+  /// In en, this message translates to:
+  /// **'Gesture Control Settings'**
+  String get gestureSettings;
+
+  /// Gesture settings description
+  ///
+  /// In en, this message translates to:
+  /// **'Configure gesture actions when alarm rings'**
+  String get gestureSettingsDesc;
+
+  /// Gesture actions section title
+  ///
+  /// In en, this message translates to:
+  /// **'Gesture Actions'**
+  String get gestureActions;
+
+  /// Screen tap gesture
+  ///
+  /// In en, this message translates to:
+  /// **'Tap Screen'**
+  String get gestureTypeScreenTap;
+
+  /// Volume up button gesture
+  ///
+  /// In en, this message translates to:
+  /// **'Volume+ Button'**
+  String get gestureTypeVolumeUp;
+
+  /// Volume down button gesture
+  ///
+  /// In en, this message translates to:
+  /// **'Volume- Button'**
+  String get gestureTypeVolumeDown;
+
+  /// Shake phone gesture
+  ///
+  /// In en, this message translates to:
+  /// **'Shake Phone'**
+  String get gestureTypeShake;
+
+  /// Flip phone gesture
+  ///
+  /// In en, this message translates to:
+  /// **'Flip Phone (Face Down)'**
+  String get gestureTypeFlip;
+
+  /// Stop and reset action
+  ///
+  /// In en, this message translates to:
+  /// **'Stop & Reset'**
+  String get gestureActionStopAndReset;
+
+  /// Pause action
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get gestureActionPause;
+
+  /// No action
+  ///
+  /// In en, this message translates to:
+  /// **'No Action'**
+  String get gestureActionNone;
+
+  /// Shake sensitivity label
+  ///
+  /// In en, this message translates to:
+  /// **'Shake Sensitivity'**
+  String get shakeSensitivity;
+
+  /// Low sensitivity description
+  ///
+  /// In en, this message translates to:
+  /// **'Low (Shake hard)'**
+  String get shakeSensitivityLow;
+
+  /// High sensitivity description
+  ///
+  /// In en, this message translates to:
+  /// **'High (Shake gently)'**
+  String get shakeSensitivityHigh;
+
+  /// Shake sensitivity description
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust shake detection sensitivity'**
+  String get shakeSensitivityDesc;
+
+  /// Gesture hint for seniors
+  ///
+  /// In en, this message translates to:
+  /// **'Senior-friendly: Enable screen tap, volume buttons, and flip phone'**
+  String get gestureHint;
 }
 
 class _AppLocalizationsDelegate

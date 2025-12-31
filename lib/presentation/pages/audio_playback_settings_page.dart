@@ -1,0 +1,211 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../app/providers.dart';
+import '../../core/domain/enums.dart';
+import '../../l10n/app_localizations.dart';
+
+/// Audio playback settings page for configuring alarm playback modes.
+class AudioPlaybackSettingsPage extends ConsumerWidget {
+  const AudioPlaybackSettingsPage({super.key});
+
+  String _getModeDescription(AudioPlaybackMode mode, AppLocalizations l10n) {
+    switch (mode) {
+      case AudioPlaybackMode.loopIndefinitely:
+        return l10n.audioPlaybackModeLoopIndefinitely;
+      case AudioPlaybackMode.loopForDuration:
+        return l10n.audioPlaybackModeLoopForDuration;
+      case AudioPlaybackMode.loopWithInterval:
+        return l10n.audioPlaybackModeLoopWithInterval;
+      case AudioPlaybackMode.loopWithIntervalRepeating:
+        return l10n.audioPlaybackModeLoopWithIntervalRepeating;
+      case AudioPlaybackMode.playOnce:
+        return l10n.audioPlaybackModePlayOnce;
+    }
+  }
+
+  bool _needsLoopDuration(AudioPlaybackMode mode) {
+    return mode != AudioPlaybackMode.loopIndefinitely &&
+        mode != AudioPlaybackMode.playOnce;
+  }
+
+  bool _needsIntervalPause(AudioPlaybackMode mode) {
+    return mode == AudioPlaybackMode.loopWithInterval ||
+        mode == AudioPlaybackMode.loopWithIntervalRepeating;
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final settingsAsync = ref.watch(appSettingsProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(l10n.audioPlaybackSettings),
+      ),
+      body: settingsAsync.when(
+        data: (settings) => ListView(
+          children: [
+            // Playback Mode Section
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.audioPlaybackMode,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.audioPlaybackSettingsDesc,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Mode Selection Radio List
+            ...AudioPlaybackMode.values.map((mode) {
+              final isSelected = settings.audioPlaybackMode == mode;
+              return InkWell(
+                onTap: () {
+                  ref
+                      .read(appSettingsProvider.notifier)
+                      .updateAudioPlaybackMode(mode);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        isSelected
+                            ? Icons.radio_button_checked
+                            : Icons.radio_button_unchecked,
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.primary
+                            : null,
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Text(
+                          _getModeDescription(mode, l10n),
+                          style: TextStyle(
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                            color: isSelected
+                                ? Theme.of(context).colorScheme.primary
+                                : null,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
+
+            const Divider(),
+
+            // Loop Duration (shown only when needed)
+            if (_needsLoopDuration(settings.audioPlaybackMode))
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          l10n.loopDuration,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        Text(
+                          '${settings.audioLoopDurationMinutes} ${l10n.minutesUnit}',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Slider(
+                      value: settings.audioLoopDurationMinutes.toDouble(),
+                      min: 1,
+                      max: 60,
+                      divisions: 59,
+                      label: '${settings.audioLoopDurationMinutes} ${l10n.minutesUnit}',
+                      onChanged: (value) {
+                        ref
+                            .read(appSettingsProvider.notifier)
+                            .updateAudioLoopDuration(value.round());
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+            // Interval Pause Duration (shown only when needed)
+            if (_needsIntervalPause(settings.audioPlaybackMode))
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          l10n.intervalPause,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        Text(
+                          '${settings.audioIntervalPauseMinutes} ${l10n.minutesUnit}',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Slider(
+                      value: settings.audioIntervalPauseMinutes.toDouble(),
+                      min: 1,
+                      max: 30,
+                      divisions: 29,
+                      label: '${settings.audioIntervalPauseMinutes} ${l10n.minutesUnit}',
+                      onChanged: (value) {
+                        ref
+                            .read(appSettingsProvider.notifier)
+                            .updateAudioIntervalPause(value.round());
+                      },
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(
+          child: Text(l10n.errorText(err.toString())),
+        ),
+      ),
+    );
+  }
+}

@@ -393,6 +393,181 @@
   "gridDurationsResetConfirm": "Are you sure you want to reset grid durations to default values?",
   "@gridDurationsResetConfirm": {
     "description": "Reset to default confirmation"
+  },
+
+  "audioPlaybackSettings": "Audio Playback Settings",
+  "@audioPlaybackSettings": {
+    "description": "Audio playback settings title"
+  },
+
+  "audioPlaybackSettingsDesc": "Configure alarm audio playback mode",
+  "@audioPlaybackSettingsDesc": {
+    "description": "Audio playback settings description"
+  },
+
+  "audioPlaybackMode": "Playback Mode",
+  "@audioPlaybackMode": {
+    "description": "Audio playback mode label"
+  },
+
+  "audioPlaybackModeLoopIndefinitely": "Loop indefinitely until manually stopped",
+  "@audioPlaybackModeLoopIndefinitely": {
+    "description": "Loop indefinitely mode description"
+  },
+
+  "audioPlaybackModeLoopForDuration": "Loop for N minutes then auto-stop",
+  "@audioPlaybackModeLoopForDuration": {
+    "description": "Loop for duration mode description"
+  },
+
+  "audioPlaybackModeLoopWithInterval": "Loop N min, pause M min, loop N min (once)",
+  "@audioPlaybackModeLoopWithInterval": {
+    "description": "Loop with interval mode description"
+  },
+
+  "audioPlaybackModeLoopWithIntervalRepeating": "Loop N min, pause M min, repeat until stopped",
+  "@audioPlaybackModeLoopWithIntervalRepeating": {
+    "description": "Loop with interval repeating mode description"
+  },
+
+  "audioPlaybackModePlayOnce": "Play once only",
+  "@audioPlaybackModePlayOnce": {
+    "description": "Play once mode description"
+  },
+
+  "loopDuration": "Loop Duration",
+  "@loopDuration": {
+    "description": "Loop duration label"
+  },
+
+  "intervalPause": "Interval Pause Duration",
+  "@intervalPause": {
+    "description": "Interval pause duration label"
+  },
+
+  "minutesUnit": "minutes",
+  "@minutesUnit": {
+    "description": "Minutes unit label"
+  },
+
+  "customAudio": "Custom Alarm Sound",
+  "@customAudio": {
+    "description": "Custom audio section title"
+  },
+
+  "customAudioDesc": "Upload your own audio file as alarm sound (supports MP3, WAV, etc.)",
+  "@customAudioDesc": {
+    "description": "Custom audio description"
+  },
+
+  "uploadCustomAudio": "Upload Audio File",
+  "@uploadCustomAudio": {
+    "description": "Upload custom audio button"
+  },
+
+  "changeCustomAudio": "Change Audio File",
+  "@changeCustomAudio": {
+    "description": "Change custom audio button"
+  },
+
+  "clearCustomAudio": "Clear",
+  "@clearCustomAudio": {
+    "description": "Clear custom audio button"
+  },
+
+  "customAudioActive": "Currently using custom audio",
+  "@customAudioActive": {
+    "description": "Custom audio active message"
+  },
+
+  "customAudioSelected": "Custom audio has been set",
+  "@customAudioSelected": {
+    "description": "Custom audio selected confirmation"
+  },
+
+  "customAudioCleared": "Restored to default sound",
+  "@customAudioCleared": {
+    "description": "Custom audio cleared confirmation"
+  },
+
+  "gestureSettings": "Gesture Control Settings",
+  "@gestureSettings": {
+    "description": "Gesture settings title"
+  },
+
+  "gestureSettingsDesc": "Configure gesture actions when alarm rings",
+  "@gestureSettingsDesc": {
+    "description": "Gesture settings description"
+  },
+
+  "gestureActions": "Gesture Actions",
+  "@gestureActions": {
+    "description": "Gesture actions section title"
+  },
+
+  "gestureTypeScreenTap": "Tap Screen",
+  "@gestureTypeScreenTap": {
+    "description": "Screen tap gesture"
+  },
+
+  "gestureTypeVolumeUp": "Volume+ Button",
+  "@gestureTypeVolumeUp": {
+    "description": "Volume up button gesture"
+  },
+
+  "gestureTypeVolumeDown": "Volume- Button",
+  "@gestureTypeVolumeDown": {
+    "description": "Volume down button gesture"
+  },
+
+  "gestureTypeShake": "Shake Phone",
+  "@gestureTypeShake": {
+    "description": "Shake phone gesture"
+  },
+
+  "gestureTypeFlip": "Flip Phone (Face Down)",
+  "@gestureTypeFlip": {
+    "description": "Flip phone gesture"
+  },
+
+  "gestureActionStopAndReset": "Stop & Reset",
+  "@gestureActionStopAndReset": {
+    "description": "Stop and reset action"
+  },
+
+  "gestureActionPause": "Pause",
+  "@gestureActionPause": {
+    "description": "Pause action"
+  },
+
+  "gestureActionNone": "No Action",
+  "@gestureActionNone": {
+    "description": "No action"
+  },
+
+  "shakeSensitivity": "Shake Sensitivity",
+  "@shakeSensitivity": {
+    "description": "Shake sensitivity label"
+  },
+
+  "shakeSensitivityLow": "Low (Shake hard)",
+  "@shakeSensitivityLow": {
+    "description": "Low sensitivity description"
+  },
+
+  "shakeSensitivityHigh": "High (Shake gently)",
+  "@shakeSensitivityHigh": {
+    "description": "High sensitivity description"
+  },
+
+  "shakeSensitivityDesc": "Adjust shake detection sensitivity",
+  "@shakeSensitivityDesc": {
+    "description": "Shake sensitivity description"
+  },
+
+  "gestureHint": "Senior-friendly: Enable screen tap, volume buttons, and flip phone",
+  "@gestureHint": {
+    "description": "Gesture hint for seniors"
   }
 }
 

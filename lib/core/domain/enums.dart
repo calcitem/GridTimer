@@ -54,5 +54,51 @@ enum BatteryOptState {
   unknown,
 }
 
+/// Audio playback mode for alarm.
+enum AudioPlaybackMode {
+  /// Loop indefinitely until user stops manually (default).
+  loopIndefinitely,
 
+  /// Loop for N minutes then stop automatically.
+  loopForDuration,
+
+  /// Loop for N minutes, pause for M minutes, then loop for N minutes again (once).
+  loopWithInterval,
+
+  /// Loop for N minutes, pause for M minutes, then loop for N minutes repeatedly until stopped.
+  loopWithIntervalRepeating,
+
+  /// Play once and stop automatically.
+  playOnce,
+}
+
+/// Action to take when gesture is detected during alarm.
+enum AlarmGestureAction {
+  /// Stop the alarm and reset timer.
+  stopAndReset,
+
+  /// Pause the alarm (can be resumed).
+  pause,
+
+  /// Do nothing.
+  none,
+}
+
+/// Types of gestures that can stop/pause alarms.
+enum AlarmGestureType {
+  /// Tap anywhere on the screen.
+  screenTap,
+
+  /// Press volume up button.
+  volumeUp,
+
+  /// Press volume down button.
+  volumeDown,
+
+  /// Shake the phone.
+  shake,
+
+  /// Flip the phone (face down).
+  flip,
+}
 
