@@ -53,8 +53,14 @@ class TimerService implements ITimerService {
        _clock = clock,
        _gesture = gesture;
 
+  bool _initialized = false;
+
   @override
   Future<void> init() async {
+    // Prevent double initialization
+    if (_initialized) return;
+    _initialized = true;
+
     await _storage.init();
 
     // Initialize gesture service
