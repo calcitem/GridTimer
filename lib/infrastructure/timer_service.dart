@@ -259,68 +259,38 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
       final enableVibration = settings?.vibrationEnabled ?? true;
       final repeatSoundUntilStopped =
-          (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) ==
-          AudioPlaybackMode.loopIndefinitely;
+          (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
+          AudioPlaybackMode.playOnce;
 
-      if (_isInForeground) {
-        // Foreground: use in-app audio for full playback mode support.
-        if (enableVibration) {
-          // Use vibration pattern: wait 0ms, vibrate 500ms, wait 200ms, vibrate 500ms.
-          await _vibration.vibrateWithPattern([0, 500, 200, 500]);
-        }
+      // Always rely on system notification sound for alarm playback.
+      await _notification.showTimeUpNow(
+        session: session,
+        config: config,
+        enableVibration: enableVibration,
+        playSound: true,
+        repeatSoundUntilStopped: repeatSoundUntilStopped,
+      );
 
-        final soundVolume = settings?.soundVolume ?? 1.0;
-        await _audio.playWithMode(
-          soundKey: config.soundKey,
-          volume: soundVolume,
-          mode:
-              settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
-          loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
-          intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
-        );
+      // TTS is only reliable when the app is in the foreground.
+      if (_isInForeground &&
+          config.ttsEnabled &&
+          (settings?.ttsGlobalEnabled ?? true)) {
+        final ttsVolume = settings?.ttsVolume ?? 1.0;
+        final ttsSpeechRate = settings?.ttsSpeechRate ?? 0.5;
+        final ttsPitch = settings?.ttsPitch ?? 1.0;
 
-        // Show a silent high-priority notification for lockscreen visibility and Stop action.
-        await _notification.showTimeUpNow(
-          session: session,
-          config: config,
-          enableVibration: enableVibration,
-          playSound: false,
-        );
+        await _tts.setVolume(ttsVolume);
+        await _tts.setSpeechRate(ttsSpeechRate);
+        await _tts.setPitch(ttsPitch);
 
-        if (config.ttsEnabled && (settings?.ttsGlobalEnabled ?? true)) {
-          final ttsVolume = settings?.ttsVolume ?? 1.0;
-          final ttsSpeechRate = settings?.ttsSpeechRate ?? 0.5;
-          final ttsPitch = settings?.ttsPitch ?? 1.0;
+        // Determine TTS locale (simple logic: check if name contains Chinese characters).
+        final isChineseName = RegExp(r'[\u4e00-\u9fa5]').hasMatch(config.name);
+        final localeTag = isChineseName ? 'zh-CN' : 'en-US';
+        final ttsText = isChineseName
+            ? '${config.name} 时间到'
+            : '${config.name} time is up';
 
-          await _tts.setVolume(ttsVolume);
-          await _tts.setSpeechRate(ttsSpeechRate);
-          await _tts.setPitch(ttsPitch);
-
-          // Determine TTS locale (simple logic: check if name contains Chinese characters).
-          final isChineseName = RegExp(
-            r'[\u4e00-\u9fa5]',
-          ).hasMatch(config.name);
-          final localeTag = isChineseName ? 'zh-CN' : 'en-US';
-          final ttsText = isChineseName
-              ? '${config.name} 时间到'
-              : '${config.name} time is up';
-
-          await _tts.speak(
-            text: ttsText,
-            localeTag: localeTag,
-            interrupt: true,
-          );
-        }
-      } else {
-        // Background/lockscreen: rely on system notification sound for reliability.
-        // (In-app audio may be paused/stopped by the OS in background.)
-        await _notification.showTimeUpNow(
-          session: session,
-          config: config,
-          enableVibration: enableVibration,
-          playSound: true,
-          repeatSoundUntilStopped: repeatSoundUntilStopped,
-        );
+        await _tts.speak(text: ttsText, localeTag: localeTag, interrupt: true);
       }
     } catch (e, stackTrace) {
       // Log error but don't crash the app
@@ -368,8 +338,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
     final settings = await _storage.getSettings();
     final repeatSoundUntilStopped =
-        (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) ==
-        AudioPlaybackMode.loopIndefinitely;
+        (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
+        AudioPlaybackMode.playOnce;
 
     // Schedule notification
     await _notification.scheduleTimeUp(
@@ -426,8 +396,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
     final settings = await _storage.getSettings();
     final repeatSoundUntilStopped =
-        (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) ==
-        AudioPlaybackMode.loopIndefinitely;
+        (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
+        AudioPlaybackMode.playOnce;
 
     final config = _currentGrid!.slots[session.slotIndex];
     await _notification.scheduleTimeUp(
@@ -603,67 +573,38 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
       final enableVibration = settings?.vibrationEnabled ?? true;
       final repeatSoundUntilStopped =
-          (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) ==
-          AudioPlaybackMode.loopIndefinitely;
+          (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
+          AudioPlaybackMode.playOnce;
 
-      if (_isInForeground) {
-        // Foreground: use in-app audio for full playback mode support.
-        if (enableVibration) {
-          // Use vibration pattern: wait 0ms, vibrate 500ms, wait 200ms, vibrate 500ms.
-          await _vibration.vibrateWithPattern([0, 500, 200, 500]);
-        }
+      // Always rely on system notification sound for alarm playback.
+      await _notification.showTimeUpNow(
+        session: updated,
+        config: config,
+        enableVibration: enableVibration,
+        playSound: true,
+        repeatSoundUntilStopped: repeatSoundUntilStopped,
+      );
 
-        final soundVolume = settings?.soundVolume ?? 1.0;
-        await _audio.playWithMode(
-          soundKey: config.soundKey,
-          volume: soundVolume,
-          mode:
-              settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
-          loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
-          intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
-        );
+      // TTS is only reliable when the app is in the foreground.
+      if (_isInForeground &&
+          config.ttsEnabled &&
+          (settings?.ttsGlobalEnabled ?? true)) {
+        final ttsVolume = settings?.ttsVolume ?? 1.0;
+        final ttsSpeechRate = settings?.ttsSpeechRate ?? 0.5;
+        final ttsPitch = settings?.ttsPitch ?? 1.0;
 
-        // Show a silent high-priority notification for lockscreen visibility and Stop action.
-        await _notification.showTimeUpNow(
-          session: updated,
-          config: config,
-          enableVibration: enableVibration,
-          playSound: false,
-        );
+        await _tts.setVolume(ttsVolume);
+        await _tts.setSpeechRate(ttsSpeechRate);
+        await _tts.setPitch(ttsPitch);
 
-        if (config.ttsEnabled && (settings?.ttsGlobalEnabled ?? true)) {
-          final ttsVolume = settings?.ttsVolume ?? 1.0;
-          final ttsSpeechRate = settings?.ttsSpeechRate ?? 0.5;
-          final ttsPitch = settings?.ttsPitch ?? 1.0;
+        // Determine TTS locale (simple logic: check if name contains Chinese characters).
+        final isChineseName = RegExp(r'[\u4e00-\u9fa5]').hasMatch(config.name);
+        final localeTag = isChineseName ? 'zh-CN' : 'en-US';
+        final ttsText = isChineseName
+            ? '${config.name} 时间到'
+            : '${config.name} time is up';
 
-          await _tts.setVolume(ttsVolume);
-          await _tts.setSpeechRate(ttsSpeechRate);
-          await _tts.setPitch(ttsPitch);
-
-          // Determine TTS locale (simple logic: check if name contains Chinese characters).
-          final isChineseName = RegExp(
-            r'[\u4e00-\u9fa5]',
-          ).hasMatch(config.name);
-          final localeTag = isChineseName ? 'zh-CN' : 'en-US';
-          final ttsText = isChineseName
-              ? '${config.name} 时间到'
-              : '${config.name} time is up';
-
-          await _tts.speak(
-            text: ttsText,
-            localeTag: localeTag,
-            interrupt: true,
-          );
-        }
-      } else {
-        // Background/lockscreen: rely on system notification sound for reliability.
-        await _notification.showTimeUpNow(
-          session: updated,
-          config: config,
-          enableVibration: enableVibration,
-          playSound: true,
-          repeatSoundUntilStopped: repeatSoundUntilStopped,
-        );
+        await _tts.speak(text: ttsText, localeTag: localeTag, interrupt: true);
       }
 
       _emitState();
@@ -691,8 +632,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     final nowMs = _clock.nowEpochMs();
     final settings = await _storage.getSettings();
     final repeatSoundUntilStopped =
-        (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) ==
-        AudioPlaybackMode.loopIndefinitely;
+        (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
+        AudioPlaybackMode.playOnce;
 
     for (final session in _sessions.values.toList()) {
       if (session.status == TimerStatus.running) {
