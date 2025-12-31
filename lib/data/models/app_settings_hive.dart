@@ -55,6 +55,9 @@ class AppSettingsHive {
   @HiveField(15, defaultValue: 2)
   final int audioIntervalPauseMinutes;
 
+  @HiveField(16)
+  final String? customAudioPath;
+
   AppSettingsHive({
     required this.activeModeId,
     required this.flashEnabled,
@@ -72,6 +75,7 @@ class AppSettingsHive {
     required this.audioPlaybackModeIndex,
     required this.audioLoopDurationMinutes,
     required this.audioIntervalPauseMinutes,
+    this.customAudioPath,
   });
 
   /// Convert from domain entity.
@@ -93,6 +97,7 @@ class AppSettingsHive {
       audioPlaybackModeIndex: settings.audioPlaybackMode.index,
       audioLoopDurationMinutes: settings.audioLoopDurationMinutes,
       audioIntervalPauseMinutes: settings.audioIntervalPauseMinutes,
+      customAudioPath: settings.customAudioPath,
     );
   }
 
@@ -115,6 +120,7 @@ class AppSettingsHive {
       audioPlaybackMode: AudioPlaybackMode.values[audioPlaybackModeIndex],
       audioLoopDurationMinutes: audioLoopDurationMinutes,
       audioIntervalPauseMinutes: audioIntervalPauseMinutes,
+      customAudioPath: customAudioPath,
     );
   }
 }

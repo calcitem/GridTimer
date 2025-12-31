@@ -123,6 +123,7 @@ class TimerService implements ITimerService {
         mode: settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
         loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
         intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+        customAudioPath: settings?.customAudioPath,
       );
 
       // 显示即时通知，确保锁屏时也能发声
@@ -358,6 +359,7 @@ class TimerService implements ITimerService {
         mode: settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
         loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
         intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+        customAudioPath: settings?.customAudioPath,
       );
 
       // 显示即时通知，确保锁屏时也能发声

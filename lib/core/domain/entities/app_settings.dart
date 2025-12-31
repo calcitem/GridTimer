@@ -59,6 +59,9 @@ abstract class AppSettings with _$AppSettings {
 
     /// Interval pause duration in minutes (for loopWithInterval modes).
     @Default(2) int audioIntervalPauseMinutes,
+
+    /// Custom audio file path (null means use default sound).
+    String? customAudioPath,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>

@@ -189,4 +189,9 @@ class AppSettingsNotifier extends StateNotifier<AsyncValue<AppSettings>> {
     assert(minutes > 0, 'Interval pause must be greater than 0');
     await updateSettings((s) => s.copyWith(audioIntervalPauseMinutes: minutes));
   }
+
+  /// Update custom audio path.
+  Future<void> updateCustomAudioPath(String? path) async {
+    await updateSettings((s) => s.copyWith(customAudioPath: path));
+  }
 }

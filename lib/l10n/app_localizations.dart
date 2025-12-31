@@ -607,6 +607,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'minutes'**
   String get minutesUnit;
+
+  /// Custom audio section title
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Alarm Sound'**
+  String get customAudio;
+
+  /// Custom audio description
+  ///
+  /// In en, this message translates to:
+  /// **'Upload your own audio file as alarm sound (supports MP3, WAV, etc.)'**
+  String get customAudioDesc;
+
+  /// Upload custom audio button
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Audio File'**
+  String get uploadCustomAudio;
+
+  /// Change custom audio button
+  ///
+  /// In en, this message translates to:
+  /// **'Change Audio File'**
+  String get changeCustomAudio;
+
+  /// Clear custom audio button
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clearCustomAudio;
+
+  /// Custom audio active message
+  ///
+  /// In en, this message translates to:
+  /// **'Currently using custom audio'**
+  String get customAudioActive;
+
+  /// Custom audio selected confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Custom audio has been set'**
+  String get customAudioSelected;
+
+  /// Custom audio cleared confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Restored to default sound'**
+  String get customAudioCleared;
 }
 
 class _AppLocalizationsDelegate

@@ -55,6 +55,7 @@ class AudioService implements IAudioService {
   Future<void> playLoop({
     required SoundKey soundKey,
     double volume = 1.0,
+    String? customAudioPath,
   }) async {
     // Use default mode for backward compatibility
     await playWithMode(
@@ -63,6 +64,7 @@ class AudioService implements IAudioService {
       mode: AudioPlaybackMode.loopIndefinitely,
       loopDurationMinutes: 5,
       intervalPauseMinutes: 2,
+      customAudioPath: customAudioPath,
     );
   }
 
@@ -73,6 +75,7 @@ class AudioService implements IAudioService {
     double volume = 1.0,
     int loopDurationMinutes = 5,
     int intervalPauseMinutes = 2,
+    String? customAudioPath,
   }) async {
     try {
       // Stop current if playing different sound
@@ -81,7 +84,6 @@ class AudioService implements IAudioService {
       }
 
       _currentSoundKey = soundKey;
-      final assetPath = _soundKeyToAssetPath(soundKey);
 
       // Set volume before playing
       await setVolume(volume);
@@ -95,15 +97,19 @@ class AudioService implements IAudioService {
           await _player.setReleaseMode(ReleaseMode.loop);
       }
 
-      // Start playing
-      await _player.play(AssetSource(assetPath));
+      // Start playing (use custom audio if provided, otherwise use default)
+      if (customAudioPath != null && customAudioPath.isNotEmpty) {
+        await _player.play(DeviceFileSource(customAudioPath));
+      } else {
+        final assetPath = _soundKeyToAssetPath(soundKey);
+        await _player.play(AssetSource(assetPath));
+      }
 
-      // Set up timers based on mode
+      // Set up timers based on mode (no assetPath needed for timers)
       _setupPlaybackTimers(
         mode: mode,
         loopDurationMinutes: loopDurationMinutes,
         intervalPauseMinutes: intervalPauseMinutes,
-        assetPath: assetPath,
       );
     } catch (e) {
       // 捕获音频播放错误，避免影响应用运行
@@ -115,7 +121,6 @@ class AudioService implements IAudioService {
     required AudioPlaybackMode mode,
     required int loopDurationMinutes,
     required int intervalPauseMinutes,
-    required String assetPath,
   }) {
     // Cancel existing timers
     _autoStopTimer?.cancel();
@@ -141,7 +146,6 @@ class AudioService implements IAudioService {
         _setupIntervalMode(
           loopDurationMinutes: loopDurationMinutes,
           intervalPauseMinutes: intervalPauseMinutes,
-          assetPath: assetPath,
           repeating: false,
         );
         break;
@@ -151,7 +155,6 @@ class AudioService implements IAudioService {
         _setupIntervalMode(
           loopDurationMinutes: loopDurationMinutes,
           intervalPauseMinutes: intervalPauseMinutes,
-          assetPath: assetPath,
           repeating: true,
         );
         break;
@@ -165,7 +168,6 @@ class AudioService implements IAudioService {
   void _setupIntervalMode({
     required int loopDurationMinutes,
     required int intervalPauseMinutes,
-    required String assetPath,
     required bool repeating,
   }) {
     int cycleCount = 0;

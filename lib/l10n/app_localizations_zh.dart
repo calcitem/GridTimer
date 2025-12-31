@@ -272,4 +272,28 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get minutesUnit => '分钟';
+
+  @override
+  String get customAudio => '自定义闹铃声音';
+
+  @override
+  String get customAudioDesc => '上传自己的音频文件作为闹铃声音（支持 MP3、WAV 等格式）';
+
+  @override
+  String get uploadCustomAudio => '上传音频文件';
+
+  @override
+  String get changeCustomAudio => '更换音频文件';
+
+  @override
+  String get clearCustomAudio => '清除';
+
+  @override
+  String get customAudioActive => '当前使用自定义音频';
+
+  @override
+  String get customAudioSelected => '自定义音频已设置';
+
+  @override
+  String get customAudioCleared => '已恢复使用默认声音';
 }

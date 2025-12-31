@@ -280,4 +280,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get minutesUnit => 'minutes';
+
+  @override
+  String get customAudio => 'Custom Alarm Sound';
+
+  @override
+  String get customAudioDesc =>
+      'Upload your own audio file as alarm sound (supports MP3, WAV, etc.)';
+
+  @override
+  String get uploadCustomAudio => 'Upload Audio File';
+
+  @override
+  String get changeCustomAudio => 'Change Audio File';
+
+  @override
+  String get clearCustomAudio => 'Clear';
+
+  @override
+  String get customAudioActive => 'Currently using custom audio';
+
+  @override
+  String get customAudioSelected => 'Custom audio has been set';
+
+  @override
+  String get customAudioCleared => 'Restored to default sound';
 }
