@@ -76,6 +76,9 @@ class AppSettingsHive {
   @HiveField(19)
   final String? ttsLanguage;
 
+  @HiveField(20, defaultValue: true)
+  final bool showMinutesSecondsFormat;
+
   AppSettingsHive({
     required this.activeModeId,
     required this.flashEnabled,
@@ -97,6 +100,7 @@ class AppSettingsHive {
     required this.gestureActionsMap,
     required this.shakeSensitivity,
     this.ttsLanguage,
+    required this.showMinutesSecondsFormat,
   });
 
   /// Convert from domain entity.
@@ -128,6 +132,7 @@ class AppSettingsHive {
       gestureActionsMap: gestureActionsMap,
       shakeSensitivity: settings.shakeSensitivity,
       ttsLanguage: settings.ttsLanguage,
+      showMinutesSecondsFormat: settings.showMinutesSecondsFormat,
     );
   }
 
@@ -166,6 +171,7 @@ class AppSettingsHive {
       gestureActions: gestureActions,
       shakeSensitivity: shakeSensitivity,
       ttsLanguage: ttsLanguage,
+      showMinutesSecondsFormat: showMinutesSecondsFormat,
     );
   }
 }

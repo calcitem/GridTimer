@@ -79,6 +79,10 @@ abstract class AppSettings with _$AppSettings {
 
     /// Shake sensitivity threshold (1.0 - 5.0, lower = more sensitive).
     @Default(2.5) double shakeSensitivity,
+
+    /// Display countdown in minutes:seconds format (true) or total seconds (false).
+    /// Default is true (minutes:seconds format).
+    @Default(true) bool showMinutesSecondsFormat,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>

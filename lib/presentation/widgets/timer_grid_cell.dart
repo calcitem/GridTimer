@@ -64,6 +64,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     final settingsAsync = ref.watch(appSettingsProvider);
     // Default to true (flash enabled) if settings are not yet loaded
     final flashEnabled = settingsAsync.value?.flashEnabled ?? true;
+    final showMinutesSeconds =
+        settingsAsync.value?.showMinutesSecondsFormat ?? true;
     final remainingMs = widget.session.calculateRemaining(clock.nowEpochMs());
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
@@ -107,7 +109,13 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
               ),
             ),
             padding: const EdgeInsets.all(4),
-            child: _buildContent(context, l10n, presetMinutes, remainingMs),
+            child: _buildContent(
+              context,
+              l10n,
+              presetMinutes,
+              remainingMs,
+              showMinutesSeconds,
+            ),
           );
         },
       ),
@@ -120,6 +128,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     AppLocalizations l10n,
     int presetMinutes,
     int remainingMs,
+    bool showMinutesSeconds,
   ) {
     switch (widget.session.status) {
       case TimerStatus.idle:
@@ -128,7 +137,12 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       case TimerStatus.running:
       case TimerStatus.paused:
         // Running/paused state: show total and remaining time
-        return _buildActiveContent(l10n, presetMinutes, remainingMs);
+        return _buildActiveContent(
+          l10n,
+          presetMinutes,
+          remainingMs,
+          showMinutesSeconds,
+        );
       case TimerStatus.ringing:
         // Ringing state
         return _buildRingingContent(l10n, presetMinutes);
@@ -180,9 +194,23 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     AppLocalizations l10n,
     int presetMinutes,
     int remainingMs,
+    bool showMinutesSeconds,
   ) {
     final remainingSeconds = (remainingMs / 1000).ceil();
     final isPaused = widget.session.status == TimerStatus.paused;
+
+    // Format remaining time based on user preference
+    final String displayTime;
+    if (showMinutesSeconds) {
+      // Display in MM:SS format
+      final minutes = remainingSeconds ~/ 60;
+      final seconds = remainingSeconds % 60;
+      displayTime =
+          '${minutes.toString()}:${seconds.toString().padLeft(2, '0')}';
+    } else {
+      // Display total seconds
+      displayTime = '$remainingSeconds';
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -198,7 +226,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
             fontFeatures: [FontFeature.tabularFigures()],
           ),
         ),
-        // Middle: remaining seconds (large font)
+        // Middle: remaining time (large font)
         Expanded(
           child: Center(
             child: FittedBox(
@@ -206,7 +234,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Text(
-                  '$remainingSeconds',
+                  displayTime,
                   style: const TextStyle(
                     fontSize: 100,
                     fontWeight: FontWeight.w900,

@@ -66,6 +66,8 @@
   "vibrationDesc": "响铃时振动",
   "keepScreenOn": "保持屏幕常亮",
   "keepScreenOnDesc": "计时器运行时防止屏幕休眠",
+  "showMinutesSecondsFormat": "显示分秒格式",
+  "showMinutesSecondsFormatDesc": "倒计时显示为分:秒格式（关闭则显示总秒数）",
   "ttsEnabled": "语音播报",
   "ttsEnabledDesc": "计时结束时语音播报",
   "alarmSound": "提醒声音",

@@ -161,6 +161,11 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     await updateSettings((s) => s.copyWith(vibrationEnabled: enabled));
   }
 
+  /// Toggle minutes:seconds format display.
+  Future<void> toggleMinutesSecondsFormat(bool enabled) async {
+    await updateSettings((s) => s.copyWith(showMinutesSecondsFormat: enabled));
+  }
+
   /// Set onboarding completed.
   Future<void> setOnboardingCompleted(bool completed) async {
     await updateSettings((s) => s.copyWith(onboardingCompleted: completed));

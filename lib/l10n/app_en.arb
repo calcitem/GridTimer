@@ -294,6 +294,16 @@
     "description": "Description for keep screen on"
   },
 
+  "showMinutesSecondsFormat": "Show Minutes:Seconds Format",
+  "@showMinutesSecondsFormat": {
+    "description": "Display countdown in minutes:seconds format setting"
+  },
+
+  "showMinutesSecondsFormatDesc": "Display countdown as MM:SS (off shows total seconds)",
+  "@showMinutesSecondsFormatDesc": {
+    "description": "Description for minutes:seconds format display"
+  },
+
   "ttsEnabled": "Voice Announcements",
   "@ttsEnabled": {
     "description": "TTS enabled setting"

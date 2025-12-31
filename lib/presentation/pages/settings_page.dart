@@ -118,6 +118,19 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               },
             ),
 
+            // Minutes:Seconds Format Display
+            SwitchListTile(
+              secondary: const Icon(Icons.timer),
+              title: Text(l10n.showMinutesSecondsFormat),
+              subtitle: Text(l10n.showMinutesSecondsFormatDesc),
+              value: settings.showMinutesSecondsFormat,
+              onChanged: (value) {
+                ref
+                    .read(appSettingsProvider.notifier)
+                    .toggleMinutesSecondsFormat(value);
+              },
+            ),
+
             // TTS Global Enable
             SwitchListTile(
               secondary: const Icon(Icons.record_voice_over),
@@ -353,7 +366,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
                     // Throw a test exception to verify Catcher is working
-                                     throw Exception(
+                    throw Exception(
                       'This is a test exception to verify Catcher error reporting system is working properly',
                     );
                   },
