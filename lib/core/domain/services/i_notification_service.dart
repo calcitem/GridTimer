@@ -31,6 +31,12 @@ abstract interface class INotificationService {
   Future<void> scheduleTimeUp({
     required TimerSession session,
     required TimerConfig config,
+    /// Whether the notification sound should repeat until the notification is
+    /// dismissed/cancelled by the user.
+    ///
+    /// On Android, this is typically implemented via `Notification.FLAG_INSISTENT`.
+    /// On other platforms, this may be ignored due to OS limitations.
+    bool repeatSoundUntilStopped = false,
   });
 
   /// Cancels the scheduled notification for a timer.

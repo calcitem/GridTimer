@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../app/providers.dart';
+import '../../core/domain/enums.dart';
 import '../../l10n/app_localizations.dart';
 
 /// Sound settings page for configuring alarm sound and volume.
@@ -20,14 +21,21 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
 
     final audioService = ref.read(audioServiceProvider);
     final l10n = AppLocalizations.of(context)!;
+    
+    // Read current audio playback mode from settings
+    final settingsAsync = ref.read(appSettingsProvider);
+    final settings = settingsAsync.value;
 
     setState(() => _isPlaying = true);
 
     try {
-      // Play test sound with current volume
-      await audioService.playLoop(
+      // Play test sound with current volume and configured playback mode
+      await audioService.playWithMode(
         soundKey: 'default',
         volume: volume,
+        mode: settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
+        loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
+        intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
         customAudioPath: customAudioPath,
       );
 
