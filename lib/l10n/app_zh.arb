@@ -110,7 +110,7 @@
   "safetyViewFullDisclaimer": "查看完整声明",
   "safetyAcceptAndContinue": "我理解，继续使用",
   "fullDisclaimerTitle": "完整免责声明",
-  "fullDisclaimerText": "本软件按"原样"提供，不提供任何明示或暗示的担保。\n\n开发者不对因使用本软件而产生的任何后果负责，包括但不限于：错过的提醒、不准确的计时、应用故障等。\n\n用户应自行评估使用风险，并对关键任务准备备用方案。\n\n详细内容请参阅 LICENSE_DISCLAIMER.md 文件。",
+  "fullDisclaimerText": "本软件按'原样'提供，不提供任何明示或暗示的担保。\n\n开发者不对因使用本软件而产生的任何后果负责，包括但不限于：错过的提醒、不准确的计时、应用故障等。\n\n用户应自行评估使用风险，并对关键任务准备备用方案。\n\n详细内容请参阅 LICENSE_DISCLAIMER.md 文件。",
   "close": "关闭",
   "aboutDisclaimer": "安全提示与免责声明",
 
