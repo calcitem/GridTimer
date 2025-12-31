@@ -350,8 +350,53 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get onboardingCheckSoundDesc =>
-      '请点击下方按钮，确保 \"Timer Alarm (default)\" 的声音**不是**“无”或“静音”。\n\n如果设为静音，倒计时结束时您将只收到通知而听不到铃声。';
+      '请点击下方按钮，确保 \"Timer Alarm (default)\" 的声音**不是**\'无\'或\'静音\'。\n\n如果设为静音，倒计时结束时您将只收到通知而听不到铃声。';
 
   @override
   String get onboardingCheckSoundBtn => '去检查声音设置';
+
+  @override
+  String get grantPermission => '授予权限';
+
+  @override
+  String get notificationPermissionGranted => '通知权限已授予';
+
+  @override
+  String get notificationPermissionDenied => '通知权限被拒绝，请在系统设置中手动授予';
+
+  @override
+  String get exactAlarmPermission => '精确闹钟权限';
+
+  @override
+  String get exactAlarmPermissionDesc => '确保计时器准时通知（Android 14+ 必需）';
+
+  @override
+  String get batteryOptimizationSettings => '电池优化设置';
+
+  @override
+  String get batteryOptimizationDesc => '禁用电池优化以确保后台闹钟可靠运行';
+
+  @override
+  String get alarmSoundSettings => '闹铃声音设置';
+
+  @override
+  String get alarmSoundSettingsDesc =>
+      '如果 \"Timer Alarm (default)\" 声音设为\'无\'，计时器将只显示通知而无声音';
+
+  @override
+  String get goToSettings => '前往设置';
+
+  @override
+  String get settingsButton => '设置';
+
+  @override
+  String failedToOpenChannelSettings(String error) {
+    return '打开通知渠道设置失败：$error';
+  }
+
+  @override
+  String get developerModeEnabled => '开发者模式已启用';
+
+  @override
+  String get developerModeDisabled => '开发者模式已禁用';
 }
