@@ -450,46 +450,6 @@
     "description": "Minutes unit label"
   },
 
-  "customAudio": "Custom Alarm Sound",
-  "@customAudio": {
-    "description": "Custom audio section title"
-  },
-
-  "customAudioDesc": "Upload your own audio file as alarm sound (supports MP3, WAV, etc.)",
-  "@customAudioDesc": {
-    "description": "Custom audio description"
-  },
-
-  "uploadCustomAudio": "Upload Audio File",
-  "@uploadCustomAudio": {
-    "description": "Upload custom audio button"
-  },
-
-  "changeCustomAudio": "Change Audio File",
-  "@changeCustomAudio": {
-    "description": "Change custom audio button"
-  },
-
-  "clearCustomAudio": "Clear",
-  "@clearCustomAudio": {
-    "description": "Clear custom audio button"
-  },
-
-  "customAudioActive": "Currently using custom audio",
-  "@customAudioActive": {
-    "description": "Custom audio active message"
-  },
-
-  "customAudioSelected": "Custom audio has been set",
-  "@customAudioSelected": {
-    "description": "Custom audio selected confirmation"
-  },
-
-  "customAudioCleared": "Restored to default sound",
-  "@customAudioCleared": {
-    "description": "Custom audio cleared confirmation"
-  },
-
   "gestureSettings": "Gesture Control Settings",
   "@gestureSettings": {
     "description": "Gesture settings title"

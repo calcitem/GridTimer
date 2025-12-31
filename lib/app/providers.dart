@@ -220,11 +220,6 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     await updateSettings((s) => s.copyWith(audioIntervalPauseMinutes: minutes));
   }
 
-  /// Update custom audio path.
-  Future<void> updateCustomAudioPath(String? path) async {
-    await updateSettings((s) => s.copyWith(customAudioPath: path));
-  }
-
   /// Update gesture action for a specific gesture type.
   Future<void> updateGestureAction(
     AlarmGestureType gesture,
