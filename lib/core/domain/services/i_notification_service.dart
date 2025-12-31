@@ -57,6 +57,16 @@ abstract interface class INotificationService {
     required TimerConfig config,
     /// Whether vibration should be enabled for this notification.
     bool enableVibration = true,
+    /// Whether the notification should play a sound.
+    ///
+    /// Note: On Android 8+ the notification channel controls the actual sound.
+    /// This flag only controls whether sound is enabled for this notification.
+    bool playSound = false,
+    /// Whether the notification sound/vibration should repeat until cancelled.
+    ///
+    /// On Android this is typically implemented via `Notification.FLAG_INSISTENT`.
+    /// Some OEM ROMs may ignore this flag.
+    bool repeatSoundUntilStopped = false,
   });
 
   /// Stream of notification events (tap, action, full-screen trigger).

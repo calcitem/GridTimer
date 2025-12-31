@@ -348,6 +348,8 @@ class NotificationService implements INotificationService {
     required TimerSession session,
     required TimerConfig config,
     bool enableVibration = true,
+    bool playSound = false,
+    bool repeatSoundUntilStopped = false,
   }) async {
     // Show notification only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -357,6 +359,7 @@ class NotificationService implements INotificationService {
     final notificationId = 1000 + session.slotIndex;
     // Use v2 channel (user-configured on Android 8+).
     final channelId = 'gt.alarm.timeup.${config.soundKey}.v2';
+    final soundResource = _soundKeyToResource(config.soundKey);
 
     // Cancel any pending notifications with the same ID to avoid update-suppressed alerting.
     if (Platform.isAndroid) {
@@ -382,9 +385,13 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      // Don't play sound - let AudioService handle all audio playback with full mode support.
-      // This notification is only for visual alert and stop button.
-      playSound: false,
+      // Allow caller to decide whether this immediate notification should play sound.
+      //
+      // On Android 8+ the channel controls the actual sound, but playSound still
+      // controls whether sound is enabled for the notification instance.
+      playSound: playSound,
+      sound:
+          playSound ? RawResourceAndroidNotificationSound(soundResource) : null,
       // Control vibration based on user settings.
       enableVibration: enableVibration,
       onlyAlertOnce: false,
@@ -395,6 +402,13 @@ class NotificationService implements INotificationService {
           showsUserInterface: true,
         ),
       ],
+      // Use ALARM audio usage for pre-Android O devices. On Android O+ the channel controls this.
+      audioAttributesUsage: AudioAttributesUsage.alarm,
+      // Repeat the sound until the user cancels the notification (Android only).
+      additionalFlags:
+          Platform.isAndroid && playSound && repeatSoundUntilStopped
+              ? Int32List.fromList(const <int>[_androidFlagInsistent])
+              : null,
     );
 
     final details = NotificationDetails(android: androidDetails);

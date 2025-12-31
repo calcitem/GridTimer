@@ -214,6 +214,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       await notificationService.showTimeUpNow(
         session: testSession,
         config: testConfig,
+        playSound: true,
       );
       
       _addLog('[Test 3] ✅ Immediate notification displayed');
