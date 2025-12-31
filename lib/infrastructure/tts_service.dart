@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_tts/flutter_tts.dart';
 import '../core/domain/services/i_tts_service.dart';
 
@@ -7,6 +8,13 @@ class TtsService implements ITtsService {
   double _currentVolume = 1.0;
   double _currentSpeechRate = 0.5;
   double _currentPitch = 1.0;
+
+  /// Completion notifier for tracking TTS completion
+  final StreamController<bool> _completionController =
+      StreamController<bool>.broadcast();
+
+  /// Stream that emits when TTS completes speaking
+  Stream<bool> get completionStream => _completionController.stream;
 
   @override
   Future<void> init() async {
@@ -22,6 +30,16 @@ class TtsService implements ITtsService {
     } catch (e) {
       // Ignore language setting errors, continue initializing other parameters
     }
+
+    // Set up completion handlers
+    _tts.setCompletionHandler(() {
+      _completionController.add(true);
+    });
+
+    _tts.setErrorHandler((String message) {
+      // Notify completion even on error to prevent UI from hanging
+      _completionController.add(false);
+    });
 
     await _tts.setVolume(_currentVolume);
     await _tts.setSpeechRate(_currentSpeechRate);
@@ -75,6 +93,6 @@ class TtsService implements ITtsService {
   }
 
   void dispose() {
-    // FlutterTts doesn't have explicit disposal
+    _completionController.close();
   }
 }
