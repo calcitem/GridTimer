@@ -49,7 +49,7 @@ class PermissionService implements IPermissionService {
     required String channelId,
   }) async {
     if (!Platform.isAndroid) return;
-    assert(channelId.isNotEmpty, 'channelId 不能为空');
+    assert(channelId.isNotEmpty, 'channelId must not be empty');
 
     await _systemSettingsChannel.invokeMethod<void>(
       'openNotificationChannelSettings',
