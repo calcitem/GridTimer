@@ -7,7 +7,7 @@
     android:padding="16dp"
     android:background="@drawable/widget_background">
 
-    <!-- 标题栏 -->
+    <!-- Title bar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,22 +31,22 @@
             android:layout_height="36dp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/ic_popup_sync"
-            android:contentDescription="刷新"
+            android:contentDescription="Refresh"
             android:scaleType="fitCenter"
             android:tint="#666666" />
     </LinearLayout>
 
-    <!-- 状态文本 -->
+    <!-- Status text -->
     <TextView
         android:id="@+id/widget_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="📱 点击打开应用"
+        android:text="📱 Tap to open app"
         android:textSize="16sp"
         android:textColor="#555555"
         android:paddingVertical="4dp" />
 
-    <!-- 最近的计时器信息 -->
+    <!-- Nearest timer information -->
     <TextView
         android:id="@+id/widget_nearest_timer"
         android:layout_width="match_parent"
@@ -57,12 +57,12 @@
         android:paddingVertical="4dp"
         android:visibility="gone" />
 
-    <!-- 底部提示 -->
+    <!-- Bottom hint -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="点击打开应用查看详情"
+        android:text="Tap to open app for details"
         android:textSize="12sp"
         android:textColor="#999999"
         android:gravity="center" />

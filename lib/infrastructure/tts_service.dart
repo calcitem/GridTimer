@@ -120,7 +120,6 @@ class TtsService implements ITtsService {
     required String localeTag,
     bool interrupt = true,
   }) async {
-    // 确保 TTS 已初始化
     // Ensure TTS is initialized
     if (!_isInitialized) {
       try {
@@ -160,7 +159,6 @@ class TtsService implements ITtsService {
       // Don't fail immediately based on return value - wait for completion handler
       // The completion handler or error handler will fire eventually
     } catch (e, stackTrace) {
-      // 记录错误但不抛出异常，不会导致应用崩溃
       // Log error but don't throw - app won't crash
       debugPrint('TTS speak error: $e');
       debugPrint('TTS speak stack trace: $stackTrace');
@@ -226,14 +224,12 @@ class TtsService implements ITtsService {
 
   @override
   Future<void> stop() async {
-    // 只在初始化后才调用 stop
     // Only call stop if initialized
     if (!_isInitialized) return;
 
     try {
       await _tts.stop();
     } catch (e) {
-      // 忽略 stop 错误，避免崩溃
       // Ignore stop errors to prevent crashes
     }
   }

@@ -35,9 +35,10 @@ class NotificationService implements INotificationService {
       return;
     }
 
-    // 注意：release 构建如果开启了 shrinkResources，未被 Manifest 引用的资源可能会被裁剪。
-    // 本项目的应用图标在 Manifest 中使用的是 @mipmap/launcher_icon，因此通知默认图标也应保持一致，
-    // 避免出现 “invalid_icon / no valid small icon” 的崩溃。
+    // Note: In release builds with shrinkResources enabled, resources not referenced
+    // in the Manifest may be stripped. This project uses @mipmap/launcher_icon in the
+    // Manifest, so the notification default icon should remain consistent to avoid
+    // "invalid_icon / no valid small icon" crashes.
     const androidInit = AndroidInitializationSettings('@mipmap/launcher_icon');
     const iosInit = DarwinInitializationSettings();
     const initSettings = InitializationSettings(
@@ -417,7 +418,9 @@ class NotificationService implements INotificationService {
       // On Android 8+ the channel controls the actual sound, but playSound still
       // controls whether sound is enabled for the notification instance.
       playSound: playSound,
-      sound: playSound ? RawResourceAndroidNotificationSound(soundResource) : null,
+      sound: playSound
+          ? RawResourceAndroidNotificationSound(soundResource)
+          : null,
       // Control vibration based on user settings.
       enableVibration: enableVibration,
       onlyAlertOnce: false,
@@ -433,8 +436,8 @@ class NotificationService implements INotificationService {
       // Repeat the sound until the user cancels the notification (Android only).
       additionalFlags:
           Platform.isAndroid && playSound && repeatSoundUntilStopped
-              ? Int32List.fromList(const <int>[_androidFlagInsistent])
-              : null,
+          ? Int32List.fromList(const <int>[_androidFlagInsistent])
+          : null,
     );
 
     final details = NotificationDetails(android: androidDetails);

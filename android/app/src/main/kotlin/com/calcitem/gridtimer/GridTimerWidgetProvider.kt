@@ -9,8 +9,8 @@ import android.widget.RemoteViews
 import es.antonborri.home_widget.HomeWidgetPlugin
 
 /**
- * GridTimer 桌面小部件提供者
- * 显示当前运行的计时器状态
+ * GridTimer home screen widget provider
+ * Displays the status of currently running timers
  */
 class GridTimerWidgetProvider : AppWidgetProvider() {
     
@@ -19,7 +19,7 @@ class GridTimerWidgetProvider : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        // 更新所有小部件实例
+        // Update all widget instances
         appWidgetIds.forEach { widgetId ->
             updateWidget(context, appWidgetManager, widgetId)
         }
@@ -31,7 +31,7 @@ class GridTimerWidgetProvider : AppWidgetProvider() {
         const val WIDGET_ACTION_REFRESH = "${WIDGET_ACTION_PREFIX}REFRESH"
         
         /**
-         * 更新小部件
+         * Update widget
          */
         fun updateWidget(
             context: Context,
@@ -40,17 +40,17 @@ class GridTimerWidgetProvider : AppWidgetProvider() {
         ) {
             val views = RemoteViews(context.packageName, R.layout.widget_grid_timer)
             
-            // 从 SharedPreferences 读取 Flutter 传递的数据
+            // Read data passed from Flutter via SharedPreferences
             val widgetData = HomeWidgetPlugin.getData(context)
             val activeTimersCount = widgetData.getInt("active_timers_count", 0)
             val ringingTimersCount = widgetData.getInt("ringing_timers_count", 0)
             val nearestTimerName = widgetData.getString("nearest_timer_name", null)
             val nearestTimerRemaining = widgetData.getString("nearest_timer_remaining", null)
             
-            // 更新显示内容
+            // Update display content
             views.setTextViewText(R.id.widget_title, "GridTimer")
             
-            // 状态摘要
+            // Status summary
             val statusText = when {
                 ringingTimersCount > 0 -> "🔔 $ringingTimersCount 个计时器响铃"
                 activeTimersCount > 0 -> "⏱️ $activeTimersCount 个计时器运行中"
@@ -58,7 +58,7 @@ class GridTimerWidgetProvider : AppWidgetProvider() {
             }
             views.setTextViewText(R.id.widget_status, statusText)
             
-            // 显示最近的计时器信息
+            // Display nearest timer information
             if (nearestTimerName != null && nearestTimerRemaining != null) {
                 views.setTextViewText(
                     R.id.widget_nearest_timer,
@@ -69,7 +69,7 @@ class GridTimerWidgetProvider : AppWidgetProvider() {
                 views.setViewVisibility(R.id.widget_nearest_timer, android.view.View.GONE)
             }
             
-            // 设置点击打开应用
+            // Set click to open app
             val intent = Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
@@ -81,7 +81,7 @@ class GridTimerWidgetProvider : AppWidgetProvider() {
             )
             views.setOnClickPendingIntent(R.id.widget_container, pendingIntent)
             
-            // 刷新按钮
+            // Refresh button
             val refreshIntent = Intent(context, GridTimerWidgetProvider::class.java).apply {
                 action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(widgetId))
@@ -94,12 +94,12 @@ class GridTimerWidgetProvider : AppWidgetProvider() {
             )
             views.setOnClickPendingIntent(R.id.widget_refresh_button, refreshPendingIntent)
             
-            // 更新小部件
+            // Update widget
             appWidgetManager.updateAppWidget(widgetId, views)
         }
         
         /**
-         * 更新所有小部件实例
+         * Update all widget instances
          */
         fun updateAllWidgets(context: Context) {
             val appWidgetManager = AppWidgetManager.getInstance(context)

@@ -83,7 +83,7 @@
             android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver"
             android:exported="false" />
 
-        <!-- GridTimer 桌面小部件 -->
+        <!-- GridTimer home screen widget -->
         <receiver
             android:name=".GridTimerWidgetProvider"
             android:exported="true">

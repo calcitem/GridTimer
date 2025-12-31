@@ -31,8 +31,9 @@ class MainActivity: FlutterActivity() {
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         }
                         startActivity(intent)
-                        // Dart 端使用 invokeMethod<void>()，这里必须返回 null，
-                        // 否则会触发类型转换异常，导致看起来"跳转后又立刻返回"。
+                        // Dart side uses invokeMethod<void>(), so we must return null here.
+                        // Otherwise it will trigger a type conversion exception, causing the
+                        // appearance of "navigating and immediately returning".
                         result.success(null)
                     } catch (e: Exception) {
                         // Fallback: open the app notification settings page (some OEM ROMs/versions
@@ -43,7 +44,7 @@ class MainActivity: FlutterActivity() {
                                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             }
                             startActivity(intent)
-                            // 同上：保持与 invokeMethod<void>() 兼容
+                            // Same as above: maintain compatibility with invokeMethod<void>()
                             result.success(null)
                         } catch (e2: Exception) {
                             result.error("open_failed", e2.toString(), null)
