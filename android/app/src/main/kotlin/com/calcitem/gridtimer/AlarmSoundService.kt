@@ -65,14 +65,12 @@ class AlarmSoundService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val action = intent?.action
         if (action == ACTION_STOP) {
-            // #region agent log
             debugLog(
                 location = "AlarmSoundService:onStartCommand",
                 message = "Stop requested",
                 data = mapOf(),
                 hypothesisId = "SVC"
             )
-            // #endregion
             stopSelf()
             return START_NOT_STICKY
         }
@@ -81,14 +79,12 @@ class AlarmSoundService : Service() {
         val sound = intent?.getStringExtra(EXTRA_SOUND) ?: "raw"
         val loop = intent?.getBooleanExtra(EXTRA_LOOP, true) ?: true
 
-        // #region agent log
         debugLog(
             location = "AlarmSoundService:onStartCommand",
             message = "Start requested",
             data = mapOf("sound" to sound, "loop" to loop),
             hypothesisId = "SVC"
         )
-        // #endregion
 
         startInForeground()
         requestAlarmAudioFocus()
@@ -166,14 +162,12 @@ class AlarmSoundService : Service() {
             false
         }
 
-        // #region agent log
         debugLog(
             location = "AlarmSoundService:requestAlarmAudioFocus",
             message = "Audio focus result",
             data = mapOf("granted" to focusGranted),
             hypothesisId = "SVC"
         )
-        // #endregion
     }
 
     private fun abandonAudioFocus() {
@@ -217,23 +211,19 @@ class AlarmSoundService : Service() {
             mp.start()
             mediaPlayer = mp
 
-            // #region agent log
             debugLog(
                 location = "AlarmSoundService:startPlayback",
                 message = "Playback started",
                 data = mapOf("sound" to sound, "loop" to loop),
                 hypothesisId = "SVC"
             )
-            // #endregion
         } catch (_: Exception) {
-            // #region agent log
             debugLog(
                 location = "AlarmSoundService:startPlayback",
                 message = "Playback failed",
                 data = mapOf("sound" to sound),
                 hypothesisId = "SVC"
             )
-            // #endregion
             stopSelf()
         }
     }
@@ -253,14 +243,12 @@ class AlarmSoundService : Service() {
     }
 
     override fun onDestroy() {
-        // #region agent log
         debugLog(
             location = "AlarmSoundService:onDestroy",
             message = "Service destroyed",
             data = mapOf(),
             hypothesisId = "SVC"
         )
-        // #endregion
         stopPlayback()
         abandonAudioFocus()
         try {
@@ -271,7 +259,6 @@ class AlarmSoundService : Service() {
         super.onDestroy()
     }
 
-    // #region agent log
     private fun debugLog(
         location: String,
         message: String,
@@ -291,7 +278,6 @@ class AlarmSoundService : Service() {
             // Ignore.
         }
     }
-    // #endregion
 }
 
 

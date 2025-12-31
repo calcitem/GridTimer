@@ -17,9 +17,7 @@ import io.flutter.plugin.common.MethodChannel
 
 class MainActivity: FlutterActivity() {
     private val systemSettingsChannelName = "com.calcitem.gridtimer/system_settings"
-    // #region agent log
     private var testRingtone: Ringtone? = null
-    // #endregion
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -29,7 +27,6 @@ class MainActivity: FlutterActivity() {
             systemSettingsChannelName
         ).setMethodCallHandler { call, result ->
             when (call.method) {
-                // #region agent log
                 "getNotificationChannelInfo" -> {
                     val channelId = call.argument<String>("channelId")
                     if (channelId.isNullOrBlank()) {
@@ -79,9 +76,7 @@ class MainActivity: FlutterActivity() {
                         result.error("get_channel_failed", e.toString(), null)
                     }
                 }
-                // #endregion
 
-                // #region agent log
                 "playSystemTone" -> {
                     val type = call.argument<String>("type") ?: "notification"
                     val toneType = when (type) {
@@ -129,9 +124,7 @@ class MainActivity: FlutterActivity() {
                         result.error("stop_failed", e.toString(), null)
                     }
                 }
-                // #endregion
 
-                // #region agent log
                 "nativeShowNotificationTest" -> {
                     val channelId = call.argument<String>("channelId")
                     val usage = call.argument<String>("usage") ?: "notification"
@@ -197,9 +190,7 @@ class MainActivity: FlutterActivity() {
                         result.error("native_show_failed", e.toString(), null)
                     }
                 }
-                // #endregion
 
-                // #region agent log
                 "startAlarmSoundService" -> {
                     val sound = call.argument<String>("sound") ?: "raw"
                     val loop = call.argument<Boolean>("loop") ?: true
@@ -223,7 +214,6 @@ class MainActivity: FlutterActivity() {
                         result.error("stop_service_failed", e.toString(), null)
                     }
                 }
-                // #endregion
 
                 "openNotificationChannelSettings" -> {
                     val channelId = call.argument<String>("channelId")

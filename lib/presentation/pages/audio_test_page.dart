@@ -9,11 +9,8 @@ import '../../app/providers.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
 
-// #region agent log
 const _systemSettingsChannel = MethodChannel('com.calcitem.gridtimer/system_settings');
-// #endregion
 
-// #region agent log
 void _debugLogTest(String location, String message, Map<String, dynamic> data, String hypothesisId) {
   final entry = jsonEncode({
     'location': location,
@@ -25,7 +22,6 @@ void _debugLogTest(String location, String message, Map<String, dynamic> data, S
   });
   debugPrint('[AGENT_DEBUG] $entry');
 }
-// #endregion
 
 /// Audio test page - for diagnosing sound issues
 class AudioTestPage extends ConsumerStatefulWidget {
@@ -97,7 +93,6 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
               onPressed: _testShowNotification,
             ),
 
-            // #region agent log
             // Test 3b: Show notification with system default sound
             _buildTestButton(
               title: 'Test 3b: Notification with System Sound',
@@ -170,7 +165,6 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
               description: 'Stop the native foreground alarm sound service',
               onPressed: _stopAlarmSoundService,
             ),
-            // #endregion
 
             // Test 4: Real timer test (lockscreen scenario)
             _buildTestButton(
@@ -262,39 +256,31 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
   // Test 1: Play audio directly
   Future<void> _testDirectAudioPlay() async {
     _addLog('[Test 1] Starting direct playback of sound.wav');
-    // #region agent log
     _debugLogTest('audio_test_page.dart:_testDirectAudioPlay:entry', 'Test 1 started', {
       'playerState': _testPlayer.state.toString(),
     }, 'C');
-    // #endregion
     
     try {
       await _testPlayer.stop();
       
-      // #region agent log
       _debugLogTest('audio_test_page.dart:_testDirectAudioPlay:beforePlay', 'About to play', {
         'assetPath': 'sounds/sound.wav',
         'playerState': _testPlayer.state.toString(),
       }, 'C');
-      // #endregion
       
       await _testPlayer.play(AssetSource('sounds/sound.wav'));
       
-      // #region agent log
       _debugLogTest('audio_test_page.dart:_testDirectAudioPlay:afterPlay', 'Play command sent', {
         'playerState': _testPlayer.state.toString(),
       }, 'C');
-      // #endregion
       
       _addLog('[Test 1] ✅ Playback command sent');
       _addLog('[Test 1] Please confirm if you hear sound');
     } catch (e, stackTrace) {
-      // #region agent log
       _debugLogTest('audio_test_page.dart:_testDirectAudioPlay:error', 'Test 1 error', {
         'error': e.toString(),
         'stackTrace': stackTrace.toString().substring(0, 500),
       }, 'C');
-      // #endregion
       _addLog('[Test 1] ❌ Error: $e');
     }
   }
@@ -321,15 +307,12 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
   // Test 3: Show immediate notification
   Future<void> _testShowNotification() async {
     _addLog('[Test 3] Starting to show immediate notification');
-    // #region agent log
     _debugLogTest('audio_test_page.dart:_testShowNotification:entry', 'Test 3 started', {
       'platform': Platform.operatingSystem,
       'platformVersion': Platform.operatingSystemVersion,
     }, 'A,B');
-    // #endregion
     
     try {
-      // #region agent log
       // Get notification channel info before showing notification
       try {
         final channelInfo = await _systemSettingsChannel.invokeMethod<Map<dynamic, dynamic>>(
@@ -364,7 +347,6 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
           'error': e.toString(),
         }, 'F');
       }
-      // #endregion
       
       final notificationService = ref.read(notificationServiceProvider);
       final (grid, _) = ref.read(timerServiceProvider).getSnapshot();
@@ -379,12 +361,10 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       
       final testConfig = grid.slots[0];
       
-      // #region agent log
       _debugLogTest('audio_test_page.dart:_testShowNotification:beforeShow', 'Calling showTimeUpNow', {
         'soundKey': testConfig.soundKey,
         'slotIndex': testSession.slotIndex,
       }, 'A,B');
-      // #endregion
       
       await notificationService.showTimeUpNow(
         session: testSession,
@@ -392,9 +372,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
         playSound: true,
       );
       
-      // #region agent log
       _debugLogTest('audio_test_page.dart:_testShowNotification:afterShow', 'showTimeUpNow completed', {}, 'A');
-      // #endregion
       
       _addLog('[Test 3] ✅ Immediate notification displayed');
       _addLog('[Test 3] Please check:');
@@ -402,17 +380,14 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       _addLog('  - Do you hear notification sound?');
       _addLog('  - Is there vibration?');
     } catch (e, stackTrace) {
-      // #region agent log
       _debugLogTest('audio_test_page.dart:_testShowNotification:error', 'Test 3 error', {
         'error': e.toString(),
         'stackTrace': stackTrace.toString().substring(0, 500),
       }, 'A,B,E');
-      // #endregion
       _addLog('[Test 3] ❌ Error: $e');
     }
   }
 
-  // #region agent log
   // Test 3c: Open app notification settings (for MIUI)
   Future<void> _openAppNotificationSettings() async {
     _addLog('[Test 3c] Opening app notification settings...');
@@ -508,9 +483,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       }, 'I,J');
     }
   }
-  // #endregion
 
-  // #region agent log
   Future<void> _playSystemTone({required String type}) async {
     _addLog('[Test 3d/3e] Playing system tone: $type');
     _debugLogTest('audio_test_page.dart:_playSystemTone:entry', 'playSystemTone', {'type': type}, 'DND');
@@ -545,9 +518,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       _addLog('[Test 3f] ❌ stop failed: $e');
     }
   }
-  // #endregion
 
-  // #region agent log
   Future<void> _nativeNotificationTest({
     required String channelId,
     required String usage,
@@ -601,9 +572,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       _addLog('[Test 3g/3h/3i] ❌ Failed: $e');
     }
   }
-  // #endregion
 
-  // #region agent log
   Future<void> _startAlarmSoundService({
     required String sound,
     required bool loop,
@@ -667,35 +636,28 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       _addLog('[Test 5b] ❌ Failed: $e');
     }
   }
-  // #endregion
 
   // Test 4: Start real timer (full ringing test, supports all playback modes and custom audio)
   Future<void> _testScheduleNotification() async {
     _addLog('[Test 4] Starting 10-second timer (full ringing test)');
-    // #region agent log
     _debugLogTest('audio_test_page.dart:_testScheduleNotification:entry', 'Test 4 started', {
       'platform': Platform.operatingSystem,
       'platformVersion': Platform.operatingSystemVersion,
     }, 'A,B,D,E');
-    // #endregion
     
     try {
       final timerService = ref.read(timerServiceProvider);
       final audioService = ref.read(audioServiceProvider);
       final settings = ref.read(appSettingsProvider).value;
       
-      // #region agent log
       _debugLogTest('audio_test_page.dart:_testScheduleNotification:beforeStart', 'Starting timer', {
         'audioPlaybackMode': settings?.audioPlaybackMode.toString() ?? 'null',
       }, 'A');
-      // #endregion
       
       // Start a real 10-second timer (slot 0 is 10 seconds)
       await timerService.start(modeId: 'default', slotIndex: 0);
       
-      // #region agent log
       _debugLogTest('audio_test_page.dart:_testScheduleNotification:timerStarted', 'Timer started', {}, 'A');
-      // #endregion
       
       _addLog('[Test 4] ✅ 10-second timer started');
       _addLog('[Test 4] 💡 This is a real timer that will:');
@@ -711,11 +673,9 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       // Check if alarm is ringing
       final isPlaying = await audioService.isPlaying();
       
-      // #region agent log
       _debugLogTest('audio_test_page.dart:_testScheduleNotification:afterDelay', 'Timer completed, checking audio', {
         'isPlaying': isPlaying,
       }, 'C,D');
-      // #endregion
       
       if (isPlaying) {
         _addLog('[Test 4] ✅ Audio is playing');
@@ -724,12 +684,10 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
         _addLog('[Test 4] ⚠️ Audio not playing (may have auto-stopped)');
       }
     } catch (e, stackTrace) {
-      // #region agent log
       _debugLogTest('audio_test_page.dart:_testScheduleNotification:error', 'Test 4 error', {
         'error': e.toString(),
         'stackTrace': stackTrace.toString().substring(0, 500),
       }, 'A,B,D,E');
-      // #endregion
       _addLog('[Test 4] ❌ Error: $e');
     }
   }
