@@ -488,6 +488,86 @@
   "customAudioCleared": "Restored to default sound",
   "@customAudioCleared": {
     "description": "Custom audio cleared confirmation"
+  },
+
+  "gestureSettings": "Gesture Control Settings",
+  "@gestureSettings": {
+    "description": "Gesture settings title"
+  },
+
+  "gestureSettingsDesc": "Configure gesture actions when alarm rings",
+  "@gestureSettingsDesc": {
+    "description": "Gesture settings description"
+  },
+
+  "gestureActions": "Gesture Actions",
+  "@gestureActions": {
+    "description": "Gesture actions section title"
+  },
+
+  "gestureTypeScreenTap": "Tap Screen",
+  "@gestureTypeScreenTap": {
+    "description": "Screen tap gesture"
+  },
+
+  "gestureTypeVolumeUp": "Volume+ Button",
+  "@gestureTypeVolumeUp": {
+    "description": "Volume up button gesture"
+  },
+
+  "gestureTypeVolumeDown": "Volume- Button",
+  "@gestureTypeVolumeDown": {
+    "description": "Volume down button gesture"
+  },
+
+  "gestureTypeShake": "Shake Phone",
+  "@gestureTypeShake": {
+    "description": "Shake phone gesture"
+  },
+
+  "gestureTypeFlip": "Flip Phone (Face Down)",
+  "@gestureTypeFlip": {
+    "description": "Flip phone gesture"
+  },
+
+  "gestureActionStopAndReset": "Stop & Reset",
+  "@gestureActionStopAndReset": {
+    "description": "Stop and reset action"
+  },
+
+  "gestureActionPause": "Pause",
+  "@gestureActionPause": {
+    "description": "Pause action"
+  },
+
+  "gestureActionNone": "No Action",
+  "@gestureActionNone": {
+    "description": "No action"
+  },
+
+  "shakeSensitivity": "Shake Sensitivity",
+  "@shakeSensitivity": {
+    "description": "Shake sensitivity label"
+  },
+
+  "shakeSensitivityLow": "Low (Shake hard)",
+  "@shakeSensitivityLow": {
+    "description": "Low sensitivity description"
+  },
+
+  "shakeSensitivityHigh": "High (Shake gently)",
+  "@shakeSensitivityHigh": {
+    "description": "High sensitivity description"
+  },
+
+  "shakeSensitivityDesc": "Adjust shake detection sensitivity",
+  "@shakeSensitivityDesc": {
+    "description": "Shake sensitivity description"
+  },
+
+  "gestureHint": "Senior-friendly: Enable screen tap, volume buttons, and flip phone",
+  "@gestureHint": {
+    "description": "Gesture hint for seniors"
   }
 }
 

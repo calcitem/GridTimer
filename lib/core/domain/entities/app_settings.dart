@@ -62,6 +62,19 @@ abstract class AppSettings with _$AppSettings {
 
     /// Custom audio file path (null means use default sound).
     String? customAudioPath,
+
+    /// Gesture actions map: which action to take for each gesture type.
+    @Default({
+      AlarmGestureType.screenTap: AlarmGestureAction.stopAndReset,
+      AlarmGestureType.volumeUp: AlarmGestureAction.stopAndReset,
+      AlarmGestureType.volumeDown: AlarmGestureAction.stopAndReset,
+      AlarmGestureType.shake: AlarmGestureAction.none,
+      AlarmGestureType.flip: AlarmGestureAction.none,
+    })
+    Map<AlarmGestureType, AlarmGestureAction> gestureActions,
+
+    /// Shake sensitivity threshold (1.0 - 5.0, lower = more sensitive).
+    @Default(2.5) double shakeSensitivity,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>

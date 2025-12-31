@@ -655,6 +655,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restored to default sound'**
   String get customAudioCleared;
+
+  /// Gesture settings title
+  ///
+  /// In en, this message translates to:
+  /// **'Gesture Control Settings'**
+  String get gestureSettings;
+
+  /// Gesture settings description
+  ///
+  /// In en, this message translates to:
+  /// **'Configure gesture actions when alarm rings'**
+  String get gestureSettingsDesc;
+
+  /// Gesture actions section title
+  ///
+  /// In en, this message translates to:
+  /// **'Gesture Actions'**
+  String get gestureActions;
+
+  /// Screen tap gesture
+  ///
+  /// In en, this message translates to:
+  /// **'Tap Screen'**
+  String get gestureTypeScreenTap;
+
+  /// Volume up button gesture
+  ///
+  /// In en, this message translates to:
+  /// **'Volume+ Button'**
+  String get gestureTypeVolumeUp;
+
+  /// Volume down button gesture
+  ///
+  /// In en, this message translates to:
+  /// **'Volume- Button'**
+  String get gestureTypeVolumeDown;
+
+  /// Shake phone gesture
+  ///
+  /// In en, this message translates to:
+  /// **'Shake Phone'**
+  String get gestureTypeShake;
+
+  /// Flip phone gesture
+  ///
+  /// In en, this message translates to:
+  /// **'Flip Phone (Face Down)'**
+  String get gestureTypeFlip;
+
+  /// Stop and reset action
+  ///
+  /// In en, this message translates to:
+  /// **'Stop & Reset'**
+  String get gestureActionStopAndReset;
+
+  /// Pause action
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get gestureActionPause;
+
+  /// No action
+  ///
+  /// In en, this message translates to:
+  /// **'No Action'**
+  String get gestureActionNone;
+
+  /// Shake sensitivity label
+  ///
+  /// In en, this message translates to:
+  /// **'Shake Sensitivity'**
+  String get shakeSensitivity;
+
+  /// Low sensitivity description
+  ///
+  /// In en, this message translates to:
+  /// **'Low (Shake hard)'**
+  String get shakeSensitivityLow;
+
+  /// High sensitivity description
+  ///
+  /// In en, this message translates to:
+  /// **'High (Shake gently)'**
+  String get shakeSensitivityHigh;
+
+  /// Shake sensitivity description
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust shake detection sensitivity'**
+  String get shakeSensitivityDesc;
+
+  /// Gesture hint for seniors
+  ///
+  /// In en, this message translates to:
+  /// **'Senior-friendly: Enable screen tap, volume buttons, and flip phone'**
+  String get gestureHint;
 }
 
 class _AppLocalizationsDelegate

@@ -9,6 +9,7 @@ import '../core/domain/services/i_notification_service.dart';
 import '../core/domain/services/i_audio_service.dart';
 import '../core/domain/services/i_tts_service.dart';
 import '../core/domain/services/i_clock.dart';
+import '../core/domain/services/i_gesture_service.dart';
 import '../core/domain/types.dart';
 import '../data/repositories/storage_repository.dart';
 
@@ -19,12 +20,19 @@ class TimerService implements ITimerService {
   final IAudioService _audio;
   final ITtsService _tts;
   final IClock _clock;
+  final IGestureService _gesture;
 
   TimerGridSet? _currentGrid;
   final Map<TimerId, TimerSession> _sessions = {};
 
-  /// 用于防止重复触发响铃的锁
+  /// Set of timer IDs that are currently ringing
+  final Set<TimerId> _ringingTimers = {};
+
+  /// Lock to prevent duplicate ringing triggers
   final Set<TimerId> _pendingRinging = {};
+
+  /// Gesture subscription
+  StreamSubscription<AlarmGestureType>? _gestureSubscription;
 
   final StreamController<(TimerGridSet, List<TimerSession>)> _stateController =
       StreamController<(TimerGridSet, List<TimerSession>)>.broadcast();
@@ -37,15 +45,23 @@ class TimerService implements ITimerService {
     required IAudioService audio,
     required ITtsService tts,
     required IClock clock,
+    required IGestureService gesture,
   }) : _storage = storage,
        _notification = notification,
        _audio = audio,
        _tts = tts,
-       _clock = clock;
+       _clock = clock,
+       _gesture = gesture;
 
   @override
   Future<void> init() async {
     await _storage.init();
+
+    // Initialize gesture service
+    await _gesture.init();
+    
+    // Listen for gesture events
+    _gestureSubscription = _gesture.gestureStream.listen(_onGestureDetected);
 
     // Load active mode
     final settings = await _storage.getSettings();
@@ -58,8 +74,8 @@ class TimerService implements ITimerService {
       await _storage.saveMode(_currentGrid!);
     }
 
-    // 清理旧的 session 数据，重新初始化为 idle 状态
-    // 避免启动时因为脏数据导致的问题
+    // Clear old session data and reinitialize to idle state
+    // Avoid issues caused by stale data on startup
     await _storage.clearAllSessions();
     _initializeIdleSessions();
 
@@ -70,6 +86,33 @@ class TimerService implements ITimerService {
     });
 
     _emitState();
+  }
+
+  /// Handle detected gestures during alarm
+  Future<void> _onGestureDetected(AlarmGestureType gestureType) async {
+    // Only process gestures when there are ringing timers
+    if (_ringingTimers.isEmpty) return;
+
+    final settings = await _storage.getSettings();
+    if (settings == null) return;
+
+    // Get the action for this gesture
+    final action = settings.gestureActions[gestureType];
+    if (action == null || action == AlarmGestureAction.none) return;
+
+    // Apply action to all ringing timers
+    for (final timerId in _ringingTimers.toList()) {
+      switch (action) {
+        case AlarmGestureAction.stopAndReset:
+          await stopRinging(timerId);
+          break;
+        case AlarmGestureAction.pause:
+          await pause(timerId);
+          break;
+        case AlarmGestureAction.none:
+          break;
+      }
+    }
   }
 
   void _checkActiveTimers() {
@@ -106,17 +149,31 @@ class TimerService implements ITimerService {
       final session = _sessions[timerId];
       if (session == null) return;
 
-      // 保存状态到存储
+      // Save state to storage
       await _storage.saveSession(session);
 
-      // 加载设置以获取音量参数
+      // Add to ringing timers set
+      _ringingTimers.add(timerId);
+      
+      // Start gesture monitoring when first timer starts ringing
+      if (_ringingTimers.length == 1) {
+        _gesture.startMonitoring();
+        
+        // Update shake sensitivity from settings
+        final settings = await _storage.getSettings();
+        if (settings != null) {
+          _gesture.updateShakeSensitivity(settings.shakeSensitivity);
+        }
+      }
+
+      // Load settings for volume parameters
       final settings = await _storage.getSettings();
 
-      // 播放声音和 TTS
+      // Play sound and TTS
       final config = _currentGrid!.slots[slotIndex];
       final soundVolume = settings?.soundVolume ?? 1.0;
       
-      // 使用配置的播放模式
+      // Use configured playback mode
       await _audio.playWithMode(
         soundKey: config.soundKey,
         volume: soundVolume,
@@ -126,7 +183,7 @@ class TimerService implements ITimerService {
         customAudioPath: settings?.customAudioPath,
       );
 
-      // 显示即时通知，确保锁屏时也能发声
+      // Show immediate notification to ensure sound on lockscreen
       await _notification.showTimeUpNow(session: session, config: config);
 
       if (config.ttsEnabled && (settings?.ttsGlobalEnabled ?? true)) {
@@ -261,6 +318,14 @@ class TimerService implements ITimerService {
     if (session.status == TimerStatus.ringing) {
       await _audio.stop();
       await _tts.stop();
+      
+      // Remove from ringing timers
+      _ringingTimers.remove(timerId);
+      
+      // Stop gesture monitoring if no more ringing timers
+      if (_ringingTimers.isEmpty) {
+        _gesture.stopMonitoring();
+      }
     }
 
     _emitState();
@@ -273,6 +338,14 @@ class TimerService implements ITimerService {
 
     await _audio.stop();
     await _tts.stop();
+
+    // Remove from ringing timers
+    _ringingTimers.remove(timerId);
+    
+    // Stop gesture monitoring if no more ringing timers
+    if (_ringingTimers.isEmpty) {
+      _gesture.stopMonitoring();
+    }
 
     await reset(timerId);
   }
@@ -326,7 +399,7 @@ class TimerService implements ITimerService {
     final session = _sessions[timerId];
     if (session == null) return;
 
-    // 如果已经在响铃或处理中，跳过
+    // Skip if already ringing or pending
     if (session.status == TimerStatus.ringing ||
         _pendingRinging.contains(timerId)) {
       return;
@@ -345,7 +418,19 @@ class TimerService implements ITimerService {
       _sessions[timerId] = updated;
       await _storage.saveSession(updated);
 
-      // 加载设置以获取音量参数
+      // Add to ringing timers and start gesture monitoring
+      _ringingTimers.add(timerId);
+      if (_ringingTimers.length == 1) {
+        _gesture.startMonitoring();
+        
+        // Update shake sensitivity from settings
+        final settings = await _storage.getSettings();
+        if (settings != null) {
+          _gesture.updateShakeSensitivity(settings.shakeSensitivity);
+        }
+      }
+
+      // Load settings for volume parameters
       final settings = await _storage.getSettings();
 
       // Play audio and TTS
@@ -457,7 +542,7 @@ class TimerService implements ITimerService {
     return TimerGridSet(modeId: 'default', modeName: 'Default', slots: configs);
   }
 
-  /// 根据秒数格式化显示名称
+  /// Format duration name based on seconds
   String _formatDurationName(int seconds) {
     if (seconds < 60) {
       return '$seconds s';
@@ -473,5 +558,7 @@ class TimerService implements ITimerService {
   void dispose() {
     _uiRefreshTimer?.cancel();
     _stateController.close();
+    _gestureSubscription?.cancel();
+    _gesture.dispose();
   }
 }

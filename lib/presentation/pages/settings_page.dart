@@ -5,6 +5,7 @@ import '../../app/providers.dart';
 import '../../l10n/app_localizations.dart';
 import 'audio_playback_settings_page.dart';
 import 'audio_test_page.dart';
+import 'gesture_settings_page.dart';
 import 'grid_durations_settings_page.dart';
 import 'sound_settings_page.dart';
 import 'tts_settings_page.dart';
@@ -152,6 +153,21 @@ class SettingsPage extends ConsumerWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => const GridDurationsSettingsPage(),
+                  ),
+                );
+              },
+            ),
+
+            // Gesture Settings
+            ListTile(
+              leading: const Icon(Icons.touch_app),
+              title: Text(l10n.gestureSettings),
+              subtitle: Text(l10n.gestureSettingsDesc),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const GestureSettingsPage(),
                   ),
                 );
               },

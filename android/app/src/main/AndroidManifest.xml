@@ -16,6 +16,12 @@
     
     <!-- Internet for TTS engine downloads (optional) -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    
+    <!-- Temporarily bypass keyguard when alarm rings (no user prompt needed) -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+    
+    <!-- Keep screen on during alarm (no user prompt needed) -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:label="GridTimer"
