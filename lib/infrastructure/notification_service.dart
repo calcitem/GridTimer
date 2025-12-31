@@ -35,7 +35,10 @@ class NotificationService implements INotificationService {
       return;
     }
 
-    const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+    // 注意：release 构建如果开启了 shrinkResources，未被 Manifest 引用的资源可能会被裁剪。
+    // 本项目的应用图标在 Manifest 中使用的是 @mipmap/launcher_icon，因此通知默认图标也应保持一致，
+    // 避免出现 “invalid_icon / no valid small icon” 的崩溃。
+    const androidInit = AndroidInitializationSettings('@mipmap/launcher_icon');
     const iosInit = DarwinInitializationSettings();
     const initSettings = InitializationSettings(
       android: androidInit,

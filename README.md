@@ -1443,7 +1443,7 @@ void notificationTapBackground(NotificationResponse response) {
 Future<void> initNotifications({
   required void Function(NotificationResponse r) onForegroundResponse,
 }) async {
-  const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+  const androidInit = AndroidInitializationSettings('@mipmap/launcher_icon');
 
   const initSettings = InitializationSettings(android: androidInit);
 
