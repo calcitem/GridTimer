@@ -27,7 +27,8 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
 
     try {
       // Get locale tag for TTS
-      final localeTag = currentLocale?.toLanguageTag() ??
+      final localeTag =
+          currentLocale?.toLanguageTag() ??
           Localizations.localeOf(context).toLanguageTag();
 
       // Apply current settings
@@ -36,22 +37,17 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
       await ttsService.setPitch(pitch);
 
       // Test TTS with sample message
-      final testMessage = l10n.timeUpTts('计时器 1');
+      final testMessage = l10n.timeUpTts('Timer 1');
 
-      await ttsService.speak(
-        text: testMessage,
-        localeTag: localeTag,
-      );
+      await ttsService.speak(text: testMessage, localeTag: localeTag);
 
       // Wait a bit before resetting speaking state
       await Future.delayed(const Duration(seconds: 2));
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.errorText(e.toString())),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.errorText(e.toString()))));
       }
     } finally {
       if (mounted) {
@@ -64,18 +60,14 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
   Widget build(BuildContext context) {
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final l10n = l10nNullable;
     final settingsAsync = ref.watch(appSettingsProvider);
     final currentLocale = ref.watch(localeProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.ttsSettings),
-      ),
+      appBar: AppBar(title: Text(l10n.ttsSettings)),
       body: settingsAsync.when(
         data: (settings) => ListView(
           children: [
@@ -94,10 +86,10 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                     onPressed: _isSpeaking
                         ? null
                         : () => _testTts(
-                              settings.ttsVolume,
-                              settings.ttsSpeechRate,
-                              settings.ttsPitch,
-                            ),
+                            settings.ttsVolume,
+                            settings.ttsSpeechRate,
+                            settings.ttsPitch,
+                          ),
                     icon: _isSpeaking
                         ? const SizedBox(
                             width: 20,
@@ -105,7 +97,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(Icons.record_voice_over),
-                    label: Text(_isSpeaking ? '播报中...' : l10n.testTts),
+                    label: Text(_isSpeaking ? 'Speaking...' : l10n.testTts),
                   ),
                 ],
               ),
@@ -123,7 +115,10 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
 
             // TTS Volume Slider
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -143,8 +138,8 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                       Text(
                         '${(settings.ttsVolume * 100).round()}%',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -156,14 +151,16 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                     divisions: 100,
                     label: '${(settings.ttsVolume * 100).round()}%',
                     onChanged: (value) {
-                      ref.read(appSettingsProvider.notifier).updateTtsVolume(value);
+                      ref
+                          .read(appSettingsProvider.notifier)
+                          .updateTtsVolume(value);
                     },
                   ),
                   Text(
-                    '调整语音播报音量',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.white70,
-                        ),
+                    'Adjust voice announcement volume',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: Colors.white70),
                   ),
                 ],
               ),
@@ -172,7 +169,10 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
 
             // Speech Rate Slider
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -184,7 +184,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                           const Icon(Icons.speed),
                           const SizedBox(width: 8),
                           Text(
-                            '语速',
+                            'Speech Rate',
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ],
@@ -192,8 +192,8 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                       Text(
                         _getSpeechRateLabel(settings.ttsSpeechRate),
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -205,14 +205,16 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                     divisions: 100,
                     label: _getSpeechRateLabel(settings.ttsSpeechRate),
                     onChanged: (value) {
-                      ref.read(appSettingsProvider.notifier).updateTtsSpeechRate(value);
+                      ref
+                          .read(appSettingsProvider.notifier)
+                          .updateTtsSpeechRate(value);
                     },
                   ),
                   Text(
-                    '调整语音播报速度（0.5 为正常速度）',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.white70,
-                        ),
+                    'Adjust voice announcement speed (0.5 is normal speed)',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: Colors.white70),
                   ),
                 ],
               ),
@@ -221,7 +223,10 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
 
             // Pitch Slider
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -233,7 +238,7 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                           const Icon(Icons.graphic_eq),
                           const SizedBox(width: 8),
                           Text(
-                            '音调',
+                            'Pitch',
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ],
@@ -241,8 +246,8 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                       Text(
                         _getPitchLabel(settings.ttsPitch),
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -254,14 +259,16 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                     divisions: 150,
                     label: _getPitchLabel(settings.ttsPitch),
                     onChanged: (value) {
-                      ref.read(appSettingsProvider.notifier).updateTtsPitch(value);
+                      ref
+                          .read(appSettingsProvider.notifier)
+                          .updateTtsPitch(value);
                     },
                   ),
                   Text(
-                    '调整语音播报音调（1.0 为正常音调）',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.white70,
-                        ),
+                    'Adjust voice announcement pitch (1.0 is normal pitch)',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: Colors.white70),
                   ),
                 ],
               ),
@@ -271,30 +278,29 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                '语音播报语言跟随应用语言设置。',
+                'Voice announcement language follows app language setting.',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.white70,
-                      fontStyle: FontStyle.italic,
-                    ),
+                  color: Colors.white70,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ),
           ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(
-          child: Text(l10n.errorText(err.toString())),
-        ),
+        error: (err, stack) =>
+            Center(child: Text(l10n.errorText(err.toString()))),
       ),
     );
   }
 
   String _getLanguageName(Locale? locale) {
     if (locale == null) {
-      return '跟随系统';
+      return 'Follow System';
     }
     switch (locale.languageCode) {
       case 'zh':
-        return '简体中文';
+        return 'Simplified Chinese';
       case 'en':
         return 'English';
       default:
@@ -303,19 +309,18 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
   }
 
   String _getSpeechRateLabel(double rate) {
-    if (rate < 0.3) return '很慢';
-    if (rate < 0.45) return '慢';
-    if (rate < 0.55) return '正常';
-    if (rate < 0.7) return '快';
-    return '很快';
+    if (rate < 0.3) return 'Very Slow';
+    if (rate < 0.45) return 'Slow';
+    if (rate < 0.55) return 'Normal';
+    if (rate < 0.7) return 'Fast';
+    return 'Very Fast';
   }
 
   String _getPitchLabel(double pitch) {
-    if (pitch < 0.8) return '很低';
-    if (pitch < 0.95) return '低';
-    if (pitch < 1.05) return '正常';
-    if (pitch < 1.2) return '高';
-    return '很高';
+    if (pitch < 0.8) return 'Very Low';
+    if (pitch < 0.95) return 'Low';
+    if (pitch < 1.05) return 'Normal';
+    if (pitch < 1.2) return 'High';
+    return 'Very High';
   }
 }
-

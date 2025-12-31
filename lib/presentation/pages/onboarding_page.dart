@@ -158,7 +158,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 _nextPage();
               }
             },
-            child: Text(_currentPage == totalPages - 1 ? '开始使用' : '下一步'),
+            child: Text(
+              _currentPage == totalPages - 1 ? 'Start Using' : 'Next',
+            ),
           ),
         ],
       ),
@@ -198,8 +200,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   Widget _buildWelcomeStep() {
     return _buildStepContainer(
-      title: '欢迎使用 GridTimer',
-      description: '为了确保计时器准确运行，我们需要进行一些简单的设置。\n\n这只需要一分钟。',
+      title: 'Welcome to GridTimer',
+      description:
+          'To ensure the timer runs accurately, we need to configure some simple settings.\n\nThis will only take a minute.',
       icon: Icons.timer,
       action: const SizedBox.shrink(),
     );
@@ -207,8 +210,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   Widget _buildNotificationStep(bool isAndroid) {
     return _buildStepContainer(
-      title: '通知权限',
-      description: 'GridTimer 需要通知权限，以便在倒计时结束时提醒您。\n\n如果没有此权限，您可能会错过计时结束的提醒。',
+      title: 'Notification Permission',
+      description:
+          'GridTimer needs notification permission to remind you when countdown ends.\n\nWithout this permission, you may miss timer completion alerts.',
       icon: Icons.notifications_active,
       action: _notificationGranted
           ? const _GrantedLabel()
@@ -221,15 +225,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 await _checkPermissions();
               },
               icon: const Icon(Icons.check),
-              label: const Text('授予通知权限'),
+              label: const Text('Grant Notification Permission'),
             ),
     );
   }
 
   Widget _buildExactAlarmStep() {
     return _buildStepContainer(
-      title: '精确闹钟权限',
-      description: '为了确保计时精确到秒，GridTimer 需要“精确闹钟”权限。\n\n请在接下来的弹窗或设置中允许。',
+      title: 'Exact Alarm Permission',
+      description:
+          'To ensure timer accuracy to the second, GridTimer needs "exact alarm" permission.\n\nPlease allow in the upcoming dialog or settings.',
       icon: Icons.access_alarm,
       action: _exactAlarmGranted
           ? const _GrantedLabel()
@@ -241,16 +246,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 await _checkPermissions();
               },
               icon: const Icon(Icons.settings),
-              label: const Text('授予精确闹钟权限'),
+              label: const Text('Grant Exact Alarm Permission'),
             ),
     );
   }
 
   Widget _buildBatteryStep() {
     return _buildStepContainer(
-      title: '电池优化',
+      title: 'Battery Optimization',
       description:
-          '为了防止系统在后台关闭计时器，建议将 GridTimer 设为“不优化电池使用”。\n\n这能确保长时间计时不会被中断。',
+          'To prevent system from closing timer in background, recommend setting GridTimer to "Don\'t optimize battery usage".\n\nThis ensures long-duration timers won\'t be interrupted.',
       icon: Icons.battery_alert,
       action: _batteryOptimizationIgnored
           ? const _GrantedLabel()
@@ -262,7 +267,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 // but checking on resume helps.
               },
               icon: const Icon(Icons.settings_power),
-              label: const Text('打开电池优化设置'),
+              label: const Text('Open Battery Optimization Settings'),
             ),
     );
   }
@@ -295,8 +300,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   Widget _buildCompletionStep() {
     return _buildStepContainer(
-      title: '准备就绪',
-      description: '所有设置已完成！\n\n您可以随时在设置页面重新配置这些选项。',
+      title: 'Ready to Go',
+      description:
+          'All settings are complete!\n\nYou can reconfigure these options anytime in settings page.',
       icon: Icons.check_circle_outline,
       action: const SizedBox.shrink(), // Button is in bottom bar
     );
@@ -321,7 +327,7 @@ class _GrantedLabel extends StatelessWidget {
           Icon(Icons.check, color: Colors.green),
           SizedBox(width: 8),
           Text(
-            '已授权',
+            'Granted',
             style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
           ),
         ],

@@ -22,7 +22,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
     final audioService = ref.read(audioServiceProvider);
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return;
-    
+
     // Read current audio playback mode from settings
     final settingsAsync = ref.read(appSettingsProvider);
     final settings = settingsAsync.value;
@@ -45,11 +45,9 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
       await audioService.stop();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.errorText(e.toString())),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.errorText(e.toString()))));
       }
     } finally {
       if (mounted) {
@@ -61,7 +59,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
   Future<void> _pickAudioFile() async {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return;
-    
+
     try {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.audio,
@@ -73,7 +71,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
         await ref
             .read(appSettingsProvider.notifier)
             .updateCustomAudioPath(filePath);
-        
+
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -98,11 +96,9 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
   Future<void> _clearCustomAudio() async {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return;
-    
-    await ref
-        .read(appSettingsProvider.notifier)
-        .updateCustomAudioPath(null);
-    
+
+    await ref.read(appSettingsProvider.notifier).updateCustomAudioPath(null);
+
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -117,17 +113,13 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
   Widget build(BuildContext context) {
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final l10n = l10nNullable;
     final settingsAsync = ref.watch(appSettingsProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.soundSettings),
-      ),
+      appBar: AppBar(title: Text(l10n.soundSettings)),
       body: settingsAsync.when(
         data: (settings) => ListView(
           children: [
@@ -143,12 +135,12 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                   ),
                   const SizedBox(height: 8),
                   ElevatedButton.icon(
-                    onPressed: _isPlaying 
-                        ? null 
+                    onPressed: _isPlaying
+                        ? null
                         : () => _testSound(
-                              settings.soundVolume,
-                              settings.customAudioPath,
-                            ),
+                            settings.soundVolume,
+                            settings.customAudioPath,
+                          ),
                     icon: _isPlaying
                         ? const SizedBox(
                             width: 20,
@@ -156,7 +148,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(Icons.play_arrow),
-                    label: Text(_isPlaying ? '播放中...' : l10n.testSound),
+                    label: Text(_isPlaying ? 'Playing...' : l10n.testSound),
                   ),
                 ],
               ),
@@ -200,7 +192,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                                 Text(
                                   settings.customAudioPath!.split('/').last,
                                   style: Theme.of(context).textTheme.bodySmall,
-                                  // 移除 maxLines 和 ellipsis，允许文件名换行显示
+                                  // Remove maxLines and ellipsis, allow filename to wrap
                                 ),
                               ],
                             ),
@@ -240,8 +232,8 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                   Text(
                     l10n.customAudioDesc,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.white70, // 确保高对比度
-                        ),
+                      color: Colors.white70, // Ensure high contrast
+                    ),
                   ),
                 ],
               ),
@@ -258,7 +250,10 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
 
             // Volume Slider
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -278,8 +273,8 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                       Text(
                         '${(settings.soundVolume * 100).round()}%',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -291,14 +286,16 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                     divisions: 100,
                     label: '${(settings.soundVolume * 100).round()}%',
                     onChanged: (value) {
-                      ref.read(appSettingsProvider.notifier).updateSoundVolume(value);
+                      ref
+                          .read(appSettingsProvider.notifier)
+                          .updateSoundVolume(value);
                     },
                   ),
                   Text(
                     l10n.volumeDesc,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.white70, // 确保高对比度
-                        ),
+                      color: Colors.white70, // Ensure high contrast
+                    ),
                   ),
                 ],
               ),
@@ -306,11 +303,9 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
           ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(
-          child: Text(l10n.errorText(err.toString())),
-        ),
+        error: (err, stack) =>
+            Center(child: Text(l10n.errorText(err.toString()))),
       ),
     );
   }
 }
-

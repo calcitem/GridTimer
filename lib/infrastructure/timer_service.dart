@@ -129,14 +129,14 @@ class TimerService implements ITimerService {
       final session = entry.value;
       final timerId = entry.key;
 
-      // 只处理状态为 RUNNING 且时间已到、且不在处理中的计时器
+      // Only process timers that are RUNNING, time is up, and not being processed
       if (session.status == TimerStatus.running &&
           session.shouldBeRinging(nowMs) &&
           !_pendingRinging.contains(timerId)) {
-        // 加锁，防止重复触发
+        // Lock to prevent duplicate triggers
         _pendingRinging.add(timerId);
 
-        // 立即同步更新内存中的状态为 ringing，避免下次检查时重复触发
+        // Immediately update memory state to ringing to avoid duplicate triggers on next check
         final updated = session.copyWith(
           status: TimerStatus.ringing,
           remainingMsAtPause: 0,
@@ -144,7 +144,7 @@ class TimerService implements ITimerService {
         );
         _sessions[timerId] = updated;
 
-        // 异步执行响铃逻辑（保存状态、播放声音）
+        // Execute ringing logic asynchronously (save state, play sound)
         _triggerRingingAsync(timerId, session.slotIndex);
       }
     }
@@ -215,7 +215,7 @@ class TimerService implements ITimerService {
         await _tts.speak(text: ttsText, localeTag: localeTag, interrupt: true);
       }
     } finally {
-      // 释放锁
+      // Release lock
       _pendingRinging.remove(timerId);
     }
   }
@@ -398,21 +398,21 @@ class TimerService implements ITimerService {
     _emitState();
   }
 
-  /// 更新 default mode 的时长配置（从设置中读取最新配置）
+  /// Update duration configuration for default mode (read latest config from settings)
   @override
   Future<void> updateDefaultGridDurations() async {
-    // 只能在没有活动计时器时更新
+    // Can only update when no active timers
     if (hasActiveTimers()) {
       throw Exception('Cannot update grid durations while timers are active');
     }
 
     final settings = await _storage.getSettings();
     if (_currentGrid?.modeId == 'default') {
-      // 重新创建 default grid
+      // Recreate default grid
       _currentGrid = _createDefaultGrid(settings);
       await _storage.saveMode(_currentGrid!);
 
-      // 重新初始化 sessions
+      // Re-initialize sessions
       _initializeIdleSessions();
 
       _emitState();
@@ -471,7 +471,7 @@ class TimerService implements ITimerService {
       final config = _currentGrid!.slots[session.slotIndex];
       final soundVolume = settings?.soundVolume ?? 1.0;
 
-      // 使用配置的播放模式
+      // Use configured playback mode
       await _audio.playWithMode(
         soundKey: config.soundKey,
         volume: soundVolume,
@@ -481,7 +481,7 @@ class TimerService implements ITimerService {
         customAudioPath: settings?.customAudioPath,
       );
 
-      // 显示即时通知，确保锁屏时也能发声
+      // Show immediate notification to ensure sound even when locked
       await _notification.showTimeUpNow(session: updated, config: config);
 
       if (config.ttsEnabled && (settings?.ttsGlobalEnabled ?? true)) {
@@ -567,17 +567,20 @@ class TimerService implements ITimerService {
   }
 
   TimerGridSet _createDefaultGrid(AppSettings? settings) {
-    // 从设置中获取配置的时长，如果没有则使用默认值
-    // 默认时间配置（单位：秒）：10秒, 2分, 3分, 5分, 8分, 10分, 15分, 20分, 45分
+    // Get configured durations from settings, use defaults if not available
+    // Default time configuration (in seconds): 10s, 2min, 3min, 5min, 8min, 10min, 15min, 20min, 45min
     final durationsInSeconds =
         settings?.gridDurationsInSeconds ??
         [10, 120, 180, 300, 480, 600, 900, 1200, 2700];
 
-    assert(durationsInSeconds.length == 9, '九宫格时长配置必须包含9个元素');
+    assert(
+      durationsInSeconds.length == 9,
+      'Grid duration configuration must contain 9 elements',
+    );
 
     final configs = List.generate(9, (i) {
       final seconds = durationsInSeconds[i];
-      // 根据秒数生成显示名称
+      // Generate display name based on seconds
       final name = _formatDurationName(seconds);
 
       return TimerConfig(

@@ -32,7 +32,7 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
 
   Future<void> _initializeServices() async {
     try {
-      // 首先请求通知权限（Android 13+）
+      // First request notification permission (Android 13+)
       final notification = ref.read(notificationServiceProvider);
       await notification.init();
 
@@ -53,19 +53,19 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
       // Ensure notification channels (all timers use same sound)
       await notification.ensureAndroidChannels(soundKeys: {'default'});
 
-      // 监听计时器状态变化并更新小部件
+      // Listen for timer state changes and update widgets
       _setupWidgetUpdates();
     } catch (e) {
       debugPrint('Initialization error: $e');
     }
   }
 
-  /// 设置小部件自动更新
+  /// Set up automatic widget updates
   void _setupWidgetUpdates() {
     ref.listen(gridStateProvider, (previous, next) {
       next.whenData((state) {
         final (_, sessions) = state;
-        // 更新小部件
+        // Update widgets
         ref.read(widgetServiceProvider).updateWidget(sessions);
       });
     });
@@ -87,19 +87,19 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.black,
 
-        // 高对比度配色方案：基于暗黑模式，使用鲜明的黄色作为主色调
+        // High contrast color scheme: dark mode based, using bright yellow as primary color
         colorScheme: const ColorScheme.dark(
-          primary: Color(0xFFFFD600), // 鲜亮的黄色，高可见度
-          onPrimary: Colors.black, // 黄底黑字，最高对比度
-          secondary: Color(0xFF00B0FF), // 鲜亮的浅蓝色，区分次要操作
+          primary: Color(0xFFFFD600), // Bright yellow, high visibility
+          onPrimary: Colors.black, // Black text on yellow, highest contrast
+          secondary: Color(0xFF00B0FF), // Bright cyan, for secondary actions
           onSecondary: Colors.black,
-          surface: Color(0xFF1E1E1E), // 深灰色卡片背景
-          onSurface: Colors.white, // 白字
-          error: Color(0xFFFF5252), // 鲜亮红
+          surface: Color(0xFF1E1E1E), // Dark gray card background
+          onSurface: Colors.white, // White text
+          error: Color(0xFFFF5252), // Bright red
           onError: Colors.black,
         ),
 
-        // AppBar 主题：黑底黄字
+        // AppBar theme: black background with yellow text
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.black,
           foregroundColor: Color(0xFFFFD600),
@@ -113,7 +113,7 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
           iconTheme: IconThemeData(color: Color(0xFFFFD600), size: 28),
         ),
 
-        // 卡片主题：增加边框以区分背景
+        // Card theme: add border to distinguish from background
         cardTheme: CardThemeData(
           color: const Color(0xFF1E1E1E),
           shape: RoundedRectangleBorder(
@@ -122,32 +122,37 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
           ),
         ),
 
-        // 图标主题：默认大尺寸白色
+        // Icon theme: default large white icons
         iconTheme: const IconThemeData(color: Colors.white, size: 28),
 
-        // 开关主题：高对比度
+        // Switch theme: high contrast
         switchTheme: SwitchThemeData(
           thumbColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
-              return Colors.black; // 开启时滑块为黑色 (在黄色轨道上)
+              return Colors.black; // Black thumb when on (on yellow track)
             }
-            return Colors.white; // 关闭时滑块为白色
+            return Colors.white; // White thumb when off
           }),
           trackColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
-              return const Color(0xFFFFD600); // 开启时轨道为亮黄色
+              return const Color(0xFFFFD600); // Bright yellow track when on
             }
-            return Colors.grey.shade800; // 关闭时轨道为深灰
+            return Colors.grey.shade800; // Dark gray track when off
           }),
-          trackOutlineColor: WidgetStateProperty.all(Colors.white), // 白色边框增强可见性
+          trackOutlineColor: WidgetStateProperty.all(
+            Colors.white,
+          ), // White border enhances visibility
         ),
 
-        // 针对长辈优化的大号对话框主题
+        // Large dialog theme optimized for elderly users
         dialogTheme: const DialogThemeData(
           backgroundColor: Color(0xFF1E1E1E),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
-            side: BorderSide(color: Color(0xFFFFD600), width: 2), // 醒目的边框
+            side: BorderSide(
+              color: Color(0xFFFFD600),
+              width: 2,
+            ), // Prominent border
           ),
           titleTextStyle: TextStyle(
             fontSize: 26,
@@ -158,11 +163,11 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
           actionsPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         ),
 
-        // 增大按钮尺寸和文字
+        // Larger button size and text
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFFD600), // 黄色背景
-            foregroundColor: Colors.black, // 黑色文字
+            backgroundColor: const Color(0xFFFFD600), // Yellow background
+            foregroundColor: Colors.black, // Black text
             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
             textStyle: const TextStyle(
               fontSize: 20,
@@ -175,7 +180,7 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            foregroundColor: const Color(0xFFFFD600), // 黄色文字
+            foregroundColor: const Color(0xFFFFD600), // Yellow text
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             textStyle: const TextStyle(
               fontSize: 20,
@@ -184,12 +189,12 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
           ),
         ),
 
-        // 列表项主题：大字号，高舒适度
+        // List tile theme: large text, high comfort
         listTileTheme: const ListTileThemeData(
           contentPadding: EdgeInsets.symmetric(
             horizontal: 24,
             vertical: 12,
-          ), // 增加间距
+          ), // Increased spacing
           titleTextStyle: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -198,17 +203,20 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
           subtitleTextStyle: TextStyle(
             fontSize: 18,
             color: Colors.white70,
-            height: 1.4, // 增加行高，提升可读性
+            height: 1.4, // Increased line height, improved readability
           ),
           iconColor: Colors.white,
           tileColor: Colors.transparent,
         ),
 
-        // 全局文本主题调整
+        // Global text theme adjustments
         textTheme: const TextTheme(
           bodyLarge: TextStyle(fontSize: 20, color: Colors.white),
           bodyMedium: TextStyle(fontSize: 18, color: Colors.white),
-          bodySmall: TextStyle(fontSize: 16, color: Colors.white70), // 增加小字号
+          bodySmall: TextStyle(
+            fontSize: 16,
+            color: Colors.white70,
+          ), // Increased small font size
           titleMedium: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -217,13 +225,13 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
           titleSmall: TextStyle(fontSize: 18, color: Colors.white70),
         ),
 
-        // 分割线主题
+        // Divider theme
         dividerTheme: const DividerThemeData(
           color: Colors.white24,
           thickness: 1,
         ),
 
-        // 增大输入框文字，增强对比度
+        // Larger input field text, enhanced contrast
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: const Color(0xFF2C2C2C),

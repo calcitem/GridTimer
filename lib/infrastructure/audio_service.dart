@@ -38,7 +38,7 @@ class AudioService implements IAudioService {
     await _player.setReleaseMode(ReleaseMode.loop);
     await _player.setVolume(_currentVolume);
 
-    // 设置音频上下文为闹钟/通知，确保锁屏时也能播放
+    // Set audio context to alarm/notification to ensure playback even when locked
     await _player.setAudioContext(_buildAudioContext());
   }
 
@@ -112,7 +112,7 @@ class AudioService implements IAudioService {
         intervalPauseMinutes: intervalPauseMinutes,
       );
     } catch (e) {
-      // 捕获音频播放错误，避免影响应用运行
+      // Catch audio playback errors to avoid affecting app operation
       debugPrint('Audio playback error: $e');
     }
   }
@@ -178,7 +178,7 @@ class AudioService implements IAudioService {
         return; // Stop after 2 cycles for non-repeating mode
       }
 
-        // Phase 1: Play for N minutes
+      // Phase 1: Play for N minutes
         _intervalTimer = Timer(
           Duration(minutes: loopDurationMinutes),
           () async {

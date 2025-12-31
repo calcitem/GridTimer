@@ -10,15 +10,17 @@ class TtsService implements ITtsService {
 
   @override
   Future<void> init() async {
-    // 尝试设置默认语言，优先使用系统当前语言
-    // 如果无法获取系统语言或设置失败，则不强制设置，留给 speak() 方法调用时动态指定
+    // Try to set default language, prioritize system current language
+    // If unable to get system language or setting fails, don't force it,
+    // leave it to be dynamically specified when speak() method is called
     try {
-      // 获取当前系统默认语言，例如 "zh-CN", "en-US"
-      // 注意：getDefaultLanguage 可能因版本不同而不可用，需根据实际库支持情况调整
-      // 这里暂时只做尝试性调用
+      // Get current system default language, e.g. "zh-CN", "en-US"
+      // Note: getDefaultLanguage may not be available depending on version,
+      // adjust according to actual library support
+      // Here we just try the call tentatively
       // await _tts.setLanguage("zh-CN"); // Removed hardcoded default
     } catch (e) {
-      // 忽略语言设置错误，继续初始化其他参数
+      // Ignore language setting errors, continue initializing other parameters
     }
 
     await _tts.setVolume(_currentVolume);
