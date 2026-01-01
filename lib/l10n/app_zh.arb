@@ -2,7 +2,7 @@
   "@@locale": "zh",
 
   "appTitle": "九宫格计时器",
-  "timerIdle": "待机",
+  "timerIdle": "就绪",
   "timerRunning": "运行中",
   "timerPaused": "已暂停",
   "timerRinging": "响铃中",
