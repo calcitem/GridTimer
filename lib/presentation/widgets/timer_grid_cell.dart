@@ -237,7 +237,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                 child: _AutoScrollText(
                   text: userDefinedName,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: tokens.textSecondary,
                     height: 1.0,
@@ -445,13 +445,13 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     final hasName = name.isNotEmpty;
 
     final nameStyle = TextStyle(
-      fontSize: 18,
+      fontSize: 24,
       fontWeight: FontWeight.w900,
       color: nameColor,
       height: 1.0,
     );
     final presetStyle = TextStyle(
-      fontSize: 16,
+      fontSize: 18,
       fontWeight: FontWeight.w700,
       color: presetColor,
       height: 1.0,
