@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../app/providers.dart';
 import '../../core/services/git_info.dart';
 import '../../l10n/app_localizations.dart';
 
 /// Version information dialog showing app version and Git information.
-class VersionInfoDialog extends StatelessWidget {
+class VersionInfoDialog extends ConsumerWidget {
   const VersionInfoDialog({super.key});
 
   /// Show the version information dialog.
@@ -18,11 +20,13 @@ class VersionInfoDialog extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) {
       return const SizedBox.shrink();
     }
+
+    final packageInfoAsync = ref.watch(packageInfoProvider);
 
     return AlertDialog(
       title: Row(
@@ -42,7 +46,15 @@ class VersionInfoDialog extends StatelessWidget {
             // App version
             Text(l10n.version, style: Theme.of(context).textTheme.titleSmall),
             const SizedBox(height: 4),
-            const Text('1.0.0+1', style: TextStyle(fontSize: 15)),
+            packageInfoAsync.when(
+              data: (info) => Text(
+                '${info.version}+${info.buildNumber}',
+                style: const TextStyle(fontSize: 15),
+              ),
+              loading: () => const Text('...', style: TextStyle(fontSize: 15)),
+              error: (error, _) =>
+                  const Text('--', style: TextStyle(fontSize: 15)),
+            ),
             const SizedBox(height: 16),
 
             // Git information

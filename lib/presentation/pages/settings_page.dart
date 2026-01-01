@@ -93,14 +93,23 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
             // App Information Section
             _buildSectionHeader(l10n.appInformation),
-            ListTile(
-              leading: const Icon(Icons.info_outline),
-              title: Text(l10n.version),
-              subtitle: const Text('1.0.0+1'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {
-                _onVersionTap();
-                VersionInfoDialog.show(context);
+            Consumer(
+              builder: (context, ref, child) {
+                final packageInfoAsync = ref.watch(packageInfoProvider);
+                return ListTile(
+                  leading: const Icon(Icons.info_outline),
+                  title: Text(l10n.version),
+                  subtitle: packageInfoAsync.when(
+                    data: (info) => Text('${info.version}+${info.buildNumber}'),
+                    loading: () => const Text('...'),
+                    error: (error, _) => const Text('--'),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    _onVersionTap();
+                    VersionInfoDialog.show(context);
+                  },
+                );
               },
             ),
 
@@ -296,7 +305,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               icon: Icons.notifications_active,
               title: l10n.notificationPermission,
               description: l10n.notificationPermissionDesc,
-              statusFuture: ref.read(permissionServiceProvider).canPostNotifications(),
+              statusFuture: ref
+                  .read(permissionServiceProvider)
+                  .canPostNotifications(),
               grantedText: l10n.permissionStatusGranted,
               deniedText: l10n.permissionStatusDenied,
               buttonText: l10n.grantPermission,
@@ -326,7 +337,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               icon: Icons.alarm,
               title: l10n.exactAlarmPermission,
               description: l10n.exactAlarmPermissionDesc,
-              statusFuture: ref.read(permissionServiceProvider).canScheduleExactAlarms(),
+              statusFuture: ref
+                  .read(permissionServiceProvider)
+                  .canScheduleExactAlarms(),
               grantedText: l10n.exactAlarmStatusGranted,
               deniedText: l10n.exactAlarmStatusDenied,
               buttonText: l10n.settingsButton,
@@ -344,7 +357,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             _BatteryOptimizationTile(
               title: l10n.batteryOptimizationSettings,
               description: l10n.batteryOptimizationDesc,
-              statusFuture: ref.read(permissionServiceProvider).isBatteryOptimizationDisabled(),
+              statusFuture: ref
+                  .read(permissionServiceProvider)
+                  .isBatteryOptimizationDisabled(),
               isMiuiFuture: ref.read(permissionServiceProvider).isMiuiDevice(),
               disabledText: l10n.batteryOptimizationStatusDisabled,
               enabledText: l10n.batteryOptimizationStatusEnabled,
@@ -396,20 +411,29 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     },
             ),
             // OSS Licenses (third-party libraries)
-            ListTile(
-              leading: const Icon(Icons.library_books),
-              title: Text(l10n.ossLicenses),
-              subtitle: Text(l10n.ossLicensesDesc),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: EnvironmentConfig.test
-                  ? null
-                  : () {
-                      showLicensePage(
-                        context: context,
-                        applicationName: 'GridTimer',
-                        applicationVersion: '1.0.0',
-                      );
-                    },
+            Consumer(
+              builder: (context, ref, child) {
+                return ListTile(
+                  leading: const Icon(Icons.library_books),
+                  title: Text(l10n.ossLicenses),
+                  subtitle: Text(l10n.ossLicensesDesc),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: EnvironmentConfig.test
+                      ? null
+                      : () async {
+                          final packageInfo = await ref.read(
+                            packageInfoProvider.future,
+                          );
+                          if (context.mounted) {
+                            showLicensePage(
+                              context: context,
+                              applicationName: 'GridTimer',
+                              applicationVersion: packageInfo.version,
+                            );
+                          }
+                        },
+                );
+              },
             ),
 
             const Divider(),

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import '../core/domain/entities/app_settings.dart';
 import '../core/domain/enums.dart';
 import '../core/theme/app_theme.dart';
@@ -23,6 +24,11 @@ import '../infrastructure/permission_service.dart';
 import '../infrastructure/widget_service.dart';
 import '../infrastructure/gesture_service.dart';
 import '../infrastructure/vibration_service.dart';
+
+/// Package info provider for retrieving app version information.
+final packageInfoProvider = FutureProvider<PackageInfo>((ref) async {
+  return await PackageInfo.fromPlatform();
+});
 
 /// Clock provider.
 final clockProvider = Provider<IClock>((ref) => const SystemClock());

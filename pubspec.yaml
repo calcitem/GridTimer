@@ -1,7 +1,7 @@
 name: grid_timer
 description: "A 9-grid parallel timer app optimized for seniors with reliable alarm system"
 publish_to: 'none'
-version: 1.0.0+1
+version: 0.9.0+0
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
@@ -55,6 +55,7 @@ dependencies:
   timezone: ^0.10.1
   url_launcher: ^6.3.2
   ffi: 2.1.4
+  package_info_plus: ^9.0.0
 
 dev_dependencies:
   flutter_test:
