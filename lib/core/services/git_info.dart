@@ -28,8 +28,8 @@ Future<GitInfo> get gitInfo async {
   )).trim();
 
   // Use short hash (first 8 characters) if available
-  final String? revision = revisionRaw.isEmpty 
-      ? null 
+  final String? revision = revisionRaw.isEmpty
+      ? null
       : (revisionRaw.length > 8 ? revisionRaw.substring(0, 8) : revisionRaw);
 
   return GitInfo(branch: branch, revision: revision);
