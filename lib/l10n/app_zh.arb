@@ -82,8 +82,8 @@
   "testSound": "测试声音",
   "testTts": "测试语音",
 
-  "gridDurationsSettings": "九宫格时长配置",
-  "gridDurationsSettingsDesc": "自定义每个宫格的倒计时长",
+  "gridDurationsSettings": "九宫格设置",
+  "gridDurationsSettingsDesc": "自定义每个宫格的名称和时长",
   "gridSlot": "宫格 {index}",
   "seconds": "秒",
   "hours": "小时",
@@ -91,6 +91,8 @@
   "reset": "重置",
   "resetToDefault": "恢复默认",
   "gridDurationsResetConfirm": "确定要将九宫格时长恢复为默认值吗？",
+  "name": "名称",
+  "optional": "可选",
 
   "audioPlaybackSettings": "音频播放设置",
   "audioPlaybackSettingsDesc": "配置闹铃音频播放模式",

@@ -369,12 +369,12 @@
     "description": "Test TTS button"
   },
 
-  "gridDurationsSettings": "Grid Durations Settings",
+  "gridDurationsSettings": "Grid Settings",
   "@gridDurationsSettings": {
     "description": "Grid durations settings option"
   },
 
-  "gridDurationsSettingsDesc": "Customize duration for each grid cell",
+  "gridDurationsSettingsDesc": "Customize name and duration for each grid cell",
   "@gridDurationsSettingsDesc": {
     "description": "Description for grid durations settings"
   },
@@ -418,6 +418,16 @@
   "gridDurationsResetConfirm": "Are you sure you want to reset grid durations to default values?",
   "@gridDurationsResetConfirm": {
     "description": "Reset to default confirmation"
+  },
+
+  "name": "Name",
+  "@name": {
+    "description": "Label for name field"
+  },
+
+  "optional": "Optional",
+  "@optional": {
+    "description": "Label for optional field"
   },
 
   "audioPlaybackSettings": "Audio Playback Settings",

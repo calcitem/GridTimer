@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
 import '../../l10n/app_localizations.dart';
 
-/// Grid durations configuration page
+/// Grid durations and names configuration page
 class GridDurationsSettingsPage extends ConsumerStatefulWidget {
   const GridDurationsSettingsPage({super.key});
 
@@ -27,9 +27,22 @@ class _GridDurationsSettingsPageState
     1200,
     2700
   ];
+  static const List<String> _defaultNames = [
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    ''
+  ];
 
   late List<TextEditingController> _controllers;
+  late List<TextEditingController> _nameControllers;
   late List<int> _durations;
+  late List<String> _names;
 
   @override
   void initState() {
@@ -41,10 +54,20 @@ class _GridDurationsSettingsPageState
     final settings = ref.read(appSettingsProvider).value;
     _durations = List<int>.from(
         settings?.gridDurationsInSeconds ?? _defaultDurations);
+    // Handle potential null or shorter list for names
+    final savedNames = settings?.gridNames ?? _defaultNames;
+    _names = List<String>.generate(
+      9,
+      (i) => (i < savedNames.length) ? savedNames[i] : '',
+    );
 
     _controllers = List.generate(
       9,
       (i) => TextEditingController(text: _durations[i].toString()),
+    );
+    _nameControllers = List.generate(
+      9,
+      (i) => TextEditingController(text: _names[i]),
     );
   }
 
@@ -53,12 +76,16 @@ class _GridDurationsSettingsPageState
     for (var controller in _controllers) {
       controller.dispose();
     }
+    for (var controller in _nameControllers) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
   /// Save configuration
   Future<void> _saveDurations() async {
     final newDurations = <int>[];
+    final newNames = <String>[];
     bool hasError = false;
 
     for (int i = 0; i < 9; i++) {
@@ -77,12 +104,16 @@ class _GridDurationsSettingsPageState
       }
 
       newDurations.add(value);
+      newNames.add(_nameControllers[i].text.trim());
     }
 
     if (!hasError) {
       // Save configuration first
       await ref.read(appSettingsProvider.notifier).updateSettings(
-            (s) => s.copyWith(gridDurationsInSeconds: newDurations),
+            (s) => s.copyWith(
+              gridDurationsInSeconds: newDurations,
+              gridNames: newNames,
+            ),
           );
 
       // Try to immediately update default grid duration configuration
@@ -93,7 +124,8 @@ class _GridDurationsSettingsPageState
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Active timers are running, configuration will take effect on next app launch'),
+                content: Text(
+                    'Active timers are running, configuration will take effect on next app launch'),
                 backgroundColor: Colors.orange,
                 duration: Duration(seconds: 3),
               ),
@@ -105,7 +137,7 @@ class _GridDurationsSettingsPageState
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Saved successfully, grid durations updated'),
+                content: Text('Saved successfully, grid updated'),
                 backgroundColor: Colors.green,
               ),
             );
@@ -116,7 +148,8 @@ class _GridDurationsSettingsPageState
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Configuration saved, but error during app update: $e'),
+              content: Text(
+                  'Configuration saved, but error during app update: $e'),
               backgroundColor: Colors.orange,
             ),
           );
@@ -157,8 +190,10 @@ class _GridDurationsSettingsPageState
     if (confirmed == true) {
       setState(() {
         _durations = List<int>.from(_defaultDurations);
+        _names = List<String>.from(_defaultNames);
         for (int i = 0; i < 9; i++) {
           _controllers[i].text = _durations[i].toString();
+          _nameControllers[i].text = _names[i];
         }
       });
     }
@@ -215,7 +250,7 @@ class _GridDurationsSettingsPageState
               padding: const EdgeInsets.all(16),
               itemCount: 9,
               itemBuilder: (context, index) {
-                return _buildDurationInput(index, l10n);
+                return _buildGridConfigInput(index, l10n);
               },
             ),
           ),
@@ -240,64 +275,81 @@ class _GridDurationsSettingsPageState
     );
   }
 
-  Widget _buildDurationInput(int index, AppLocalizations l10n) {
+  Widget _buildGridConfigInput(int index, AppLocalizations l10n) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Grid label
-            SizedBox(
-              width: 80,
-              child: Text(
-                l10n.gridSlot(index + 1),
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+            Text(
+              l10n.gridSlot(index + 1),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(width: 16),
-            // Input field
-            Expanded(
-              child: Semantics(
-                label: '${l10n.gridSlot(index + 1)}, ${l10n.seconds}',
-                textField: true,
-                child: TextField(
-                  controller: _controllers[index],
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  decoration: InputDecoration(
-                    labelText: l10n.seconds,
-                    border: const OutlineInputBorder(),
-                    isDense: true,
-                    suffixText: l10n.seconds,
-                  ),
-                  onChanged: (value) {
-                    // Real-time preview
-                    final seconds = int.tryParse(value);
-                    if (seconds != null && seconds > 0) {
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                // Name Input field
+                Expanded(
+                  flex: 2,
+                  child: TextField(
+                    controller: _nameControllers[index],
+                    decoration: InputDecoration(
+                      labelText: '${l10n.name} (${l10n.optional})',
+                      border: const OutlineInputBorder(),
+                      isDense: true,
+                    ),
+                    onChanged: (value) {
                       setState(() {
-                        _durations[index] = seconds;
+                        _names[index] = value;
                       });
-                    }
-                  },
+                    },
+                  ),
                 ),
-              ),
+                const SizedBox(width: 12),
+                // Duration Input field
+                Expanded(
+                  flex: 1,
+                  child: Semantics(
+                    label: '${l10n.gridSlot(index + 1)}, ${l10n.seconds}',
+                    textField: true,
+                    child: TextField(
+                      controller: _controllers[index],
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      decoration: InputDecoration(
+                        labelText: l10n.seconds,
+                        border: const OutlineInputBorder(),
+                        isDense: true,
+                        suffixText: 's',
+                      ),
+                      onChanged: (value) {
+                        // Real-time preview
+                        final seconds = int.tryParse(value);
+                        if (seconds != null && seconds > 0) {
+                          setState(() {
+                            _durations[index] = seconds;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 16),
+            const SizedBox(height: 8),
             // Display formatted duration
-            SizedBox(
-              width: 100,
-              child: Text(
-                _formatDuration(_durations[index]),
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white70,
-                ),
+            Text(
+              _formatDuration(_durations[index]),
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.white70,
               ),
             ),
           ],

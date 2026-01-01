@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
@@ -215,6 +217,21 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Display Name (scrolling if needed)
+            if (!isFlat)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: _AutoScrollText(
+                  text: widget.config.name,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'monospace',
+                    color: tokens.textSecondary,
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
+                ),
+              ),
             Expanded(
               flex: isFlat ? 1 : 3,
               child: Center(
@@ -281,13 +298,6 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       displayTime = '$remainingSeconds';
     }
 
-    final isWholeMinute = presetDurationMs % 60000 == 0;
-    final minutes = presetDurationMs ~/ 60000;
-    final seconds = (presetDurationMs % 60000) ~/ 1000;
-    final String presetLabel = isWholeMinute
-        ? '$minutes ${l10n.minutes}'
-        : '$minutes:${seconds.toString().padLeft(2, '0')}';
-
     return LayoutBuilder(
       builder: (context, constraints) {
         // Detect if cell is too flat (landscape orientation)
@@ -299,8 +309,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
             if (!isFlat)
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                  presetLabel,
+                child: _AutoScrollText(
+                  text: widget.config.name,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -349,13 +359,6 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     int presetDurationMs,
     AppThemeTokens tokens,
   ) {
-    final isWholeMinute = presetDurationMs % 60000 == 0;
-    final minutes = presetDurationMs ~/ 60000;
-    final seconds = (presetDurationMs % 60000) ~/ 1000;
-    final String presetLabel = isWholeMinute
-        ? '$minutes ${l10n.minutes}'
-        : '$minutes:${seconds.toString().padLeft(2, '0')}';
-
     return LayoutBuilder(
       builder: (context, constraints) {
         // Detect if cell is too flat (landscape orientation)
@@ -367,8 +370,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
             if (!isFlat)
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                  presetLabel,
+                child: _AutoScrollText(
+                  text: widget.config.name,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -447,17 +450,11 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     bool showMinutesSeconds,
   ) {
     final slotNumber = widget.slotIndex + 1;
-    final isWholeMinute = presetDurationMs % 60000 == 0;
-    final minutes = presetDurationMs ~/ 60000;
-    final seconds = (presetDurationMs % 60000) ~/ 1000;
-
-    final String presetText = isWholeMinute
-        ? '$minutes ${l10n.minutes}'
-        : '$minutes ${l10n.minutes} $seconds ${l10n.seconds}';
+    final name = widget.config.name;
 
     switch (widget.session.status) {
       case TimerStatus.idle:
-        return '${l10n.gridSlot(slotNumber)}, $presetText, ${l10n.timerIdle}';
+        return '${l10n.gridSlot(slotNumber)}, $name, ${l10n.timerIdle}';
       case TimerStatus.running:
         final remainingSeconds = (remainingMs / 1000).ceil();
         final String timeText;
@@ -468,7 +465,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
         } else {
           timeText = '$remainingSeconds ${l10n.seconds}';
         }
-        return '${l10n.gridSlot(slotNumber)}, $presetText, ${l10n.timerRunning}, $timeText ${l10n.remainingSeconds}';
+        return '${l10n.gridSlot(slotNumber)}, $name, ${l10n.timerRunning}, $timeText ${l10n.remainingSeconds}';
       case TimerStatus.paused:
         final remainingSeconds = (remainingMs / 1000).ceil();
         final String timeText;
@@ -479,9 +476,9 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
         } else {
           timeText = '$remainingSeconds ${l10n.seconds}';
         }
-        return '${l10n.gridSlot(slotNumber)}, $presetText, ${l10n.timerPaused}, $timeText ${l10n.remainingSeconds}';
+        return '${l10n.gridSlot(slotNumber)}, $name, ${l10n.timerPaused}, $timeText ${l10n.remainingSeconds}';
       case TimerStatus.ringing:
-        return '${l10n.gridSlot(slotNumber)}, $presetText, ${l10n.timerRinging}, ${l10n.timeUp}';
+        return '${l10n.gridSlot(slotNumber)}, $name, ${l10n.timerRinging}, ${l10n.timeUp}';
     }
   }
 
@@ -651,7 +648,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text(l10n.confirmStartTitle),
-        content: SingleChildScrollView(child: Text(l10n.confirmStart)),
+        content: SingleChildScrollView(
+            child: Text(l10n.confirmStartBody(widget.config.name))),
         actionsPadding: const EdgeInsets.all(16),
         actions: [
           Row(
@@ -875,6 +873,142 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Auto-scrolling text widget for Marquee effect
+class _AutoScrollText extends StatefulWidget {
+  final String text;
+  final TextStyle style;
+
+  const _AutoScrollText({
+    required this.text,
+    required this.style,
+  });
+
+  @override
+  State<_AutoScrollText> createState() => _AutoScrollTextState();
+}
+
+class _AutoScrollTextState extends State<_AutoScrollText> {
+  late ScrollController _scrollController;
+  Timer? _scrollTimer;
+  bool _needScrolling = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+
+    // Check if scrolling is needed after first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _checkScrollNecessity();
+    });
+  }
+
+  @override
+  void didUpdateWidget(_AutoScrollText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.text != widget.text || oldWidget.style != widget.style) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _checkScrollNecessity();
+      });
+    }
+  }
+
+  void _checkScrollNecessity() {
+    if (!_scrollController.hasClients) return;
+
+    // If content width > container width, we need scrolling
+    if (_scrollController.position.maxScrollExtent > 0) {
+      if (!_needScrolling) {
+        setState(() => _needScrolling = true);
+        _startScrolling();
+      }
+    } else {
+      if (_needScrolling) {
+        setState(() => _needScrolling = false);
+        _stopScrolling();
+      }
+    }
+  }
+
+  void _startScrolling() {
+    _stopScrolling(); // Ensure clear previous
+    _scrollLoop();
+  }
+
+  void _stopScrolling() {
+    _scrollTimer?.cancel();
+    _scrollTimer = null;
+    // Reset position if possible
+    if (_scrollController.hasClients) {
+        _scrollController.jumpTo(0);
+    }
+  }
+
+  void _scrollLoop() {
+    if (!mounted || !_needScrolling || !_scrollController.hasClients) return;
+
+    // 1. Wait a bit at the start
+    _scrollTimer = Timer(const Duration(seconds: 2), () {
+        if (!mounted || !_needScrolling) return;
+
+        // 2. Animate to end
+        final double maxExtent = _scrollController.position.maxScrollExtent;
+        final double durationSeconds = maxExtent / 30; // 30 pixels per second
+        final duration = Duration(milliseconds: (durationSeconds * 1000).round());
+
+        _scrollController.animateTo(
+          maxExtent,
+          duration: duration,
+          curve: Curves.linear,
+        ).then((_) {
+            if (!mounted || !_needScrolling) return;
+
+            // 3. Wait a bit at the end
+            _scrollTimer = Timer(const Duration(seconds: 1), () {
+                 if (!mounted || !_needScrolling) return;
+
+                 // 4. Animate back to start (or jump)
+                 // Jumping back is better for marquee usually, but animating back is smoother
+                 _scrollController.animateTo(
+                    0,
+                    duration: duration,
+                    curve: Curves.linear,
+                 ).then((_) {
+                     if (!mounted || !_needScrolling) return;
+                     // Loop
+                     _scrollLoop();
+                 });
+            });
+        });
+    });
+  }
+
+  @override
+  void dispose() {
+    _stopScrolling();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: widget.style.fontSize != null ? widget.style.fontSize! * 1.5 : 30,
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
+        physics: const NeverScrollableScrollPhysics(), // Disable user scrolling while auto-scrolling
+        child: Text(
+          widget.text,
+          style: widget.style,
         ),
       ),
     );
