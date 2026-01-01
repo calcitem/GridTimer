@@ -1,0 +1,27 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Auto: normalize files on open",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "sleep 5 && bash .vscode/normalize_files.sh"
+            ],
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared",
+                "clear": true,
+                "showReuseMessage": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        }
+    ]
+}

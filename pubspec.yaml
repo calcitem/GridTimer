@@ -27,23 +27,23 @@ dependencies:
   # Permissions & Settings
   permission_handler: 12.0.1
   app_settings: ^7.0.0
-  
+
   # Sensors for shake and flip detection
   sensors_plus: ^7.0.0
-  
+
   # Volume button detection
   volume_controller: ^3.4.1
-  
+
   # Vibration
   vibration: ^3.1.5
-  
+
   # Home Screen Widget
   home_widget: ^0.8.1
 
   # State Management
   riverpod: ^3.1.0
   flutter_riverpod: ^3.1.0
-  
+
   # Error Tracking
   catcher_2: 2.1.5
   flutter_email_sender: 8.0.0
@@ -58,7 +58,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: 6.0.0
-  
+
   # Code generation
   build_runner: 2.10.4
   hive_ce_generator: 1.9.5
@@ -68,7 +68,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  
+
   # Audio assets for ringtones
   assets:
     - assets/sounds/sound.wav

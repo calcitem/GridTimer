@@ -2,13 +2,13 @@
 enum TimerStatus {
   /// Not started, remaining equals preset duration.
   idle,
-  
+
   /// Countdown in progress (calculated from endAt).
   running,
-  
+
   /// Paused, remaining is fixed.
   paused,
-  
+
   /// Time up, alarm is ringing.
   ringing,
 }
@@ -17,10 +17,10 @@ enum TimerStatus {
 enum NotificationEventType {
   /// Timer reached zero (time up).
   timeUp,
-  
+
   /// User tapped notification body or opened from full-screen.
   open,
-  
+
   /// User tapped stop action button.
   stop,
 }

@@ -99,7 +99,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
               description: 'Display notification using system DEFAULT sound (not custom)',
               onPressed: _testShowNotificationWithSystemSound,
             ),
-            
+
             // Test 3c: Open MIUI notification settings
             _buildTestButton(
               title: 'Test 3c: Open App Notification Settings',
@@ -259,21 +259,21 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
     _debugLogTest('audio_test_page.dart:_testDirectAudioPlay:entry', 'Test 1 started', {
       'playerState': _testPlayer.state.toString(),
     }, 'C');
-    
+
     try {
       await _testPlayer.stop();
-      
+
       _debugLogTest('audio_test_page.dart:_testDirectAudioPlay:beforePlay', 'About to play', {
         'assetPath': 'sounds/sound.wav',
         'playerState': _testPlayer.state.toString(),
       }, 'C');
-      
+
       await _testPlayer.play(AssetSource('sounds/sound.wav'));
-      
+
       _debugLogTest('audio_test_page.dart:_testDirectAudioPlay:afterPlay', 'Play command sent', {
         'playerState': _testPlayer.state.toString(),
       }, 'C');
-      
+
       _addLog('[Test 1] ✅ Playback command sent');
       _addLog('[Test 1] Please confirm if you hear sound');
     } catch (e, stackTrace) {
@@ -293,7 +293,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       await audioService.playLoop(soundKey: 'default', volume: 1.0);
       _addLog('[Test 2] ✅ AudioService.playLoop called');
       _addLog('[Test 2] Please confirm if you hear sound (should loop)');
-      
+
       // Stop after 5 seconds
       Future.delayed(const Duration(seconds: 5), () async {
         await audioService.stop();
@@ -311,7 +311,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       'platform': Platform.operatingSystem,
       'platformVersion': Platform.operatingSystemVersion,
     }, 'A,B');
-    
+
     try {
       // Get notification channel info before showing notification
       try {
@@ -347,10 +347,10 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
           'error': e.toString(),
         }, 'F');
       }
-      
+
       final notificationService = ref.read(notificationServiceProvider);
       final (grid, _) = ref.read(timerServiceProvider).getSnapshot();
-      
+
       final testSession = TimerSession(
         timerId: 'test:0',
         modeId: 'default',
@@ -358,22 +358,22 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
         status: TimerStatus.ringing,
         lastUpdatedEpochMs: DateTime.now().millisecondsSinceEpoch,
       );
-      
+
       final testConfig = grid.slots[0];
-      
+
       _debugLogTest('audio_test_page.dart:_testShowNotification:beforeShow', 'Calling showTimeUpNow', {
         'soundKey': testConfig.soundKey,
         'slotIndex': testSession.slotIndex,
       }, 'A,B');
-      
+
       await notificationService.showTimeUpNow(
         session: testSession,
         config: testConfig,
         playSound: true,
       );
-      
+
       _debugLogTest('audio_test_page.dart:_testShowNotification:afterShow', 'showTimeUpNow completed', {}, 'A');
-      
+
       _addLog('[Test 3] ✅ Immediate notification displayed');
       _addLog('[Test 3] Please check:');
       _addLog('  - Do you see the notification?');
@@ -392,21 +392,21 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
   Future<void> _openAppNotificationSettings() async {
     _addLog('[Test 3c] Opening app notification settings...');
     _debugLogTest('audio_test_page.dart:_openAppNotificationSettings:entry', 'Opening notification settings', {}, 'K');
-    
+
     try {
       // Try to open the notification channel settings directly
       await _systemSettingsChannel.invokeMethod<void>(
         'openNotificationChannelSettings',
         {'channelId': 'gt.alarm.timeup.default.v2'},
       );
-      
+
       _addLog('[Test 3c] ✅ Settings opened');
       _addLog('[Test 3c] 📋 MIUI Users: Please check the following:');
       _addLog('  1. Make sure "Timer Alarm" channel is enabled');
       _addLog('  2. Check if sound is set (not "None")');
       _addLog('  3. Check "Allow sound" or similar option');
       _addLog('  4. Return and run Test 3 again');
-      
+
       _debugLogTest('audio_test_page.dart:_openAppNotificationSettings:success', 'Settings opened', {}, 'K');
     } catch (e) {
       _addLog('[Test 3c] ❌ Error: $e');
@@ -422,14 +422,14 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
   Future<void> _testShowNotificationWithSystemSound() async {
     _addLog('[Test 3b] Testing notification with SYSTEM DEFAULT sound');
     _debugLogTest('audio_test_page.dart:_testShowNotificationWithSystemSound:entry', 'Test 3b started', {}, 'I,J');
-    
+
     try {
       // Import and use flutter_local_notifications directly
       final FlutterLocalNotificationsPlugin plugin = FlutterLocalNotificationsPlugin();
-      
+
       // Create a test channel with system default sound (no custom sound)
       const testChannelId = 'gt.test.system_sound';
-      
+
       final androidPlugin = plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
       if (androidPlugin != null) {
         // Create channel with DEFAULT system sound (no RawResourceAndroidNotificationSound)
@@ -449,7 +449,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
           'useSystemDefaultSound': true,
         }, 'I,J');
       }
-      
+
       // Show notification using the test channel
       const androidDetails = AndroidNotificationDetails(
         testChannelId,
@@ -461,20 +461,20 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
         // No custom sound - should use system default
         enableVibration: true,
       );
-      
+
       const details = NotificationDetails(android: androidDetails);
-      
+
       await plugin.show(
         9999, // Different ID to not conflict
         'Test 3b',
         'This notification should play SYSTEM DEFAULT sound',
         details,
       );
-      
+
       _addLog('[Test 3b] ✅ Notification shown with system default sound');
       _addLog('[Test 3b] Do you hear the system notification sound?');
       _debugLogTest('audio_test_page.dart:_testShowNotificationWithSystemSound:success', 'Test notification shown', {}, 'I,J');
-      
+
     } catch (e, stackTrace) {
       _addLog('[Test 3b] ❌ Error: $e');
       _debugLogTest('audio_test_page.dart:_testShowNotificationWithSystemSound:error', 'Test 3b error', {
@@ -644,21 +644,21 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       'platform': Platform.operatingSystem,
       'platformVersion': Platform.operatingSystemVersion,
     }, 'A,B,D,E');
-    
+
     try {
       final timerService = ref.read(timerServiceProvider);
       final audioService = ref.read(audioServiceProvider);
       final settings = ref.read(appSettingsProvider).value;
-      
+
       _debugLogTest('audio_test_page.dart:_testScheduleNotification:beforeStart', 'Starting timer', {
         'audioPlaybackMode': settings?.audioPlaybackMode.toString() ?? 'null',
       }, 'A');
-      
+
       // Start a real 10-second timer (slot 0 is 10 seconds)
       await timerService.start(modeId: 'default', slotIndex: 0);
-      
+
       _debugLogTest('audio_test_page.dart:_testScheduleNotification:timerStarted', 'Timer started', {}, 'A');
-      
+
       _addLog('[Test 4] ✅ 10-second timer started');
       _addLog('[Test 4] 💡 This is a real timer that will:');
       _addLog('  - Use your configured playback mode: ${_getModeDescription(settings)}');
@@ -666,17 +666,17 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       _addLog('  - Show notification when locked');
       _addLog('  - Stop by tapping notification or screen');
       _addLog('[Test 4] You can lock screen now, wait 10 seconds...');
-      
+
       // Wait for timer to complete (10 seconds + 1 second buffer)
       await Future.delayed(const Duration(seconds: 11));
-      
+
       // Check if alarm is ringing
       final isPlaying = await audioService.isPlaying();
-      
+
       _debugLogTest('audio_test_page.dart:_testScheduleNotification:afterDelay', 'Timer completed, checking audio', {
         'isPlaying': isPlaying,
       }, 'C,D');
-      
+
       if (isPlaying) {
         _addLog('[Test 4] ✅ Audio is playing');
         _addLog('[Test 4] Please tap screen or notification Stop button to stop');
@@ -691,7 +691,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       _addLog('[Test 4] ❌ Error: $e');
     }
   }
-  
+
   String _getModeDescription(dynamic settings) {
     if (settings == null) return 'Default (loop indefinitely)';
     final mode = settings.audioPlaybackMode;

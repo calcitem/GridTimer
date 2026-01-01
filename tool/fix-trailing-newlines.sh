@@ -56,21 +56,21 @@ echo "Scanning text files..."
 # Find and process files
 while IFS= read -r -d '' file; do
     total_files=$((total_files + 1))
-    
+
     # Skip empty files
     if [ ! -s "$file" ]; then
         continue
     fi
-    
+
     # Read last character of file
     last_char=$(tail -c 1 "$file")
-    
+
     # Create temporary file
     temp_file=$(mktemp)
-    
+
     # Remove all trailing empty lines
     sed -e :a -e '/^\s*$/d;N;ba' "$file" > "$temp_file"
-    
+
     # Add one newline to the end (if file is not empty)
     if [ -s "$temp_file" ]; then
         # Check if newline needs to be added
@@ -78,7 +78,7 @@ while IFS= read -r -d '' file; do
             echo "" >> "$temp_file"
         fi
     fi
-    
+
     # Check if file was modified
     if ! cmp -s "$file" "$temp_file"; then
         mv "$temp_file" "$file"
@@ -87,7 +87,7 @@ while IFS= read -r -d '' file; do
     else
         rm "$temp_file"
     fi
-    
+
 done < <(find . "${EXCLUDE_ARGS[@]}" \( "${EXTENSION_ARGS[@]}" \) -type f -print0)
 
 echo ""

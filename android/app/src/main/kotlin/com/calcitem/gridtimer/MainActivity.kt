@@ -37,7 +37,7 @@ class MainActivity: FlutterActivity() {
                     try {
                         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                         val channel = notificationManager.getNotificationChannel(channelId)
-                        
+
                         val info = HashMap<String, Any?>()
                         info["areNotificationsEnabled"] = notificationManager.areNotificationsEnabled()
                         info["interruptionFilter"] = notificationManager.currentInterruptionFilter
@@ -59,7 +59,7 @@ class MainActivity: FlutterActivity() {
                         } else {
                             info["exists"] = false
                         }
-                        
+
                         // Also get audio volume info
                         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
                         info["alarmVolume"] = audioManager.getStreamVolume(AudioManager.STREAM_ALARM)
@@ -70,7 +70,7 @@ class MainActivity: FlutterActivity() {
                         info["androidSdk"] = Build.VERSION.SDK_INT
                         info["manufacturer"] = Build.MANUFACTURER
                         info["model"] = Build.MODEL
-                        
+
                         result.success(info)
                     } catch (e: Exception) {
                         result.error("get_channel_failed", e.toString(), null)

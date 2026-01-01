@@ -133,7 +133,7 @@ class _GridDurationsSettingsPageState
   Future<void> _resetToDefault() async {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return;
-    
+
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
