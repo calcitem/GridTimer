@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../core/config/environment_config.dart';
 import '../../l10n/app_localizations.dart';
 
 /// Privacy policy dialog shown on first app launch for Chinese locale users.
@@ -28,6 +29,12 @@ class PrivacyPolicyDialog extends StatelessWidget {
 
   /// Launch the privacy policy URL in browser.
   Future<void> _launchPrivacyPolicy() async {
+    // Block URL launching in test environment to prevent interference with Monkey testing
+    if (EnvironmentConfig.test) {
+      debugPrint('URL launch blocked in test environment: $_privacyPolicyUrlZh');
+      return;
+    }
+
     final uri = Uri.parse(_privacyPolicyUrlZh);
     // Try to launch URL directly without canLaunchUrl check
     // canLaunchUrl can return false on some devices even when URL can be launched

@@ -96,6 +96,39 @@ flutter test
 ./tool/gen.sh
 ```
 
+### Monkey Testing
+
+Monkey testing is a stress testing technique that generates random user events to test the app's robustness.
+
+**Build Test Version:**
+
+```bash
+# Build APK with test environment configuration
+flutter build apk --dart-define=test=true
+
+# Install on device
+adb install build/app/outputs/flutter-apk/app-release.apk
+```
+
+**Run Monkey Test:**
+
+```bash
+# Start monkey testing (generates 10 million random events)
+./tests/monkey/monkey.sh
+
+# Stop monkey testing
+./tests/monkey/stop-monkey.sh
+```
+
+**Important Notes:**
+
+- Test environment (`--dart-define=test=true`) disables:
+  - URL launching (privacy policy links)
+  - System settings opening (notification, alarm, battery settings)
+  - App exit functionality
+- These restrictions prevent monkey tests from leaving the app or opening external activities
+- Monkey test parameters focus on touch and motion events with 500ms throttle
+
 ### Permissions
 
 The app requires the following permissions for reliable operation:

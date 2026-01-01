@@ -623,6 +623,12 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   /// Chinese locale: https://calcitem.github.io/GridTimer/privacy-policy_zh
   /// Non-Chinese: https://calcitem.github.io/GridTimer/privacy-policy
   Future<void> _openPrivacyPolicy(Locale? locale) async {
+    // Block URL launching in test environment to prevent interference with Monkey testing
+    if (EnvironmentConfig.test) {
+      debugPrint('URL launch blocked in test environment');
+      return;
+    }
+
     final isChinese = _isChineseLocale(locale);
     final url = isChinese
         ? 'https://calcitem.github.io/GridTimer/privacy-policy_zh'
@@ -835,6 +841,12 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   /// Exit the application.
   void _exitApp() {
+    // Block app exit in test environment to prevent interference with Monkey testing
+    if (EnvironmentConfig.test) {
+      debugPrint('App exit blocked in test environment');
+      return;
+    }
+
     if (kIsWeb) {
       // Web platform cannot exit
       return;
