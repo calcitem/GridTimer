@@ -128,9 +128,9 @@
     "description": "Label for minutes"
   },
 
-  "remainingSeconds": "seconds left",
+  "remainingSeconds": "time left",
   "@remainingSeconds": {
-    "description": "Label for remaining seconds"
+    "description": "Label for remaining time"
   },
 
   "pausing": "Paused",
