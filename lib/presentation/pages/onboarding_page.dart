@@ -138,18 +138,21 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Dots indicator
-          Row(
-            children: List.generate(
-              totalPages,
-              (index) => Container(
-                margin: const EdgeInsets.only(right: 8),
-                width: 8,
-                height: 8,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _currentPage == index
-                      ? Theme.of(context).primaryColor
-                      : Colors.grey.shade300,
+          Semantics(
+            label: 'Page ${_currentPage + 1} of $totalPages',
+            child: Row(
+              children: List.generate(
+                totalPages,
+                (index) => Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentPage == index
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey.shade300,
+                  ),
                 ),
               ),
             ),

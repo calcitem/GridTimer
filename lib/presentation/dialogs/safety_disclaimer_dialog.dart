@@ -34,17 +34,20 @@ class SafetyDisclaimerDialog extends StatelessWidget {
     }
 
     return AlertDialog(
-      title: Row(
-        children: [
-          const Icon(Icons.info_outline, color: Colors.orange, size: 28),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              l10n.safetyDisclaimerTitle,
-              style: const TextStyle(fontSize: 20),
+      title: Semantics(
+        header: true,
+        child: Row(
+          children: [
+            const Icon(Icons.info_outline, color: Colors.orange, size: 28),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                l10n.safetyDisclaimerTitle,
+                style: const TextStyle(fontSize: 20),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       content: SingleChildScrollView(
         child: Column(

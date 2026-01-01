@@ -77,42 +77,48 @@ class AudioPlaybackSettingsPage extends ConsumerWidget {
             // Mode Selection Radio List
             ...AudioPlaybackMode.values.map((mode) {
               final isSelected = settings.audioPlaybackMode == mode;
-              return InkWell(
-                onTap: () {
-                  ref
-                      .read(appSettingsProvider.notifier)
-                      .updateAudioPlaybackMode(mode);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 12.0,
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        isSelected
-                            ? Icons.radio_button_checked
-                            : Icons.radio_button_unchecked,
-                        color: isSelected
-                            ? Theme.of(context).colorScheme.primary
-                            : null,
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Text(
-                          _getModeDescription(mode, l10n),
-                          style: TextStyle(
-                            fontWeight: isSelected
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            color: isSelected
-                                ? Theme.of(context).colorScheme.primary
-                                : null,
+              return Semantics(
+                label: _getModeDescription(mode, l10n),
+                selected: isSelected,
+                inMutuallyExclusiveGroup: true,
+                button: true,
+                child: InkWell(
+                  onTap: () {
+                    ref
+                        .read(appSettingsProvider.notifier)
+                        .updateAudioPlaybackMode(mode);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 12.0,
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          isSelected
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_unchecked,
+                          color: isSelected
+                              ? Theme.of(context).colorScheme.primary
+                              : null,
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Text(
+                            _getModeDescription(mode, l10n),
+                            style: TextStyle(
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                              color: isSelected
+                                  ? Theme.of(context).colorScheme.primary
+                                  : null,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -147,17 +153,24 @@ class AudioPlaybackSettingsPage extends ConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Slider(
-                      value: settings.audioLoopDurationMinutes.toDouble(),
-                      min: 1,
-                      max: 60,
-                      divisions: 59,
-                      label: '${settings.audioLoopDurationMinutes} ${l10n.minutesUnit}',
-                      onChanged: (value) {
-                        ref
-                            .read(appSettingsProvider.notifier)
-                            .updateAudioLoopDuration(value.round());
-                      },
+                    Semantics(
+                      label: l10n.loopDuration,
+                      value: '${settings.audioLoopDurationMinutes} ${l10n.minutesUnit}',
+                      increasedValue: '${settings.audioLoopDurationMinutes + 1} ${l10n.minutesUnit}',
+                      decreasedValue: '${settings.audioLoopDurationMinutes - 1} ${l10n.minutesUnit}',
+                      slider: true,
+                      child: Slider(
+                        value: settings.audioLoopDurationMinutes.toDouble(),
+                        min: 1,
+                        max: 60,
+                        divisions: 59,
+                        label: '${settings.audioLoopDurationMinutes} ${l10n.minutesUnit}',
+                        onChanged: (value) {
+                          ref
+                              .read(appSettingsProvider.notifier)
+                              .updateAudioLoopDuration(value.round());
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -190,17 +203,24 @@ class AudioPlaybackSettingsPage extends ConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Slider(
-                      value: settings.audioIntervalPauseMinutes.toDouble(),
-                      min: 1,
-                      max: 30,
-                      divisions: 29,
-                      label: '${settings.audioIntervalPauseMinutes} ${l10n.minutesUnit}',
-                      onChanged: (value) {
-                        ref
-                            .read(appSettingsProvider.notifier)
-                            .updateAudioIntervalPause(value.round());
-                      },
+                    Semantics(
+                      label: l10n.intervalPause,
+                      value: '${settings.audioIntervalPauseMinutes} ${l10n.minutesUnit}',
+                      increasedValue: '${settings.audioIntervalPauseMinutes + 1} ${l10n.minutesUnit}',
+                      decreasedValue: '${settings.audioIntervalPauseMinutes - 1} ${l10n.minutesUnit}',
+                      slider: true,
+                      child: Slider(
+                        value: settings.audioIntervalPauseMinutes.toDouble(),
+                        min: 1,
+                        max: 30,
+                        divisions: 29,
+                        label: '${settings.audioIntervalPauseMinutes} ${l10n.minutesUnit}',
+                        onChanged: (value) {
+                          ref
+                              .read(appSettingsProvider.notifier)
+                              .updateAudioIntervalPause(value.round());
+                        },
+                      ),
                     ),
                   ],
                 ),

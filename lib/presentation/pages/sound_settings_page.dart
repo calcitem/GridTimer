@@ -138,17 +138,24 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Slider(
-                    value: settings.soundVolume,
-                    min: 0.0,
-                    max: 1.0,
-                    divisions: 100,
-                    label: '${(settings.soundVolume * 100).round()}%',
-                    onChanged: (value) {
-                      ref
-                          .read(appSettingsProvider.notifier)
-                          .updateSoundVolume(value);
-                    },
+                  Semantics(
+                    label: l10n.volume,
+                    value: '${(settings.soundVolume * 100).round()}%',
+                    increasedValue: '${((settings.soundVolume * 100).round() + 1)}%',
+                    decreasedValue: '${((settings.soundVolume * 100).round() - 1)}%',
+                    slider: true,
+                    child: Slider(
+                      value: settings.soundVolume,
+                      min: 0.0,
+                      max: 1.0,
+                      divisions: 100,
+                      label: '${(settings.soundVolume * 100).round()}%',
+                      onChanged: (value) {
+                        ref
+                            .read(appSettingsProvider.notifier)
+                            .updateSoundVolume(value);
+                      },
+                    ),
                   ),
                   Text(
                     l10n.volumeDesc,

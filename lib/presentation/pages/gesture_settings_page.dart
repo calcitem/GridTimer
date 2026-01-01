@@ -211,17 +211,24 @@ class GestureSettingsPage extends ConsumerWidget {
                         ),
                         Expanded(
                           flex: 2,
-                          child: Slider(
-                            value: settings.shakeSensitivity,
-                            min: 1.0,
-                            max: 5.0,
-                            divisions: 8,
-                            label: settings.shakeSensitivity.toStringAsFixed(1),
-                            onChanged: (value) {
-                              ref
-                                  .read(appSettingsProvider.notifier)
-                                  .updateShakeSensitivity(value);
-                            },
+                          child: Semantics(
+                            label: l10n.shakeSensitivity,
+                            value: settings.shakeSensitivity.toStringAsFixed(1),
+                            increasedValue: (settings.shakeSensitivity + 0.5).toStringAsFixed(1),
+                            decreasedValue: (settings.shakeSensitivity - 0.5).toStringAsFixed(1),
+                            slider: true,
+                            child: Slider(
+                              value: settings.shakeSensitivity,
+                              min: 1.0,
+                              max: 5.0,
+                              divisions: 8,
+                              label: settings.shakeSensitivity.toStringAsFixed(1),
+                              onChanged: (value) {
+                                ref
+                                    .read(appSettingsProvider.notifier)
+                                    .updateShakeSensitivity(value);
+                              },
+                            ),
                           ),
                         ),
                       ],
