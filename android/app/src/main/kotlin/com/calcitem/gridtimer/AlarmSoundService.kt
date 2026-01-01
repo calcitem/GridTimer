@@ -9,8 +9,12 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.media.Ringtone
+import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.os.IBinder
 import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
@@ -55,6 +59,9 @@ class AlarmSoundService : Service() {
     }
 
     private var mediaPlayer: MediaPlayer? = null
+    private var ringtone: Ringtone? = null
+    private val mainHandler: Handler = Handler(Looper.getMainLooper())
+    private var ringtoneMonitor: Runnable? = null
     private var focusGranted: Boolean = false
     private var audioFocusRequest: Any? = null
     private var audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener? = null
@@ -215,6 +222,7 @@ class AlarmSoundService : Service() {
         // This service exists to provide reliable alarm playback. Short system sounds
         // (e.g., chat notifications) can steal audio focus transiently; we should resume.
         val mp = mediaPlayer
+        val rt = ringtone
         when (focusChange) {
             AudioManager.AUDIOFOCUS_GAIN -> {
                 if (ducked) {
@@ -223,15 +231,24 @@ class AlarmSoundService : Service() {
                     } catch (_: Exception) {
                         // Ignore.
                     }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        try {
+                            rt?.setVolume(1.0f)
+                        } catch (_: Exception) {
+                            // Ignore.
+                        }
+                    }
                     ducked = false
                 }
                 if (resumeOnFocusGain) {
                     resumeOnFocusGain = false
                     try {
-                        if (mp == null) {
+                        if (mp == null && rt == null) {
                             startPlayback(sound = lastSound, loop = lastLoop)
-                        } else if (!mp.isPlaying) {
+                        } else if (mp != null && !mp.isPlaying) {
                             mp.start()
+                        } else if (rt != null && !rt.isPlaying) {
+                            rt.play()
                         }
                     } catch (_: Exception) {
                         // As a fallback, rebuild the player.
@@ -250,6 +267,13 @@ class AlarmSoundService : Service() {
                 } catch (_: Exception) {
                     // Ignore.
                 }
+                try {
+                    if (rt != null && rt.isPlaying) {
+                        rt.stop()
+                    }
+                } catch (_: Exception) {
+                    // Ignore.
+                }
             }
 
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
@@ -259,6 +283,13 @@ class AlarmSoundService : Service() {
                     mp?.setVolume(0.2f, 0.2f)
                 } catch (_: Exception) {
                     // Ignore.
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    try {
+                        rt?.setVolume(0.2f)
+                    } catch (_: Exception) {
+                        // Ignore.
+                    }
                 }
             }
 
@@ -272,6 +303,13 @@ class AlarmSoundService : Service() {
                 } catch (_: Exception) {
                     // Ignore.
                 }
+                try {
+                    if (rt != null && rt.isPlaying) {
+                        rt.stop()
+                    }
+                } catch (_: Exception) {
+                    // Ignore.
+                }
             }
         }
     }
@@ -279,65 +317,181 @@ class AlarmSoundService : Service() {
     private fun startPlayback(sound: String, loop: Boolean) {
         stopPlayback()
 
-        try {
+        val isRaw =
+            sound == "raw" ||
+                (sound.startsWith("android.resource://") && sound.endsWith("/raw/sound"))
+
+        fun tryStartMediaPlayer(configureDataSource: (MediaPlayer) -> Unit, attempt: String): Boolean {
             val mp = MediaPlayer()
-            mp.setAudioAttributes(audioAttrs)
-            val isRaw =
-                sound == "raw" ||
-                    (sound.startsWith("android.resource://") && sound.endsWith("/raw/sound"))
-
-            if (isRaw) {
-                val afd = resources.openRawResourceFd(R.raw.sound)
-                mp.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-                afd.close()
-            } else {
-                val uri = Uri.parse(sound)
-                mp.setDataSource(this, uri)
-            }
-
-            mp.isLooping = loop
-            if (!loop) {
-                mp.setOnCompletionListener {
+            return try {
+                mp.setAudioAttributes(audioAttrs)
+                configureDataSource(mp)
+                mp.isLooping = loop
+                if (!loop) {
+                    mp.setOnCompletionListener {
+                        stopSelf()
+                    }
+                }
+                mp.setOnErrorListener { _, _, _ ->
                     stopSelf()
+                    true
                 }
-            }
-            mp.setOnErrorListener { _, _, _ ->
-                stopSelf()
+                mp.prepare()
+                mp.start()
+                mediaPlayer = mp
+                debugLog(
+                    location = "AlarmSoundService:startPlayback",
+                    message = "Playback started",
+                    data = mapOf(
+                        "sound" to sound,
+                        "loop" to loop,
+                        "engine" to "MediaPlayer",
+                        "attempt" to attempt
+                    ),
+                    hypothesisId = "SVC"
+                )
                 true
-            }
-            mp.prepare()
-            mp.start()
-            mediaPlayer = mp
-
-            debugLog(
-                location = "AlarmSoundService:startPlayback",
-                message = "Playback started",
-                data = mapOf("sound" to sound, "loop" to loop),
-                hypothesisId = "SVC"
-            )
-        } catch (e: Exception) {
-            debugLog(
-                location = "AlarmSoundService:startPlayback",
-                message = "Playback failed",
-                data = mapOf("sound" to sound, "error" to e.toString()),
-                hypothesisId = "SVC"
-            )
-
-            // Best-effort fallback: if a custom Uri fails to play, fall back to bundled raw sound.
-            if (sound != "raw") {
+            } catch (e: Exception) {
                 try {
-                    startPlayback(sound = "raw", loop = loop)
-                    return
+                    mp.release()
                 } catch (_: Exception) {
-                    // Ignore and stop.
+                    // Ignore.
                 }
+                debugLog(
+                    location = "AlarmSoundService:startPlayback",
+                    message = "MediaPlayer playback failed",
+                    data = mapOf(
+                        "sound" to sound,
+                        "loop" to loop,
+                        "attempt" to attempt,
+                        "error" to e.toString()
+                    ),
+                    hypothesisId = "SVC"
+                )
+                false
             }
+        }
 
+        fun tryStartRingtone(uri: Uri): Boolean {
+            return try {
+                val rt = RingtoneManager.getRingtone(this, uri)
+                if (rt == null) {
+                    debugLog(
+                        location = "AlarmSoundService:startPlayback",
+                        message = "Ringtone is null",
+                        data = mapOf("sound" to sound, "uri" to uri.toString()),
+                        hypothesisId = "SVC"
+                    )
+                    false
+                } else {
+                    try {
+                        rt.setAudioAttributes(audioAttrs)
+                    } catch (_: Exception) {
+                        // Ignore.
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        try {
+                            rt.isLooping = loop
+                        } catch (_: Exception) {
+                            // Ignore.
+                        }
+                    }
+                    rt.play()
+                    ringtone = rt
+                    startRingtoneMonitor(loop = loop)
+                    debugLog(
+                        location = "AlarmSoundService:startPlayback",
+                        message = "Playback started",
+                        data = mapOf(
+                            "sound" to sound,
+                            "loop" to loop,
+                            "engine" to "Ringtone",
+                            "uri" to uri.toString()
+                        ),
+                        hypothesisId = "SVC"
+                    )
+                    true
+                }
+            } catch (e: Exception) {
+                debugLog(
+                    location = "AlarmSoundService:startPlayback",
+                    message = "Ringtone playback failed",
+                    data = mapOf(
+                        "sound" to sound,
+                        "loop" to loop,
+                        "error" to e.toString()
+                    ),
+                    hypothesisId = "SVC"
+                )
+                false
+            }
+        }
+
+        // Attempt 1: bundled raw alarm sound.
+        if (isRaw) {
+            val started = tryStartMediaPlayer(
+                configureDataSource = { mp ->
+                    val afd = resources.openRawResourceFd(R.raw.sound)
+                    mp.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+                    afd.close()
+                },
+                attempt = "raw_resource"
+            )
+            if (!started) {
+                stopSelf()
+            }
+            return
+        }
+
+        // Non-raw: channel sound may be a content:// or file:// Uri depending on ROM/version.
+        val uri = Uri.parse(sound)
+
+        // Attempt 2: MediaPlayer with Context + Uri.
+        if (tryStartMediaPlayer(configureDataSource = { mp -> mp.setDataSource(this, uri) }, attempt = "context_uri")) {
+            return
+        }
+
+        // Attempt 3: MediaPlayer with plain file path (some ROMs may persist the sound as a path-like Uri).
+        val path: String? =
+            when (uri.scheme) {
+                null -> sound
+                "file" -> uri.path
+                else -> null
+            }
+        if (!path.isNullOrBlank()) {
+            if (tryStartMediaPlayer(configureDataSource = { mp -> mp.setDataSource(path) }, attempt = "file_path")) {
+                return
+            }
+        }
+
+        // Attempt 4: Ringtone fallback (often more compatible with notification channel sound Uris).
+        if (tryStartRingtone(uri)) {
+            return
+        }
+
+        // Best-effort fallback: if a custom sound fails to play, fall back to bundled raw sound.
+        try {
+            startPlayback(sound = "raw", loop = loop)
+        } catch (_: Exception) {
             stopSelf()
         }
     }
 
     private fun stopPlayback() {
+        ringtoneMonitor?.let {
+            try {
+                mainHandler.removeCallbacks(it)
+            } catch (_: Exception) {
+                // Ignore.
+            }
+        }
+        ringtoneMonitor = null
+        try {
+            ringtone?.stop()
+        } catch (_: Exception) {
+            // Ignore.
+        }
+        ringtone = null
         try {
             mediaPlayer?.stop()
         } catch (_: Exception) {
@@ -349,6 +503,52 @@ class AlarmSoundService : Service() {
             // Ignore.
         }
         mediaPlayer = null
+    }
+
+    private fun startRingtoneMonitor(loop: Boolean) {
+        ringtoneMonitor?.let {
+            try {
+                mainHandler.removeCallbacks(it)
+            } catch (_: Exception) {
+                // Ignore.
+            }
+        }
+        ringtoneMonitor = null
+
+        val runnable = object : Runnable {
+            override fun run() {
+                val rt = ringtone
+                if (rt == null) return
+                val isPlaying = try {
+                    rt.isPlaying
+                } catch (_: Exception) {
+                    false
+                }
+
+                if (!isPlaying) {
+                    if (loop && Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+                        // Best-effort manual looping on older Android versions without setLooping().
+                        try {
+                            rt.play()
+                        } catch (_: Exception) {
+                            stopSelf()
+                            return
+                        }
+                        mainHandler.postDelayed(this, 500)
+                        return
+                    }
+
+                    // No reliable completion callback for Ringtone. Stop the service when playback ends.
+                    stopSelf()
+                    return
+                }
+
+                mainHandler.postDelayed(this, 500)
+            }
+        }
+
+        ringtoneMonitor = runnable
+        mainHandler.postDelayed(runnable, 500)
     }
 
     override fun onDestroy() {
