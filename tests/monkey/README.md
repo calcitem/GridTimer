@@ -105,4 +105,3 @@ In test mode:
 
 - [CONTRIBUTING.md](../../CONTRIBUTING.md) - Development guidelines
 - [EnvironmentConfig](../../lib/core/config/environment_config.dart) - Test mode configuration
-
