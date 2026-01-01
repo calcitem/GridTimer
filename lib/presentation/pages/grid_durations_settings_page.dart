@@ -138,7 +138,9 @@ class _GridDurationsSettingsPageState
       context: context,
       builder: (context) => AlertDialog(
         title: Text(l10n.resetToDefault),
-        content: Text(l10n.gridDurationsResetConfirm),
+        content: SingleChildScrollView(
+          child: Text(l10n.gridDurationsResetConfirm),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
