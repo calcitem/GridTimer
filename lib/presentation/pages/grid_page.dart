@@ -53,6 +53,11 @@ class _GridPageState extends ConsumerState<GridPage> {
 
   /// Check if disclaimers need to be shown and display them if necessary.
   ///
+  /// NOTE: For new users, privacy policy is shown in OnboardingPage before
+  /// the wizard starts. This check here serves as a fallback for:
+  /// - Users who completed onboarding before privacy policy was added
+  /// - Direct navigation to GridPage (error recovery scenarios)
+  ///
   /// For Chinese locale users:
   /// 1. Show privacy policy dialog first (if not yet accepted)
   /// 2. Then show safety disclaimer (if not yet accepted)
@@ -217,18 +222,39 @@ class _GridPageState extends ConsumerState<GridPage> {
       crossAxisCount = 2;
     }
 
-    return GridView.builder(
-      padding: const EdgeInsets.all(12), // Increased padding per requirements
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        childAspectRatio: 1.0, // Square cells
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Calculate number of rows based on crossAxisCount
+          final rowCount = (9 / crossAxisCount).ceil();
+          
+          return Column(
+            children: List.generate(rowCount, (rowIndex) {
+              return Expanded(
+                child: Row(
+                  children: List.generate(crossAxisCount, (colIndex) {
+                    final index = rowIndex * crossAxisCount + colIndex;
+                    if (index >= 9) {
+                      // Empty placeholder for incomplete last row
+                      return const Expanded(child: SizedBox.shrink());
+                    }
+                    return Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          right: colIndex < crossAxisCount - 1 ? 12 : 0,
+                          bottom: rowIndex < rowCount - 1 ? 12 : 0,
+                        ),
+                        child: _buildCell(index, grid, sessions),
+                      ),
+                    );
+                  }),
+                ),
+              );
+            }),
+          );
+        },
       ),
-      itemCount: 9,
-      itemBuilder: (context, index) {
-        return _buildCell(index, grid, sessions);
-      },
     );
   }
 

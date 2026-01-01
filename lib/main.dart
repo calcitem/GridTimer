@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:catcher_2/catcher_2.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +12,6 @@ import 'app/locale_provider.dart';
 import 'app/providers.dart';
 import 'core/config/constants.dart';
 import 'core/config/environment_config.dart';
-import 'core/theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
 import 'presentation/pages/grid_page.dart';
 import 'presentation/pages/onboarding_page.dart';

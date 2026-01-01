@@ -76,7 +76,7 @@ class SoftDarkTheme extends AppTheme {
     // Colored backgrounds for states (Standard Mode)
     surfaceIdle: Color(0xFF2C2C2C),
     surfaceRunning: Color(0xFF1B5E20), // Dark Green
-    surfacePaused: Color(0xFFBF360C), // Deep Orange
+    surfacePaused: Color(0xFF8A2A0A), // Deep Orange (higher contrast)
     surfaceRinging: Color(0xFFB71C1C), // Deep Red
 
     border: Color(0xFF3A3A3A),
@@ -92,7 +92,7 @@ class SoftDarkTheme extends AppTheme {
   );
 
   @override
-  ThemeData get themeData => _buildThemeData(tokens);
+  ThemeData get themeData => _buildThemeData(tokens, borderWidth: 1);
 }
 
 /// Theme B: High Contrast Mode.
@@ -129,40 +129,151 @@ class HighContrastTheme extends AppTheme {
   );
 
   @override
-  ThemeData get themeData => _buildThemeData(tokens);
+  ThemeData get themeData => _buildThemeData(tokens, borderWidth: 2);
 }
 
-ThemeData _buildThemeData(AppThemeTokens tokens) {
+ThemeData _buildThemeData(AppThemeTokens tokens, {required double borderWidth}) {
+  final secondaryText = tokens.textPrimary.withValues(alpha: 0.7);
+
   return ThemeData(
     brightness: Brightness.dark,
+    useMaterial3: true,
     scaffoldBackgroundColor: tokens.bg,
     colorScheme: ColorScheme.dark(
       surface: tokens.surface,
       onSurface: tokens.textPrimary,
       primary: tokens.accent,
       onPrimary: tokens.bg,
+      onSecondary: tokens.bg,
       error: tokens.danger,
       onError: tokens.textPrimary,
       secondary: tokens.textSecondary,
+    ),
+    appBarTheme: AppBarTheme(
+      backgroundColor: tokens.bg,
+      foregroundColor: tokens.textPrimary,
+      elevation: 0,
+      centerTitle: true,
+      titleTextStyle: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.w900,
+        color: tokens.textPrimary,
+        height: 1.1,
+      ),
+      iconTheme: IconThemeData(color: tokens.textPrimary, size: 28),
     ),
     cardTheme: CardThemeData(
       color: tokens.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: tokens.border, width: 1),
+        side: BorderSide(color: tokens.border, width: borderWidth),
       ),
     ),
-    iconTheme: IconThemeData(color: tokens.icon),
-    dividerTheme: DividerThemeData(color: tokens.divider),
+    iconTheme: IconThemeData(color: tokens.icon, size: 28),
+    dividerTheme: DividerThemeData(color: tokens.divider, thickness: borderWidth),
+    listTileTheme: ListTileThemeData(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      titleTextStyle: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+        color: tokens.textPrimary,
+        height: 1.2,
+      ),
+      subtitleTextStyle: TextStyle(
+        fontSize: 18,
+        color: secondaryText,
+        height: 1.35,
+      ),
+      iconColor: tokens.icon,
+      tileColor: Colors.transparent,
+    ),
+    textTheme: TextTheme(
+      bodyLarge: TextStyle(fontSize: 20, color: tokens.textPrimary, height: 1.3),
+      bodyMedium: TextStyle(
+        fontSize: 18,
+        color: tokens.textPrimary,
+        height: 1.3,
+      ),
+      bodySmall: TextStyle(fontSize: 16, color: secondaryText, height: 1.3),
+      titleMedium: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+        color: tokens.textPrimary,
+        height: 1.2,
+      ),
+      titleSmall: TextStyle(fontSize: 18, color: secondaryText, height: 1.2),
+    ),
+    dialogTheme: DialogThemeData(
+      backgroundColor: tokens.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        side: BorderSide(color: tokens.border, width: borderWidth),
+      ),
+      titleTextStyle: TextStyle(
+        fontSize: 26,
+        fontWeight: FontWeight.w900,
+        color: tokens.textPrimary,
+        height: 1.2,
+      ),
+      contentTextStyle: TextStyle(
+        fontSize: 20,
+        color: tokens.textPrimary,
+        height: 1.35,
+      ),
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: tokens.accent,
         foregroundColor: tokens.bg,
         elevation: 0,
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: tokens.border, width: 1),
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: tokens.border, width: borderWidth),
         ),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: tokens.accent,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+    ),
+    switchTheme: SwitchThemeData(
+      trackOutlineColor: WidgetStateProperty.all(tokens.border),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return tokens.accent;
+        }
+        return tokens.surfaceDisabled;
+      }),
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return tokens.bg;
+        }
+        return tokens.textPrimary;
+      }),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: tokens.surfacePressed,
+      labelStyle: TextStyle(fontSize: 18, color: secondaryText),
+      floatingLabelStyle: TextStyle(fontSize: 20, color: tokens.accent),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: tokens.border, width: borderWidth),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: tokens.border, width: borderWidth),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: tokens.focusRing, width: borderWidth + 1),
       ),
     ),
   );

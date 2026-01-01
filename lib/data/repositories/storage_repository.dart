@@ -1,3 +1,5 @@
+import 'dart:io' show Directory;
+
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import '../../core/domain/entities/timer_grid_set.dart';
 import '../../core/domain/entities/timer_session.dart';
@@ -42,7 +44,13 @@ class StorageRepository {
 
     _initFuture = () async {
       try {
-        await Hive.initFlutter('GridTimer');
+        const isFlutterTest = bool.fromEnvironment('FLUTTER_TEST');
+        if (isFlutterTest) {
+          final dir = await Directory.systemTemp.createTemp('gridtimer_hive_');
+          Hive.init(dir.path);
+        } else {
+          await Hive.initFlutter('GridTimer');
+        }
 
         // Register adapters
         if (!Hive.isAdapterRegistered(1)) {

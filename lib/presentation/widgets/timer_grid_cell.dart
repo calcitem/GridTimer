@@ -27,6 +27,7 @@ class TimerGridCell extends ConsumerStatefulWidget {
 class _TimerGridCellState extends ConsumerState<TimerGridCell>
     with SingleTickerProviderStateMixin {
   late AnimationController _flashController;
+  bool _isFocused = false;
 
   @override
   void initState() {
@@ -63,7 +64,10 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     final l10n = l10nNullable;
 
     final isRinging = widget.session.status == TimerStatus.ringing;
-    final shouldFlash = isRinging && flashEnabled;
+    final reduceMotion =
+        MediaQuery.of(context).disableAnimations ||
+        MediaQuery.of(context).accessibleNavigation;
+    final shouldFlash = isRinging && flashEnabled && !reduceMotion;
 
     // Control flash animation based on ringing status and settings
     if (shouldFlash && !_flashController.isAnimating) {
@@ -93,53 +97,67 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       hint: semanticHint,
       button: true,
       enabled: true,
-      child: AnimatedBuilder(
-        animation: _flashController,
-        builder: (context, child) {
-          // If flashing, oscillate between surfaceRinging and a brighter variant/danger color
-          // We can use the controller value to interpolate manually to avoid re-creating tweens
-          final Color ringingColor = Color.lerp(
-             tokens.surfaceRinging, 
-             tokens.danger, 
-             _flashController.value
-          ) ?? tokens.surfaceRinging;
+      onTap: () => _handleTap(context, ref),
+      child: ExcludeSemantics(
+        child: AnimatedBuilder(
+          animation: _flashController,
+          builder: (context, child) {
+            // If flashing, oscillate between surfaceRinging and a brighter
+            // variant/danger color.
+            final Color ringingColor = Color.lerp(
+                  tokens.surfaceRinging,
+                  tokens.danger,
+                  _flashController.value,
+                ) ??
+                tokens.surfaceRinging;
 
-          final currentColor = shouldFlash ? ringingColor : color;
+            final currentColor = shouldFlash ? ringingColor : color;
 
-          final borderColor = isRinging
-              ? tokens.focusRing // Bright ring when ringing
-              : (widget.session.status == TimerStatus.idle
-                  ? tokens.border.withValues(alpha: 0.5)
-                  : tokens.border); 
-          
-          final double borderWidth = isRinging ? 6 : 2;
+            final idleBorderColor = tokens.border.withValues(alpha: 0.5);
+            final baseBorderColor = widget.session.status == TimerStatus.idle
+                ? idleBorderColor
+                : tokens.border;
 
-          return Material(
-            color: currentColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-              side: BorderSide(color: borderColor, width: borderWidth),
-            ),
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              onTap: () => _handleTap(context, ref),
-              // High contrast splash/ripple for clear feedback
-              splashColor: tokens.textPrimary.withValues(alpha: 0.2),
-              highlightColor: tokens.textPrimary.withValues(alpha: 0.1),
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: _buildContent(
-                  context,
-                  l10n,
-                  presetDurationMs,
-                  remainingMs,
-                  showMinutesSeconds,
-                  tokens,
+            final borderColor = isRinging
+                ? tokens.focusRing
+                : (_isFocused ? tokens.focusRing : baseBorderColor);
+
+            final double borderWidth = isRinging
+                ? 6
+                : (_isFocused ? 4 : 2);
+
+            return Material(
+              color: currentColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: BorderSide(color: borderColor, width: borderWidth),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: () => _handleTap(context, ref),
+                onFocusChange: (hasFocus) {
+                  if (hasFocus != _isFocused) {
+                    setState(() => _isFocused = hasFocus);
+                  }
+                },
+                // High contrast splash/ripple for clear feedback
+                splashColor: tokens.textPrimary.withValues(alpha: 0.2),
+                highlightColor: tokens.textPrimary.withValues(alpha: 0.1),
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: _buildContent(
+                    context,
+                    l10n,
+                    presetDurationMs,
+                    remainingMs,
+                    showMinutesSeconds,
+                    tokens,
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -219,6 +237,11 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
               color: tokens.textSecondary,
             ),
           ),
+        _buildStatusRow(
+          icon: Icons.timer_outlined,
+          text: l10n.timerIdle,
+          tokens: tokens,
+        ),
       ],
     );
   }
@@ -284,15 +307,10 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
             ),
           ),
         ),
-        Text(
-          isPaused ? l10n.pausing : l10n.remainingSeconds,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: isPaused
-                ? tokens.warning
-                : tokens.textPrimary,
-          ),
+        _buildStatusRow(
+          icon: isPaused ? Icons.pause : Icons.play_arrow,
+          text: isPaused ? l10n.timerPaused : l10n.timerRunning,
+          tokens: tokens,
         ),
       ],
     );
@@ -330,7 +348,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                   style: TextStyle(
                     fontSize: 60,
                     fontWeight: FontWeight.w900,
-                    color: tokens.textSecondary, // Yellow or high contrast
+                    color: tokens.focusRing,
                     height: 1.0,
                   ),
                 ),
@@ -338,15 +356,42 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
             ),
           ),
         ),
-        Text(
-          l10n.clickToStop,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: tokens.textPrimary,
-          ),
+        _buildStatusRow(
+          icon: Icons.touch_app,
+          text: l10n.clickToStop,
+          tokens: tokens,
         ),
       ],
+    );
+  }
+
+  Widget _buildStatusRow({
+    required IconData icon,
+    required String text,
+    required AppThemeTokens tokens,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 22, color: tokens.textPrimary),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: tokens.textPrimary,
+                height: 1.1,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
