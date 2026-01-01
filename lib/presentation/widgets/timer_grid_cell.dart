@@ -604,6 +604,53 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     }
   }
 
+  // Compact button for dialog actions with text wrapping support
+  Widget _buildCompactButton({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onPressed,
+    Color? textColor,
+  }) {
+    final effectiveTextColor = textColor ?? Colors.white;
+
+    return Material(
+      color: color,
+      borderRadius: BorderRadius.circular(8),
+      child: Semantics(
+        button: true,
+        label: label,
+        enabled: true,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, size: 28, color: effectiveTextColor),
+                const SizedBox(height: 6),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: effectiveTextColor,
+                    height: 1.2,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.visible,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   // Helper for action dialogs to use theme
   Widget _buildTileButton({
     required IconData icon,
@@ -728,26 +775,25 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
           Row(
             children: [
               Expanded(
-                child: _buildTileButton(
+                child: _buildCompactButton(
                   icon: Icons.close,
                   label: l10n.actionCancel,
-                  color: tokens.surfacePressed, // Dark gray replacement
+                  color: tokens.surfacePressed,
+                  textColor: tokens.textPrimary,
                   onPressed: () => Navigator.pop(context),
-                  isHorizontal: true,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12),
               Expanded(
-                child: _buildTileButton(
+                child: _buildCompactButton(
                   icon: Icons.play_arrow,
                   label: l10n.actionStart,
                   color: tokens.accent,
-                  textColor: tokens.bg, // Contrast
+                  textColor: tokens.bg,
                   onPressed: () {
                     Navigator.pop(context);
                     _startTimer(ref);
                   },
-                  isHorizontal: true,
                 ),
               ),
             ],
