@@ -22,6 +22,42 @@
             "options": {
                 "cwd": "${workspaceFolder}"
             }
+        },
+        {
+            "label": "Normalize current file",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                ".vscode/normalize_files.sh",
+                "--paths",
+                "${fileDirname}"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Normalize all modified files",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                ".vscode/normalize_files.sh"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
         }
     ]
 }
