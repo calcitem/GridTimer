@@ -126,10 +126,9 @@ NEW_VERSION="${MAJOR_NUMBER}.${MINOR_NUMBER}.${PATCH_NUMBER}"
 echo ""
 echo "NEW_VERSION = $NEW_VERSION"
 
-# Get build number and increment
-BUILD_NUMBER=$(echo "$FULL_VERSION" | cut -d "+" -f 2)
-((BUILD_NUMBER+=1))
-echo "BUILD_NUMBER = $BUILD_NUMBER"
+# Get build number from total commit count (same as version.sh)
+BUILD_NUMBER=$(git rev-list HEAD | wc -l | awk '{print $1}')
+echo "BUILD_NUMBER = $BUILD_NUMBER (total commits)"
 
 # 1.0.1+2
 NEW_FULL_VERSION="$NEW_VERSION+$BUILD_NUMBER"
@@ -211,4 +210,3 @@ echo "  1. Run ./tool/build-release.sh to build the AAB"
 echo "  2. Upload to Play Console"
 echo "  3. Update CHANGELOG.md if needed"
 echo ""
-
