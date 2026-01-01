@@ -459,12 +459,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
 
     if (isFlat) {
       if (!hasName) {
-        return Text(
-          presetLabel,
-          style: presetStyle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
+        return Center(
+          child: _AutoScrollText(text: presetLabel, style: presetStyle),
         );
       }
 
@@ -476,13 +472,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
           const SizedBox(width: 8),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 96),
-            child: Text(
-              presetLabel,
-              style: presetStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.right,
-            ),
+            child: _AutoScrollText(text: presetLabel, style: presetStyle),
           ),
         ],
       );
@@ -493,13 +483,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       children: [
         if (hasName) _AutoScrollText(text: name, style: nameStyle),
         if (hasName) const SizedBox(height: 2),
-        Text(
-          presetLabel,
-          style: presetStyle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-        ),
+        _AutoScrollText(text: presetLabel, style: presetStyle),
       ],
     );
   }
@@ -517,16 +501,14 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
           Icon(icon, size: 22, color: tokens.textPrimary),
           const SizedBox(width: 8),
           Flexible(
-            child: Text(
-              text,
+            child: _AutoScrollText(
+              text: text,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: tokens.textPrimary,
                 height: 1.1,
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],
@@ -1096,10 +1078,13 @@ class _AutoScrollTextState extends State<_AutoScrollText> {
       child: SingleChildScrollView(
         controller: _scrollController,
         scrollDirection: Axis.horizontal,
-        physics: const NeverScrollableScrollPhysics(), // Disable user scrolling while auto-scrolling
+        // Disable user scrolling while auto-scrolling.
+        physics: const NeverScrollableScrollPhysics(),
         child: Text(
           widget.text,
           style: widget.style,
+          maxLines: 1,
+          softWrap: false,
         ),
       ),
     );
