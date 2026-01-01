@@ -46,7 +46,10 @@ class AlarmSoundService : Service() {
             val intent = Intent(context, AlarmSoundService::class.java).apply {
                 action = ACTION_STOP
             }
-            ContextCompat.startForegroundService(context, intent)
+            // Android 15+ enforces that every startForegroundService() call must be followed by
+            // Service.startForeground() within a short time window. For STOP we should not
+            // trigger a foreground-service start at all; just stop the service if it's running.
+            context.stopService(intent)
         }
     }
 
@@ -279,5 +282,3 @@ class AlarmSoundService : Service() {
         }
     }
 }
-
-
