@@ -83,6 +83,9 @@ final themeProvider = Provider<AppTheme>((ref) {
   if (themeId == 'high_contrast') {
     return HighContrastTheme();
   }
+  if (themeId == 'light_high_contrast') {
+    return LightHighContrastTheme();
+  }
   return SoftDarkTheme();
 });
 

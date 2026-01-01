@@ -156,9 +156,7 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
     return MaterialApp(
       /// Add navigator key from Catcher.
       /// It will be used to navigate user to report page or to show dialog.
-      navigatorKey: (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
-          ? Catcher2.navigatorKey
-          : null,
+      navigatorKey: EnvironmentConfig.catcher ? Catcher2.navigatorKey : null,
       title: 'GridTimer',
       debugShowCheckedModeBanner: false,
       locale: locale,

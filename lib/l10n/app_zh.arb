@@ -240,5 +240,6 @@
   "themeMode": "主题模式",
   "themeModeDesc": "选择视觉主题",
   "themeSoftDark": "默认护眼深色",
-  "themeHighContrast": "高对比度模式"
+  "themeHighContrast": "高对比度模式",
+  "themeLightHighContrast": "日间高亮模式"
 }

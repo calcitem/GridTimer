@@ -132,14 +132,53 @@ class HighContrastTheme extends AppTheme {
   ThemeData get themeData => _buildThemeData(tokens, borderWidth: 2);
 }
 
+/// Theme C: Light High Contrast Mode.
+class LightHighContrastTheme extends AppTheme {
+  @override
+  String get id => 'light_high_contrast';
+
+  @override
+  String get name => 'Light High Contrast';
+
+  @override
+  AppThemeTokens get tokens => const AppThemeTokens(
+    bg: Color(0xFFFFFFFF),
+    surface: Color(0xFFF0F0F0),
+    surfacePressed: Color(0xFFE0E0E0),
+    surfaceDisabled: Color(0xFFCCCCCC),
+
+    // Distinct colors for states, but optimized for light mode
+    surfaceIdle: Color(0xFFF5F5F5), // Near white
+    surfaceRunning: Color(0xFFE8F5E9), // Very light green
+    surfacePaused: Color(0xFFFFF3E0), // Very light orange
+    surfaceRinging: Color(0xFFFFEBEE), // Very light red
+
+    border: Color(0xFF000000), // Stark black border
+    textPrimary: Color(0xFF000000),
+    textSecondary: Color(0xFF000000), // Black for max contrast
+    accent: Color(0xFF0000AA), // Deep Blue for primary actions
+    focusRing: Color(0xFF000000),
+    success: Color(0xFF006400), // Dark green
+    warning: Color(0xFFE65100), // Dark orange
+    danger: Color(0xFFB71C1C), // Dark red
+    icon: Color(0xFF000000),
+    divider: Color(0xFF000000),
+  );
+
+  @override
+  ThemeData get themeData =>
+      _buildThemeData(tokens, borderWidth: 2, isDark: false);
+}
+
 ThemeData _buildThemeData(
   AppThemeTokens tokens, {
   required double borderWidth,
+  bool isDark = true,
 }) {
   final secondaryText = tokens.textPrimary.withValues(alpha: 0.7);
 
   return ThemeData(
-    brightness: Brightness.dark,
+    brightness: isDark ? Brightness.dark : Brightness.light,
     useMaterial3: true,
     scaffoldBackgroundColor: tokens.bg,
     colorScheme: ColorScheme.dark(
