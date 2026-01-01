@@ -1136,5 +1136,10 @@
   "themeHighContrast": "High Contrast",
   "@themeHighContrast": {
     "description": "High contrast theme name"
+  },
+
+  "themeLightHighContrast": "Light High Contrast",
+  "@themeLightHighContrast": {
+    "description": "Light high contrast theme name"
   }
 }
