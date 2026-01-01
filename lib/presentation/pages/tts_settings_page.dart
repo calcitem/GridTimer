@@ -559,14 +559,14 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                 value: null,
               ),
               RadioListTile<String?>(
-                title: Text(l10n.simplifiedChinese),
-                subtitle: const Text('zh-CN'),
-                value: 'zh-CN',
-              ),
-              RadioListTile<String?>(
                 title: Text(l10n.english),
                 subtitle: const Text('en-US'),
                 value: 'en-US',
+              ),
+              RadioListTile<String?>(
+                title: Text(l10n.simplifiedChinese),
+                subtitle: const Text('zh-CN'),
+                value: 'zh-CN',
               ),
             ],
           ),

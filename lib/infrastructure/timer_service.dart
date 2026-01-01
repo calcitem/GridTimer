@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import '../core/domain/entities/app_settings.dart';
@@ -297,10 +298,18 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       // IMPORTANT: Notifications are now used primarily for visual alerts.
       // Audio playback is handled by the foreground service for reliability on MIUI.
 
-      // TTS is only reliable when the app is in the foreground.
-      if (_isInForeground &&
+      // TTS playback logic:
+      // - Android/iOS: Only reliable in foreground (background may be restricted by system)
+      // - Windows/Desktop: Can play even in background, no restriction
+      final isDesktop =
+          !kIsWeb &&
+          (Platform.isWindows || Platform.isMacOS || Platform.isLinux);
+      final shouldPlayTts =
           config.ttsEnabled &&
-          (settings?.ttsGlobalEnabled ?? true)) {
+          (settings?.ttsGlobalEnabled ?? true) &&
+          (isDesktop || _isInForeground);
+
+      if (shouldPlayTts) {
         final ttsVolume = settings?.ttsVolume ?? 1.0;
         final ttsSpeechRate = settings?.ttsSpeechRate ?? 0.5;
         final ttsPitch = settings?.ttsPitch ?? 1.0;
@@ -619,10 +628,18 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       final settings = await _storage.getSettings();
       final config = _currentGrid!.slots[session.slotIndex];
 
-      // TTS is only reliable when the app is in the foreground.
-      if (_isInForeground &&
+      // TTS playback logic:
+      // - Android/iOS: Only reliable in foreground (background may be restricted by system)
+      // - Windows/Desktop: Can play even in background, no restriction
+      final isDesktop =
+          !kIsWeb &&
+          (Platform.isWindows || Platform.isMacOS || Platform.isLinux);
+      final shouldPlayTts =
           config.ttsEnabled &&
-          (settings?.ttsGlobalEnabled ?? true)) {
+          (settings?.ttsGlobalEnabled ?? true) &&
+          (isDesktop || _isInForeground);
+
+      if (shouldPlayTts) {
         final ttsVolume = settings?.ttsVolume ?? 1.0;
         final ttsSpeechRate = settings?.ttsSpeechRate ?? 0.5;
         final ttsPitch = settings?.ttsPitch ?? 1.0;
