@@ -30,6 +30,7 @@
 
     <!-- Queries for email client (Android 11+) - Required for Catcher email error reporting -->
     <!-- Queries for TTS engines (Android 11+) - Required for flutter_tts to detect TTS engines -->
+    <!-- Queries for URL launcher (Android 11+) - Required for url_launcher to open web links -->
     <queries>
         <intent>
             <action android:name="android.intent.action.SENDTO" />
@@ -38,6 +39,15 @@
         <!-- TTS Engine query - required for flutter_tts on Android 11+ -->
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+        <!-- URL launcher queries - required for url_launcher on Android 11+ -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
         </intent>
     </queries>
 

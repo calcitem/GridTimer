@@ -29,8 +29,12 @@ class PrivacyPolicyDialog extends StatelessWidget {
   /// Launch the privacy policy URL in browser.
   Future<void> _launchPrivacyPolicy() async {
     final uri = Uri.parse(_privacyPolicyUrlZh);
-    if (await canLaunchUrl(uri)) {
+    // Try to launch URL directly without canLaunchUrl check
+    // canLaunchUrl can return false on some devices even when URL can be launched
+    try {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (e) {
+      debugPrint('Failed to launch URL: $e');
     }
   }
 

@@ -542,8 +542,12 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         : 'https://calcitem.github.io/GridTimer/privacy-policy';
 
     final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
+    // Try to launch URL directly without canLaunchUrl check
+    // canLaunchUrl can return false on some devices even when URL can be launched
+    try {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (e) {
+      debugPrint('Failed to launch URL: $e');
     }
   }
 
