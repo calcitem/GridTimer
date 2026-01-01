@@ -247,38 +247,55 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       // Add to ringing timers set
       _ringingTimers.add(timerId);
 
+      // Load settings and config (used by audio/TTS and gesture sensitivity).
+      final settings = await _storage.getSettings();
+      final config = _currentGrid!.slots[slotIndex];
+
       // Start gesture monitoring when first timer starts ringing
       if (_ringingTimers.length == 1) {
         _gesture.startMonitoring();
 
         // Update shake sensitivity from settings
-        final settings = await _storage.getSettings();
         if (settings != null) {
           _gesture.updateShakeSensitivity(settings.shakeSensitivity);
         }
 
-        // Start foreground service for reliable alarm playback on MIUI/OEM ROMs
-        // where notification sounds are suppressed
-        try {
-          await _alarmServiceChannel.invokeMethod<Map<dynamic, dynamic>>(
-            'startAlarmSoundService',
-            {'sound': 'raw', 'loop': true},
-          );
-          debugPrint('TimerService: Foreground alarm service started');
-        } catch (e) {
-          debugPrint(
-            'TimerService: Failed to start foreground alarm service: $e',
-          );
-          // Non-fatal - notification sound may still work on some devices
+        if (Platform.isAndroid) {
+          // Start foreground service for reliable alarm playback on MIUI/OEM ROMs
+          // where notification sounds are suppressed.
+          try {
+            await _alarmServiceChannel.invokeMethod<Map<dynamic, dynamic>>(
+              'startAlarmSoundService',
+              {'sound': 'raw', 'loop': true},
+            );
+            debugPrint('TimerService: Foreground alarm service started');
+          } catch (e) {
+            debugPrint(
+              'TimerService: Failed to start foreground alarm service: $e',
+            );
+            // Non-fatal - notification sound may still work on some devices.
+          }
+        } else {
+          // Desktop platforms (Windows/macOS/Linux) don't have the native alarm
+          // foreground service. Use in-app audio playback instead.
+          try {
+            await _audio.playWithMode(
+              soundKey: config.soundKey,
+              mode:
+                  settings?.audioPlaybackMode ??
+                  AudioPlaybackMode.loopIndefinitely,
+              volume: settings?.soundVolume ?? 1.0,
+              loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
+              intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+            );
+          } catch (e) {
+            debugPrint('TimerService: Failed to play in-app audio: $e');
+          }
         }
       }
 
       // IMPORTANT: Notifications are now used primarily for visual alerts.
       // Audio playback is handled by the foreground service for reliability on MIUI.
-
-      // Load settings for TTS.
-      final settings = await _storage.getSettings();
-      final config = _currentGrid!.slots[slotIndex];
 
       // TTS is only reliable when the app is in the foreground.
       if (_isInForeground &&
@@ -461,7 +478,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
     // Stop audio/TTS if ringing
     if (session.status == TimerStatus.ringing) {
-      await _audio.stop();
       await _tts.stop();
 
       // Stop vibration.
@@ -472,20 +488,23 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
       // Stop gesture monitoring if no more ringing timers
       if (_ringingTimers.isEmpty) {
+        await _audio.stop();
         _gesture.stopMonitoring();
 
         // Stop foreground alarm service when no timers are ringing
-        try {
-          await _alarmServiceChannel.invokeMethod<void>(
-            'stopAlarmSoundService',
-          );
-          debugPrint(
-            'TimerService: Foreground alarm service stopped (from reset)',
-          );
-        } catch (e) {
-          debugPrint(
-            'TimerService: Failed to stop foreground alarm service: $e',
-          );
+        if (Platform.isAndroid) {
+          try {
+            await _alarmServiceChannel.invokeMethod<void>(
+              'stopAlarmSoundService',
+            );
+            debugPrint(
+              'TimerService: Foreground alarm service stopped (from reset)',
+            );
+          } catch (e) {
+            debugPrint(
+              'TimerService: Failed to stop foreground alarm service: $e',
+            );
+          }
         }
       }
     }
@@ -497,29 +516,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
   Future<void> stopRinging(TimerId timerId) async {
     final session = _sessions[timerId];
     if (session == null || session.status != TimerStatus.ringing) return;
-
-    await _audio.stop();
-    await _tts.stop();
-
-    // Stop vibration.
-    await _vibration.cancel();
-
-    // Remove from ringing timers
-    _ringingTimers.remove(timerId);
-
-    // Stop gesture monitoring if no more ringing timers
-    if (_ringingTimers.isEmpty) {
-      _gesture.stopMonitoring();
-
-      // Stop foreground alarm service when no timers are ringing
-      try {
-        await _alarmServiceChannel.invokeMethod<void>('stopAlarmSoundService');
-        debugPrint('TimerService: Foreground alarm service stopped');
-      } catch (e) {
-        debugPrint('TimerService: Failed to stop foreground alarm service: $e');
-      }
-    }
-
     await reset(timerId);
   }
 
