@@ -75,6 +75,8 @@ flutter:
   assets:
     - assets/sounds/sound.wav
     - assets/licenses/Apache-2.0.txt
+    - assets/files/git-branch.txt
+    - assets/files/git-revision.txt
 
   # Generate localization
   generate: true
