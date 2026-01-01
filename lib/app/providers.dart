@@ -219,9 +219,7 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
       'AppSettingsNotifier: Updating privacyPolicyAccepted to $accepted',
     );
     await updateSettings((s) => s.copyWith(privacyPolicyAccepted: accepted));
-    debugPrint(
-      'AppSettingsNotifier: privacyPolicyAccepted saved successfully',
-    );
+    debugPrint('AppSettingsNotifier: privacyPolicyAccepted saved successfully');
   }
 
   /// Update sound volume.

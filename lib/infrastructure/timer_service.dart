@@ -94,18 +94,15 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     assert(triggerAtEpochMs > 0, 'triggerAtEpochMs must be > 0');
 
     try {
-      await _alarmServiceChannel.invokeMethod<void>(
-        'scheduleAlarmSound',
-        {
-          'triggerAtEpochMs': triggerAtEpochMs,
-          'channelId': channelId,
-          'requestCode': _androidAlarmSoundRequestCodeForSlot(slotIndex),
-          'loop': loop,
-          'vibrate': vibrate,
-          // Fallback used if channel sound cannot be resolved (e.g., channel missing).
-          'soundFallback': 'raw',
-        },
-      );
+      await _alarmServiceChannel.invokeMethod<void>('scheduleAlarmSound', {
+        'triggerAtEpochMs': triggerAtEpochMs,
+        'channelId': channelId,
+        'requestCode': _androidAlarmSoundRequestCodeForSlot(slotIndex),
+        'loop': loop,
+        'vibrate': vibrate,
+        // Fallback used if channel sound cannot be resolved (e.g., channel missing).
+        'soundFallback': 'raw',
+      });
     } catch (e) {
       debugPrint('TimerService: Failed to schedule AlarmSoundService: $e');
     }
@@ -114,10 +111,9 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
   Future<void> _cancelAndroidAlarmSound({required int slotIndex}) async {
     if (!Platform.isAndroid) return;
     try {
-      await _alarmServiceChannel.invokeMethod<void>(
-        'cancelAlarmSound',
-        {'requestCode': _androidAlarmSoundRequestCodeForSlot(slotIndex)},
-      );
+      await _alarmServiceChannel.invokeMethod<void>('cancelAlarmSound', {
+        'requestCode': _androidAlarmSoundRequestCodeForSlot(slotIndex),
+      });
     } catch (e) {
       debugPrint('TimerService: Failed to cancel AlarmSoundService alarm: $e');
     }
@@ -226,7 +222,9 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         await _vibration.cancel();
         if (Platform.isAndroid) {
           try {
-            await _alarmServiceChannel.invokeMethod<void>('stopAlarmSoundService');
+            await _alarmServiceChannel.invokeMethod<void>(
+              'stopAlarmSoundService',
+            );
           } catch (_) {
             // Ignore.
           }
@@ -463,7 +461,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
     // Schedule native alarm playback for Android (works even if Flutter process is killed).
     if (Platform.isAndroid) {
-      final mode = settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely;
+      final mode =
+          settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely;
       final loop = mode != AudioPlaybackMode.playOnce;
       await _scheduleAndroidAlarmSound(
         triggerAtEpochMs: endMs,
@@ -537,7 +536,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     );
 
     if (Platform.isAndroid) {
-      final mode = settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely;
+      final mode =
+          settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely;
       final loop = mode != AudioPlaybackMode.playOnce;
       await _scheduleAndroidAlarmSound(
         triggerAtEpochMs: newEndMs,
@@ -728,7 +728,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         if (settings != null) {
           _gesture.updateShakeSensitivity(settings.shakeSensitivity);
         }
-
       }
 
       // IMPORTANT: Do NOT call showTimeUpNow() here!
@@ -908,13 +907,12 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       // Generate display name using localized formatter
       final userDefinedName =
           (settings?.gridNames != null && settings!.gridNames.length > i)
-              ? settings.gridNames[i]
-              : '';
+          ? settings.gridNames[i]
+          : '';
 
-      final name =
-          userDefinedName.isNotEmpty
-              ? userDefinedName
-              : formatter.format(seconds);
+      final name = userDefinedName.isNotEmpty
+          ? userDefinedName
+          : formatter.format(seconds);
 
       return TimerConfig(
         slotIndex: i,
