@@ -79,43 +79,32 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               subtitle: const Text('1.0.0+1'),
               onTap: _onVersionTap,
             ),
+
+            // Language
+            ListTile(
+              leading: const Icon(Icons.language),
+              title: Text(l10n.languageSettings),
+              subtitle: Text(_getLanguageName(currentLocale, l10n)),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => _showLanguageDialog(context, ref, l10n),
+            ),
             const Divider(),
 
             // Timer Settings Section
             _buildSectionHeader(l10n.timerSettings),
 
-            // Flash Animation
-            SwitchListTile(
-              secondary: const Icon(Icons.flash_on),
-              title: Text(l10n.flashAnimation),
-              subtitle: Text(l10n.flashAnimationDesc),
-              value: settings.flashEnabled,
-              onChanged: (value) {
-                ref.read(appSettingsProvider.notifier).toggleFlash(value);
-              },
-            ),
-
-            // Vibration
-            SwitchListTile(
-              secondary: const Icon(Icons.vibration),
-              title: Text(l10n.vibration),
-              subtitle: Text(l10n.vibrationDesc),
-              value: settings.vibrationEnabled,
-              onChanged: (value) {
-                ref.read(appSettingsProvider.notifier).toggleVibration(value);
-              },
-            ),
-
-            // Keep Screen On
-            SwitchListTile(
-              secondary: const Icon(Icons.screen_lock_portrait),
-              title: Text(l10n.keepScreenOn),
-              subtitle: Text(l10n.keepScreenOnDesc),
-              value: settings.keepScreenOnWhileRunning,
-              onChanged: (value) {
-                ref
-                    .read(appSettingsProvider.notifier)
-                    .toggleKeepScreenOn(value);
+            // Grid Durations Settings
+            ListTile(
+              leading: const Icon(Icons.grid_on),
+              title: Text(l10n.gridDurationsSettings),
+              subtitle: Text(l10n.gridDurationsSettingsDesc),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const GridDurationsSettingsPage(),
+                  ),
+                );
               },
             ),
 
@@ -132,14 +121,16 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               },
             ),
 
-            // TTS Global Enable
+            // Keep Screen On
             SwitchListTile(
-              secondary: const Icon(Icons.record_voice_over),
-              title: Text(l10n.ttsEnabled),
-              subtitle: Text(l10n.ttsEnabledDesc),
-              value: settings.ttsGlobalEnabled,
+              secondary: const Icon(Icons.screen_lock_portrait),
+              title: Text(l10n.keepScreenOn),
+              subtitle: Text(l10n.keepScreenOnDesc),
+              value: settings.keepScreenOnWhileRunning,
               onChanged: (value) {
-                ref.read(appSettingsProvider.notifier).toggleTts(value);
+                ref
+                    .read(appSettingsProvider.notifier)
+                    .toggleKeepScreenOn(value);
               },
             ),
 
@@ -173,6 +164,39 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               },
             ),
 
+            // Vibration
+            SwitchListTile(
+              secondary: const Icon(Icons.vibration),
+              title: Text(l10n.vibration),
+              subtitle: Text(l10n.vibrationDesc),
+              value: settings.vibrationEnabled,
+              onChanged: (value) {
+                ref.read(appSettingsProvider.notifier).toggleVibration(value);
+              },
+            ),
+
+            // Flash Animation
+            SwitchListTile(
+              secondary: const Icon(Icons.flash_on),
+              title: Text(l10n.flashAnimation),
+              subtitle: Text(l10n.flashAnimationDesc),
+              value: settings.flashEnabled,
+              onChanged: (value) {
+                ref.read(appSettingsProvider.notifier).toggleFlash(value);
+              },
+            ),
+
+            // TTS Global Enable
+            SwitchListTile(
+              secondary: const Icon(Icons.record_voice_over),
+              title: Text(l10n.ttsEnabled),
+              subtitle: Text(l10n.ttsEnabledDesc),
+              value: settings.ttsGlobalEnabled,
+              onChanged: (value) {
+                ref.read(appSettingsProvider.notifier).toggleTts(value);
+              },
+            ),
+
             // TTS Settings
             ListTile(
               leading: const Icon(Icons.settings_voice),
@@ -182,21 +206,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const TtsSettingsPage()),
-                );
-              },
-            ),
-
-            // Grid Durations Settings
-            ListTile(
-              leading: const Icon(Icons.grid_on),
-              title: Text(l10n.gridDurationsSettings),
-              subtitle: Text(l10n.gridDurationsSettingsDesc),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const GridDurationsSettingsPage(),
-                  ),
                 );
               },
             ),
@@ -216,22 +225,43 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               },
             ),
 
-            // Language
+            // Alarm Channel Sound (Android 8+)
             ListTile(
-              leading: const Icon(Icons.language),
-              title: Text(l10n.languageSettings),
-              subtitle: Text(_getLanguageName(currentLocale, l10n)),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () => _showLanguageDialog(context, ref, l10n),
+              leading: const Icon(Icons.volume_up),
+              title: Text(l10n.alarmSoundSettings),
+              subtitle: Text(l10n.alarmSoundSettingsDesc),
+              trailing: ElevatedButton(
+                onPressed: () async {
+                  final permissionService = ref.read(permissionServiceProvider);
+                  try {
+                    await permissionService.openNotificationChannelSettings(
+                      channelId: 'gt.alarm.timeup.default.v2',
+                    );
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            l10n.failedToOpenChannelSettings(e.toString()),
+                          ),
+                        ),
+                      );
+                    }
+                  }
+                },
+                child: Text(l10n.goToSettings),
+              ),
             ),
 
-            // Safety Disclaimer
+            // Alarm Troubleshooting / Compatibility Guide
             ListTile(
-              leading: const Icon(Icons.info_outline, color: Colors.orange),
-              title: Text(l10n.aboutDisclaimer),
+              leading: const Icon(Icons.help_outline),
+              title: Text(l10n.alarmTroubleshooting),
+              subtitle: Text(l10n.alarmTroubleshootingDesc),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () => SafetyDisclaimerDialog.show(context),
+              onTap: () => AlarmTroubleshootingDialog.show(context),
             ),
+
             const Divider(),
 
             // Permissions Section
@@ -292,47 +322,17 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
             ),
 
-            // Alarm Channel Sound (Android 8+)
-            ListTile(
-              leading: const Icon(Icons.volume_up),
-              title: Text(l10n.alarmSoundSettings),
-              subtitle: Text(l10n.alarmSoundSettingsDesc),
-              trailing: ElevatedButton(
-                onPressed: () async {
-                  final permissionService = ref.read(permissionServiceProvider);
-                  try {
-                    await permissionService.openNotificationChannelSettings(
-                      channelId: 'gt.alarm.timeup.default.v2',
-                    );
-                  } catch (e) {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            l10n.failedToOpenChannelSettings(e.toString()),
-                          ),
-                        ),
-                      );
-                    }
-                  }
-                },
-                child: Text(l10n.goToSettings),
-              ),
-            ),
-
-            // Alarm Troubleshooting / Compatibility Guide
-            ListTile(
-              leading: const Icon(Icons.help_outline),
-              title: Text(l10n.alarmTroubleshooting),
-              subtitle: Text(l10n.alarmTroubleshootingDesc),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () => AlarmTroubleshootingDialog.show(context),
-            ),
-
             const Divider(),
 
             // About Section
             _buildSectionHeader(l10n.about),
+            // Safety Disclaimer
+            ListTile(
+              leading: const Icon(Icons.info_outline, color: Colors.orange),
+              title: Text(l10n.aboutDisclaimer),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => SafetyDisclaimerDialog.show(context),
+            ),
             ListTile(
               leading: const Icon(Icons.description),
               title: Text(l10n.license),
