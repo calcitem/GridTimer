@@ -138,6 +138,9 @@ class _GridPageState extends ConsumerState<GridPage> {
   @override
   Widget build(BuildContext context) {
     final gridState = ref.watch(gridStateProvider);
+    final theme = ref.watch(themeProvider);
+    final tokens = theme.tokens;
+
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
@@ -145,18 +148,43 @@ class _GridPageState extends ConsumerState<GridPage> {
     final l10n = l10nNullable;
 
     return Scaffold(
+      backgroundColor: tokens.bg,
       appBar: AppBar(
-        title: Text(l10n.appTitle),
+        backgroundColor: tokens.bg,
+        foregroundColor: tokens.textPrimary,
+        elevation: 0,
+        title: Text(
+          l10n.appTitle,
+          style: TextStyle(color: tokens.accent, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
+          PopupMenuButton<String>(
+            icon: Icon(Icons.more_vert, color: tokens.textPrimary, size: 32),
+            color: tokens.surface,
             tooltip: l10n.settings,
-            onPressed: () {
-              // Navigate to settings page
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const SettingsPage()),
-              );
+            onSelected: (value) {
+              if (value == 'settings') {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                );
+              }
             },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'settings',
+                child: Row(
+                  children: [
+                    Icon(Icons.settings, color: tokens.textPrimary),
+                    const SizedBox(width: 12),
+                    Text(
+                      l10n.settings,
+                      style: TextStyle(color: tokens.textPrimary, fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -165,9 +193,11 @@ class _GridPageState extends ConsumerState<GridPage> {
           final (grid, sessions) = state;
           return _buildGrid(context, ref, grid, sessions);
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => Center(
+          child: CircularProgressIndicator(color: tokens.accent),
+        ),
         error: (error, stack) =>
-            Center(child: Text(l10n.errorText(error.toString()))),
+            Center(child: Text(l10n.errorText(error.toString()), style: TextStyle(color: tokens.danger))),
       ),
     );
   }
@@ -178,36 +208,35 @@ class _GridPageState extends ConsumerState<GridPage> {
     TimerGridSet grid,
     List<TimerSession> sessions,
   ) {
-    return Padding(
-      padding: const EdgeInsets.all(4),
-      child: Column(
-        children: [
-          for (int row = 0; row < 3; row++)
-            Expanded(
-              child: Row(
-                children: [
-                  for (int col = 0; col < 3; col++)
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
-                        child: _buildCell(row, col, grid, sessions),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-        ],
+    // Determine number of columns based on text scale factor (Accessibility)
+    final textScale = MediaQuery.textScalerOf(context).scale(1);
+    int crossAxisCount = 3;
+    if (textScale > 2.0) {
+      crossAxisCount = 1;
+    } else if (textScale > 1.3) {
+      crossAxisCount = 2;
+    }
+
+    return GridView.builder(
+      padding: const EdgeInsets.all(12), // Increased padding per requirements
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        childAspectRatio: 1.0, // Square cells
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
       ),
+      itemCount: 9,
+      itemBuilder: (context, index) {
+        return _buildCell(index, grid, sessions);
+      },
     );
   }
 
   Widget _buildCell(
-    int row,
-    int col,
+    int index,
     TimerGridSet grid,
     List<TimerSession> sessions,
   ) {
-    final index = row * 3 + col;
     final session = sessions.firstWhere(
       (s) => s.slotIndex == index,
       orElse: () => TimerSession(

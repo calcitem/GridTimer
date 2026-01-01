@@ -12,6 +12,9 @@ abstract class AppSettings with _$AppSettings {
     /// Currently active mode ID.
     required ModeId activeModeId,
 
+    /// Current UI Theme ID ('soft_dark' or 'high_contrast').
+    @Default('soft_dark') String themeId,
+
     /// Whether red flash animation is enabled when ringing.
     @Default(true) bool flashEnabled,
 

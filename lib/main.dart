@@ -13,6 +13,7 @@ import 'app/locale_provider.dart';
 import 'app/providers.dart';
 import 'core/config/constants.dart';
 import 'core/config/environment_config.dart';
+import 'core/theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
 import 'presentation/pages/grid_page.dart';
 import 'presentation/pages/onboarding_page.dart';
@@ -152,6 +153,7 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
   Widget build(BuildContext context) {
     final locale = ref.watch(localeProvider);
     final settingsAsync = ref.watch(appSettingsProvider);
+    final appTheme = ref.watch(themeProvider);
 
     return MaterialApp(
       /// Add navigator key from Catcher.
@@ -164,182 +166,7 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
       locale: locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        useMaterial3: true,
-        scaffoldBackgroundColor: Colors.black,
-
-        // High contrast color scheme: dark mode based, using bright yellow as primary color
-        colorScheme: const ColorScheme.dark(
-          primary: Color(0xFFFFD600), // Bright yellow, high visibility
-          onPrimary: Colors.black, // Black text on yellow, highest contrast
-          secondary: Color(0xFF00B0FF), // Bright cyan, for secondary actions
-          onSecondary: Colors.black,
-          surface: Color(0xFF1E1E1E), // Dark gray card background
-          onSurface: Colors.white, // White text
-          error: Color(0xFFFF5252), // Bright red
-          onError: Colors.black,
-        ),
-
-        // AppBar theme: black background with yellow text
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.black,
-          foregroundColor: Color(0xFFFFD600),
-          elevation: 0,
-          centerTitle: true,
-          titleTextStyle: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFFFFD600),
-          ),
-          iconTheme: IconThemeData(color: Color(0xFFFFD600), size: 28),
-        ),
-
-        // Card theme: add border to distinguish from background
-        cardTheme: CardThemeData(
-          color: const Color(0xFF1E1E1E),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side: const BorderSide(color: Colors.white24, width: 1),
-          ),
-        ),
-
-        // Icon theme: default large white icons
-        iconTheme: const IconThemeData(color: Colors.white, size: 28),
-
-        // Switch theme: high contrast
-        switchTheme: SwitchThemeData(
-          thumbColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.selected)) {
-              return Colors.black; // Black thumb when on (on yellow track)
-            }
-            return Colors.white; // White thumb when off
-          }),
-          trackColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.selected)) {
-              return const Color(0xFFFFD600); // Bright yellow track when on
-            }
-            return Colors.grey.shade800; // Dark gray track when off
-          }),
-          trackOutlineColor: WidgetStateProperty.all(
-            Colors.white,
-          ), // White border enhances visibility
-        ),
-
-        // Large dialog theme optimized for elderly users
-        dialogTheme: const DialogThemeData(
-          backgroundColor: Color(0xFF1E1E1E),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-            side: BorderSide(
-              color: Color(0xFFFFD600),
-              width: 2,
-            ), // Prominent border
-          ),
-          titleTextStyle: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-          contentTextStyle: TextStyle(fontSize: 20, color: Color(0xFFEEEEEE)),
-          actionsPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        ),
-
-        // Larger button size and text
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFFD600), // Yellow background
-            foregroundColor: Colors.black, // Black text
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            textStyle: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            foregroundColor: const Color(0xFFFFD600), // Yellow text
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            textStyle: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-
-        // List tile theme: large text, high comfort
-        listTileTheme: const ListTileThemeData(
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 24,
-            vertical: 12,
-          ), // Increased spacing
-          titleTextStyle: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-          subtitleTextStyle: TextStyle(
-            fontSize: 18,
-            color: Colors.white70,
-            height: 1.4, // Increased line height, improved readability
-          ),
-          iconColor: Colors.white,
-          tileColor: Colors.transparent,
-        ),
-
-        // Global text theme adjustments
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(fontSize: 20, color: Colors.white),
-          bodyMedium: TextStyle(fontSize: 18, color: Colors.white),
-          bodySmall: TextStyle(
-            fontSize: 16,
-            color: Colors.white70,
-          ), // Increased small font size
-          titleMedium: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-          titleSmall: TextStyle(fontSize: 18, color: Colors.white70),
-        ),
-
-        // Divider theme
-        dividerTheme: const DividerThemeData(
-          color: Colors.white24,
-          thickness: 1,
-        ),
-
-        // Larger input field text, enhanced contrast
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: const Color(0xFF2C2C2C),
-          labelStyle: const TextStyle(fontSize: 18, color: Colors.white70),
-          floatingLabelStyle: const TextStyle(
-            fontSize: 20,
-            color: Color(0xFFFFD600),
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.white54),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.white54),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFFFFD600), width: 2),
-          ),
-        ),
-      ),
+      theme: appTheme.themeData,
       home: settingsAsync.when(
         data: (settings) {
           if (settings.onboardingCompleted) {

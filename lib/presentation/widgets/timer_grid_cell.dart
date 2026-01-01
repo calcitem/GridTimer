@@ -4,6 +4,7 @@ import '../../app/providers.dart';
 import '../../core/domain/entities/timer_config.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
+import '../../core/theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
 
 /// A single cell in the 3x3 timer grid.
@@ -26,7 +27,6 @@ class TimerGridCell extends ConsumerStatefulWidget {
 class _TimerGridCellState extends ConsumerState<TimerGridCell>
     with SingleTickerProviderStateMixin {
   late AnimationController _flashController;
-  late Animation<Color?> _colorAnimation;
 
   @override
   void initState() {
@@ -36,20 +36,6 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-
-    // Define color animation from deep red to bright red
-    _colorAnimation = ColorTween(
-      begin: const Color(0xFFB71C1C), // Deep red
-      end: const Color(0xFFFF1744), // Bright red
-    ).animate(_flashController);
-
-    // Note: Animation will be started in build() after settings are available
-  }
-
-  @override
-  void didUpdateWidget(TimerGridCell oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // Animation control is now handled in build() to access settings
   }
 
   @override
@@ -62,6 +48,9 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
   Widget build(BuildContext context) {
     final clock = ref.watch(clockProvider);
     final settingsAsync = ref.watch(appSettingsProvider);
+    final theme = ref.watch(themeProvider);
+    final tokens = theme.tokens;
+
     // Default to true (flash enabled) if settings are not yet loaded
     final flashEnabled = settingsAsync.value?.flashEnabled ?? true;
     final showMinutesSeconds =
@@ -84,7 +73,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       _flashController.reset();
     }
 
-    final color = _getStatusColor(widget.session.status);
+    final color = _getStatusColor(widget.session.status, tokens);
     final presetDurationMs = widget.config.presetDurationMs;
 
     // Build semantic label for screen readers
@@ -96,6 +85,9 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     );
     final String semanticHint = _buildSemanticHint(l10n);
 
+    // Recreate animation if needed for theme consistency (optional optimization)
+    // For now we use the animation value for ringing state color oscillation
+
     return Semantics(
       label: semanticLabel,
       hint: semanticHint,
@@ -104,15 +96,22 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       child: AnimatedBuilder(
         animation: _flashController,
         builder: (context, child) {
-          final currentColor = shouldFlash
-              ? (_colorAnimation.value ?? color)
-              : color;
+          // If flashing, oscillate between surfaceRinging and a brighter variant/danger color
+          // We can use the controller value to interpolate manually to avoid re-creating tweens
+          final Color ringingColor = Color.lerp(
+             tokens.surfaceRinging, 
+             tokens.danger, 
+             _flashController.value
+          ) ?? tokens.surfaceRinging;
+
+          final currentColor = shouldFlash ? ringingColor : color;
 
           final borderColor = isRinging
-              ? const Color(0xFFFFD600) // Bright yellow border when ringing
+              ? tokens.focusRing // Bright ring when ringing
               : (widget.session.status == TimerStatus.idle
-                  ? Colors.white54
-                  : Colors.white); // White border for other states
+                  ? tokens.border.withValues(alpha: 0.5)
+                  : tokens.border); 
+          
           final double borderWidth = isRinging ? 6 : 2;
 
           return Material(
@@ -125,8 +124,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
             child: InkWell(
               onTap: () => _handleTap(context, ref),
               // High contrast splash/ripple for clear feedback
-              splashColor: Colors.white.withOpacity(0.4),
-              highlightColor: Colors.white.withOpacity(0.2),
+              splashColor: tokens.textPrimary.withValues(alpha: 0.2),
+              highlightColor: tokens.textPrimary.withValues(alpha: 0.1),
               child: Padding(
                 padding: const EdgeInsets.all(4),
                 child: _buildContent(
@@ -135,6 +134,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                   presetDurationMs,
                   remainingMs,
                   showMinutesSeconds,
+                  tokens,
                 ),
               ),
             ),
@@ -151,28 +151,26 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     int presetDurationMs,
     int remainingMs,
     bool showMinutesSeconds,
+    AppThemeTokens tokens,
   ) {
     switch (widget.session.status) {
       case TimerStatus.idle:
-        // Initial state: show preset duration
-        return _buildIdleContent(l10n, presetDurationMs);
+        return _buildIdleContent(l10n, presetDurationMs, tokens);
       case TimerStatus.running:
       case TimerStatus.paused:
-        // Running/paused state: show total and remaining time
         return _buildActiveContent(
           l10n,
           presetDurationMs,
           remainingMs,
           showMinutesSeconds,
+          tokens,
         );
       case TimerStatus.ringing:
-        // Ringing state
-        return _buildRingingContent(l10n, presetDurationMs);
+        return _buildRingingContent(l10n, presetDurationMs, tokens);
     }
   }
 
-  /// Build idle state content: show preset duration
-  Widget _buildIdleContent(AppLocalizations l10n, int presetDurationMs) {
+  Widget _buildIdleContent(AppLocalizations l10n, int presetDurationMs, AppThemeTokens tokens) {
     final isWholeMinute = presetDurationMs % 60000 == 0;
     final minutes = presetDurationMs ~/ 60000;
     final seconds = (presetDurationMs % 60000) ~/ 1000;
@@ -185,13 +183,12 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       unitLabel = l10n.minutes;
     } else {
       displayValue = '$minutes:${seconds.toString().padLeft(2, '0')}';
-      unitLabel = null; // No label for MM:SS format
+      unitLabel = null;
     }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Preset duration (large font)
         Expanded(
           child: Center(
             child: FittedBox(
@@ -200,57 +197,52 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Text(
                   displayValue,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 120,
                     fontWeight: FontWeight.w900,
                     fontFamily: 'monospace',
-                    color: Colors.white,
+                    color: tokens.textPrimary,
                     height: 1.0,
-                    fontFeatures: [FontFeature.tabularFigures()],
+                    fontFeatures: const [FontFeature.tabularFigures()],
                   ),
                 ),
               ),
             ),
           ),
         ),
-        // "minutes" label (only if whole minutes)
         if (unitLabel != null)
           Text(
             unitLabel,
-            style: const TextStyle(
-              fontSize: 24, // Increased font size
+            style: TextStyle(
+              fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color(0xFFFFD600), // Bright yellow label, high contrast
+              color: tokens.textSecondary,
             ),
           ),
       ],
     );
   }
 
-  /// Build running/paused state content: show total and remaining time
   Widget _buildActiveContent(
     AppLocalizations l10n,
     int presetDurationMs,
     int remainingMs,
     bool showMinutesSeconds,
+    AppThemeTokens tokens,
   ) {
     final remainingSeconds = (remainingMs / 1000).ceil();
     final isPaused = widget.session.status == TimerStatus.paused;
 
-    // Format remaining time based on user preference
     final String displayTime;
     if (showMinutesSeconds) {
-      // Display in MM:SS format
       final minutes = remainingSeconds ~/ 60;
       final seconds = remainingSeconds % 60;
       displayTime =
           '${minutes.toString()}:${seconds.toString().padLeft(2, '0')}';
     } else {
-      // Display total seconds
       displayTime = '$remainingSeconds';
     }
 
-    // Format preset duration label
     final isWholeMinute = presetDurationMs % 60000 == 0;
     final minutes = presetDurationMs ~/ 60000;
     final seconds = (presetDurationMs % 60000) ~/ 1000;
@@ -261,18 +253,16 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Top: preset duration label
         Text(
           presetLabel,
-          style: const TextStyle(
-            fontSize: 22, // Increased font size
+          style: TextStyle(
+            fontSize: 22,
             fontWeight: FontWeight.bold,
             fontFamily: 'monospace',
-            color: Color(0xFFFFD600), // Bright yellow
-            fontFeatures: [FontFeature.tabularFigures()],
+            color: tokens.textSecondary,
+            fontFeatures: const [FontFeature.tabularFigures()],
           ),
         ),
-        // Middle: remaining time (large font)
         Expanded(
           child: Center(
             child: FittedBox(
@@ -281,38 +271,34 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Text(
                   displayTime,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 100,
                     fontWeight: FontWeight.w900,
                     fontFamily: 'monospace',
-                    color: Colors
-                        .white, // Always pure white, maintaining highest contrast
+                    color: tokens.textPrimary, // High contrast
                     height: 1.0,
-                    fontFeatures: [FontFeature.tabularFigures()],
+                    fontFeatures: const [FontFeature.tabularFigures()],
                   ),
                 ),
               ),
             ),
           ),
         ),
-        // Bottom: status label
         Text(
           isPaused ? l10n.pausing : l10n.remainingSeconds,
           style: TextStyle(
-            fontSize: 24, // Increased
+            fontSize: 24,
             fontWeight: FontWeight.bold,
             color: isPaused
-                ? const Color(0xFFFFD600)
-                : Colors.white, // Bright yellow reminder when paused
+                ? tokens.warning
+                : tokens.textPrimary,
           ),
         ),
       ],
     );
   }
 
-  /// Build ringing state content: show time up
-  Widget _buildRingingContent(AppLocalizations l10n, int presetDurationMs) {
-    // Format preset duration label
+  Widget _buildRingingContent(AppLocalizations l10n, int presetDurationMs, AppThemeTokens tokens) {
     final isWholeMinute = presetDurationMs % 60000 == 0;
     final minutes = presetDurationMs ~/ 60000;
     final seconds = (presetDurationMs % 60000) ~/ 1000;
@@ -323,18 +309,16 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Top: preset duration
         Text(
           presetLabel,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             fontFamily: 'monospace',
-            color: Colors.white,
-            fontFeatures: [FontFeature.tabularFigures()],
+            color: tokens.textPrimary,
+            fontFeatures: const [FontFeature.tabularFigures()],
           ),
         ),
-        // Middle: "Time's Up" large text
         Expanded(
           child: Center(
             child: FittedBox(
@@ -343,10 +327,10 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   l10n.timeUp,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 60,
                     fontWeight: FontWeight.w900,
-                    color: Colors.yellow,
+                    color: tokens.textSecondary, // Yellow or high contrast
                     height: 1.0,
                   ),
                 ),
@@ -354,20 +338,18 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
             ),
           ),
         ),
-        // Bottom: click to stop instruction
         Text(
           l10n.clickToStop,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: tokens.textPrimary,
           ),
         ),
       ],
     );
   }
 
-  /// Build semantic label for screen readers
   String _buildSemanticLabel(
     AppLocalizations l10n,
     int presetDurationMs,
@@ -413,7 +395,6 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     }
   }
 
-  /// Build semantic hint for screen readers
   String _buildSemanticHint(AppLocalizations l10n) {
     switch (widget.session.status) {
       case TimerStatus.idle:
@@ -427,22 +408,16 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     }
   }
 
-  Color _getStatusColor(TimerStatus status) {
+  Color _getStatusColor(TimerStatus status, AppThemeTokens tokens) {
     switch (status) {
       case TimerStatus.idle:
-        // Idle state: dark gray background, high contrast
-        return const Color(0xFF2C2C2C);
+        return tokens.surfaceIdle;
       case TimerStatus.running:
-        // Running: dark green background (avoid too bright, but maintain clear hue)
-        return const Color(0xFF1B5E20);
+        return tokens.surfaceRunning;
       case TimerStatus.paused:
-        // Paused: deep amber/brown background
-        return const Color(
-          0xFFBF360C,
-        ); // Deep orange, better than yellow for background with white text
+        return tokens.surfacePaused;
       case TimerStatus.ringing:
-        // Ringing: deep red background
-        return const Color(0xFFB71C1C);
+        return tokens.surfaceRinging;
     }
   }
 
@@ -451,30 +426,134 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
 
     switch (widget.session.status) {
       case TimerStatus.idle:
-        // Start timer (with confirmation if others running)
         if (timerService.hasActiveTimers()) {
           _showStartConfirmation(context, ref);
         } else {
           _startTimer(ref);
         }
         break;
-
       case TimerStatus.running:
         _showRunningActions(context, ref);
         break;
-
       case TimerStatus.paused:
         _showPausedActions(context, ref);
         break;
-
       case TimerStatus.ringing:
         _showRingingActions(context, ref);
         break;
     }
   }
 
+  // Helper for action dialogs to use theme
+  Widget _buildTileButton({
+    required IconData icon,
+    required String label,
+    required Color color, // This might need theme override or be passed semantic color
+    required VoidCallback onPressed,
+    Color? textColor,
+    bool isLarge = false,
+    bool isHorizontal = false,
+  }) {
+    // For dialog buttons, we should also respect the theme where possible,
+    // but the original code passed specific colors.
+    // We'll keep the colors passed in for now as they are specific to actions (Start=Yellow/Green, Stop=Red)
+    // but we ensure text contrast is high.
+    
+    final effectiveTextColor = textColor ?? Colors.white;
+
+    final child = Semantics(
+      button: true,
+      label: label,
+      enabled: true,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(isHorizontal ? 8 : 16),
+        child: Container(
+        padding: EdgeInsets.all(isHorizontal ? 20 : 16),
+        alignment: Alignment.center,
+        child: isHorizontal
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    icon,
+                    size: 32,
+                    color: effectiveTextColor,
+                  ),
+                  const SizedBox(width: 16),
+                  Flexible(
+                    child: Text(
+                      label,
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: effectiveTextColor,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              )
+            : FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(icon, size: isLarge ? 80 : 56, color: effectiveTextColor),
+                    const SizedBox(height: 12),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 200),
+                      child: Text(
+                        label,
+                        style: TextStyle(
+                          fontSize: isLarge ? 28 : 22,
+                          fontWeight: FontWeight.bold,
+                          color: effectiveTextColor,
+                          height: 1.1,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+        ),
+      ),
+    );
+
+    if (isHorizontal) {
+      return Material(
+        color: color,
+        borderRadius: BorderRadius.circular(8),
+        child: child,
+      );
+    } else {
+      return AspectRatio(
+        aspectRatio: 1.0,
+        child: Material(
+          color: color,
+          borderRadius: BorderRadius.circular(16),
+          child: child,
+        ),
+      );
+    }
+  }
+
+  // Dialog implementations need to be updated to pass theme colors or similar
+  // For brevity in this large block, I'm keeping the original dialog calls 
+  // but they should eventually use the theme tokens.
+  // The _buildTileButton above handles the button rendering.
+  
   void _showStartConfirmation(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final theme = ref.read(themeProvider); // Read once for dialog
+    final tokens = theme.tokens;
+    
     if (l10n == null) return;
     showDialog(
       context: context,
@@ -490,7 +569,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                 child: _buildTileButton(
                   icon: Icons.close,
                   label: l10n.actionCancel,
-                  color: const Color(0xFF424242), // Dark gray
+                  color: tokens.surfacePressed, // Dark gray replacement
                   onPressed: () => Navigator.pop(context),
                   isHorizontal: true,
                 ),
@@ -500,8 +579,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                 child: _buildTileButton(
                   icon: Icons.play_arrow,
                   label: l10n.actionStart,
-                  color: const Color(0xFFFFD600), // Bright yellow
-                  textColor: Colors.black, // Black text
+                  color: tokens.accent, 
+                  textColor: tokens.bg, // Contrast
                   onPressed: () {
                     Navigator.pop(context);
                     _startTimer(ref);
@@ -526,6 +605,9 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
 
   void _showRunningActions(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final theme = ref.read(themeProvider);
+    final tokens = theme.tokens;
+
     if (l10n == null) return;
     showDialog(
       context: context,
@@ -543,13 +625,11 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                       child: _buildTileButton(
                         icon: Icons.pause,
                         label: l10n.actionPause,
-                        color: const Color(0xFFFFD600), // Bright yellow
-                        textColor: Colors.black, // Black text
+                        color: tokens.accent,
+                        textColor: tokens.bg,
                         onPressed: () {
                           Navigator.pop(context);
-                          ref
-                              .read(timerServiceProvider)
-                              .pause(widget.session.timerId);
+                          ref.read(timerServiceProvider).pause(widget.session.timerId);
                         },
                       ),
                     ),
@@ -558,12 +638,10 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                       child: _buildTileButton(
                         icon: Icons.refresh,
                         label: l10n.actionReset,
-                        color: const Color(0xFF2979FF), // Bright blue
+                        color: const Color(0xFF2979FF), // Keep distinct Blue for reset
                         onPressed: () {
                           Navigator.pop(context);
-                          ref
-                              .read(timerServiceProvider)
-                              .reset(widget.session.timerId);
+                          ref.read(timerServiceProvider).reset(widget.session.timerId);
                         },
                       ),
                     ),
@@ -576,9 +654,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                 child: _buildTileButton(
                   icon: Icons.close,
                   label: l10n.actionCancel,
-                  color: const Color(
-                    0xFF424242,
-                  ), // Dark gray background, deeper than before, stronger text contrast
+                  color: tokens.surfacePressed,
                   onPressed: () => Navigator.pop(context),
                   isHorizontal: true,
                 ),
@@ -592,6 +668,9 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
 
   void _showPausedActions(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final theme = ref.read(themeProvider);
+    final tokens = theme.tokens;
+
     if (l10n == null) return;
     showDialog(
       context: context,
@@ -609,12 +688,10 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                       child: _buildTileButton(
                         icon: Icons.play_arrow,
                         label: l10n.actionResume,
-                        color: Colors.green.shade700,
+                        color: tokens.success,
                         onPressed: () {
                           Navigator.pop(context);
-                          ref
-                              .read(timerServiceProvider)
-                              .resume(widget.session.timerId);
+                          ref.read(timerServiceProvider).resume(widget.session.timerId);
                         },
                       ),
                     ),
@@ -623,12 +700,10 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                       child: _buildTileButton(
                         icon: Icons.refresh,
                         label: l10n.actionReset,
-                        color: Colors.blue.shade700,
+                        color: const Color(0xFF2979FF),
                         onPressed: () {
                           Navigator.pop(context);
-                          ref
-                              .read(timerServiceProvider)
-                              .reset(widget.session.timerId);
+                          ref.read(timerServiceProvider).reset(widget.session.timerId);
                         },
                       ),
                     ),
@@ -641,7 +716,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                 child: _buildTileButton(
                   icon: Icons.close,
                   label: l10n.actionCancel,
-                  color: const Color(0xFF424242), // Dark gray
+                  color: tokens.surfacePressed,
                   onPressed: () => Navigator.pop(context),
                   isHorizontal: true,
                 ),
@@ -655,6 +730,9 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
 
   void _showRingingActions(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final theme = ref.read(themeProvider);
+    final tokens = theme.tokens;
+
     if (l10n == null) return;
     showDialog(
       context: context,
@@ -669,12 +747,10 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
               _buildTileButton(
                 icon: Icons.stop_circle_outlined,
                 label: l10n.stopAlarm,
-                color: const Color(0xFFD50000), // Bright red
+                color: tokens.danger,
                 onPressed: () {
                   Navigator.pop(context);
-                  ref
-                      .read(timerServiceProvider)
-                      .stopRinging(widget.session.timerId);
+                  ref.read(timerServiceProvider).stopRinging(widget.session.timerId);
                 },
                 isLarge: true,
               ),
@@ -682,7 +758,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
               _buildTileButton(
                 icon: Icons.close,
                 label: l10n.actionCancel,
-                color: const Color(0xFF424242), // Dark gray
+                color: tokens.surfacePressed,
                 onPressed: () => Navigator.pop(context),
                 isHorizontal: true,
               ),
@@ -691,100 +767,5 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
         ),
       ),
     );
-  }
-
-  /// Build tile-style button
-  /// When [isHorizontal] is true, button has smaller height with horizontal content layout
-  Widget _buildTileButton({
-    required IconData icon,
-    required String label,
-    required Color color,
-    required VoidCallback onPressed,
-    Color textColor = Colors.white, // Default white text
-    bool isLarge = false,
-    bool isHorizontal = false,
-  }) {
-    final child = Semantics(
-      button: true,
-      label: label,
-      enabled: true,
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(isHorizontal ? 8 : 16),
-        child: Container(
-        padding: EdgeInsets.all(isHorizontal ? 20 : 16),
-        alignment: Alignment.center,
-        child: isHorizontal
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    icon,
-                    size: 32,
-                    color: textColor,
-                  ), // Use custom text color
-                  const SizedBox(width: 16),
-                  Flexible(
-                    child: Text(
-                      label,
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: textColor, // Use custom text color
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              )
-            : FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(icon, size: isLarge ? 80 : 56, color: textColor),
-                    const SizedBox(height: 12),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 200),
-                      child: Text(
-                        label,
-                        style: TextStyle(
-                          fontSize: isLarge ? 28 : 22,
-                          fontWeight: FontWeight.bold,
-                          color: textColor,
-                          height: 1.1,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-        ),
-      ),
-    );
-
-    if (isHorizontal) {
-      return Material(
-        color: color,
-        borderRadius: BorderRadius.circular(8),
-        child: child,
-      );
-    } else {
-      // Force square aspect ratio for tile effect
-      return AspectRatio(
-        aspectRatio: 1.0,
-        child: Material(
-          color: color,
-          borderRadius: BorderRadius.circular(16),
-          child: child,
-        ),
-      );
-    }
   }
 }
