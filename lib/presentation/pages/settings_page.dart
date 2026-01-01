@@ -291,59 +291,71 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             // Permissions Section
             _buildSectionHeader(l10n.permissions),
 
-            // Notification Permission
-            ListTile(
-              leading: const Icon(Icons.notifications_active),
-              title: Text(l10n.notificationPermission),
-              subtitle: Text(l10n.notificationPermissionDesc),
-              trailing: ElevatedButton(
-                onPressed: () async {
-                  final notification = ref.read(notificationServiceProvider);
-                  final granted = await notification
-                      .requestPostNotificationsPermission();
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          granted
-                              ? l10n.notificationPermissionGranted
-                              : l10n.notificationPermissionDenied,
-                        ),
-                        duration: const Duration(seconds: 2),
+            // Notification Permission with status
+            _PermissionStatusTile(
+              icon: Icons.notifications_active,
+              title: l10n.notificationPermission,
+              description: l10n.notificationPermissionDesc,
+              statusFuture: ref.read(permissionServiceProvider).canPostNotifications(),
+              grantedText: l10n.permissionStatusGranted,
+              deniedText: l10n.permissionStatusDenied,
+              buttonText: l10n.grantPermission,
+              onButtonPressed: () async {
+                final notification = ref.read(notificationServiceProvider);
+                final granted = await notification
+                    .requestPostNotificationsPermission();
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        granted
+                            ? l10n.notificationPermissionGranted
+                            : l10n.notificationPermissionDenied,
                       ),
-                    );
-                  }
-                },
-                child: Text(l10n.grantPermission),
-              ),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                  // Refresh the UI to show updated status
+                  setState(() {});
+                }
+              },
             ),
 
-            // Exact Alarm Permission
-            ListTile(
-              leading: const Icon(Icons.alarm),
-              title: Text(l10n.exactAlarmPermission),
-              subtitle: Text(l10n.exactAlarmPermissionDesc),
-              trailing: ElevatedButton(
-                onPressed: () async {
-                  final permissionService = ref.read(permissionServiceProvider);
-                  await permissionService.openExactAlarmSettings();
-                },
-                child: Text(l10n.settingsButton),
-              ),
+            // Exact Alarm Permission with status
+            _PermissionStatusTile(
+              icon: Icons.alarm,
+              title: l10n.exactAlarmPermission,
+              description: l10n.exactAlarmPermissionDesc,
+              statusFuture: ref.read(permissionServiceProvider).canScheduleExactAlarms(),
+              grantedText: l10n.exactAlarmStatusGranted,
+              deniedText: l10n.exactAlarmStatusDenied,
+              buttonText: l10n.settingsButton,
+              onButtonPressed: () async {
+                final permissionService = ref.read(permissionServiceProvider);
+                await permissionService.openExactAlarmSettings();
+                // Refresh the UI after returning from settings
+                if (context.mounted) {
+                  setState(() {});
+                }
+              },
             ),
 
-            // Battery Optimization
-            ListTile(
-              leading: const Icon(Icons.battery_saver),
-              title: Text(l10n.batteryOptimizationSettings),
-              subtitle: Text(l10n.batteryOptimizationDesc),
-              trailing: ElevatedButton(
-                onPressed: () async {
-                  final permissionService = ref.read(permissionServiceProvider);
-                  await permissionService.openBatteryOptimizationSettings();
-                },
-                child: Text(l10n.settingsButton),
-              ),
+            // Battery Optimization with status
+            _BatteryOptimizationTile(
+              title: l10n.batteryOptimizationSettings,
+              description: l10n.batteryOptimizationDesc,
+              statusFuture: ref.read(permissionServiceProvider).isBatteryOptimizationDisabled(),
+              disabledText: l10n.batteryOptimizationStatusDisabled,
+              enabledText: l10n.batteryOptimizationStatusEnabled,
+              buttonText: l10n.settingsButton,
+              onButtonPressed: () async {
+                final permissionService = ref.read(permissionServiceProvider);
+                await permissionService.openBatteryOptimizationSettings();
+                // Refresh the UI after returning from settings
+                if (context.mounted) {
+                  setState(() {});
+                }
+              },
             ),
 
             const Divider(),
@@ -897,6 +909,160 @@ class _CountdownDialogState extends State<_CountdownDialog> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Widget to display a permission status with icon, text and action button.
+class _PermissionStatusTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+  final Future<bool> statusFuture;
+  final String grantedText;
+  final String deniedText;
+  final String buttonText;
+  final VoidCallback onButtonPressed;
+
+  const _PermissionStatusTile({
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.statusFuture,
+    required this.grantedText,
+    required this.deniedText,
+    required this.buttonText,
+    required this.onButtonPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: statusFuture,
+      builder: (context, snapshot) {
+        final isGranted = snapshot.data ?? false;
+        final isLoading = snapshot.connectionState == ConnectionState.waiting;
+
+        return ListTile(
+          leading: Icon(icon),
+          title: Text(title),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(description),
+              const SizedBox(height: 4),
+              if (isLoading)
+                const SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else
+                Row(
+                  children: [
+                    Icon(
+                      isGranted ? Icons.check_circle : Icons.warning,
+                      size: 16,
+                      color: isGranted ? Colors.green : Colors.orange,
+                    ),
+                    const SizedBox(width: 4),
+                    Flexible(
+                      child: Text(
+                        isGranted ? grantedText : deniedText,
+                        style: TextStyle(
+                          color: isGranted ? Colors.green : Colors.orange,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+          isThreeLine: true,
+          trailing: ElevatedButton(
+            onPressed: onButtonPressed,
+            child: Text(buttonText),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Widget to display battery optimization status.
+/// Note: For battery optimization, "disabled" (true) is the recommended state.
+class _BatteryOptimizationTile extends StatelessWidget {
+  final String title;
+  final String description;
+  final Future<bool> statusFuture;
+  final String disabledText; // Battery optimization disabled (recommended)
+  final String enabledText; // Battery optimization enabled (may affect alarms)
+  final String buttonText;
+  final VoidCallback onButtonPressed;
+
+  const _BatteryOptimizationTile({
+    required this.title,
+    required this.description,
+    required this.statusFuture,
+    required this.disabledText,
+    required this.enabledText,
+    required this.buttonText,
+    required this.onButtonPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: statusFuture,
+      builder: (context, snapshot) {
+        // isDisabled = true means battery optimization is OFF (good for alarms)
+        final isDisabled = snapshot.data ?? false;
+        final isLoading = snapshot.connectionState == ConnectionState.waiting;
+
+        return ListTile(
+          leading: const Icon(Icons.battery_saver),
+          title: Text(title),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(description),
+              const SizedBox(height: 4),
+              if (isLoading)
+                const SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else
+                Row(
+                  children: [
+                    Icon(
+                      isDisabled ? Icons.check_circle : Icons.warning,
+                      size: 16,
+                      color: isDisabled ? Colors.green : Colors.orange,
+                    ),
+                    const SizedBox(width: 4),
+                    Flexible(
+                      child: Text(
+                        isDisabled ? disabledText : enabledText,
+                        style: TextStyle(
+                          color: isDisabled ? Colors.green : Colors.orange,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+          isThreeLine: true,
+          trailing: ElevatedButton(
+            onPressed: onButtonPressed,
+            child: Text(buttonText),
+          ),
+        );
+      },
     );
   }
 }

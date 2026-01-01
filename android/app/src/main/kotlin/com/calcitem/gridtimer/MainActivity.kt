@@ -9,6 +9,7 @@ import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import android.os.PowerManager
 import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import io.flutter.embedding.android.FlutterActivity
@@ -295,11 +296,19 @@ class MainActivity: FlutterActivity() {
                     }
                 }
 
+                "isIgnoringBatteryOptimizations" -> {
+                    try {
+                        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+                        val isIgnoring = powerManager.isIgnoringBatteryOptimizations(packageName)
+                        result.success(isIgnoring)
+                    } catch (e: Exception) {
+                        // If we can't determine, assume not ignoring (safer default)
+                        result.success(false)
+                    }
+                }
+
                 else -> result.notImplemented()
             }
         }
     }
 }
-
-
-

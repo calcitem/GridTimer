@@ -9,6 +9,13 @@ abstract interface class IPermissionService {
   /// Returns whether full-screen intents are permitted (Android 14+ special access).
   Future<bool> canUseFullScreenIntent();
 
+  /// Returns whether battery optimization is disabled for this app.
+  ///
+  /// On Android, this checks if the app is on the battery optimization whitelist
+  /// (i.e., system will not restrict background activity).
+  /// Returns true if battery optimization is disabled (recommended for alarms).
+  Future<bool> isBatteryOptimizationDisabled();
+
   /// Opens system settings pages (best-effort, platform-specific).
   Future<void> openNotificationSettings();
 

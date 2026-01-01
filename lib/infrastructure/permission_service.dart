@@ -84,6 +84,21 @@ class PermissionService implements IPermissionService {
   }
 
   @override
+  Future<bool> isBatteryOptimizationDisabled() async {
+    if (!Platform.isAndroid) return true;
+
+    try {
+      final result = await _systemSettingsChannel.invokeMethod<bool>(
+        'isIgnoringBatteryOptimizations',
+      );
+      return result ?? false;
+    } catch (e) {
+      // If we can't determine, assume optimization is enabled (safer default)
+      return false;
+    }
+  }
+
+  @override
   Future<void> openAppSettings() async {
     // app_settings is only available on Android and iOS
     if (Platform.isAndroid || Platform.isIOS) {
