@@ -127,19 +127,20 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       error: (_, _) async {}, // Skip on error
     );
 
-    // Now read the loaded settings
-    final settings = ref.read(appSettingsProvider).value;
-
-    if (settings == null) {
-      debugPrint(
-        'OnboardingPage: Settings not loaded, skipping privacy policy check',
-      );
-      return;
-    }
-
     // Wait for first frame to complete to avoid showing during build
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
+
+      // Re-read settings to get the latest state
+      // This prevents showing duplicate dialogs if this callback is registered multiple times
+      final settings = ref.read(appSettingsProvider).value;
+
+      if (settings == null) {
+        debugPrint(
+          'OnboardingPage: Settings not loaded, skipping privacy policy check',
+        );
+        return;
+      }
 
       // Check if Chinese locale and privacy policy not yet accepted
       final isChinese = _isChineseLocale(context);

@@ -79,17 +79,18 @@ class _GridPageState extends ConsumerState<GridPage> {
       error: (_, _) async {}, // Skip on error
     );
 
-    // Now read the loaded settings
-    final settings = ref.read(appSettingsProvider).value;
-
-    if (settings == null) {
-      debugPrint('GridPage: Settings not loaded, skipping disclaimer check');
-      return;
-    }
-
     // Wait for first frame to complete to avoid showing during build
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
+
+      // Re-read settings to get the latest state
+      // This prevents showing duplicate dialogs if this callback is registered multiple times
+      final settings = ref.read(appSettingsProvider).value;
+
+      if (settings == null) {
+        debugPrint('GridPage: Settings not loaded, skipping disclaimer check');
+        return;
+      }
 
       // Check if Chinese locale and privacy policy not yet accepted
       final isChinese = _isChineseLocale(context);
@@ -117,12 +118,16 @@ class _GridPageState extends ConsumerState<GridPage> {
 
       if (!mounted) return;
 
+      // Re-read settings again to get the latest state after privacy policy update
+      final latestSettings = ref.read(appSettingsProvider).value;
+      if (latestSettings == null) return;
+
       // Now check safety disclaimer
       debugPrint(
-        'GridPage: Safety disclaimer accepted = ${settings.safetyDisclaimerAccepted}',
+        'GridPage: Safety disclaimer accepted = ${latestSettings.safetyDisclaimerAccepted}',
       );
 
-      if (!settings.safetyDisclaimerAccepted) {
+      if (!latestSettings.safetyDisclaimerAccepted) {
         debugPrint('GridPage: Showing safety disclaimer dialog');
 
         final accepted = await SafetyDisclaimerDialog.show(context);
