@@ -6,7 +6,7 @@ class AppThemeTokens {
   final Color surface;
   final Color surfacePressed;
   final Color surfaceDisabled;
-  
+
   // Status-specific surfaces (for Timer Cards)
   final Color surfaceIdle;
   final Color surfaceRunning;
@@ -18,12 +18,12 @@ class AppThemeTokens {
   final Color textSecondary;
   final Color accent;
   final Color focusRing;
-  
+
   // Semantic status colors (for text/icons)
   final Color success;
   final Color warning;
   final Color danger;
-  
+
   // Specific UI elements
   final Color icon;
   final Color divider;
@@ -72,7 +72,7 @@ class SoftDarkTheme extends AppTheme {
     surface: Color(0xFF2C2C2C),
     surfacePressed: Color(0xFF3E3E3E),
     surfaceDisabled: Color(0xFF1E1E1E),
-    
+
     // Colored backgrounds for states (Standard Mode)
     surfaceIdle: Color(0xFF2C2C2C),
     surfaceRunning: Color(0xFF1B5E20), // Dark Green
@@ -107,7 +107,7 @@ class HighContrastTheme extends AppTheme {
   AppThemeTokens get tokens => const AppThemeTokens(
     bg: Color(0xFF000000),
     surface: Color(0xFF000000),
-    surfacePressed: Color(0xFF222222),
+    surfacePressed: Color(0xFF424242), // Lighter grey for visible feedback
     surfaceDisabled: Color(0xFF111111),
 
     // Unified background for states (High Contrast - rely on text/border)
@@ -132,7 +132,10 @@ class HighContrastTheme extends AppTheme {
   ThemeData get themeData => _buildThemeData(tokens, borderWidth: 2);
 }
 
-ThemeData _buildThemeData(AppThemeTokens tokens, {required double borderWidth}) {
+ThemeData _buildThemeData(
+  AppThemeTokens tokens, {
+  required double borderWidth,
+}) {
   final secondaryText = tokens.textPrimary.withValues(alpha: 0.7);
 
   return ThemeData(
@@ -170,7 +173,10 @@ ThemeData _buildThemeData(AppThemeTokens tokens, {required double borderWidth}) 
       ),
     ),
     iconTheme: IconThemeData(color: tokens.icon, size: 28),
-    dividerTheme: DividerThemeData(color: tokens.divider, thickness: borderWidth),
+    dividerTheme: DividerThemeData(
+      color: tokens.divider,
+      thickness: borderWidth,
+    ),
     listTileTheme: ListTileThemeData(
       contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       titleTextStyle: TextStyle(
@@ -188,7 +194,11 @@ ThemeData _buildThemeData(AppThemeTokens tokens, {required double borderWidth}) 
       tileColor: Colors.transparent,
     ),
     textTheme: TextTheme(
-      bodyLarge: TextStyle(fontSize: 20, color: tokens.textPrimary, height: 1.3),
+      bodyLarge: TextStyle(
+        fontSize: 20,
+        color: tokens.textPrimary,
+        height: 1.3,
+      ),
       bodyMedium: TextStyle(
         fontSize: 18,
         color: tokens.textPrimary,
