@@ -229,7 +229,15 @@ class _GridPageState extends ConsumerState<GridPage> {
           // Calculate number of rows based on crossAxisCount
           final rowCount = (9 / crossAxisCount).ceil();
           
-          return Column(
+          // Detect landscape orientation
+          final isLandscape = constraints.maxWidth > constraints.maxHeight;
+          
+          // In landscape, center the grid and limit its width to maintain better cell proportions
+          final double maxGridWidth = isLandscape 
+              ? constraints.maxHeight * 1.5  // Limit width to 1.5x height
+              : constraints.maxWidth;
+          
+          final gridContent = Column(
             children: List.generate(rowCount, (rowIndex) {
               return Expanded(
                 child: Row(
@@ -253,6 +261,18 @@ class _GridPageState extends ConsumerState<GridPage> {
               );
             }),
           );
+          
+          // If landscape and grid would be too wide, center it
+          if (isLandscape && maxGridWidth < constraints.maxWidth) {
+            return Center(
+              child: SizedBox(
+                width: maxGridWidth,
+                child: gridContent,
+              ),
+            );
+          }
+          
+          return gridContent;
         },
       ),
     );
