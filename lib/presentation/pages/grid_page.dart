@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
+import '../../core/config/environment_config.dart';
 import '../../core/domain/entities/timer_grid_set.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
@@ -158,9 +159,18 @@ class _GridPageState extends ConsumerState<GridPage> {
         backgroundColor: tokens.bg,
         foregroundColor: tokens.textPrimary,
         elevation: 0,
-        title: Text(
-          l10n.appTitle,
-          style: TextStyle(color: tokens.accent, fontWeight: FontWeight.bold),
+        title: GestureDetector(
+          onTap: () {
+            if (EnvironmentConfig.test) {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            }
+          },
+          child: Text(
+            l10n.appTitle,
+            style: TextStyle(color: tokens.accent, fontWeight: FontWeight.bold),
+          ),
         ),
         centerTitle: true,
         actions: [

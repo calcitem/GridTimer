@@ -385,13 +385,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               title: Text(l10n.license),
               subtitle: const Text('Apache License 2.0'),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const LicenseAgreementPage(),
-                  ),
-                );
-              },
+              onTap: EnvironmentConfig.test
+                  ? null
+                  : () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const LicenseAgreementPage(),
+                        ),
+                      );
+                    },
             ),
             // OSS Licenses (third-party libraries)
             ListTile(
@@ -399,13 +401,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               title: Text(l10n.ossLicenses),
               subtitle: Text(l10n.ossLicensesDesc),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {
-                showLicensePage(
-                  context: context,
-                  applicationName: 'GridTimer',
-                  applicationVersion: '1.0.0',
-                );
-              },
+              onTap: EnvironmentConfig.test
+                  ? null
+                  : () {
+                      showLicensePage(
+                        context: context,
+                        applicationName: 'GridTimer',
+                        applicationVersion: '1.0.0',
+                      );
+                    },
             ),
 
             const Divider(),
@@ -429,7 +433,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   ),
                   const SizedBox(height: 12),
                   ElevatedButton.icon(
-                    onPressed: () => _showResetConfirmDialog(ref),
+                    onPressed: EnvironmentConfig.test
+                        ? null
+                        : () => _showResetConfirmDialog(ref),
                     icon: const Icon(Icons.refresh),
                     label: Text(l10n.resetAllSettings),
                     style: ElevatedButton.styleFrom(
