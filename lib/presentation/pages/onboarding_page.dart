@@ -180,30 +180,39 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     required IconData icon,
     required Widget action,
   }) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 80, color: Theme.of(context).primaryColor),
-            const SizedBox(height: 32),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.headlineMedium,
-              textAlign: TextAlign.center,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(icon, size: 80, color: Theme.of(context).primaryColor),
+                    const SizedBox(height: 32),
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      description,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 48),
+                    action,
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 16),
-            Text(
-              description,
-              style: Theme.of(context).textTheme.bodyLarge,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 48),
-            action,
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
