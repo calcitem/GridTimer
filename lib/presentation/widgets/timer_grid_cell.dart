@@ -85,12 +85,12 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     }
 
     final color = _getStatusColor(widget.session.status);
-    final presetMinutes = (widget.config.presetDurationMs / 60000).round();
+    final presetDurationMs = widget.config.presetDurationMs;
 
     // Build semantic label for screen readers
     final String semanticLabel = _buildSemanticLabel(
       l10n,
-      presetMinutes,
+      presetDurationMs,
       remainingMs,
       showMinutesSeconds,
     );
@@ -132,7 +132,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                 child: _buildContent(
                   context,
                   l10n,
-                  presetMinutes,
+                  presetDurationMs,
                   remainingMs,
                   showMinutesSeconds,
                 ),
@@ -148,31 +148,46 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
   Widget _buildContent(
     BuildContext context,
     AppLocalizations l10n,
-    int presetMinutes,
+    int presetDurationMs,
     int remainingMs,
     bool showMinutesSeconds,
   ) {
     switch (widget.session.status) {
       case TimerStatus.idle:
         // Initial state: show preset duration
-        return _buildIdleContent(l10n, presetMinutes);
+        return _buildIdleContent(l10n, presetDurationMs);
       case TimerStatus.running:
       case TimerStatus.paused:
         // Running/paused state: show total and remaining time
         return _buildActiveContent(
           l10n,
-          presetMinutes,
+          presetDurationMs,
           remainingMs,
           showMinutesSeconds,
         );
       case TimerStatus.ringing:
         // Ringing state
-        return _buildRingingContent(l10n, presetMinutes);
+        return _buildRingingContent(l10n, presetDurationMs);
     }
   }
 
   /// Build idle state content: show preset duration
-  Widget _buildIdleContent(AppLocalizations l10n, int presetMinutes) {
+  Widget _buildIdleContent(AppLocalizations l10n, int presetDurationMs) {
+    final isWholeMinute = presetDurationMs % 60000 == 0;
+    final minutes = presetDurationMs ~/ 60000;
+    final seconds = (presetDurationMs % 60000) ~/ 1000;
+
+    final String displayValue;
+    final String? unitLabel;
+
+    if (isWholeMinute) {
+      displayValue = '$minutes';
+      unitLabel = l10n.minutes;
+    } else {
+      displayValue = '$minutes:${seconds.toString().padLeft(2, '0')}';
+      unitLabel = null; // No label for MM:SS format
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -184,7 +199,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Text(
-                  '$presetMinutes',
+                  displayValue,
                   style: const TextStyle(
                     fontSize: 120,
                     fontWeight: FontWeight.w900,
@@ -198,15 +213,16 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
             ),
           ),
         ),
-        // "minutes" label
-        Text(
-          l10n.minutes,
-          style: const TextStyle(
-            fontSize: 24, // Increased font size
-            fontWeight: FontWeight.bold,
-            color: Color(0xFFFFD600), // Bright yellow label, high contrast
+        // "minutes" label (only if whole minutes)
+        if (unitLabel != null)
+          Text(
+            unitLabel,
+            style: const TextStyle(
+              fontSize: 24, // Increased font size
+              fontWeight: FontWeight.bold,
+              color: Color(0xFFFFD600), // Bright yellow label, high contrast
+            ),
           ),
-        ),
       ],
     );
   }
@@ -214,7 +230,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
   /// Build running/paused state content: show total and remaining time
   Widget _buildActiveContent(
     AppLocalizations l10n,
-    int presetMinutes,
+    int presetDurationMs,
     int remainingMs,
     bool showMinutesSeconds,
   ) {
@@ -234,12 +250,20 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       displayTime = '$remainingSeconds';
     }
 
+    // Format preset duration label
+    final isWholeMinute = presetDurationMs % 60000 == 0;
+    final minutes = presetDurationMs ~/ 60000;
+    final seconds = (presetDurationMs % 60000) ~/ 1000;
+    final String presetLabel = isWholeMinute
+        ? '$minutes ${l10n.minutes}'
+        : '$minutes:${seconds.toString().padLeft(2, '0')}';
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // Top: preset duration label
         Text(
-          '$presetMinutes ${l10n.minutes}',
+          presetLabel,
           style: const TextStyle(
             fontSize: 22, // Increased font size
             fontWeight: FontWeight.bold,
@@ -287,13 +311,21 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
   }
 
   /// Build ringing state content: show time up
-  Widget _buildRingingContent(AppLocalizations l10n, int presetMinutes) {
+  Widget _buildRingingContent(AppLocalizations l10n, int presetDurationMs) {
+    // Format preset duration label
+    final isWholeMinute = presetDurationMs % 60000 == 0;
+    final minutes = presetDurationMs ~/ 60000;
+    final seconds = (presetDurationMs % 60000) ~/ 1000;
+    final String presetLabel = isWholeMinute
+        ? '$minutes ${l10n.minutes}'
+        : '$minutes:${seconds.toString().padLeft(2, '0')}';
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // Top: preset duration
         Text(
-          '$presetMinutes ${l10n.minutes}',
+          presetLabel,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -338,38 +370,46 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
   /// Build semantic label for screen readers
   String _buildSemanticLabel(
     AppLocalizations l10n,
-    int presetMinutes,
+    int presetDurationMs,
     int remainingMs,
     bool showMinutesSeconds,
   ) {
     final slotNumber = widget.slotIndex + 1;
+    final isWholeMinute = presetDurationMs % 60000 == 0;
+    final minutes = presetDurationMs ~/ 60000;
+    final seconds = (presetDurationMs % 60000) ~/ 1000;
+
+    final String presetText = isWholeMinute
+        ? '$minutes ${l10n.minutes}'
+        : '$minutes ${l10n.minutes} $seconds ${l10n.seconds}';
+
     switch (widget.session.status) {
       case TimerStatus.idle:
-        return '${l10n.gridSlot(slotNumber)}, $presetMinutes ${l10n.minutes}, ${l10n.timerIdle}';
+        return '${l10n.gridSlot(slotNumber)}, $presetText, ${l10n.timerIdle}';
       case TimerStatus.running:
         final remainingSeconds = (remainingMs / 1000).ceil();
         final String timeText;
         if (showMinutesSeconds) {
-          final minutes = remainingSeconds ~/ 60;
-          final seconds = remainingSeconds % 60;
-          timeText = '$minutes ${l10n.minutes} $seconds ${l10n.seconds}';
+          final rMinutes = remainingSeconds ~/ 60;
+          final rSeconds = remainingSeconds % 60;
+          timeText = '$rMinutes ${l10n.minutes} $rSeconds ${l10n.seconds}';
         } else {
           timeText = '$remainingSeconds ${l10n.seconds}';
         }
-        return '${l10n.gridSlot(slotNumber)}, $presetMinutes ${l10n.minutes}, ${l10n.timerRunning}, $timeText ${l10n.remainingSeconds}';
+        return '${l10n.gridSlot(slotNumber)}, $presetText, ${l10n.timerRunning}, $timeText ${l10n.remainingSeconds}';
       case TimerStatus.paused:
         final remainingSeconds = (remainingMs / 1000).ceil();
         final String timeText;
         if (showMinutesSeconds) {
-          final minutes = remainingSeconds ~/ 60;
-          final seconds = remainingSeconds % 60;
-          timeText = '$minutes ${l10n.minutes} $seconds ${l10n.seconds}';
+          final rMinutes = remainingSeconds ~/ 60;
+          final rSeconds = remainingSeconds % 60;
+          timeText = '$rMinutes ${l10n.minutes} $rSeconds ${l10n.seconds}';
         } else {
           timeText = '$remainingSeconds ${l10n.seconds}';
         }
-        return '${l10n.gridSlot(slotNumber)}, $presetMinutes ${l10n.minutes}, ${l10n.timerPaused}, $timeText ${l10n.remainingSeconds}';
+        return '${l10n.gridSlot(slotNumber)}, $presetText, ${l10n.timerPaused}, $timeText ${l10n.remainingSeconds}';
       case TimerStatus.ringing:
-        return '${l10n.gridSlot(slotNumber)}, $presetMinutes ${l10n.minutes}, ${l10n.timerRinging}, ${l10n.timeUp}';
+        return '${l10n.gridSlot(slotNumber)}, $presetText, ${l10n.timerRinging}, ${l10n.timeUp}';
     }
   }
 
