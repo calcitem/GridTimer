@@ -198,11 +198,14 @@ class _GridPageState extends ConsumerState<GridPage> {
           final (grid, sessions) = state;
           return _buildGrid(context, ref, grid, sessions);
         },
-        loading: () => Center(
-          child: CircularProgressIndicator(color: tokens.accent),
+        loading: () =>
+            Center(child: CircularProgressIndicator(color: tokens.accent)),
+        error: (error, stack) => Center(
+          child: Text(
+            l10n.errorText(error.toString()),
+            style: TextStyle(color: tokens.danger),
+          ),
         ),
-        error: (error, stack) =>
-            Center(child: Text(l10n.errorText(error.toString()), style: TextStyle(color: tokens.danger))),
       ),
     );
   }
@@ -228,15 +231,16 @@ class _GridPageState extends ConsumerState<GridPage> {
         builder: (context, constraints) {
           // Calculate number of rows based on crossAxisCount
           final rowCount = (9 / crossAxisCount).ceil();
-          
+
           // Detect landscape orientation
           final isLandscape = constraints.maxWidth > constraints.maxHeight;
-          
+
           // In landscape, center the grid and limit its width to maintain better cell proportions
-          final double maxGridWidth = isLandscape 
-              ? constraints.maxHeight * 1.5  // Limit width to 1.5x height
+          final double maxGridWidth = isLandscape
+              ? constraints.maxHeight *
+                    1.5 // Limit width to 1.5x height
               : constraints.maxWidth;
-          
+
           final gridContent = Column(
             children: List.generate(rowCount, (rowIndex) {
               return Expanded(
@@ -261,28 +265,21 @@ class _GridPageState extends ConsumerState<GridPage> {
               );
             }),
           );
-          
+
           // If landscape and grid would be too wide, center it
           if (isLandscape && maxGridWidth < constraints.maxWidth) {
             return Center(
-              child: SizedBox(
-                width: maxGridWidth,
-                child: gridContent,
-              ),
+              child: SizedBox(width: maxGridWidth, child: gridContent),
             );
           }
-          
+
           return gridContent;
         },
       ),
     );
   }
 
-  Widget _buildCell(
-    int index,
-    TimerGridSet grid,
-    List<TimerSession> sessions,
-  ) {
+  Widget _buildCell(int index, TimerGridSet grid, List<TimerSession> sessions) {
     final session = sessions.firstWhere(
       (s) => s.slotIndex == index,
       orElse: () => TimerSession(
