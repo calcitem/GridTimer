@@ -244,5 +244,12 @@
   "themeModeDesc": "选择视觉主题",
   "themeSoftDark": "默认护眼深色",
   "themeHighContrast": "高对比度模式",
-  "themeLightHighContrast": "日间高亮模式"
+  "themeLightHighContrast": "日间高亮模式",
+
+  "permissionStatusGranted": "已授予",
+  "permissionStatusDenied": "未授予",
+  "batteryOptimizationStatusDisabled": "已关闭（推荐）",
+  "batteryOptimizationStatusEnabled": "已开启（可能影响闹钟）",
+  "exactAlarmStatusGranted": "已允许",
+  "exactAlarmStatusDenied": "未允许（闹钟可能延迟）"
 }

@@ -1156,5 +1156,35 @@
   "themeLightHighContrast": "Light High Contrast",
   "@themeLightHighContrast": {
     "description": "Light high contrast theme name"
+  },
+
+  "permissionStatusGranted": "Granted",
+  "@permissionStatusGranted": {
+    "description": "Permission status: granted"
+  },
+
+  "permissionStatusDenied": "Not granted",
+  "@permissionStatusDenied": {
+    "description": "Permission status: denied/not granted"
+  },
+
+  "batteryOptimizationStatusDisabled": "Disabled (Recommended)",
+  "@batteryOptimizationStatusDisabled": {
+    "description": "Battery optimization status: disabled (good for alarms)"
+  },
+
+  "batteryOptimizationStatusEnabled": "Enabled (May affect alarms)",
+  "@batteryOptimizationStatusEnabled": {
+    "description": "Battery optimization status: enabled (may restrict background)"
+  },
+
+  "exactAlarmStatusGranted": "Allowed",
+  "@exactAlarmStatusGranted": {
+    "description": "Exact alarm permission status: allowed"
+  },
+
+  "exactAlarmStatusDenied": "Not allowed (May delay alarms)",
+  "@exactAlarmStatusDenied": {
+    "description": "Exact alarm permission status: not allowed"
   }
 }
