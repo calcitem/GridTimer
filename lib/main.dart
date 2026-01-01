@@ -95,8 +95,11 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
 
       // Listen for timer state changes and update widgets
       _setupWidgetUpdates();
-    } catch (e) {
+    } catch (e, st) {
       debugPrint('Initialization error: $e');
+      if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
+        Catcher2.reportCheckedError(e, st);
+      }
     }
   }
 
