@@ -87,12 +87,26 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     final color = _getStatusColor(widget.session.status);
     final presetMinutes = (widget.config.presetDurationMs / 60000).round();
 
-    return GestureDetector(
-      onTap: () => _handleTap(context, ref),
-      child: AnimatedBuilder(
-        animation: _flashController,
-        builder: (context, child) {
-          return Container(
+    // Build semantic label for screen readers
+    final String semanticLabel = _buildSemanticLabel(
+      l10n,
+      presetMinutes,
+      remainingMs,
+      showMinutesSeconds,
+    );
+    final String semanticHint = _buildSemanticHint(l10n);
+
+    return Semantics(
+      label: semanticLabel,
+      hint: semanticHint,
+      button: true,
+      enabled: true,
+      child: GestureDetector(
+        onTap: () => _handleTap(context, ref),
+        child: AnimatedBuilder(
+          animation: _flashController,
+          builder: (context, child) {
+            return Container(
             decoration: BoxDecoration(
               // Use animated color only when flash is enabled and ringing
               color: shouldFlash ? _colorAnimation.value : color,
@@ -116,8 +130,9 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
               remainingMs,
               showMinutesSeconds,
             ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -311,6 +326,58 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
         ),
       ],
     );
+  }
+
+  /// Build semantic label for screen readers
+  String _buildSemanticLabel(
+    AppLocalizations l10n,
+    int presetMinutes,
+    int remainingMs,
+    bool showMinutesSeconds,
+  ) {
+    final slotNumber = widget.slotIndex + 1;
+    switch (widget.session.status) {
+      case TimerStatus.idle:
+        return '${l10n.gridSlot(slotNumber)}, $presetMinutes ${l10n.minutes}, ${l10n.timerIdle}';
+      case TimerStatus.running:
+        final remainingSeconds = (remainingMs / 1000).ceil();
+        final String timeText;
+        if (showMinutesSeconds) {
+          final minutes = remainingSeconds ~/ 60;
+          final seconds = remainingSeconds % 60;
+          timeText = '$minutes ${l10n.minutes} $seconds ${l10n.seconds}';
+        } else {
+          timeText = '$remainingSeconds ${l10n.seconds}';
+        }
+        return '${l10n.gridSlot(slotNumber)}, $presetMinutes ${l10n.minutes}, ${l10n.timerRunning}, $timeText ${l10n.remainingSeconds}';
+      case TimerStatus.paused:
+        final remainingSeconds = (remainingMs / 1000).ceil();
+        final String timeText;
+        if (showMinutesSeconds) {
+          final minutes = remainingSeconds ~/ 60;
+          final seconds = remainingSeconds % 60;
+          timeText = '$minutes ${l10n.minutes} $seconds ${l10n.seconds}';
+        } else {
+          timeText = '$remainingSeconds ${l10n.seconds}';
+        }
+        return '${l10n.gridSlot(slotNumber)}, $presetMinutes ${l10n.minutes}, ${l10n.timerPaused}, $timeText ${l10n.remainingSeconds}';
+      case TimerStatus.ringing:
+        return '${l10n.gridSlot(slotNumber)}, $presetMinutes ${l10n.minutes}, ${l10n.timerRinging}, ${l10n.timeUp}';
+    }
+  }
+
+  /// Build semantic hint for screen readers
+  String _buildSemanticHint(AppLocalizations l10n) {
+    switch (widget.session.status) {
+      case TimerStatus.idle:
+        return l10n.actionStart;
+      case TimerStatus.running:
+        return '${l10n.actionPause}, ${l10n.actionReset}';
+      case TimerStatus.paused:
+        return '${l10n.actionResume}, ${l10n.actionReset}';
+      case TimerStatus.ringing:
+        return l10n.stopAlarm;
+    }
   }
 
   Color _getStatusColor(TimerStatus status) {
@@ -590,10 +657,14 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     bool isLarge = false,
     bool isHorizontal = false,
   }) {
-    final child = InkWell(
-      onTap: onPressed,
-      borderRadius: BorderRadius.circular(isHorizontal ? 8 : 16),
-      child: Container(
+    final child = Semantics(
+      button: true,
+      label: label,
+      enabled: true,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(isHorizontal ? 8 : 16),
+        child: Container(
         padding: EdgeInsets.all(isHorizontal ? 20 : 16),
         alignment: Alignment.center,
         child: isHorizontal
@@ -647,6 +718,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                   ],
                 ),
               ),
+        ),
       ),
     );
 

@@ -103,6 +103,7 @@ class _GridPageState extends ConsumerState<GridPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
+            tooltip: l10n.settings,
             onPressed: () {
               // Navigate to settings page
               Navigator.of(context).push(

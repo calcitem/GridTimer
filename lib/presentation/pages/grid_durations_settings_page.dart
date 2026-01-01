@@ -259,27 +259,31 @@ class _GridDurationsSettingsPageState
             const SizedBox(width: 16),
             // Input field
             Expanded(
-              child: TextField(
-                controller: _controllers[index],
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                decoration: InputDecoration(
-                  labelText: l10n.seconds,
-                  border: const OutlineInputBorder(),
-                  isDense: true,
-                  suffixText: l10n.seconds,
+              child: Semantics(
+                label: '${l10n.gridSlot(index + 1)}, ${l10n.seconds}',
+                textField: true,
+                child: TextField(
+                  controller: _controllers[index],
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  decoration: InputDecoration(
+                    labelText: l10n.seconds,
+                    border: const OutlineInputBorder(),
+                    isDense: true,
+                    suffixText: l10n.seconds,
+                  ),
+                  onChanged: (value) {
+                    // Real-time preview
+                    final seconds = int.tryParse(value);
+                    if (seconds != null && seconds > 0) {
+                      setState(() {
+                        _durations[index] = seconds;
+                      });
+                    }
+                  },
                 ),
-                onChanged: (value) {
-                  // Real-time preview
-                  final seconds = int.tryParse(value);
-                  if (seconds != null && seconds > 0) {
-                    setState(() {
-                      _durations[index] = seconds;
-                    });
-                  }
-                },
               ),
             ),
             const SizedBox(width: 16),
@@ -300,4 +304,3 @@ class _GridDurationsSettingsPageState
     );
   }
 }
-

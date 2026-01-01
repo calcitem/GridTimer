@@ -308,17 +308,26 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Slider(
-                    value: settings.ttsVolume,
-                    min: 0.0,
-                    max: 1.0,
-                    divisions: 100,
-                    label: '${(settings.ttsVolume * 100).round()}%',
-                    onChanged: (value) {
-                      ref
-                          .read(appSettingsProvider.notifier)
-                          .updateTtsVolume(value);
-                    },
+                  Semantics(
+                    label: l10n.volume,
+                    value: '${(settings.ttsVolume * 100).round()}%',
+                    increasedValue:
+                        '${((settings.ttsVolume * 100).round() + 1)}%',
+                    decreasedValue:
+                        '${((settings.ttsVolume * 100).round() - 1)}%',
+                    slider: true,
+                    child: Slider(
+                      value: settings.ttsVolume,
+                      min: 0.0,
+                      max: 1.0,
+                      divisions: 100,
+                      label: '${(settings.ttsVolume * 100).round()}%',
+                      onChanged: (value) {
+                        ref
+                            .read(appSettingsProvider.notifier)
+                            .updateTtsVolume(value);
+                      },
+                    ),
                   ),
                   Text(
                     l10n.ttsVolumeDesc,
@@ -362,17 +371,22 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Slider(
-                    value: settings.ttsSpeechRate,
-                    min: 0.0,
-                    max: 1.0,
-                    divisions: 100,
-                    label: _getSpeechRateLabel(settings.ttsSpeechRate),
-                    onChanged: (value) {
-                      ref
-                          .read(appSettingsProvider.notifier)
-                          .updateTtsSpeechRate(value);
-                    },
+                  Semantics(
+                    label: l10n.ttsSpeechRate,
+                    value: _getSpeechRateLabel(settings.ttsSpeechRate),
+                    slider: true,
+                    child: Slider(
+                      value: settings.ttsSpeechRate,
+                      min: 0.0,
+                      max: 1.0,
+                      divisions: 100,
+                      label: _getSpeechRateLabel(settings.ttsSpeechRate),
+                      onChanged: (value) {
+                        ref
+                            .read(appSettingsProvider.notifier)
+                            .updateTtsSpeechRate(value);
+                      },
+                    ),
                   ),
                   Text(
                     l10n.ttsSpeechRateDesc,
@@ -416,17 +430,22 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Slider(
-                    value: settings.ttsPitch,
-                    min: 0.5,
-                    max: 2.0,
-                    divisions: 150,
-                    label: _getPitchLabel(settings.ttsPitch),
-                    onChanged: (value) {
-                      ref
-                          .read(appSettingsProvider.notifier)
-                          .updateTtsPitch(value);
-                    },
+                  Semantics(
+                    label: l10n.ttsPitch,
+                    value: _getPitchLabel(settings.ttsPitch),
+                    slider: true,
+                    child: Slider(
+                      value: settings.ttsPitch,
+                      min: 0.5,
+                      max: 2.0,
+                      divisions: 150,
+                      label: _getPitchLabel(settings.ttsPitch),
+                      onChanged: (value) {
+                        ref
+                            .read(appSettingsProvider.notifier)
+                            .updateTtsPitch(value);
+                      },
+                    ),
                   ),
                   Text(
                     l10n.ttsPitchDesc,
