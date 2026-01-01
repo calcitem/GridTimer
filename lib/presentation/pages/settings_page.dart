@@ -71,6 +71,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     final l10n = l10nNullable;
     final currentLocale = ref.watch(localeProvider);
     final settingsAsync = ref.watch(appSettingsProvider);
+    final tokens = ref.watch(themeProvider).tokens;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settings)),
@@ -346,14 +347,14 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             _buildSectionHeader(l10n.about),
             // Safety Disclaimer
             ListTile(
-              leading: const Icon(Icons.info_outline, color: Colors.orange),
+              leading: Icon(Icons.info_outline, color: tokens.warning),
               title: Text(l10n.aboutDisclaimer),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () => SafetyDisclaimerDialog.show(context),
             ),
             // Privacy Policy
             ListTile(
-              leading: const Icon(Icons.privacy_tip, color: Color(0xFFFFD600)),
+              leading: Icon(Icons.privacy_tip, color: tokens.accent),
               title: Text(l10n.privacyPolicy),
               trailing: const Icon(Icons.open_in_new, size: 16),
               onTap: () => _openPrivacyPolicy(currentLocale),
@@ -402,9 +403,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   const SizedBox(height: 8),
                   Text(
                     l10n.resetAllSettingsDesc,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodySmall?.copyWith(color: Colors.white70),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: tokens.textSecondary,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   ElevatedButton.icon(
@@ -412,8 +413,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     icon: const Icon(Icons.refresh),
                     label: Text(l10n.resetAllSettings),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      foregroundColor: Colors.white,
+                      backgroundColor: tokens.warning,
+                      foregroundColor: tokens.bg,
                     ),
                   ),
                 ],
@@ -427,7 +428,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
               // 10-Second Test Timer
               ListTile(
-                leading: const Icon(Icons.timer_10, color: Colors.blue),
+                leading: Icon(Icons.timer_10, color: tokens.focusRing),
                 title: const Text('10s Test Timer (Debug)'),
                 subtitle: const Text('Start a real 10-second timer'),
                 trailing: ElevatedButton(
@@ -438,7 +439,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
               // Audio Test (for debugging)
               ListTile(
-                leading: const Icon(Icons.bug_report, color: Colors.orange),
+                leading: Icon(Icons.bug_report, color: tokens.warning),
                 title: const Text('Audio Test (Debug)'),
                 subtitle: const Text('Diagnose sound issues'),
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
@@ -454,7 +455,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               // Catcher Error Test (only shown when catcher is enabled)
               if (EnvironmentConfig.catcher)
                 ListTile(
-                  leading: const Icon(Icons.error_outline, color: Colors.red),
+                  leading: Icon(Icons.error_outline, color: tokens.danger),
                   title: const Text('Error Test (Debug)'),
                   subtitle: const Text('Test error reporting system'),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
