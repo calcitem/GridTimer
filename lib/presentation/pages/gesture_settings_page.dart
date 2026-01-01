@@ -53,17 +53,13 @@ class GestureSettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final l10n = l10nNullable;
     final settingsAsync = ref.watch(appSettingsProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.gestureSettings),
-      ),
+      appBar: AppBar(title: Text(l10n.gestureSettings)),
       body: settingsAsync.when(
         data: (settings) => ListView(
           children: [
@@ -95,22 +91,20 @@ class GestureSettingsPage extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
               child: Text(
                 l10n.gestureActions,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
 
             // Gesture Type Cards
             ...AlarmGestureType.values.map((gestureType) {
-              final currentAction = settings.gestureActions[gestureType] ??
+              final currentAction =
+                  settings.gestureActions[gestureType] ??
                   AlarmGestureAction.none;
 
               return Card(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: ExpansionTile(
                   leading: Icon(
                     _getGestureIcon(gestureType),
@@ -177,8 +171,8 @@ class GestureSettingsPage extends ConsumerWidget {
                     Text(
                       l10n.shakeSensitivity,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Row(
@@ -194,12 +188,8 @@ class GestureSettingsPage extends ConsumerWidget {
                               const SizedBox(height: 4),
                               Text(
                                 settings.shakeSensitivity.toStringAsFixed(1),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                style: Theme.of(context).textTheme.bodyLarge
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 4),
                               Text(
@@ -214,15 +204,19 @@ class GestureSettingsPage extends ConsumerWidget {
                           child: Semantics(
                             label: l10n.shakeSensitivity,
                             value: settings.shakeSensitivity.toStringAsFixed(1),
-                            increasedValue: (settings.shakeSensitivity + 0.5).toStringAsFixed(1),
-                            decreasedValue: (settings.shakeSensitivity - 0.5).toStringAsFixed(1),
+                            increasedValue: (settings.shakeSensitivity + 0.5)
+                                .toStringAsFixed(1),
+                            decreasedValue: (settings.shakeSensitivity - 0.5)
+                                .toStringAsFixed(1),
                             slider: true,
                             child: Slider(
                               value: settings.shakeSensitivity,
                               min: 1.0,
                               max: 5.0,
                               divisions: 8,
-                              label: settings.shakeSensitivity.toStringAsFixed(1),
+                              label: settings.shakeSensitivity.toStringAsFixed(
+                                1,
+                              ),
                               onChanged: (value) {
                                 ref
                                     .read(appSettingsProvider.notifier)
@@ -235,9 +229,9 @@ class GestureSettingsPage extends ConsumerWidget {
                     ),
                     Text(
                       l10n.shakeSensitivityDesc,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white70,
-                          ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: Colors.white70),
                     ),
                   ],
                 ),
@@ -247,9 +241,8 @@ class GestureSettingsPage extends ConsumerWidget {
           ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(
-          child: Text(l10n.errorText(err.toString())),
-        ),
+        error: (err, stack) =>
+            Center(child: Text(l10n.errorText(err.toString()))),
       ),
     );
   }
