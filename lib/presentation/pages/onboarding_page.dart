@@ -344,7 +344,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 await service.requestPostNotificationsPermission();
                 await _checkPermissions();
               },
-              icon: const Icon(Icons.check),
+              icon: const Icon(Icons.notification_add),
               label: Text(l10n.onboardingGrantNotification),
             ),
     );
