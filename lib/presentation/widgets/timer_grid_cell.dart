@@ -204,45 +204,57 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       unitLabel = null;
     }
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Center(
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Text(
-                  displayValue,
-                  style: TextStyle(
-                    fontSize: 120,
-                    fontWeight: FontWeight.w900,
-                    fontFamily: 'monospace',
-                    color: tokens.textPrimary,
-                    height: 1.0,
-                    fontFeatures: const [FontFeature.tabularFigures()],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Detect if cell is too flat (landscape orientation)
+        final isFlat = constraints.maxWidth > constraints.maxHeight * 1.2;
+        
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: isFlat ? 1 : 3,
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Text(
+                      displayValue,
+                      style: TextStyle(
+                        fontSize: 120,
+                        fontWeight: FontWeight.w900,
+                        fontFamily: 'monospace',
+                        color: tokens.textPrimary,
+                        height: 1.0,
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-        if (unitLabel != null)
-          Text(
-            unitLabel,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: tokens.textSecondary,
-            ),
-          ),
-        _buildStatusRow(
-          icon: Icons.timer_outlined,
-          text: l10n.timerIdle,
-          tokens: tokens,
-        ),
-      ],
+            if (unitLabel != null && !isFlat)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  unitLabel,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: tokens.textSecondary,
+                  ),
+                ),
+              ),
+            if (!isFlat)
+              _buildStatusRow(
+                icon: Icons.timer_outlined,
+                text: l10n.timerIdle,
+                tokens: tokens,
+              ),
+          ],
+        );
+      },
     );
   }
 
@@ -273,46 +285,59 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
         ? '$minutes ${l10n.minutes}'
         : '$minutes:${seconds.toString().padLeft(2, '0')}';
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          presetLabel,
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'monospace',
-            color: tokens.textSecondary,
-            fontFeatures: const [FontFeature.tabularFigures()],
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Detect if cell is too flat (landscape orientation)
+        final isFlat = constraints.maxWidth > constraints.maxHeight * 1.2;
+        
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (!isFlat)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
-                  displayTime,
+                  presetLabel,
                   style: TextStyle(
-                    fontSize: 100,
-                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                     fontFamily: 'monospace',
-                    color: tokens.textPrimary, // High contrast
-                    height: 1.0,
+                    color: tokens.textSecondary,
                     fontFeatures: const [FontFeature.tabularFigures()],
                   ),
                 ),
               ),
+            Expanded(
+              flex: isFlat ? 1 : 3,
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Text(
+                      displayTime,
+                      style: TextStyle(
+                        fontSize: 100,
+                        fontWeight: FontWeight.w900,
+                        fontFamily: 'monospace',
+                        color: tokens.textPrimary, // High contrast
+                        height: 1.0,
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-        _buildStatusRow(
-          icon: isPaused ? Icons.pause : Icons.play_arrow,
-          text: isPaused ? l10n.timerPaused : l10n.timerRunning,
-          tokens: tokens,
-        ),
-      ],
+            if (!isFlat)
+              _buildStatusRow(
+                icon: isPaused ? Icons.pause : Icons.play_arrow,
+                text: isPaused ? l10n.timerPaused : l10n.timerRunning,
+                tokens: tokens,
+              ),
+          ],
+        );
+      },
     );
   }
 
@@ -324,44 +349,57 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
         ? '$minutes ${l10n.minutes}'
         : '$minutes:${seconds.toString().padLeft(2, '0')}';
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          presetLabel,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'monospace',
-            color: tokens.textPrimary,
-            fontFeatures: const [FontFeature.tabularFigures()],
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Detect if cell is too flat (landscape orientation)
+        final isFlat = constraints.maxWidth > constraints.maxHeight * 1.2;
+        
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (!isFlat)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
-                  l10n.timeUp,
+                  presetLabel,
                   style: TextStyle(
-                    fontSize: 60,
-                    fontWeight: FontWeight.w900,
-                    color: tokens.focusRing,
-                    height: 1.0,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'monospace',
+                    color: tokens.textPrimary,
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
+                ),
+              ),
+            Expanded(
+              flex: isFlat ? 1 : 3,
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      l10n.timeUp,
+                      style: TextStyle(
+                        fontSize: 60,
+                        fontWeight: FontWeight.w900,
+                        color: tokens.focusRing,
+                        height: 1.0,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-        _buildStatusRow(
-          icon: Icons.touch_app,
-          text: l10n.clickToStop,
-          tokens: tokens,
-        ),
-      ],
+            if (!isFlat)
+              _buildStatusRow(
+                icon: Icons.touch_app,
+                text: l10n.clickToStop,
+                tokens: tokens,
+              ),
+          ],
+        );
+      },
     );
   }
 
