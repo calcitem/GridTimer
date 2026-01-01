@@ -113,8 +113,22 @@ class PermissionService implements IPermissionService {
       return;
     }
 
-    // app_settings is only available on Android and iOS
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (Platform.isAndroid) {
+      // Use native implementation for better MIUI/OEM compatibility
+      try {
+        await _systemSettingsChannel.invokeMethod<void>(
+          'openBatteryOptimizationSettings',
+        );
+      } catch (e) {
+        // Fallback to app_settings if native method fails
+        debugPrint(
+          'Native openBatteryOptimizationSettings failed, using fallback: $e',
+        );
+        await AppSettings.openAppSettings(
+          type: AppSettingsType.batteryOptimization,
+        );
+      }
+    } else if (Platform.isIOS) {
       await AppSettings.openAppSettings(
         type: AppSettingsType.batteryOptimization,
       );

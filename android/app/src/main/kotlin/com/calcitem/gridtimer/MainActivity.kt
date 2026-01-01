@@ -335,6 +335,103 @@ class MainActivity: FlutterActivity() {
                     result.success(isMiuiDevice())
                 }
 
+                "openBatteryOptimizationSettings" -> {
+                    // Try multiple intents for battery optimization settings,
+                    // including MIUI-specific ones
+                    val intentsToTry = mutableListOf<Intent>()
+
+                    // For MIUI devices, try MIUI-specific intents first
+                    if (isMiuiDevice()) {
+                        // MIUI app battery saver settings (most direct)
+                        intentsToTry.add(Intent().apply {
+                            setClassName(
+                                "com.miui.powerkeeper",
+                                "com.miui.powerkeeper.ui.HiddenAppsConfigActivity"
+                            )
+                            putExtra("package_name", packageName)
+                            putExtra("package_label", applicationInfo.loadLabel(packageManager))
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        })
+
+                        // MIUI Security Center - Battery settings
+                        intentsToTry.add(Intent().apply {
+                            setClassName(
+                                "com.miui.securitycenter",
+                                "com.miui.permcenter.autostart.AutoStartManagementActivity"
+                            )
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        })
+
+                        // MIUI Power Keeper main activity
+                        intentsToTry.add(Intent().apply {
+                            setClassName(
+                                "com.miui.powerkeeper",
+                                "com.miui.powerkeeper.ui.HiddenAppsContainerManagementActivity"
+                            )
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        })
+                    }
+
+                    // Standard Android: Request to ignore battery optimizations (shows a dialog)
+                    intentsToTry.add(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                        data = Uri.parse("package:$packageName")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    })
+
+                    // Standard Android: Battery optimization settings list
+                    intentsToTry.add(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    })
+
+                    // Fallback: App details settings (user can find battery settings there)
+                    intentsToTry.add(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.parse("package:$packageName")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    })
+
+                    var success = false
+                    var lastError: Exception? = null
+
+                    for (intent in intentsToTry) {
+                        try {
+                            // Check if there's an activity to handle this intent
+                            if (intent.resolveActivity(packageManager) != null) {
+                                startActivity(intent)
+                                success = true
+                                break
+                            }
+                        } catch (e: Exception) {
+                            lastError = e
+                            // Try next intent
+                        }
+                    }
+
+                    // If resolveActivity didn't find anything, try starting anyway
+                    // (some intents work even when resolveActivity returns null)
+                    if (!success) {
+                        for (intent in intentsToTry) {
+                            try {
+                                startActivity(intent)
+                                success = true
+                                break
+                            } catch (e: Exception) {
+                                lastError = e
+                                // Try next intent
+                            }
+                        }
+                    }
+
+                    if (success) {
+                        result.success(null)
+                    } else {
+                        result.error(
+                            "open_failed",
+                            "Could not open battery optimization settings: ${lastError?.message}",
+                            null
+                        )
+                    }
+                }
+
                 else -> result.notImplemented()
             }
         }
