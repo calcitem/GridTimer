@@ -340,9 +340,16 @@ class MainActivity: FlutterActivity() {
                     // including MIUI-specific ones
                     val intentsToTry = mutableListOf<Intent>()
 
-                    // For MIUI devices, try MIUI-specific intents first
+                    // Standard Android: Request to ignore battery optimizations (shows a dialog)
+                    // This is the most reliable method and works on most devices including MIUI
+                    intentsToTry.add(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                        data = Uri.parse("package:$packageName")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    })
+
+                    // For MIUI devices, add MIUI-specific intents as fallbacks
                     if (isMiuiDevice()) {
-                        // MIUI app battery saver settings (most direct)
+                        // MIUI app-specific battery saver settings
                         intentsToTry.add(Intent().apply {
                             setClassName(
                                 "com.miui.powerkeeper",
@@ -353,16 +360,13 @@ class MainActivity: FlutterActivity() {
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         })
 
-                        // MIUI Security Center - Battery settings
+                        // MIUI Battery settings main page
                         intentsToTry.add(Intent().apply {
-                            setClassName(
-                                "com.miui.securitycenter",
-                                "com.miui.permcenter.autostart.AutoStartManagementActivity"
-                            )
+                            action = "miui.intent.action.POWER_SAVE_MODE_SETTING"
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         })
 
-                        // MIUI Power Keeper main activity
+                        // MIUI Power Keeper app list
                         intentsToTry.add(Intent().apply {
                             setClassName(
                                 "com.miui.powerkeeper",
@@ -371,12 +375,6 @@ class MainActivity: FlutterActivity() {
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         })
                     }
-
-                    // Standard Android: Request to ignore battery optimizations (shows a dialog)
-                    intentsToTry.add(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                        data = Uri.parse("package:$packageName")
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    })
 
                     // Standard Android: Battery optimization settings list
                     intentsToTry.add(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
@@ -394,30 +392,12 @@ class MainActivity: FlutterActivity() {
 
                     for (intent in intentsToTry) {
                         try {
-                            // Check if there's an activity to handle this intent
-                            if (intent.resolveActivity(packageManager) != null) {
-                                startActivity(intent)
-                                success = true
-                                break
-                            }
+                            startActivity(intent)
+                            success = true
+                            break
                         } catch (e: Exception) {
                             lastError = e
                             // Try next intent
-                        }
-                    }
-
-                    // If resolveActivity didn't find anything, try starting anyway
-                    // (some intents work even when resolveActivity returns null)
-                    if (!success) {
-                        for (intent in intentsToTry) {
-                            try {
-                                startActivity(intent)
-                                success = true
-                                break
-                            } catch (e: Exception) {
-                                lastError = e
-                                // Try next intent
-                            }
                         }
                     }
 
