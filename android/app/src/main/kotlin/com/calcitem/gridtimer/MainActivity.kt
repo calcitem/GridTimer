@@ -1,6 +1,8 @@
 package com.calcitem.gridtimer
 
+import android.app.AlarmManager
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
@@ -231,6 +233,116 @@ class MainActivity: FlutterActivity() {
                         result.success(null)
                     } catch (e: Exception) {
                         result.error("stop_service_failed", e.toString(), null)
+                    }
+                }
+
+                "scheduleAlarmSound" -> {
+                    val triggerAtEpochMs = call.argument<Long>("triggerAtEpochMs")
+                    val channelId = call.argument<String>("channelId")
+                    val requestCode = call.argument<Int>("requestCode")
+                    val loop = call.argument<Boolean>("loop") ?: true
+                    val soundFallback = call.argument<String>("soundFallback") ?: "raw"
+
+                    if (triggerAtEpochMs == null || triggerAtEpochMs <= 0L) {
+                        result.error("invalid_args", "triggerAtEpochMs must be > 0", null)
+                        return@setMethodCallHandler
+                    }
+                    if (requestCode == null) {
+                        result.error("invalid_args", "requestCode must not be null", null)
+                        return@setMethodCallHandler
+                    }
+                    if (channelId.isNullOrBlank()) {
+                        result.error("invalid_args", "channelId must not be empty", null)
+                        return@setMethodCallHandler
+                    }
+
+                    try {
+                        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+                        val fireIntent = Intent(this, AlarmSoundReceiver::class.java).apply {
+                            action = AlarmSoundReceiver.ACTION_FIRE
+                            putExtra(AlarmSoundReceiver.EXTRA_CHANNEL_ID, channelId)
+                            putExtra(AlarmSoundReceiver.EXTRA_LOOP, loop)
+                            putExtra(AlarmSoundReceiver.EXTRA_SOUND, soundFallback)
+                        }
+                        val piFlags =
+                            PendingIntent.FLAG_UPDATE_CURRENT or
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+                        val firePendingIntent = PendingIntent.getBroadcast(
+                            this,
+                            requestCode,
+                            fireIntent,
+                            piFlags
+                        )
+
+                        // Cancel any previous schedule with the same PendingIntent.
+                        try {
+                            alarmManager.cancel(firePendingIntent)
+                        } catch (_: Exception) {
+                            // Ignore.
+                        }
+
+                        // For alarmClock, provide an intent that opens the app when users tap "next alarm".
+                        val showIntent = Intent(this, MainActivity::class.java).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        }
+                        val showPendingIntent = PendingIntent.getActivity(
+                            this,
+                            requestCode,
+                            showIntent,
+                            piFlags
+                        )
+
+                        // Prefer alarmClock for lockscreen reliability (works well on OEM ROMs).
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            val info = AlarmManager.AlarmClockInfo(triggerAtEpochMs, showPendingIntent)
+                            alarmManager.setAlarmClock(info, firePendingIntent)
+                        } else {
+                            @Suppress("DEPRECATION")
+                            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtEpochMs, firePendingIntent)
+                        }
+
+                        val info = HashMap<String, Any?>()
+                        info["scheduled"] = true
+                        info["triggerAtEpochMs"] = triggerAtEpochMs
+                        info["channelId"] = channelId
+                        info["requestCode"] = requestCode
+                        info["loop"] = loop
+                        result.success(info)
+                    } catch (e: Exception) {
+                        result.error("schedule_failed", e.toString(), null)
+                    }
+                }
+
+                "cancelAlarmSound" -> {
+                    val requestCode = call.argument<Int>("requestCode")
+                    if (requestCode == null) {
+                        result.error("invalid_args", "requestCode must not be null", null)
+                        return@setMethodCallHandler
+                    }
+                    try {
+                        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                        val intent = Intent(this, AlarmSoundReceiver::class.java).apply {
+                            action = AlarmSoundReceiver.ACTION_FIRE
+                        }
+                        val piFlags =
+                            PendingIntent.FLAG_UPDATE_CURRENT or
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+                        val pendingIntent = PendingIntent.getBroadcast(
+                            this,
+                            requestCode,
+                            intent,
+                            piFlags
+                        )
+                        alarmManager.cancel(pendingIntent)
+                        try {
+                            pendingIntent.cancel()
+                        } catch (_: Exception) {
+                            // Ignore.
+                        }
+                        result.success(null)
+                    } catch (e: Exception) {
+                        result.error("cancel_failed", e.toString(), null)
                     }
                 }
 

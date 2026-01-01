@@ -17,6 +17,7 @@ class GestureService implements IGestureService {
 
   bool _isMonitoring = false;
   double _shakeSensitivity = 2.5;
+  double? _lastVolume;
 
   /// Check if current platform supports sensors (mobile platforms only)
   /// Note: sensors_plus supports both Android and iOS
@@ -53,11 +54,27 @@ class GestureService implements IGestureService {
       VolumeController.instance.showSystemUI = false;
       VolumeController.instance.addListener((volume) {
         // Volume button was pressed (we don't care about the actual volume value)
-        if (_isMonitoring) {
-          // Emit both volume up and down events
-          // Note: We can't distinguish which button was pressed on most devices
+        final last = _lastVolume;
+        _lastVolume = volume;
+
+        if (!_isMonitoring) return;
+
+        // Best-effort: infer which button was pressed by comparing the new volume value.
+        // Some devices/ROMs may not report direction reliably; treat "unknown" as volumeUp.
+        if (last == null) {
           _gestureController.add(AlarmGestureType.volumeUp);
+          return;
         }
+
+        const eps = 0.0001;
+        final delta = volume - last;
+        if (delta.abs() < eps) {
+          _gestureController.add(AlarmGestureType.volumeUp);
+          return;
+        }
+        _gestureController.add(
+          delta > 0 ? AlarmGestureType.volumeUp : AlarmGestureType.volumeDown,
+        );
       });
     } catch (e) {
       debugPrint('GestureService init error: $e');

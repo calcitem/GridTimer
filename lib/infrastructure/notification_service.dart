@@ -20,6 +20,7 @@ class NotificationService implements INotificationService {
 
   static const String _channelGroupId = 'gt.group.timers';
   static const String _actionIdStop = 'gt.action.stop';
+  static const String _silentTimeUpChannelId = 'gt.alarm.timeup.silent.v1';
 
   @override
   Future<void> init() async {
@@ -140,6 +141,42 @@ class NotificationService implements INotificationService {
       }
     }
 
+    // Create a dedicated silent channel for alarm notifications.
+    //
+    // IMPORTANT:
+    // - We intentionally keep time-up notifications silent to avoid double-playing sound.
+    // - Actual alarm sound on Android is produced by a native foreground service that reads
+    //   the user-configured ringtone from the "Timer Alarm (default)" channel settings.
+    //
+    // Users should configure alarm sound via 'gt.alarm.timeup.<soundKey>.v2' channels.
+    final silentChannelWithGroup = AndroidNotificationChannel(
+      _silentTimeUpChannelId,
+      'Timer Alarm',
+      description: 'Time up notifications (silent; sound is played separately)',
+      importance: Importance.max,
+      playSound: false,
+      enableVibration: true,
+      groupId: groupCreated ? _channelGroupId : null,
+    );
+
+    try {
+      await androidPlugin.createNotificationChannel(silentChannelWithGroup);
+    } catch (e) {
+      if (groupCreated) {
+        const silentChannelWithoutGroup = AndroidNotificationChannel(
+          _silentTimeUpChannelId,
+          'Timer Alarm',
+          description: 'Time up notifications (silent; sound is played separately)',
+          importance: Importance.max,
+          playSound: false,
+          enableVibration: true,
+        );
+        await androidPlugin.createNotificationChannel(silentChannelWithoutGroup);
+      } else {
+        rethrow;
+      }
+    }
+
     // Create general channel (silent)
     // Also use conditional groupId based on whether group creation succeeded.
     final generalChannel = AndroidNotificationChannel(
@@ -224,8 +261,9 @@ class NotificationService implements INotificationService {
     if (session.endAtEpochMs == null) return;
 
     final notificationId = 1000 + session.slotIndex;
-    // Use v2 channel (user-configured on Android 8+).
-    final channelId = 'gt.alarm.timeup.${config.soundKey}.v2';
+    // Use a dedicated silent channel to avoid double-playing sound on Android.
+    // Alarm sound is handled by a native foreground service.
+    final channelId = _silentTimeUpChannelId;
 
     // Cancel existing notifications with the same ID. Otherwise Android may treat this as an
     // update and suppress alerting behaviour (sound/vibration).
@@ -275,10 +313,7 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      playSound: true,
-      sound: RawResourceAndroidNotificationSound(
-        _soundKeyToResource(config.soundKey),
-      ),
+      playSound: false,
       enableVibration: enableVibration,
       // Ensure this notification can alert.
       onlyAlertOnce: false,
@@ -374,8 +409,8 @@ class NotificationService implements INotificationService {
     }
 
     final notificationId = 1000 + session.slotIndex;
-    // Use v2 channel (user-configured on Android 8+).
-    final channelId = 'gt.alarm.timeup.${config.soundKey}.v2';
+    // Use a dedicated silent channel to avoid double-playing sound on Android.
+    final channelId = _silentTimeUpChannelId;
 
     // Cancel any pending notifications with the same ID to avoid update-suppressed alerting.
     if (Platform.isAndroid) {
@@ -419,12 +454,8 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      playSound: playSound,
-      sound: playSound
-          ? RawResourceAndroidNotificationSound(
-              _soundKeyToResource(config.soundKey),
-            )
-          : null,
+      // The channel is silent; keep playSound false regardless of the parameter.
+      playSound: false,
       // Control vibration based on user settings.
       enableVibration: enableVibration,
       onlyAlertOnce: false,

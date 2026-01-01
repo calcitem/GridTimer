@@ -9,6 +9,7 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.app.PendingIntent
@@ -277,17 +278,23 @@ class AlarmSoundService : Service() {
 
     private fun startPlayback(sound: String, loop: Boolean) {
         stopPlayback()
-        if (sound != "raw") {
-            // Only raw supported for now.
-            return
-        }
 
         try {
-            val afd = resources.openRawResourceFd(R.raw.sound)
             val mp = MediaPlayer()
             mp.setAudioAttributes(audioAttrs)
-            mp.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-            afd.close()
+            val isRaw =
+                sound == "raw" ||
+                    (sound.startsWith("android.resource://") && sound.endsWith("/raw/sound"))
+
+            if (isRaw) {
+                val afd = resources.openRawResourceFd(R.raw.sound)
+                mp.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+                afd.close()
+            } else {
+                val uri = Uri.parse(sound)
+                mp.setDataSource(this, uri)
+            }
+
             mp.isLooping = loop
             if (!loop) {
                 mp.setOnCompletionListener {
@@ -308,13 +315,24 @@ class AlarmSoundService : Service() {
                 data = mapOf("sound" to sound, "loop" to loop),
                 hypothesisId = "SVC"
             )
-        } catch (_: Exception) {
+        } catch (e: Exception) {
             debugLog(
                 location = "AlarmSoundService:startPlayback",
                 message = "Playback failed",
-                data = mapOf("sound" to sound),
+                data = mapOf("sound" to sound, "error" to e.toString()),
                 hypothesisId = "SVC"
             )
+
+            // Best-effort fallback: if a custom Uri fails to play, fall back to bundled raw sound.
+            if (sound != "raw") {
+                try {
+                    startPlayback(sound = "raw", loop = loop)
+                    return
+                } catch (_: Exception) {
+                    // Ignore and stop.
+                }
+            }
+
             stopSelf()
         }
     }

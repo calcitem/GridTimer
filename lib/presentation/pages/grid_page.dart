@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/locale_provider.dart';
@@ -22,6 +23,29 @@ class GridPage extends ConsumerStatefulWidget {
 
 class _GridPageState extends ConsumerState<GridPage> {
   bool _disclaimerChecked = false;
+
+  void _handleScreenTapStopIfNeeded(
+    WidgetRef ref,
+    List<TimerSession> sessions,
+  ) {
+    final ringing = sessions
+        .where((s) => s.status == TimerStatus.ringing)
+        .toList();
+    if (ringing.isEmpty) return;
+
+    final settings = ref.read(appSettingsProvider).value;
+    if (settings == null) return;
+
+    final action =
+        settings.gestureActions[AlarmGestureType.screenTap] ??
+        AlarmGestureAction.none;
+    if (action != AlarmGestureAction.stopAndReset) return;
+
+    final timerService = ref.read(timerServiceProvider);
+    for (final session in ringing) {
+      unawaited(timerService.stopRinging(session.timerId));
+    }
+  }
 
   @override
   void didChangeDependencies() {
@@ -206,7 +230,11 @@ class _GridPageState extends ConsumerState<GridPage> {
       body: gridState.when(
         data: (state) {
           final (grid, sessions) = state;
-          return _buildGrid(context, ref, grid, sessions);
+          return Listener(
+            behavior: HitTestBehavior.translucent,
+            onPointerDown: (_) => _handleScreenTapStopIfNeeded(ref, sessions),
+            child: _buildGrid(context, ref, grid, sessions),
+          );
         },
         loading: () =>
             Center(child: CircularProgressIndicator(color: tokens.accent)),

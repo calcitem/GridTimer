@@ -119,5 +119,10 @@
             android:name=".AlarmSoundService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
+
+        <!-- Exact-alarm receiver that starts the foreground alarm sound service. -->
+        <receiver
+            android:name=".AlarmSoundReceiver"
+            android:exported="false" />
     </application>
 </manifest>
