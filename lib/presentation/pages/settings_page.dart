@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:io' show Platform, exit;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show SystemNavigator;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../app/locale_provider.dart';
@@ -371,6 +375,39 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               },
             ),
 
+            const Divider(),
+
+            // Reset All Settings
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    l10n.resetAllSettings,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.resetAllSettingsDesc,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: Colors.white70),
+                  ),
+                  const SizedBox(height: 12),
+                  ElevatedButton.icon(
+                    onPressed: () => _showResetConfirmDialog(ref),
+                    icon: const Icon(Icons.refresh),
+                    label: Text(l10n.resetAllSettings),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             // Debug Tools Section (only shown in developer mode)
             if (_isDeveloperMode) ...[
               const Divider(),
@@ -616,6 +653,148 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             child: Text(l10n.actionCancel),
           ),
         ],
+      ),
+    );
+  }
+
+  /// Show reset all settings confirmation dialog.
+  void _showResetConfirmDialog(WidgetRef ref) {
+    final l10nNullable = AppLocalizations.of(context);
+    if (l10nNullable == null) return;
+    final l10n = l10nNullable;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.resetAllSettingsConfirmTitle),
+        content: Text(l10n.resetAllSettingsConfirmMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(l10n.actionCancel),
+          ),
+          FilledButton(
+            onPressed: () async {
+              Navigator.of(dialogContext).pop();
+              await _performReset(ref);
+            },
+            style: FilledButton.styleFrom(backgroundColor: Colors.orange),
+            child: Text(l10n.resetAllSettings),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Perform settings reset and show exit countdown.
+  Future<void> _performReset(WidgetRef ref) async {
+    final l10nNullable = AppLocalizations.of(context);
+    if (l10nNullable == null) return;
+    final l10n = l10nNullable;
+
+    try {
+      // Reset settings
+      await ref.read(appSettingsProvider.notifier).resetToDefault();
+
+      // Show countdown dialog and exit
+      if (mounted) {
+        await _showExitCountdown(l10n);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.errorText(e.toString()))));
+      }
+    }
+  }
+
+  /// Show countdown dialog and exit app after 10 seconds.
+  Future<void> _showExitCountdown(AppLocalizations l10n) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) =>
+          _CountdownDialog(l10n: l10n, onComplete: _exitApp),
+    );
+  }
+
+  /// Exit the application.
+  void _exitApp() {
+    if (kIsWeb) {
+      // Web platform cannot exit
+      return;
+    }
+
+    // Try platform-specific exit methods
+    if (Platform.isAndroid || Platform.isIOS) {
+      SystemNavigator.pop();
+    } else {
+      exit(0);
+    }
+  }
+}
+
+/// Countdown dialog widget for showing exit countdown.
+class _CountdownDialog extends StatefulWidget {
+  final AppLocalizations l10n;
+  final VoidCallback onComplete;
+
+  const _CountdownDialog({required this.l10n, required this.onComplete});
+
+  @override
+  State<_CountdownDialog> createState() => _CountdownDialogState();
+}
+
+class _CountdownDialogState extends State<_CountdownDialog> {
+  int _remainingSeconds = 10;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startCountdown();
+  }
+
+  void _startCountdown() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_remainingSeconds > 0) {
+        setState(() {
+          _remainingSeconds--;
+        });
+      } else {
+        timer.cancel();
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
+        widget.onComplete();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: false,
+      child: AlertDialog(
+        title: Text(widget.l10n.resetAllSettingsSuccess),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 16),
+            Text(
+              widget.l10n.resetAllSettingsExitMessage(_remainingSeconds),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

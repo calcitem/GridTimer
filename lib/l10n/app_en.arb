@@ -1075,5 +1075,41 @@
   "ossLicensesDesc": "View third-party library licenses",
   "@ossLicensesDesc": {
     "description": "Open source licenses description"
+  },
+
+  "resetAllSettings": "Reset All Settings",
+  "@resetAllSettings": {
+    "description": "Reset all settings button"
+  },
+
+  "resetAllSettingsDesc": "Restore all settings to default values",
+  "@resetAllSettingsDesc": {
+    "description": "Reset all settings description"
+  },
+
+  "resetAllSettingsConfirmTitle": "Reset All Settings?",
+  "@resetAllSettingsConfirmTitle": {
+    "description": "Reset all settings confirmation dialog title"
+  },
+
+  "resetAllSettingsConfirmMessage": "This will reset all settings to their default values. This action cannot be undone.",
+  "@resetAllSettingsConfirmMessage": {
+    "description": "Reset all settings confirmation dialog message"
+  },
+
+  "resetAllSettingsExitMessage": "The app will exit in {seconds} seconds to complete the reset...",
+  "@resetAllSettingsExitMessage": {
+    "description": "Reset all settings exit countdown message",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+
+  "resetAllSettingsSuccess": "Settings reset successfully",
+  "@resetAllSettingsSuccess": {
+    "description": "Reset all settings success message"
   }
 }
