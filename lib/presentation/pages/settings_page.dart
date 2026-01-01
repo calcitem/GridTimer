@@ -11,6 +11,7 @@ import '../../core/config/environment_config.dart';
 import '../../l10n/app_localizations.dart';
 import '../dialogs/alarm_troubleshooting_dialog.dart';
 import '../dialogs/safety_disclaimer_dialog.dart';
+import '../dialogs/version_info_dialog.dart';
 import 'audio_playback_settings_page.dart';
 import 'audio_test_page.dart';
 import 'gesture_settings_page.dart';
@@ -96,7 +97,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               leading: const Icon(Icons.info_outline),
               title: Text(l10n.version),
               subtitle: const Text('1.0.0+1'),
-              onTap: _onVersionTap,
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                _onVersionTap();
+                VersionInfoDialog.show(context);
+              },
             ),
 
             // Language

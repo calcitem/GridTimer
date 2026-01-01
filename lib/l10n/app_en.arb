@@ -163,6 +163,21 @@
     "description": "Label for app version"
   },
 
+  "versionInfo": "Version Information",
+  "@versionInfo": {
+    "description": "Title for version information dialog"
+  },
+
+  "gitBranch": "Git Branch",
+  "@gitBranch": {
+    "description": "Label for Git branch"
+  },
+
+  "gitRevision": "Git Revision",
+  "@gitRevision": {
+    "description": "Label for Git commit revision (SHA-1 hash)"
+  },
+
   "timerSettings": "Timer Settings",
   "@timerSettings": {
     "description": "Section: Timer Settings"
