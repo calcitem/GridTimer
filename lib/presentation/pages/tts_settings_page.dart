@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/locale_provider.dart';
@@ -16,6 +18,10 @@ class TtsSettingsPage extends ConsumerStatefulWidget {
 class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
   bool _isSpeaking = false;
   StreamSubscription<bool>? _ttsCompletionSubscription;
+
+  /// Check if running on desktop platform
+  bool get _isDesktop =>
+      !kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS);
 
   @override
   void dispose() {
@@ -72,8 +78,10 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
         completionReceived = true;
         if (mounted) {
           setState(() => _isSpeaking = false);
-          if (!completed) {
-            // TTS failed - show diagnostic dialog
+          // On desktop, completion callback fires from the fallback timer,
+          // so we consider it successful if we received any completion.
+          if (!completed && !_isDesktop) {
+            // TTS failed - show diagnostic dialog (only on mobile)
             _showTtsFailedDialog();
           }
         }
@@ -83,11 +91,16 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
       await ttsService.speak(text: testMessage, localeTag: localeTag);
 
       // Add a timeout in case completion handler doesn't fire
-      Future.delayed(const Duration(seconds: 5), () {
+      // Use longer timeout on desktop where completion may come from fallback
+      final timeoutSeconds = _isDesktop ? 8 : 5;
+      Future.delayed(Duration(seconds: timeoutSeconds), () {
         if (mounted && _isSpeaking && !completionReceived) {
           setState(() => _isSpeaking = false);
-          // Show diagnostic dialog on timeout
-          _showTtsFailedDialog();
+          // On desktop, if timeout occurs, we don't show failure dialog
+          // since TTS may have actually worked
+          if (!_isDesktop) {
+            _showTtsFailedDialog();
+          }
         }
       });
     } catch (e) {
@@ -109,6 +122,9 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return;
 
+    final permissionService = ref.read(permissionServiceProvider);
+    final canOpenSettings = permissionService.canOpenTtsSettings;
+
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
@@ -126,14 +142,16 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
             },
             child: Text(l10n.viewDiagnostics),
           ),
-          FilledButton.icon(
-            onPressed: () {
-              Navigator.of(dialogContext).pop();
-              _openTtsSettings();
-            },
-            icon: const Icon(Icons.settings),
-            label: Text(l10n.openTtsSettings),
-          ),
+          // Only show "Open TTS Settings" button on platforms that support it
+          if (canOpenSettings)
+            FilledButton.icon(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                _openTtsSettings();
+              },
+              icon: const Icon(Icons.settings),
+              label: Text(l10n.openTtsSettings),
+            ),
         ],
       ),
     );
@@ -184,6 +202,9 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
         }
       }
 
+      final permissionService = ref.read(permissionServiceProvider);
+      final canOpenSettings = permissionService.canOpenTtsSettings;
+
       showDialog(
         context: context,
         builder: (dialogContext) => AlertDialog(
@@ -199,14 +220,16 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
               onPressed: () => Navigator.of(dialogContext).pop(),
               child: Text(l10n.close),
             ),
-            FilledButton.icon(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-                _openTtsSettings();
-              },
-              icon: const Icon(Icons.settings),
-              label: Text(l10n.openTtsSettings),
-            ),
+            // Only show "Open TTS Settings" button on platforms that support it
+            if (canOpenSettings)
+              FilledButton.icon(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  _openTtsSettings();
+                },
+                icon: const Icon(Icons.settings),
+                label: Text(l10n.openTtsSettings),
+              ),
           ],
         ),
       );

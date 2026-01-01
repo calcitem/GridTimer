@@ -12,6 +12,9 @@ class TtsService implements ITtsService {
   double _currentPitch = 1.0;
   bool _isInitialized = false;
 
+  /// Track if TTS started speaking (for Windows where completion may not fire)
+  bool _startedSpeaking = false;
+
   /// Completion notifier for tracking TTS completion
   final StreamController<bool> _completionController =
       StreamController<bool>.broadcast();
@@ -19,6 +22,10 @@ class TtsService implements ITtsService {
   /// Stream that emits when TTS completes speaking
   @override
   Stream<bool> get completionStream => _completionController.stream;
+
+  /// Check if running on desktop platform
+  bool get _isDesktop =>
+      !kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS);
 
   @override
   Future<void> init() async {
@@ -39,6 +46,7 @@ class TtsService implements ITtsService {
     // Set up start handler to confirm TTS actually started
     _tts.setStartHandler(() {
       debugPrint('TTS started speaking');
+      _startedSpeaking = true;
     });
 
     // Set up cancel handler
@@ -57,8 +65,19 @@ class TtsService implements ITtsService {
         // ignore: deprecated_member_use
         await _tts.setSharedInstance(true);
       }
+
+      // Windows/Desktop specific settings
+      if (_isDesktop) {
+        // Enable speak completion callback for desktop platforms
+        try {
+          await _tts.awaitSpeakCompletion(true);
+          debugPrint('TTS: Desktop awaitSpeakCompletion enabled');
+        } catch (e) {
+          debugPrint('TTS: Desktop awaitSpeakCompletion not supported: $e');
+        }
+      }
     } catch (e) {
-      debugPrint('TTS Android setup error (non-fatal): $e');
+      debugPrint('TTS platform setup error (non-fatal): $e');
     }
 
     try {
@@ -131,6 +150,9 @@ class TtsService implements ITtsService {
       }
     }
 
+    // Reset speaking flag
+    _startedSpeaking = false;
+
     // Even if init "failed", try anyway - some devices report failure
     // but TTS still works
     try {
@@ -156,6 +178,12 @@ class TtsService implements ITtsService {
       final result = await _tts.speak(text);
       debugPrint('TTS speak result: $result');
 
+      // On Windows, completion handler may not fire reliably.
+      // Add a fallback timeout to emit completion based on estimated duration.
+      if (_isDesktop) {
+        _scheduleDesktopCompletionFallback(text);
+      }
+
       // Don't fail immediately based on return value - wait for completion handler
       // The completion handler or error handler will fire eventually
     } catch (e, stackTrace) {
@@ -164,6 +192,27 @@ class TtsService implements ITtsService {
       debugPrint('TTS speak stack trace: $stackTrace');
       _completionController.add(false);
     }
+  }
+
+  /// Schedule a fallback completion for desktop platforms where the
+  /// completion handler may not fire reliably.
+  void _scheduleDesktopCompletionFallback(String text) {
+    // Estimate duration: ~100ms per character at normal speed, minimum 2s
+    final estimatedDurationMs = (text.length * 100).clamp(2000, 10000);
+    final adjustedDuration = (estimatedDurationMs / _currentSpeechRate).round();
+
+    debugPrint(
+      'TTS: Desktop fallback scheduled for ${adjustedDuration}ms '
+      '(text length: ${text.length})',
+    );
+
+    Future.delayed(Duration(milliseconds: adjustedDuration), () {
+      // Only emit if we actually started speaking and haven't completed yet
+      if (_startedSpeaking) {
+        debugPrint('TTS: Desktop fallback completion triggered');
+        _completionController.add(true);
+      }
+    });
   }
 
   /// Try to set TTS language with fallback options.

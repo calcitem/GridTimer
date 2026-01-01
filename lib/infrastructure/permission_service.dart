@@ -104,5 +104,10 @@ class PermissionService implements IPermissionService {
       // iOS doesn't have a direct TTS settings page, open accessibility
       await AppSettings.openAppSettings(type: AppSettingsType.accessibility);
     }
+    // Windows/macOS/Linux: No reliable way to open TTS settings
+    // Do nothing - the UI should hide this option on desktop platforms
   }
+
+  @override
+  bool get canOpenTtsSettings => Platform.isAndroid || Platform.isIOS;
 }
