@@ -4,6 +4,7 @@ import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../core/config/environment_config.dart';
 import '../../l10n/app_localizations.dart';
+import '../dialogs/alarm_troubleshooting_dialog.dart';
 import '../dialogs/safety_disclaimer_dialog.dart';
 import 'audio_playback_settings_page.dart';
 import 'audio_test_page.dart';
@@ -317,6 +318,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 },
                 child: Text(l10n.goToSettings),
               ),
+            ),
+
+            // Alarm Troubleshooting / Compatibility Guide
+            ListTile(
+              leading: const Icon(Icons.help_outline),
+              title: Text(l10n.alarmTroubleshooting),
+              subtitle: Text(l10n.alarmTroubleshootingDesc),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => AlarmTroubleshootingDialog.show(context),
             ),
 
             const Divider(),

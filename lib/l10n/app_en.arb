@@ -670,6 +670,66 @@
     "description": "Description for alarm sound settings"
   },
 
+  "alarmTroubleshooting": "Alarm not ringing / delayed?",
+  "@alarmTroubleshooting": {
+    "description": "Settings entry title for alarm troubleshooting and compatibility guidance"
+  },
+
+  "alarmTroubleshootingDesc": "Android versions and OEM ROMs may restrict background alarms. Tap for quick fixes.",
+  "@alarmTroubleshootingDesc": {
+    "description": "Settings entry description for alarm troubleshooting and compatibility guidance"
+  },
+
+  "alarmTroubleshootingDialogTitle": "Alarm Reliability Guide",
+  "@alarmTroubleshootingDialogTitle": {
+    "description": "Dialog title for alarm troubleshooting and reliability guidance"
+  },
+
+  "alarmTroubleshootingDialogIntro": "Different Android versions and OEM ROMs (e.g., Xiaomi/MIUI) apply different background/notification restrictions. This can silence or delay alarms. We keep improving compatibility, but please try the following:",
+  "@alarmTroubleshootingDialogIntro": {
+    "description": "Intro text for the alarm troubleshooting dialog"
+  },
+
+  "alarmTroubleshootingSteps": "1. Turn off Do Not Disturb and raise Alarm volume\n2. Enable notifications for GridTimer\n3. In the \"Timer Alarm (default)\" channel, make sure sound is not Silent\n4. Disable battery optimizations for GridTimer (allow background running)\n5. Android 14+: allow \"Alarms & reminders\" (exact alarms)",
+  "@alarmTroubleshootingSteps": {
+    "description": "Step-by-step checklist for alarm troubleshooting"
+  },
+
+  "alarmTroubleshootingMiui": "Xiaomi/MIUI: also allow Auto-start and Background activity, and avoid aggressive battery saving. If needed, lock GridTimer in Recents.",
+  "@alarmTroubleshootingMiui": {
+    "description": "Additional Xiaomi/MIUI-specific tips for alarm troubleshooting"
+  },
+
+  "alarmTroubleshootingQuickActions": "Quick actions",
+  "@alarmTroubleshootingQuickActions": {
+    "description": "Section title for quick actions in the alarm troubleshooting dialog"
+  },
+
+  "alarmTroubleshootingOpenChannel": "Check channel sound",
+  "@alarmTroubleshootingOpenChannel": {
+    "description": "Button label to open notification channel settings for alarm sound"
+  },
+
+  "alarmTroubleshootingOpenNotifications": "Open notification settings",
+  "@alarmTroubleshootingOpenNotifications": {
+    "description": "Button label to open app notification settings"
+  },
+
+  "alarmTroubleshootingOpenExactAlarm": "Enable exact alarms",
+  "@alarmTroubleshootingOpenExactAlarm": {
+    "description": "Button label to open exact alarm permission/settings page"
+  },
+
+  "alarmTroubleshootingOpenBattery": "Disable battery optimization",
+  "@alarmTroubleshootingOpenBattery": {
+    "description": "Button label to open battery optimization settings"
+  },
+
+  "alarmTroubleshootingViewSafetyNotice": "View safety notice",
+  "@alarmTroubleshootingViewSafetyNotice": {
+    "description": "Button label to view safety notice and disclaimer"
+  },
+
   "goToSettings": "Go to Settings",
   "@goToSettings": {
     "description": "Go to settings button"
@@ -972,7 +1032,7 @@
     "description": "Onboarding completion step title"
   },
 
-  "onboardingCompletionDesc": "All settings are complete!\n\nYou can reconfigure these options anytime in settings page.",
+  "onboardingCompletionDesc": "All settings are complete!\n\nTip: Different devices and OS versions may behave differently. Please do a quick lock-screen/background test before relying on long timers.\n\nYou can reconfigure these options anytime in settings page.",
   "@onboardingCompletionDesc": {
     "description": "Onboarding completion step description"
   },
