@@ -17,6 +17,7 @@ import '../core/domain/services/i_clock.dart';
 import '../core/domain/services/i_gesture_service.dart';
 import '../core/domain/services/i_vibration_service.dart';
 import '../core/domain/types.dart';
+import '../core/services/duration_formatter.dart';
 import '../data/repositories/storage_repository.dart';
 
 const _alarmServiceChannel = MethodChannel(
@@ -758,10 +759,14 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       'Grid duration configuration must contain 9 elements',
     );
 
+    // Create duration formatter based on system locale
+    final systemLocale = Platform.localeName;
+    final formatter = DurationFormatter(systemLocale);
+
     final configs = List.generate(9, (i) {
       final seconds = durationsInSeconds[i];
-      // Generate display name based on seconds
-      final name = _formatDurationName(seconds);
+      // Generate display name using localized formatter
+      final name = formatter.format(seconds);
 
       return TimerConfig(
         slotIndex: i,
@@ -773,19 +778,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     });
 
     return TimerGridSet(modeId: 'default', modeName: 'Default', slots: configs);
-  }
-
-  /// Format duration name based on seconds
-  String _formatDurationName(int seconds) {
-    if (seconds < 60) {
-      return '$seconds s';
-    } else if (seconds < 3600) {
-      final minutes = seconds ~/ 60;
-      return '$minutes min';
-    } else {
-      final hours = seconds ~/ 3600;
-      return '$hours h';
-    }
   }
 
   void dispose() {
