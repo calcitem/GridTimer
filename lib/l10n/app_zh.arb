@@ -219,5 +219,11 @@
   "onboardingOpenBatterySettings": "打开电池优化设置",
   "onboardingCompletionTitle": "准备就绪",
   "onboardingCompletionDesc": "所有设置已完成！\n\n提示：不同设备和系统版本的表现可能不同。建议锁屏 / 后台先测试一次，再用于较长计时。\n\n您可以随时在设置页面重新配置这些选项。",
-  "onboardingGranted": "已授予"
+  "onboardingGranted": "已授予",
+
+  "privacyPolicy": "隐私政策",
+  "privacyPolicyTitle": "隐私政策",
+  "privacyPolicyMessage": "在使用本应用前，请阅读并同意我们的隐私政策。",
+  "privacyPolicyAgree": "我同意",
+  "privacyPolicyViewDetails": "查看隐私政策"
 }

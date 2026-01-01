@@ -1040,5 +1040,30 @@
   "onboardingGranted": "Granted",
   "@onboardingGranted": {
     "description": "Permission granted label"
+  },
+
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Privacy policy menu item"
+  },
+
+  "privacyPolicyTitle": "Privacy Policy",
+  "@privacyPolicyTitle": {
+    "description": "Privacy policy dialog title"
+  },
+
+  "privacyPolicyMessage": "Before using this app, please read and agree to our Privacy Policy.",
+  "@privacyPolicyMessage": {
+    "description": "Privacy policy dialog message"
+  },
+
+  "privacyPolicyAgree": "I Agree",
+  "@privacyPolicyAgree": {
+    "description": "Privacy policy agree button"
+  },
+
+  "privacyPolicyViewDetails": "View Privacy Policy",
+  "@privacyPolicyViewDetails": {
+    "description": "View privacy policy details button"
   }
 }

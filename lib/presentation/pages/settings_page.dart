@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../core/config/environment_config.dart';
@@ -333,6 +334,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () => SafetyDisclaimerDialog.show(context),
             ),
+            // Privacy Policy
+            ListTile(
+              leading: const Icon(Icons.privacy_tip, color: Color(0xFFFFD600)),
+              title: Text(l10n.privacyPolicy),
+              trailing: const Icon(Icons.open_in_new, size: 16),
+              onTap: () => _openPrivacyPolicy(currentLocale),
+            ),
             ListTile(
               leading: const Icon(Icons.description),
               title: Text(l10n.license),
@@ -521,6 +529,34 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       default:
         return locale.languageCode;
     }
+  }
+
+  /// Open privacy policy URL based on locale.
+  ///
+  /// Chinese locale: https://calcitem.github.io/GridTimer/privacy-policy_zh
+  /// Non-Chinese: https://calcitem.github.io/GridTimer/privacy-policy
+  Future<void> _openPrivacyPolicy(Locale? locale) async {
+    final isChinese = _isChineseLocale(locale);
+    final url = isChinese
+        ? 'https://calcitem.github.io/GridTimer/privacy-policy_zh'
+        : 'https://calcitem.github.io/GridTimer/privacy-policy';
+
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  /// Check if the effective locale is Chinese.
+  bool _isChineseLocale(Locale? userLocale) {
+    // If user has explicitly set a locale, use that
+    if (userLocale != null) {
+      return userLocale.languageCode == 'zh';
+    }
+
+    // Otherwise, check the system locale
+    final systemLocale = WidgetsBinding.instance.platformDispatcher.locale;
+    return systemLocale.languageCode == 'zh';
   }
 
   /// Show language selection dialog.
