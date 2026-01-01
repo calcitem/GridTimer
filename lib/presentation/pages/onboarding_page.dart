@@ -130,7 +130,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     final settings = ref.read(appSettingsProvider).value;
 
     if (settings == null) {
-      debugPrint('OnboardingPage: Settings not loaded, skipping privacy policy check');
+      debugPrint(
+        'OnboardingPage: Settings not loaded, skipping privacy policy check',
+      );
       return;
     }
 
@@ -158,11 +160,15 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           await ref
               .read(appSettingsProvider.notifier)
               .updatePrivacyPolicyAccepted(true);
-          debugPrint('OnboardingPage: Saved privacy policy acceptance to storage');
+          debugPrint(
+            'OnboardingPage: Saved privacy policy acceptance to storage',
+          );
         } else if (!accepted && mounted) {
           // User did not accept privacy policy - they cannot proceed
           // Exit the app
-          debugPrint('OnboardingPage: User did not accept privacy policy, exiting app');
+          debugPrint(
+            'OnboardingPage: User did not accept privacy policy, exiting app',
+          );
           // ignore: use_build_context_synchronously
           Navigator.of(context).pop();
         }
