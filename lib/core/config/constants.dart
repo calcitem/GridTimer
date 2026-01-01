@@ -18,3 +18,4 @@ class Constants {
   static const String crashLogsFile = "$projectName-crash-logs.txt";
 }
 
+

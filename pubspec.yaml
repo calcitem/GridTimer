@@ -73,6 +73,7 @@ flutter:
   # Audio assets for ringtones
   assets:
     - assets/sounds/sound.wav
+    - assets/licenses/Apache-2.0.txt
 
   # Generate localization
   generate: true
