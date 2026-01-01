@@ -183,6 +183,13 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
   /// Toggle vibration.
   Future<void> toggleVibration(bool enabled) async {
     await updateSettings((s) => s.copyWith(vibrationEnabled: enabled));
+
+    // Apply vibration setting changes to running timers by rescheduling alarms.
+    try {
+      await ref.read(timerServiceProvider).refreshFromClock();
+    } catch (e) {
+      debugPrint('AppSettingsNotifier: Failed to refresh timers: $e');
+    }
   }
 
   /// Toggle minutes:seconds format display.

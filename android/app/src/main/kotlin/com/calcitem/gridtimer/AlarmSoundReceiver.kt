@@ -21,6 +21,7 @@ class AlarmSoundReceiver : BroadcastReceiver() {
         const val EXTRA_CHANNEL_ID = "channelId"
         const val EXTRA_SOUND = "sound"
         const val EXTRA_LOOP = "loop"
+        const val EXTRA_VIBRATE = "vibrate"
     }
 
     override fun onReceive(context: Context, intent: Intent?) {
@@ -28,6 +29,7 @@ class AlarmSoundReceiver : BroadcastReceiver() {
         if (action != ACTION_FIRE) return
 
         val loop = intent.getBooleanExtra(EXTRA_LOOP, true)
+        val vibrate = intent.getBooleanExtra(EXTRA_VIBRATE, false)
 
         try {
             val channelId = intent.getStringExtra(EXTRA_CHANNEL_ID)
@@ -60,7 +62,7 @@ class AlarmSoundReceiver : BroadcastReceiver() {
             val soundFallback = intent.getStringExtra(EXTRA_SOUND) ?: "raw"
             val soundToPlay = resolvedSound ?: soundFallback
 
-            AlarmSoundService.start(context, sound = soundToPlay, loop = loop)
+            AlarmSoundService.start(context, sound = soundToPlay, loop = loop, vibrate = vibrate)
         } catch (e: Exception) {
             Log.e("AlarmSoundReceiver", "Failed to start AlarmSoundService: $e")
         }

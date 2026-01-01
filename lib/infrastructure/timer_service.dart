@@ -87,6 +87,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     required String channelId,
     required int slotIndex,
     required bool loop,
+    required bool vibrate,
   }) async {
     if (!Platform.isAndroid) return;
     assert(channelId.isNotEmpty, 'channelId must not be empty');
@@ -100,6 +101,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
           'channelId': channelId,
           'requestCode': _androidAlarmSoundRequestCodeForSlot(slotIndex),
           'loop': loop,
+          'vibrate': vibrate,
           // Fallback used if channel sound cannot be resolved (e.g., channel missing).
           'soundFallback': 'raw',
         },
@@ -468,6 +470,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         channelId: 'gt.alarm.timeup.${config.soundKey}.v2',
         slotIndex: slotIndex,
         loop: loop,
+        vibrate: settings?.vibrationEnabled ?? false,
       );
     }
 
@@ -541,6 +544,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         channelId: 'gt.alarm.timeup.${config.soundKey}.v2',
         slotIndex: session.slotIndex,
         loop: loop,
+        vibrate: settings?.vibrationEnabled ?? false,
       );
     }
 
@@ -807,6 +811,9 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     final repeatSoundUntilStopped =
         (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
         AudioPlaybackMode.playOnce;
+    final androidLoop =
+        (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
+        AudioPlaybackMode.playOnce;
 
     for (final session in _sessions.values.toList()) {
       if (session.status == TimerStatus.running) {
@@ -835,6 +842,17 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
             enableVibration: settings?.vibrationEnabled ?? true,
             ttsLanguage: settings?.ttsLanguage,
           );
+
+          // Reschedule native alarm playback (and vibration) for Android.
+          if (Platform.isAndroid && session.endAtEpochMs != null) {
+            await _scheduleAndroidAlarmSound(
+              triggerAtEpochMs: session.endAtEpochMs!,
+              channelId: 'gt.alarm.timeup.${config.soundKey}.v2',
+              slotIndex: session.slotIndex,
+              loop: androidLoop,
+              vibrate: settings?.vibrationEnabled ?? false,
+            );
+          }
         }
       }
     }

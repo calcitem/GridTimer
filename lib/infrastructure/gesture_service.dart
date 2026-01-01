@@ -60,21 +60,24 @@ class GestureService implements IGestureService {
     // Prefer direct volume key events (more reliable across OEM ROMs than volume-change
     // broadcasts), but keep volume_controller as a best-effort fallback.
     try {
-      _volumeKeySubscription =
-          _volumeKeyEventChannel.receiveBroadcastStream().listen(
-        (event) {
-          final gestureType = _parseVolumeKeyEvent(event);
-          if (gestureType == null) return;
+      _volumeKeySubscription = _volumeKeyEventChannel
+          .receiveBroadcastStream()
+          .listen(
+            (event) {
+              final gestureType = _parseVolumeKeyEvent(event);
+              if (gestureType == null) return;
 
-          _lastNativeVolumeKeyAt = DateTime.now();
-          if (!_isMonitoring) return;
+              _lastNativeVolumeKeyAt = DateTime.now();
+              if (!_isMonitoring) return;
 
-          _gestureController.add(gestureType);
-        },
-        onError: (error) {
-          debugPrint('GestureService: volume key event channel error: $error');
-        },
-      );
+              _gestureController.add(gestureType);
+            },
+            onError: (error) {
+              debugPrint(
+                'GestureService: volume key event channel error: $error',
+              );
+            },
+          );
     } catch (e) {
       debugPrint('GestureService: Failed to init volume key event channel: $e');
     }

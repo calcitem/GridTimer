@@ -234,12 +234,14 @@ class MainActivity: FlutterActivity() {
                 "startAlarmSoundService" -> {
                     val sound = call.argument<String>("sound") ?: "raw"
                     val loop = call.argument<Boolean>("loop") ?: true
+                    val vibrate = call.argument<Boolean>("vibrate") ?: false
                     try {
-                        AlarmSoundService.start(this, sound = sound, loop = loop)
+                        AlarmSoundService.start(this, sound = sound, loop = loop, vibrate = vibrate)
                         val info = HashMap<String, Any?>()
                         info["started"] = true
                         info["sound"] = sound
                         info["loop"] = loop
+                        info["vibrate"] = vibrate
                         result.success(info)
                     } catch (e: Exception) {
                         result.error("start_service_failed", e.toString(), null)
@@ -260,6 +262,7 @@ class MainActivity: FlutterActivity() {
                     val channelId = call.argument<String>("channelId")
                     val requestCode = call.argument<Int>("requestCode")
                     val loop = call.argument<Boolean>("loop") ?: true
+                    val vibrate = call.argument<Boolean>("vibrate") ?: false
                     val soundFallback = call.argument<String>("soundFallback") ?: "raw"
 
                     if (triggerAtEpochMs == null || triggerAtEpochMs <= 0L) {
@@ -283,6 +286,7 @@ class MainActivity: FlutterActivity() {
                             putExtra(AlarmSoundReceiver.EXTRA_CHANNEL_ID, channelId)
                             putExtra(AlarmSoundReceiver.EXTRA_LOOP, loop)
                             putExtra(AlarmSoundReceiver.EXTRA_SOUND, soundFallback)
+                            putExtra(AlarmSoundReceiver.EXTRA_VIBRATE, vibrate)
                         }
                         val piFlags =
                             PendingIntent.FLAG_UPDATE_CURRENT or
@@ -327,6 +331,7 @@ class MainActivity: FlutterActivity() {
                         info["channelId"] = channelId
                         info["requestCode"] = requestCode
                         info["loop"] = loop
+                        info["vibrate"] = vibrate
                         result.success(info)
                     } catch (e: Exception) {
                         result.error("schedule_failed", e.toString(), null)

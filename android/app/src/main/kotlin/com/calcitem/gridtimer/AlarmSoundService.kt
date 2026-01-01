@@ -16,6 +16,9 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.IBinder
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -34,15 +37,17 @@ class AlarmSoundService : Service() {
         const val ACTION_STOP = "com.calcitem.gridtimer.action.ALARM_SOUND_STOP"
         const val EXTRA_SOUND = "sound" // "raw"
         const val EXTRA_LOOP = "loop"
+        const val EXTRA_VIBRATE = "vibrate"
 
         private const val FGS_CHANNEL_ID = "gt.fgs.alarm"
         private const val FGS_NOTIFICATION_ID = 99001
 
-        fun start(context: Context, sound: String, loop: Boolean) {
+        fun start(context: Context, sound: String, loop: Boolean, vibrate: Boolean) {
             val intent = Intent(context, AlarmSoundService::class.java).apply {
                 action = ACTION_START
                 putExtra(EXTRA_SOUND, sound)
                 putExtra(EXTRA_LOOP, loop)
+                putExtra(EXTRA_VIBRATE, vibrate)
             }
             ContextCompat.startForegroundService(context, intent)
         }
@@ -71,6 +76,8 @@ class AlarmSoundService : Service() {
 
     private var lastSound: String = "raw"
     private var lastLoop: Boolean = true
+    private var lastVibrate: Boolean = false
+    private var isVibrating: Boolean = false
 
     private val audioAttrs: AudioAttributes =
         AudioAttributes.Builder()
@@ -89,6 +96,7 @@ class AlarmSoundService : Service() {
                 data = mapOf(),
                 hypothesisId = "SVC"
             )
+            stopVibration()
             stopSelf()
             return START_NOT_STICKY
         }
@@ -96,21 +104,88 @@ class AlarmSoundService : Service() {
         // Default start.
         val sound = intent?.getStringExtra(EXTRA_SOUND) ?: "raw"
         val loop = intent?.getBooleanExtra(EXTRA_LOOP, true) ?: true
+        val vibrate = intent?.getBooleanExtra(EXTRA_VIBRATE, false) ?: false
         lastSound = sound
         lastLoop = loop
+        lastVibrate = vibrate
 
         debugLog(
             location = "AlarmSoundService:onStartCommand",
             message = "Start requested",
-            data = mapOf("sound" to sound, "loop" to loop),
+            data = mapOf("sound" to sound, "loop" to loop, "vibrate" to vibrate),
             hypothesisId = "SVC"
         )
 
         startInForeground()
         requestAlarmAudioFocus()
+        if (vibrate) {
+            startVibration()
+        } else {
+            stopVibration()
+        }
         startPlayback(sound = sound, loop = loop)
 
         return START_STICKY
+    }
+
+    private fun getVibrator(): Vibrator? {
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val vm =
+                    getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
+                vm?.defaultVibrator
+            } else {
+                @Suppress("DEPRECATION")
+                getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+            }
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    private fun startVibration() {
+        if (isVibrating) return
+
+        val vib = getVibrator() ?: return
+        val hasVibrator = try {
+            vib.hasVibrator()
+        } catch (_: Exception) {
+            false
+        }
+        if (!hasVibrator) return
+
+        // Repeat a simple waveform until the service is stopped.
+        // Pattern: vibrate 400ms, pause 250ms, repeat.
+        val pattern = longArrayOf(0L, 400L, 250L)
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val effect = VibrationEffect.createWaveform(pattern, 0)
+                vib.vibrate(effect, audioAttrs)
+            } else {
+                @Suppress("DEPRECATION")
+                vib.vibrate(pattern, 0, audioAttrs)
+            }
+            isVibrating = true
+        } catch (e: Exception) {
+            debugLog(
+                location = "AlarmSoundService:startVibration",
+                message = "Failed to start vibration",
+                data = mapOf("error" to e.toString()),
+                hypothesisId = "SVC"
+            )
+        }
+    }
+
+    private fun stopVibration() {
+        if (!isVibrating) return
+        val vib = getVibrator()
+        try {
+            vib?.cancel()
+        } catch (_: Exception) {
+            // Ignore.
+        }
+        isVibrating = false
     }
 
     private fun startInForeground() {
@@ -558,6 +633,7 @@ class AlarmSoundService : Service() {
             data = mapOf(),
             hypothesisId = "SVC"
         )
+        stopVibration()
         stopPlayback()
         abandonAudioFocus()
         try {
