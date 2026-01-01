@@ -182,6 +182,17 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     );
   }
 
+  /// Set privacy policy accepted.
+  Future<void> updatePrivacyPolicyAccepted(bool accepted) async {
+    debugPrint(
+      'AppSettingsNotifier: Updating privacyPolicyAccepted to $accepted',
+    );
+    await updateSettings((s) => s.copyWith(privacyPolicyAccepted: accepted));
+    debugPrint(
+      'AppSettingsNotifier: privacyPolicyAccepted saved successfully',
+    );
+  }
+
   /// Update sound volume.
   Future<void> updateSoundVolume(double volume) async {
     assert(

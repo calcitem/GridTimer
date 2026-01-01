@@ -33,6 +33,9 @@ abstract class AppSettings with _$AppSettings {
     /// Whether the safety disclaimer has been accepted by the user.
     @Default(false) bool safetyDisclaimerAccepted,
 
+    /// Whether the privacy policy has been accepted by the user (Chinese only).
+    @Default(false) bool privacyPolicyAccepted,
+
     /// Sound volume (0.0 - 1.0).
     @Default(1.0) double soundVolume,
 
