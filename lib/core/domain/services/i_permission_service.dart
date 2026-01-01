@@ -11,6 +11,7 @@ abstract interface class IPermissionService {
 
   /// Opens system settings pages (best-effort, platform-specific).
   Future<void> openNotificationSettings();
+
   /// Opens Android notification channel settings for a specific channelId (Android 8+).
   ///
   /// This is required because scheduled notifications use the channel's sound.
@@ -23,7 +24,7 @@ abstract interface class IPermissionService {
 
   /// Opens the system TTS (Text-to-Speech) settings.
   Future<void> openTtsSettings();
+
+  /// Returns true if TTS settings can be opened on this platform.
+  bool get canOpenTtsSettings;
 }
-
-
-
