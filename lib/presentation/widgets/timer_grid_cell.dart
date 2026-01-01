@@ -101,38 +101,45 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       hint: semanticHint,
       button: true,
       enabled: true,
-      child: GestureDetector(
-        onTap: () => _handleTap(context, ref),
-        child: AnimatedBuilder(
-          animation: _flashController,
-          builder: (context, child) {
-            return Container(
-            decoration: BoxDecoration(
-              // Use animated color only when flash is enabled and ringing
-              color: shouldFlash ? _colorAnimation.value : color,
-              borderRadius: BorderRadius.circular(16), // Rounder corners
-              border: Border.all(
-                color: isRinging
-                    ? const Color(
-                        0xFFFFD600,
-                      ) // Bright yellow border when ringing, highest alert contrast
-                    : (widget.session.status == TimerStatus.idle
-                          ? Colors.white54
-                          : Colors.white), // White border for other states
-                width: isRinging ? 6 : 2, // Thicker border when ringing
+      child: AnimatedBuilder(
+        animation: _flashController,
+        builder: (context, child) {
+          final currentColor = shouldFlash
+              ? (_colorAnimation.value ?? color)
+              : color;
+
+          final borderColor = isRinging
+              ? const Color(0xFFFFD600) // Bright yellow border when ringing
+              : (widget.session.status == TimerStatus.idle
+                  ? Colors.white54
+                  : Colors.white); // White border for other states
+          final double borderWidth = isRinging ? 6 : 2;
+
+          return Material(
+            color: currentColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+              side: BorderSide(color: borderColor, width: borderWidth),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: () => _handleTap(context, ref),
+              // High contrast splash/ripple for clear feedback
+              splashColor: Colors.white.withOpacity(0.4),
+              highlightColor: Colors.white.withOpacity(0.2),
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: _buildContent(
+                  context,
+                  l10n,
+                  presetMinutes,
+                  remainingMs,
+                  showMinutesSeconds,
+                ),
               ),
             ),
-            padding: const EdgeInsets.all(4),
-            child: _buildContent(
-              context,
-              l10n,
-              presetMinutes,
-              remainingMs,
-              showMinutesSeconds,
-            ),
-            );
-          },
-        ),
+          );
+        },
       ),
     );
   }
@@ -384,7 +391,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     switch (status) {
       case TimerStatus.idle:
         // Idle state: dark gray background, high contrast
-        return const Color(0xFF212121);
+        return const Color(0xFF2C2C2C);
       case TimerStatus.running:
         // Running: dark green background (avoid too bright, but maintain clear hue)
         return const Color(0xFF1B5E20);
