@@ -70,7 +70,7 @@ class VersionInfoDialog extends StatelessWidget {
                 ];
 
                 // Revision can be absent when no git metadata is packaged.
-                if (info.revision != null) {
+                if (info.revision != null && info.revision!.isNotEmpty) {
                   rows.addAll([
                     const SizedBox(height: 16),
                     Text(
@@ -81,8 +81,9 @@ class VersionInfoDialog extends StatelessWidget {
                     SelectableText(
                       info.revision!,
                       style: const TextStyle(
-                        fontSize: 13,
-                        fontFamily: 'monospace',
+                        fontSize: 15,
+                        fontFamily: 'Courier New',
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ]);
