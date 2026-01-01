@@ -32,8 +32,20 @@ class AudioTestPage extends ConsumerStatefulWidget {
 }
 
 class _AudioTestPageState extends ConsumerState<AudioTestPage> {
-  final AudioPlayer _testPlayer = AudioPlayer();
+  AudioPlayer? _testPlayer;
   String _log = '';
+
+  bool get _isWindows => Platform.isWindows;
+
+  @override
+  void initState() {
+    super.initState();
+    // Avoid using audioplayers directly on Windows because it may crash due to
+    // platform channel messages being sent from a non-platform thread.
+    if (!_isWindows) {
+      _testPlayer = AudioPlayer();
+    }
+  }
 
   void _addLog(String message) {
     setState(() {
@@ -44,7 +56,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
 
   @override
   void dispose() {
-    _testPlayer.dispose();
+    _testPlayer?.dispose();
     super.dispose();
   }
 
@@ -73,11 +85,12 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
             const SizedBox(height: 16),
 
             // Test 1: Play audio file directly
-            _buildTestButton(
-              title: 'Test 1: AudioPlayer Playback',
-              description: 'Directly play sound.wav using AudioPlayer',
-              onPressed: _testDirectAudioPlay,
-            ),
+            if (!_isWindows)
+              _buildTestButton(
+                title: 'Test 1: AudioPlayer Playback',
+                description: 'Directly play sound.wav using AudioPlayer',
+                onPressed: _testDirectAudioPlay,
+              ),
 
             // Test 2: Play using service
             _buildTestButton(
@@ -255,23 +268,32 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
 
   // Test 1: Play audio directly
   Future<void> _testDirectAudioPlay() async {
+    if (_isWindows || _testPlayer == null) {
+      _addLog(
+        '[Test 1] Skipped on Windows - direct AudioPlayer playback may crash',
+      );
+      return;
+    }
+
+    final testPlayer = _testPlayer!;
+
     _addLog('[Test 1] Starting direct playback of sound.wav');
     _debugLogTest('audio_test_page.dart:_testDirectAudioPlay:entry', 'Test 1 started', {
-      'playerState': _testPlayer.state.toString(),
+      'playerState': testPlayer.state.toString(),
     }, 'C');
 
     try {
-      await _testPlayer.stop();
+      await testPlayer.stop();
 
       _debugLogTest('audio_test_page.dart:_testDirectAudioPlay:beforePlay', 'About to play', {
         'assetPath': 'sounds/sound.wav',
-        'playerState': _testPlayer.state.toString(),
+        'playerState': testPlayer.state.toString(),
       }, 'C');
 
-      await _testPlayer.play(AssetSource('sounds/sound.wav'));
+      await testPlayer.play(AssetSource('sounds/sound.wav'));
 
       _debugLogTest('audio_test_page.dart:_testDirectAudioPlay:afterPlay', 'Play command sent', {
-        'playerState': _testPlayer.state.toString(),
+        'playerState': testPlayer.state.toString(),
       }, 'C');
 
       _addLog('[Test 1] ✅ Playback command sent');
@@ -711,4 +733,3 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
     }
   }
 }
-

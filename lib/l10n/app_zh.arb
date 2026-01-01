@@ -228,5 +228,12 @@
   "privacyPolicyViewDetails": "查看隐私政策",
 
   "ossLicenses": "开源许可",
-  "ossLicensesDesc": "查看第三方库许可证"
+  "ossLicensesDesc": "查看第三方库许可证",
+
+  "resetAllSettings": "恢复默认设置",
+  "resetAllSettingsDesc": "将所有设置恢复为默认值",
+  "resetAllSettingsConfirmTitle": "恢复默认设置？",
+  "resetAllSettingsConfirmMessage": "这将把所有设置恢复为默认值。此操作不可撤销。",
+  "resetAllSettingsExitMessage": "应用将在 {seconds} 秒后退出以完成重置...",
+  "resetAllSettingsSuccess": "设置重置成功"
 }

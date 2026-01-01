@@ -16,6 +16,7 @@ import '../infrastructure/timer_service.dart';
 import '../infrastructure/mode_service.dart';
 import '../infrastructure/notification_service.dart';
 import '../infrastructure/audio_service.dart';
+import '../infrastructure/windows_audio_service.dart';
 import '../infrastructure/tts_service.dart';
 import '../infrastructure/permission_service.dart';
 import '../infrastructure/widget_service.dart';
@@ -37,6 +38,9 @@ final notificationServiceProvider = Provider<INotificationService>((ref) {
 
 /// Audio service provider.
 final audioServiceProvider = Provider<IAudioService>((ref) {
+  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.windows) {
+    return WindowsAudioService();
+  }
   return AudioService();
 });
 
@@ -286,5 +290,12 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     await updateSettings(
       (s) => s.copyWith(gridDurationsInSeconds: durationsInSeconds),
     );
+  }
+
+  /// Reset all settings to default values.
+  Future<void> resetToDefault() async {
+    const defaultSettings = AppSettings(activeModeId: _defaultModeId);
+    state = const AsyncData(defaultSettings);
+    await ref.read(storageProvider).saveSettings(defaultSettings);
   }
 }
