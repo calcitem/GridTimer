@@ -255,5 +255,27 @@
   "exactAlarmStatusGranted": "已允许",
   "exactAlarmStatusDenied": "未允许（闹钟可能延迟）",
   "batteryOptimizationStatusUnknown": "请手动检查",
-  "batteryOptimizationMiuiHint": "小米/MIUI：请在 应用设置 → 电量消耗 中设置为「无限制」"
+  "batteryOptimizationMiuiHint": "小米/MIUI：请在 应用设置 → 电量消耗 中设置为「无限制」",
+
+  "gridDurationMustBePositive": "宫格 {index} 的时长必须是正整数",
+  "savedSuccessfullyGridUpdated": "保存成功，九宫格已更新",
+  "activeTimersRunningConfigWillApplyOnRestart": "有计时器正在运行，配置将在下次启动时生效",
+  "configurationSavedButErrorDuringUpdate": "配置已保存，但应用更新时出错：{error}",
+  "debugTools": "调试工具",
+  "testTimer10s": "10 秒测试计时器（调试）",
+  "testTimer10sDesc": "启动一个真实的 10 秒计时器",
+  "start": "开始",
+  "audioTestDebug": "音频测试（调试）",
+  "audioTestDebugDesc": "诊断声音问题",
+  "errorTestDebug": "错误测试（调试）",
+  "errorTestDebugDesc": "测试错误报告系统",
+  "exitDeveloperMode": "退出开发者模式",
+  "exitDeveloperModeDesc": "点击隐藏调试工具",
+  "failedToStartTestTimer": "启动测试计时器失败：{error}",
+  "audioTest": "音频测试",
+  "audioTestInstructions": "请按顺序测试以下功能，并观察是否有声音输出。\n如果某个测试失败，则对应的功能存在问题。",
+  "clearLog": "清空日志",
+  "startTest": "开始测试",
+  "testLog": "测试日志：",
+  "waitingForTest": "等待测试..."
 }

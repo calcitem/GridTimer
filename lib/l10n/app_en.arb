@@ -1206,5 +1206,128 @@
   "batteryOptimizationMiuiHint": "On Xiaomi/MIUI: Go to App Settings → Battery Usage → Set to 'No restrictions'",
   "@batteryOptimizationMiuiHint": {
     "description": "Hint for MIUI users about battery optimization settings"
+  },
+
+  "gridDurationMustBePositive": "Grid {index} duration must be a positive integer",
+  "@gridDurationMustBePositive": {
+    "description": "Error message when grid duration is not a positive integer",
+    "placeholders": {
+      "index": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+
+  "savedSuccessfullyGridUpdated": "Saved successfully, grid updated",
+  "@savedSuccessfullyGridUpdated": {
+    "description": "Success message when grid settings are saved and applied"
+  },
+
+  "activeTimersRunningConfigWillApplyOnRestart": "Active timers are running, configuration will take effect on next app launch",
+  "@activeTimersRunningConfigWillApplyOnRestart": {
+    "description": "Warning when grid settings are saved but cannot be applied immediately"
+  },
+
+  "configurationSavedButErrorDuringUpdate": "Configuration saved, but error during app update: {error}",
+  "@configurationSavedButErrorDuringUpdate": {
+    "description": "Warning when settings are saved but there was an error applying them",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection timeout"
+      }
+    }
+  },
+
+  "debugTools": "Debug Tools",
+  "@debugTools": {
+    "description": "Debug tools section header"
+  },
+
+  "testTimer10s": "10s Test Timer (Debug)",
+  "@testTimer10s": {
+    "description": "Debug tool: 10 second test timer"
+  },
+
+  "testTimer10sDesc": "Start a real 10-second timer",
+  "@testTimer10sDesc": {
+    "description": "Description for 10 second test timer"
+  },
+
+  "start": "Start",
+  "@start": {
+    "description": "Start button"
+  },
+
+  "audioTestDebug": "Audio Test (Debug)",
+  "@audioTestDebug": {
+    "description": "Debug tool: audio test"
+  },
+
+  "audioTestDebugDesc": "Diagnose sound issues",
+  "@audioTestDebugDesc": {
+    "description": "Description for audio test debug tool"
+  },
+
+  "errorTestDebug": "Error Test (Debug)",
+  "@errorTestDebug": {
+    "description": "Debug tool: error test"
+  },
+
+  "errorTestDebugDesc": "Test error reporting system",
+  "@errorTestDebugDesc": {
+    "description": "Description for error test debug tool"
+  },
+
+  "exitDeveloperMode": "Exit Developer Mode",
+  "@exitDeveloperMode": {
+    "description": "Exit developer mode option"
+  },
+
+  "exitDeveloperModeDesc": "Tap to hide debug tools",
+  "@exitDeveloperModeDesc": {
+    "description": "Description for exit developer mode"
+  },
+
+  "failedToStartTestTimer": "Failed to start test timer: {error}",
+  "@failedToStartTestTimer": {
+    "description": "Error message when test timer fails to start",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permission denied"
+      }
+    }
+  },
+
+  "audioTest": "Audio Test",
+  "@audioTest": {
+    "description": "Audio test page title"
+  },
+
+  "audioTestInstructions": "Please test the following features in order and observe if sound is output.\nIf a test fails, the corresponding feature has a problem.",
+  "@audioTestInstructions": {
+    "description": "Instructions for audio test page"
+  },
+
+  "clearLog": "Clear Log",
+  "@clearLog": {
+    "description": "Clear log button"
+  },
+
+  "startTest": "Start Test",
+  "@startTest": {
+    "description": "Start test button"
+  },
+
+  "testLog": "Test Log:",
+  "@testLog": {
+    "description": "Test log label"
+  },
+
+  "waitingForTest": "Waiting for test...",
+  "@waitingForTest": {
+    "description": "Message shown when test log is empty"
   }
 }

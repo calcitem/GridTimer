@@ -8,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../app/providers.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
+import '../../l10n/app_localizations.dart';
 
 const _systemSettingsChannel = MethodChannel('com.calcitem.gridtimer/system_settings');
 
@@ -62,9 +63,16 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Audio Test'),
+        title: Text(l10n.audioTest),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -72,13 +80,12 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Test instructions
-            const Card(
+            Card(
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Text(
-                  'Please test the following features in order and observe if sound is output.\n'
-                  'If a test fails, the corresponding feature has a problem.',
-                  style: TextStyle(fontSize: 16),
+                  l10n.audioTestInstructions,
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
             ),
@@ -189,9 +196,9 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
             const SizedBox(height: 24),
 
             // Log output
-            const Text(
-              'Test Log:',
-              style: TextStyle(
+            Text(
+              l10n.testLog,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -207,7 +214,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
               padding: const EdgeInsets.all(12),
               child: SingleChildScrollView(
                 child: Text(
-                  _log.isEmpty ? 'Waiting for test...' : _log,
+                  _log.isEmpty ? l10n.waitingForTest : _log,
                   style: const TextStyle(
                     fontSize: 12,
                     fontFamily: 'Courier',
@@ -224,7 +231,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
                   _log = '';
                 });
               },
-              child: const Text('Clear Log'),
+              child: Text(l10n.clearLog),
             ),
           ],
         ),
@@ -256,9 +263,14 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
               style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
             const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: onPressed,
-              child: const Text('Start Test'),
+            Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context);
+                return ElevatedButton(
+                  onPressed: onPressed,
+                  child: Text(l10n?.startTest ?? 'Start Test'),
+                );
+              },
             ),
           ],
         ),

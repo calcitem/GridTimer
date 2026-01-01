@@ -450,24 +450,24 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             // Debug Tools Section (only shown in developer mode)
             if (_isDeveloperMode) ...[
               const Divider(),
-              _buildSectionHeader('Debug Tools'),
+              _buildSectionHeader(l10n.debugTools),
 
               // 10-Second Test Timer
               ListTile(
                 leading: Icon(Icons.timer_10, color: tokens.focusRing),
-                title: const Text('10s Test Timer (Debug)'),
-                subtitle: const Text('Start a real 10-second timer'),
+                title: Text(l10n.testTimer10s),
+                subtitle: Text(l10n.testTimer10sDesc),
                 trailing: ElevatedButton(
                   onPressed: () => _start10SecondTestTimer(ref),
-                  child: const Text('Start'),
+                  child: Text(l10n.start),
                 ),
               ),
 
               // Audio Test (for debugging)
               ListTile(
                 leading: Icon(Icons.bug_report, color: tokens.warning),
-                title: const Text('Audio Test (Debug)'),
-                subtitle: const Text('Diagnose sound issues'),
+                title: Text(l10n.audioTestDebug),
+                subtitle: Text(l10n.audioTestDebugDesc),
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
                   Navigator.of(context).push(
@@ -482,8 +482,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               if (EnvironmentConfig.catcher)
                 ListTile(
                   leading: Icon(Icons.error_outline, color: tokens.danger),
-                  title: const Text('Error Test (Debug)'),
-                  subtitle: const Text('Test error reporting system'),
+                  title: Text(l10n.errorTestDebug),
+                  subtitle: Text(l10n.errorTestDebugDesc),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
                     // Throw a test exception to verify Catcher is working
@@ -496,8 +496,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               // Exit Developer Mode
               ListTile(
                 leading: const Icon(Icons.exit_to_app, color: Colors.grey),
-                title: const Text('Exit Developer Mode'),
-                subtitle: const Text('Tap to hide debug tools'),
+                title: Text(l10n.exitDeveloperMode),
+                subtitle: Text(l10n.exitDeveloperModeDesc),
                 onTap: () {
                   setState(() {
                     _isDeveloperMode = false;
@@ -599,12 +599,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to start test timer: $e'),
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        final l10n = AppLocalizations.of(context);
+        if (l10n != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n.failedToStartTestTimer(e.toString())),
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
       }
     }
   }

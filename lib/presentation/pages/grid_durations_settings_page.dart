@@ -84,6 +84,9 @@ class _GridDurationsSettingsPageState
 
   /// Save configuration
   Future<void> _saveDurations() async {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
+
     final newDurations = <int>[];
     final newNames = <String>[];
     bool hasError = false;
@@ -96,7 +99,7 @@ class _GridDurationsSettingsPageState
         hasError = true;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Grid ${i + 1} duration must be a positive integer'),
+            content: Text(l10n.gridDurationMustBePositive(i + 1)),
             backgroundColor: Colors.red,
           ),
         );
@@ -123,11 +126,10 @@ class _GridDurationsSettingsPageState
           // Active timers exist, cannot update immediately
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                    'Active timers are running, configuration will take effect on next app launch'),
+              SnackBar(
+                content: Text(l10n.activeTimersRunningConfigWillApplyOnRestart),
                 backgroundColor: Colors.orange,
-                duration: Duration(seconds: 3),
+                duration: const Duration(seconds: 3),
               ),
             );
           }
@@ -136,8 +138,8 @@ class _GridDurationsSettingsPageState
           await timerService.updateDefaultGridDurations();
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Saved successfully, grid updated'),
+              SnackBar(
+                content: Text(l10n.savedSuccessfullyGridUpdated),
                 backgroundColor: Colors.green,
               ),
             );
@@ -148,8 +150,7 @@ class _GridDurationsSettingsPageState
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
-                  'Configuration saved, but error during app update: $e'),
+              content: Text(l10n.configurationSavedButErrorDuringUpdate(e.toString())),
               backgroundColor: Colors.orange,
             ),
           );
