@@ -61,7 +61,9 @@ class PermissionService implements IPermissionService {
 
     // Block opening system settings in test environment to prevent interference with Monkey testing
     if (EnvironmentConfig.test) {
-      debugPrint('Opening notification channel settings blocked in test environment');
+      debugPrint(
+        'Opening notification channel settings blocked in test environment',
+      );
       return;
     }
 
@@ -89,7 +91,9 @@ class PermissionService implements IPermissionService {
   Future<void> openFullScreenIntentSettings() async {
     // Block opening system settings in test environment to prevent interference with Monkey testing
     if (EnvironmentConfig.test) {
-      debugPrint('Opening full screen intent settings blocked in test environment');
+      debugPrint(
+        'Opening full screen intent settings blocked in test environment',
+      );
       return;
     }
 
@@ -103,7 +107,9 @@ class PermissionService implements IPermissionService {
   Future<void> openBatteryOptimizationSettings() async {
     // Block opening system settings in test environment to prevent interference with Monkey testing
     if (EnvironmentConfig.test) {
-      debugPrint('Opening battery optimization settings blocked in test environment');
+      debugPrint(
+        'Opening battery optimization settings blocked in test environment',
+      );
       return;
     }
 
