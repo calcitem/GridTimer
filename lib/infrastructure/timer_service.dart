@@ -261,24 +261,10 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
           _gesture.updateShakeSensitivity(settings.shakeSensitivity);
         }
 
-        if (Platform.isAndroid) {
-          // Start foreground service for reliable alarm playback on MIUI/OEM ROMs
-          // where notification sounds are suppressed.
-          try {
-            await _alarmServiceChannel.invokeMethod<Map<dynamic, dynamic>>(
-              'startAlarmSoundService',
-              {'sound': 'raw', 'loop': true},
-            );
-            debugPrint('TimerService: Foreground alarm service started');
-          } catch (e) {
-            debugPrint(
-              'TimerService: Failed to start foreground alarm service: $e',
-            );
-            // Non-fatal - notification sound may still work on some devices.
-          }
-        } else {
-          // Desktop platforms (Windows/macOS/Linux) don't have the native alarm
-          // foreground service. Use in-app audio playback instead.
+        if (!Platform.isAndroid) {
+          // Android alarm audio is produced by the notification channel sound
+          // (user-configured in system settings). Non-Android platforms use
+          // in-app audio playback.
           try {
             await _audio.playWithMode(
               soundKey: config.soundKey,
@@ -295,8 +281,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         }
       }
 
-      // IMPORTANT: Notifications are now used primarily for visual alerts.
-      // Audio playback is handled by the foreground service for reliability on MIUI.
+      // IMPORTANT: Android alarm audio is played by the notification channel sound.
 
       // TTS playback logic:
       // - Android/iOS: Only reliable in foreground (background may be restricted by system)

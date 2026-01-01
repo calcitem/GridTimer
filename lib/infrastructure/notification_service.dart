@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
@@ -259,6 +260,12 @@ class NotificationService implements INotificationService {
     final notificationBody = useChineseText ? '时间到!' : 'Time is up!';
     final stopButtonText = useChineseText ? '停止' : 'Stop';
 
+    // Notification.FLAG_INSISTENT: repeat sound/vibration until the notification is cancelled.
+    // Using a numeric constant here keeps this Flutter code platform-independent.
+    final additionalFlags = repeatSoundUntilStopped
+        ? Int32List.fromList(<int>[0x00000004])
+        : null;
+
     final androidDetails = AndroidNotificationDetails(
       channelId,
       'Timer Alarm',
@@ -268,17 +275,17 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      // Audio playback is handled by AlarmSoundService (foreground service)
-      // for reliable lockscreen/background playback on all devices (especially MIUI).
-      // Notification is used for visual alert and user interaction (Stop button).
-      playSound: false,
-      sound: null,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound(
+        _soundKeyToResource(config.soundKey),
+      ),
       enableVibration: enableVibration,
       // Ensure this notification can alert.
       onlyAlertOnce: false,
       // Set as non-persistent until user action
       ongoing: false,
       autoCancel: false,
+      additionalFlags: additionalFlags,
       actions: [
         AndroidNotificationAction(
           _actionIdStop,
@@ -397,6 +404,12 @@ class NotificationService implements INotificationService {
     final notificationBody = useChineseText ? '时间到!' : 'Time is up!';
     final stopButtonText = useChineseText ? '停止' : 'Stop';
 
+    // Notification.FLAG_INSISTENT: repeat sound/vibration until the notification is cancelled.
+    // Using a numeric constant here keeps this Flutter code platform-independent.
+    final additionalFlags = repeatSoundUntilStopped
+        ? Int32List.fromList(<int>[0x00000004])
+        : null;
+
     final androidDetails = AndroidNotificationDetails(
       channelId,
       'Timer Alarm',
@@ -406,14 +419,16 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      // Audio playback is handled by AlarmSoundService (foreground service)
-      // for reliable lockscreen/background playback on all devices (especially MIUI).
-      // Notification is used for visual alert and user interaction (Stop button).
-      playSound: false,
-      sound: null,
+      playSound: playSound,
+      sound: playSound
+          ? RawResourceAndroidNotificationSound(
+              _soundKeyToResource(config.soundKey),
+            )
+          : null,
       // Control vibration based on user settings.
       enableVibration: enableVibration,
       onlyAlertOnce: false,
+      additionalFlags: additionalFlags,
       actions: [
         AndroidNotificationAction(
           _actionIdStop,
