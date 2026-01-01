@@ -10,8 +10,6 @@ class GestureSettingsPage extends ConsumerWidget {
 
   String _getGestureTypeName(AlarmGestureType type, AppLocalizations l10n) {
     switch (type) {
-      case AlarmGestureType.screenTap:
-        return l10n.gestureTypeScreenTap;
       case AlarmGestureType.volumeUp:
         return l10n.gestureTypeVolumeUp;
       case AlarmGestureType.volumeDown:
@@ -36,8 +34,6 @@ class GestureSettingsPage extends ConsumerWidget {
 
   IconData _getGestureIcon(AlarmGestureType type) {
     switch (type) {
-      case AlarmGestureType.screenTap:
-        return Icons.touch_app;
       case AlarmGestureType.volumeUp:
         return Icons.volume_up;
       case AlarmGestureType.volumeDown:

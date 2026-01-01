@@ -80,7 +80,6 @@ abstract class AppSettings with _$AppSettings {
 
     /// Gesture actions map: which action to take for each gesture type.
     @Default({
-      AlarmGestureType.screenTap: AlarmGestureAction.stopAndReset,
       AlarmGestureType.volumeUp: AlarmGestureAction.stopAndReset,
       AlarmGestureType.volumeDown: AlarmGestureAction.stopAndReset,
       AlarmGestureType.shake: AlarmGestureAction.none,

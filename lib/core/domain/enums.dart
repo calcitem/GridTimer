@@ -86,9 +86,6 @@ enum AlarmGestureAction {
 
 /// Types of gestures that can stop/pause alarms.
 enum AlarmGestureType {
-  /// Tap anywhere on the screen.
-  screenTap,
-
   /// Press volume up button.
   volumeUp,
 
