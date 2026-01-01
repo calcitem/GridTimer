@@ -69,11 +69,16 @@ class TtsService implements ITtsService {
       // Windows/Desktop specific settings
       if (_isDesktop) {
         // Enable speak completion callback for desktop platforms
-        try {
-          await _tts.awaitSpeakCompletion(true);
-          debugPrint('TTS: Desktop awaitSpeakCompletion enabled');
-        } catch (e) {
-          debugPrint('TTS: Desktop awaitSpeakCompletion not supported: $e');
+        // NOTE: On Windows, awaitSpeakCompletion(true) might cause instability or crashes
+        // when combined with rapid stop/speak calls.
+        // For now, we rely on the _scheduleDesktopCompletionFallback mechanism on Windows.
+        if (!Platform.isWindows) {
+          try {
+            await _tts.awaitSpeakCompletion(true);
+            debugPrint('TTS: Desktop awaitSpeakCompletion enabled');
+          } catch (e) {
+            debugPrint('TTS: Desktop awaitSpeakCompletion not supported: $e');
+          }
         }
       }
     } catch (e) {

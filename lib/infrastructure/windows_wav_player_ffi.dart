@@ -18,7 +18,7 @@ class _WinmmWavPlayer implements WindowsWavPlayer {
   static const int _sndNodefault = 0x0002;
   static const int _sndMemory = 0x0004;
   static const int _sndLoop = 0x0008;
-  static const int _sndPurge = 0x0040;
+  // static const int _sndPurge = 0x0040; // Unused
 
   static void _free(Pointer<Uint8> ptr) => malloc.free(ptr);
 
@@ -93,7 +93,10 @@ class _WinmmWavPlayer implements WindowsWavPlayer {
   @override
   Future<void> stop() async {
     // Stop any currently playing sound started by PlaySound.
-    _playSound(nullptr, nullptr, _sndPurge);
+    // Use NULL for both pointers to stop all sounds.
+    // SND_PURGE (0x0040) is not strictly necessary if pszSound is NULL,
+    // but using 0 is the standard way to stop.
+    _playSound(nullptr, nullptr, 0);
   }
 
   Uint8List _byteDataToBytes(ByteData data) {
