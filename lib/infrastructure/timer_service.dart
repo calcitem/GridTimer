@@ -766,7 +766,15 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     final configs = List.generate(9, (i) {
       final seconds = durationsInSeconds[i];
       // Generate display name using localized formatter
-      final name = formatter.format(seconds);
+      final userDefinedName =
+          (settings?.gridNames != null && settings!.gridNames.length > i)
+              ? settings.gridNames[i]
+              : '';
+
+      final name =
+          userDefinedName.isNotEmpty
+              ? userDefinedName
+              : formatter.format(seconds);
 
       return TimerConfig(
         slotIndex: i,

@@ -63,6 +63,11 @@ abstract class AppSettings with _$AppSettings {
     @Default([120, 180, 300, 480, 540, 600, 900, 1200, 2700])
     List<int> gridDurationsInSeconds,
 
+    /// Custom names for grid slots (9 elements).
+    /// If an element is empty string, default formatting (time) is used.
+    @Default(['', '', '', '', '', '', '', '', ''])
+    List<String> gridNames,
+
     /// Audio playback mode for alarm.
     @Default(AudioPlaybackMode.loopIndefinitely)
     AudioPlaybackMode audioPlaybackMode,
