@@ -13,14 +13,20 @@ import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
+import android.view.KeyEvent
 import androidx.core.app.NotificationCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity: FlutterActivity() {
     private val systemSettingsChannelName = "com.calcitem.gridtimer/system_settings"
+    private val volumeKeyEventChannelName = "com.calcitem.gridtimer/volume_key_events"
     private var testRingtone: Ringtone? = null
+    private var volumeKeyEventSink: EventChannel.EventSink? = null
+    private var lastVolumeKeyEventAtMs: Long = 0L
+    private val volumeKeyThrottleMs: Long = 150L
 
     /** Check if the device is running MIUI (Xiaomi/Redmi). */
     private fun isMiuiDevice(): Boolean {
@@ -42,6 +48,19 @@ class MainActivity: FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+
+        EventChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            volumeKeyEventChannelName
+        ).setStreamHandler(object : EventChannel.StreamHandler {
+            override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+                volumeKeyEventSink = events
+            }
+
+            override fun onCancel(arguments: Any?) {
+                volumeKeyEventSink = null
+            }
+        })
 
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
@@ -527,5 +546,22 @@ class MainActivity: FlutterActivity() {
                 else -> result.notImplemented()
             }
         }
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+            when (event.keyCode) {
+                KeyEvent.KEYCODE_VOLUME_UP -> emitVolumeKeyEvent(direction = "up")
+                KeyEvent.KEYCODE_VOLUME_DOWN -> emitVolumeKeyEvent(direction = "down")
+            }
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
+    private fun emitVolumeKeyEvent(direction: String) {
+        val now = System.currentTimeMillis()
+        if (now - lastVolumeKeyEventAtMs < volumeKeyThrottleMs) return
+        lastVolumeKeyEventAtMs = now
+        volumeKeyEventSink?.success(direction)
     }
 }

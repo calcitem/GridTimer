@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:volume_controller/volume_controller.dart';
 import '../core/domain/services/i_gesture_service.dart';
@@ -9,15 +10,21 @@ import '../core/domain/enums.dart';
 
 /// Gesture detection service implementation using sensors and hardware buttons.
 class GestureService implements IGestureService {
+  static const EventChannel _volumeKeyEventChannel = EventChannel(
+    'com.calcitem.gridtimer/volume_key_events',
+  );
+
   final StreamController<AlarmGestureType> _gestureController =
       StreamController<AlarmGestureType>.broadcast();
 
   StreamSubscription<AccelerometerEvent>? _accelerometerSubscription;
   StreamSubscription<GyroscopeEvent>? _gyroscopeSubscription;
+  StreamSubscription<dynamic>? _volumeKeySubscription;
 
   bool _isMonitoring = false;
   double _shakeSensitivity = 2.5;
   double? _lastVolume;
+  DateTime? _lastNativeVolumeKeyAt;
 
   /// Check if current platform supports sensors (mobile platforms only)
   /// Note: sensors_plus supports both Android and iOS
@@ -50,9 +57,41 @@ class GestureService implements IGestureService {
       return;
     }
 
+    // Prefer direct volume key events (more reliable across OEM ROMs than volume-change
+    // broadcasts), but keep volume_controller as a best-effort fallback.
+    try {
+      _volumeKeySubscription =
+          _volumeKeyEventChannel.receiveBroadcastStream().listen(
+        (event) {
+          final gestureType = _parseVolumeKeyEvent(event);
+          if (gestureType == null) return;
+
+          _lastNativeVolumeKeyAt = DateTime.now();
+          if (!_isMonitoring) return;
+
+          _gestureController.add(gestureType);
+        },
+        onError: (error) {
+          debugPrint('GestureService: volume key event channel error: $error');
+        },
+      );
+    } catch (e) {
+      debugPrint('GestureService: Failed to init volume key event channel: $e');
+    }
+
     try {
       VolumeController.instance.showSystemUI = false;
       VolumeController.instance.addListener((volume) {
+        // If we already got a direct volume key event, suppress the volume-change callback
+        // to avoid duplicate gesture triggers.
+        final lastNative = _lastNativeVolumeKeyAt;
+        if (lastNative != null &&
+            DateTime.now().difference(lastNative) <
+                const Duration(milliseconds: 200)) {
+          _lastVolume = volume;
+          return;
+        }
+
         // Volume button was pressed (we don't care about the actual volume value)
         final last = _lastVolume;
         _lastVolume = volume;
@@ -79,6 +118,29 @@ class GestureService implements IGestureService {
     } catch (e) {
       debugPrint('GestureService init error: $e');
     }
+  }
+
+  AlarmGestureType? _parseVolumeKeyEvent(dynamic event) {
+    if (event is String) {
+      switch (event) {
+        case 'up':
+          return AlarmGestureType.volumeUp;
+        case 'down':
+          return AlarmGestureType.volumeDown;
+      }
+    }
+    if (event is Map) {
+      final direction = event['direction'];
+      if (direction is String) {
+        switch (direction) {
+          case 'up':
+            return AlarmGestureType.volumeUp;
+          case 'down':
+            return AlarmGestureType.volumeDown;
+        }
+      }
+    }
+    return null;
   }
 
   @override
@@ -181,6 +243,8 @@ class GestureService implements IGestureService {
   void dispose() {
     stopMonitoring();
     _gestureController.close();
+    _volumeKeySubscription?.cancel();
+    _volumeKeySubscription = null;
     if (_isVolumeControllerSupported) {
       VolumeController.instance.removeListener();
     }
