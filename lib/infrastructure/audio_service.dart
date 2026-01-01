@@ -32,6 +32,17 @@ class AudioService implements IAudioService {
     );
   }
 
+  bool get _supportsAudioContext {
+    if (kIsWeb) return false;
+    return defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS;
+  }
+
+  Future<void> _setAudioContextIfSupported() async {
+    if (!_supportsAudioContext) return;
+    await _player.setAudioContext(_buildAudioContext());
+  }
+
   @override
   Future<void> init() async {
     // Set release mode to loop (will be adjusted based on playback mode)
@@ -39,7 +50,7 @@ class AudioService implements IAudioService {
     await _player.setVolume(_currentVolume);
 
     // Set audio context to alarm/notification to ensure playback even when locked
-    await _player.setAudioContext(_buildAudioContext());
+    await _setAudioContextIfSupported();
   }
 
   @override
@@ -80,7 +91,7 @@ class AudioService implements IAudioService {
       await _player.stop();
 
       // Re-apply audio context to ensure we have focus
-      await _player.setAudioContext(_buildAudioContext());
+      await _setAudioContextIfSupported();
 
       // Set volume before playing
       await setVolume(volume);
