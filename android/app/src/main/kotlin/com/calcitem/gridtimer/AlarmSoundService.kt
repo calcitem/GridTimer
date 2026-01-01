@@ -56,6 +56,13 @@ class AlarmSoundService : Service() {
     private var mediaPlayer: MediaPlayer? = null
     private var focusGranted: Boolean = false
     private var audioFocusRequest: Any? = null
+    private var audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener? = null
+
+    private var resumeOnFocusGain: Boolean = false
+    private var ducked: Boolean = false
+
+    private var lastSound: String = "raw"
+    private var lastLoop: Boolean = true
 
     private val audioAttrs: AudioAttributes =
         AudioAttributes.Builder()
@@ -81,6 +88,8 @@ class AlarmSoundService : Service() {
         // Default start.
         val sound = intent?.getStringExtra(EXTRA_SOUND) ?: "raw"
         val loop = intent?.getBooleanExtra(EXTRA_LOOP, true) ?: true
+        lastSound = sound
+        lastLoop = loop
 
         debugLog(
             location = "AlarmSoundService:onStartCommand",
@@ -144,19 +153,27 @@ class AlarmSoundService : Service() {
 
     private fun requestAlarmAudioFocus() {
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val listener = AudioManager.OnAudioFocusChangeListener { focusChange ->
+            handleAudioFocusChange(focusChange)
+        }
+        audioFocusChangeListener = listener
         focusGranted = try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val req =
                     android.media.AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
                         .setAudioAttributes(audioAttrs)
-                        .setOnAudioFocusChangeListener { }
+                        .setOnAudioFocusChangeListener(listener)
+                        // Keep playing (duck) instead of auto-pausing on duck events.
+                        .setWillPauseWhenDucked(false)
+                        // Some OEM ROMs can delay focus; accept delayed grant.
+                        .setAcceptsDelayedFocusGain(true)
                         .build()
                 audioFocusRequest = req
                 audioManager.requestAudioFocus(req) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
             } else {
                 @Suppress("DEPRECATION")
                 audioManager.requestAudioFocus(
-                    { },
+                    listener,
                     AudioManager.STREAM_ALARM,
                     AudioManager.AUDIOFOCUS_GAIN
                 ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
@@ -183,13 +200,79 @@ class AlarmSoundService : Service() {
                 }
             } else {
                 @Suppress("DEPRECATION")
-                audioManager.abandonAudioFocus { }
+                audioManager.abandonAudioFocus(audioFocusChangeListener)
             }
         } catch (_: Exception) {
             // Ignore.
         }
         audioFocusRequest = null
+        audioFocusChangeListener = null
         focusGranted = false
+    }
+
+    private fun handleAudioFocusChange(focusChange: Int) {
+        // This service exists to provide reliable alarm playback. Short system sounds
+        // (e.g., chat notifications) can steal audio focus transiently; we should resume.
+        val mp = mediaPlayer
+        when (focusChange) {
+            AudioManager.AUDIOFOCUS_GAIN -> {
+                if (ducked) {
+                    try {
+                        mp?.setVolume(1.0f, 1.0f)
+                    } catch (_: Exception) {
+                        // Ignore.
+                    }
+                    ducked = false
+                }
+                if (resumeOnFocusGain) {
+                    resumeOnFocusGain = false
+                    try {
+                        if (mp == null) {
+                            startPlayback(sound = lastSound, loop = lastLoop)
+                        } else if (!mp.isPlaying) {
+                            mp.start()
+                        }
+                    } catch (_: Exception) {
+                        // As a fallback, rebuild the player.
+                        startPlayback(sound = lastSound, loop = lastLoop)
+                    }
+                }
+            }
+
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
+                // Pause during the transient focus loss and resume when focus is regained.
+                resumeOnFocusGain = true
+                try {
+                    if (mp != null && mp.isPlaying) {
+                        mp.pause()
+                    }
+                } catch (_: Exception) {
+                    // Ignore.
+                }
+            }
+
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
+                // Keep playing, but lower the volume briefly.
+                ducked = true
+                try {
+                    mp?.setVolume(0.2f, 0.2f)
+                } catch (_: Exception) {
+                    // Ignore.
+                }
+            }
+
+            AudioManager.AUDIOFOCUS_LOSS -> {
+                // Treat as resumable: some OEM ROMs deliver LOSS for short interruptions.
+                resumeOnFocusGain = true
+                try {
+                    if (mp != null && mp.isPlaying) {
+                        mp.pause()
+                    }
+                } catch (_: Exception) {
+                    // Ignore.
+                }
+            }
+        }
     }
 
     private fun startPlayback(sound: String, loop: Boolean) {
@@ -206,6 +289,11 @@ class AlarmSoundService : Service() {
             mp.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
             afd.close()
             mp.isLooping = loop
+            if (!loop) {
+                mp.setOnCompletionListener {
+                    stopSelf()
+                }
+            }
             mp.setOnErrorListener { _, _, _ ->
                 stopSelf()
                 true
