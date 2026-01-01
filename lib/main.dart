@@ -56,10 +56,18 @@ class GridTimerApp extends ConsumerStatefulWidget {
 }
 
 class _GridTimerAppState extends ConsumerState<GridTimerApp> {
+  ProviderSubscription<AsyncValue<dynamic>>? _gridStateSubscription;
+
   @override
   void initState() {
     super.initState();
     _initializeServices();
+  }
+
+  @override
+  void dispose() {
+    _gridStateSubscription?.close();
+    super.dispose();
   }
 
   Future<void> _initializeServices() async {
@@ -97,7 +105,14 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
   /// Listen to timer state changes and update home screen widgets accordingly.
   /// Only updates when there are actual changes to avoid unnecessary updates.
   void _setupWidgetUpdates() {
-    ref.listen(gridStateProvider, (previous, next) {
+    if (_gridStateSubscription != null) {
+      return;
+    }
+
+    _gridStateSubscription = ref.listenManual(gridStateProvider, (
+      previous,
+      next,
+    ) {
       next.whenData((state) {
         final (_, sessions) = state;
 
