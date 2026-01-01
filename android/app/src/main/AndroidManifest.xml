@@ -1,28 +1,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Android 13+ runtime permission (still request at runtime) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    
+
     <!-- Needed so scheduled notifications can be rescheduled after reboot -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    
+
     <!-- Exact alarms: user-granted special access on Android 14+ -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
-    
+
     <!-- Full-screen intent: special app access on Android 14+ -->
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
-    
+
     <!-- Optional but common for alarm UX -->
     <uses-permission android:name="android.permission.VIBRATE"/>
-    
+
     <!-- Internet for TTS engine downloads (optional) -->
     <uses-permission android:name="android.permission.INTERNET"/>
-    
+
     <!-- Temporarily bypass keyguard when alarm rings (no user prompt needed) -->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
-    
+
     <!-- Keep screen on during alarm (no user prompt needed) -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    
+
     <!-- Foreground service for reliable alarm playback on OEM ROMs -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <!-- Android 14+ foreground service type permission (safe on older Android) -->
@@ -46,7 +46,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:enableOnBackInvokedCallback="true">
-        
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

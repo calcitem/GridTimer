@@ -9,10 +9,10 @@ import '../core/domain/enums.dart';
 class AudioService implements IAudioService {
   final AudioPlayer _player = AudioPlayer();
   double _currentVolume = 1.0;
-  
+
   /// Timer for auto-stopping after duration
   Timer? _autoStopTimer;
-  
+
   /// Timer for interval mode
   Timer? _intervalTimer;
 
@@ -78,7 +78,7 @@ class AudioService implements IAudioService {
     try {
       // Always stop first to ensure clean state
       await _player.stop();
-      
+
       // Re-apply audio context to ensure we have focus
       await _player.setAudioContext(_buildAudioContext());
 
@@ -183,17 +183,17 @@ class AudioService implements IAudioService {
             Duration(minutes: intervalPauseMinutes),
             () async {
               cycleCount++;
-              
+
               if (repeating || cycleCount < maxCycles) {
                 // Resume audio
                 await _player.resume();
-                
+
                 // Schedule next cycle
                 scheduleCycle();
               } else {
                 // Non-repeating mode: final cycle, just resume and let it play
                 await _player.resume();
-                
+
                 // Stop after the final loop duration
                 _autoStopTimer = Timer(
                   Duration(minutes: loopDurationMinutes),

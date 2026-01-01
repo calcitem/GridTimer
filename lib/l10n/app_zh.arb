@@ -1,33 +1,33 @@
 {
   "@@locale": "zh",
-  
+
   "appTitle": "九宫格计时器",
   "timerIdle": "待机",
   "timerRunning": "运行中",
   "timerPaused": "已暂停",
   "timerRinging": "响铃中",
-  
+
   "confirmStartTitle": "确认启动？",
   "confirmStartBody": "当前已有计时器在运行。要继续启动 {name} 吗？",
-  
+
   "actionStart": "启动",
   "actionPause": "暂停",
   "actionResume": "继续",
   "actionReset": "重置",
   "actionStop": "停止",
   "actionCancel": "取消",
-  
+
   "timerActions": "计时器操作",
   "stopAlarm": "停止提醒",
-  
+
   "timeUpTts": "{name} 时间到了",
-  
+
   "permissionNotificationTitle": "开启通知",
   "permissionNotificationBody": "为了接收计时器提醒，请开启通知权限。",
-  
+
   "permissionExactAlarmTitle": "开启精确提醒",
   "permissionExactAlarmBody": "为确保准时提醒，请开启“闹钟和提醒”权限。",
-  
+
   "openSettings": "打开设置",
   "later": "稍后",
 

@@ -3,7 +3,7 @@ import '../entities/timer_session.dart';
 import '../types.dart';
 
 /// Core timer service interface for business logic.
-/// 
+///
 /// This service orchestrates timer lifecycle, persistence, and recovery.
 abstract interface class ITimerService {
   /// Initializes storage, loads last sessions, and performs recovery.
@@ -16,8 +16,8 @@ abstract interface class ITimerService {
   (TimerGridSet grid, List<TimerSession> sessions) getSnapshot();
 
   /// Starts a timer for the given slot.
-  /// 
-  /// Note: Caller (UI) must enforce "start protection" 
+  ///
+  /// Note: Caller (UI) must enforce "start protection"
   /// (confirm when other timers are running).
   Future<void> start({
     required ModeId modeId,
@@ -47,7 +47,7 @@ abstract interface class ITimerService {
     required TimerId timerId,
     required int firedAtEpochMs,
   });
-  
+
   /// Returns whether any timer is not idle.
   bool hasActiveTimers();
 

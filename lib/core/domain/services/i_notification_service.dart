@@ -9,7 +9,7 @@ abstract interface class INotificationService {
   Future<void> init();
 
   /// Creates/updates channels where applicable.
-  /// 
+  ///
   /// Note: channel sound cannot be changed after creation;
   /// one channel per soundKey is required.
   Future<void> ensureAndroidChannels({
@@ -26,7 +26,7 @@ abstract interface class INotificationService {
   Future<bool> requestFullScreenIntentPermission();
 
   /// Schedules a notification for timer end.
-  /// 
+  ///
   /// Implementer must choose exact/inexact schedule mode based on permission.
   Future<void> scheduleTimeUp({
     required TimerSession session,
@@ -84,7 +84,7 @@ class NotificationEvent {
   final NotificationEventType type;
   final String payloadJson;
   final String? actionId; // null if body tap
-  
+
   const NotificationEvent({
     required this.type,
     required this.payloadJson,

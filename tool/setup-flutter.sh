@@ -37,7 +37,7 @@ if [ -d "${FLUTTER_HOME}" ]; then
 else
     echo "Downloading Flutter ${FLUTTER_VERSION}..."
     echo "Download URL: ${DOWNLOAD_URL}"
-    
+
     # Download Flutter SDK
     if [[ "$OS" == "linux" ]]; then
         wget -q --show-progress "${DOWNLOAD_URL}" -O "/tmp/${FLUTTER_TAR}"
@@ -52,7 +52,7 @@ else
         mv "${HOME}/flutter" "${FLUTTER_HOME}"
         rm "/tmp/${FLUTTER_TAR}"
     fi
-    
+
     echo "Flutter SDK downloaded and extracted to ${FLUTTER_HOME}"
 fi
 

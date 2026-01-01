@@ -17,7 +17,11 @@ migrate_working_dir/
 .idea/
 
 # VS Code
-.vscode/
+.vscode/*
+!.vscode/tasks.json
+!.vscode/settings.json
+!.vscode/normalize_files.sh
+!.vscode/README.md
 
 # Flutter/Dart/Pub related
 **/doc/api/

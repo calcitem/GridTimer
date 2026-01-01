@@ -22,13 +22,13 @@ class ModeService implements IModeService {
   @override
   Future<void> init() async {
     await _storage.init();
-    
+
     _modes = await _storage.getAllModes();
-    
+
     // Load active mode from settings
     final settings = await _storage.getSettings();
     final activeModeId = settings?.activeModeId ?? 'default';
-    
+
     _activeMode = _modes.firstWhere(
       (m) => m.modeId == activeModeId,
       orElse: () => _modes.first,
@@ -78,15 +78,15 @@ class ModeService implements IModeService {
     if (_modes.length <= 1) {
       throw Exception('Cannot delete the last mode');
     }
-    
+
     await _storage.deleteMode(modeId);
     _modes.removeWhere((m) => m.modeId == modeId);
-    
+
     if (_activeMode?.modeId == modeId) {
       _activeMode = _modes.first;
       await _updateActiveModeInSettings(_activeMode!.modeId);
     }
-    
+
     _emitStates();
   }
 
@@ -99,7 +99,7 @@ class ModeService implements IModeService {
   }
 
   Future<void> _updateActiveModeInSettings(ModeId modeId) async {
-    final settings = await _storage.getSettings() ?? 
+    final settings = await _storage.getSettings() ??
         AppSettings(activeModeId: modeId);
     await _storage.saveSettings(settings.copyWith(activeModeId: modeId));
   }
