@@ -683,7 +683,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                       child: _buildTileButton(
                         icon: Icons.refresh,
                         label: l10n.actionReset,
-                        color: const Color(0xFF2979FF), // Keep distinct Blue for reset
+                        color: const Color(0xFF448AFF), // High contrast blue for Reset
+                        textColor: Colors.white,
                         onPressed: () {
                           Navigator.pop(context);
                           ref.read(timerServiceProvider).reset(widget.session.timerId);
@@ -700,6 +701,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                   icon: Icons.close,
                   label: l10n.actionCancel,
                   color: tokens.surfacePressed,
+                  textColor: tokens.textPrimary,
                   onPressed: () => Navigator.pop(context),
                   isHorizontal: true,
                 ),
@@ -733,7 +735,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                       child: _buildTileButton(
                         icon: Icons.play_arrow,
                         label: l10n.actionResume,
-                        color: tokens.success,
+                        color: tokens.accent, // Use accent (Amber) for primary action
+                        textColor: tokens.bg,
                         onPressed: () {
                           Navigator.pop(context);
                           ref.read(timerServiceProvider).resume(widget.session.timerId);
@@ -745,7 +748,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                       child: _buildTileButton(
                         icon: Icons.refresh,
                         label: l10n.actionReset,
-                        color: const Color(0xFF2979FF),
+                        color: const Color(0xFF448AFF), // High contrast blue
+                        textColor: Colors.white,
                         onPressed: () {
                           Navigator.pop(context);
                           ref.read(timerServiceProvider).reset(widget.session.timerId);
@@ -762,6 +766,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                   icon: Icons.close,
                   label: l10n.actionCancel,
                   color: tokens.surfacePressed,
+                  textColor: tokens.textPrimary,
                   onPressed: () => Navigator.pop(context),
                   isHorizontal: true,
                 ),
@@ -793,6 +798,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                 icon: Icons.stop_circle_outlined,
                 label: l10n.stopAlarm,
                 color: tokens.danger,
+                textColor: Colors.white, // Keep white on red for high contrast
                 onPressed: () {
                   Navigator.pop(context);
                   ref.read(timerServiceProvider).stopRinging(widget.session.timerId);
@@ -804,6 +810,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                 icon: Icons.close,
                 label: l10n.actionCancel,
                 color: tokens.surfacePressed,
+                textColor: tokens.textPrimary,
                 onPressed: () => Navigator.pop(context),
                 isHorizontal: true,
               ),
