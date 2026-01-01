@@ -14,7 +14,11 @@ abstract interface class IPermissionService {
   /// On Android, this checks if the app is on the battery optimization whitelist
   /// (i.e., system will not restrict background activity).
   /// Returns true if battery optimization is disabled (recommended for alarms).
-  Future<bool> isBatteryOptimizationDisabled();
+  /// Returns null if the status cannot be determined (e.g., on some OEM ROMs).
+  Future<bool?> isBatteryOptimizationDisabled();
+
+  /// Returns true if the device is running MIUI (Xiaomi).
+  Future<bool> isMiuiDevice();
 
   /// Opens system settings pages (best-effort, platform-specific).
   Future<void> openNotificationSettings();

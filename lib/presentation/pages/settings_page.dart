@@ -345,8 +345,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               title: l10n.batteryOptimizationSettings,
               description: l10n.batteryOptimizationDesc,
               statusFuture: ref.read(permissionServiceProvider).isBatteryOptimizationDisabled(),
+              isMiuiFuture: ref.read(permissionServiceProvider).isMiuiDevice(),
               disabledText: l10n.batteryOptimizationStatusDisabled,
               enabledText: l10n.batteryOptimizationStatusEnabled,
+              unknownText: l10n.batteryOptimizationStatusUnknown,
+              miuiHint: l10n.batteryOptimizationMiuiHint,
               buttonText: l10n.settingsButton,
               onButtonPressed: () async {
                 final permissionService = ref.read(permissionServiceProvider);
@@ -995,9 +998,12 @@ class _PermissionStatusTile extends StatelessWidget {
 class _BatteryOptimizationTile extends StatelessWidget {
   final String title;
   final String description;
-  final Future<bool> statusFuture;
+  final Future<bool?> statusFuture;
+  final Future<bool> isMiuiFuture;
   final String disabledText; // Battery optimization disabled (recommended)
   final String enabledText; // Battery optimization enabled (may affect alarms)
+  final String unknownText; // Status cannot be determined (e.g., MIUI)
+  final String miuiHint; // Hint for MIUI users
   final String buttonText;
   final VoidCallback onButtonPressed;
 
@@ -1005,20 +1011,48 @@ class _BatteryOptimizationTile extends StatelessWidget {
     required this.title,
     required this.description,
     required this.statusFuture,
+    required this.isMiuiFuture,
     required this.disabledText,
     required this.enabledText,
+    required this.unknownText,
+    required this.miuiHint,
     required this.buttonText,
     required this.onButtonPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: statusFuture,
+    return FutureBuilder<List<dynamic>>(
+      future: Future.wait([statusFuture, isMiuiFuture]),
       builder: (context, snapshot) {
-        // isDisabled = true means battery optimization is OFF (good for alarms)
-        final isDisabled = snapshot.data ?? false;
         final isLoading = snapshot.connectionState == ConnectionState.waiting;
+
+        // status can be: true (disabled/good), false (enabled/bad), null (unknown)
+        final bool? status = snapshot.data?[0] as bool?;
+        final bool isMiui = (snapshot.data?[1] as bool?) ?? false;
+
+        // Determine display state
+        final bool isUnknown = status == null;
+        final bool isDisabled = status == true;
+
+        // Choose icon and color
+        IconData statusIcon;
+        Color statusColor;
+        String statusText;
+
+        if (isUnknown) {
+          statusIcon = Icons.help_outline;
+          statusColor = Colors.blue;
+          statusText = unknownText;
+        } else if (isDisabled) {
+          statusIcon = Icons.check_circle;
+          statusColor = Colors.green;
+          statusText = disabledText;
+        } else {
+          statusIcon = Icons.warning;
+          statusColor = Colors.orange;
+          statusText = enabledText;
+        }
 
         return ListTile(
           leading: const Icon(Icons.battery_saver),
@@ -1034,26 +1068,35 @@ class _BatteryOptimizationTile extends StatelessWidget {
                   width: 16,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              else
+              else ...[
                 Row(
                   children: [
-                    Icon(
-                      isDisabled ? Icons.check_circle : Icons.warning,
-                      size: 16,
-                      color: isDisabled ? Colors.green : Colors.orange,
-                    ),
+                    Icon(statusIcon, size: 16, color: statusColor),
                     const SizedBox(width: 4),
                     Flexible(
                       child: Text(
-                        isDisabled ? disabledText : enabledText,
+                        statusText,
                         style: TextStyle(
-                          color: isDisabled ? Colors.green : Colors.orange,
+                          color: statusColor,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                   ],
                 ),
+                // Show MIUI hint if on MIUI device
+                if (isMiui) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    miuiHint,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[600],
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ],
             ],
           ),
           isThreeLine: true,

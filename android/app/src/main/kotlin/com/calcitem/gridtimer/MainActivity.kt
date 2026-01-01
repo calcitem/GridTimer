@@ -20,6 +20,24 @@ class MainActivity: FlutterActivity() {
     private val systemSettingsChannelName = "com.calcitem.gridtimer/system_settings"
     private var testRingtone: Ringtone? = null
 
+    /** Check if the device is running MIUI (Xiaomi/Redmi). */
+    private fun isMiuiDevice(): Boolean {
+        try {
+            val clazz = Class.forName("android.os.SystemProperties")
+            val getMethod = clazz.getMethod("get", String::class.java)
+            val miuiVersion = getMethod.invoke(null, "ro.miui.ui.version.name") as? String
+            if (!miuiVersion.isNullOrEmpty()) {
+                return true
+            }
+        } catch (e: Exception) {
+            // Ignore reflection errors
+        }
+
+        // Fallback: check manufacturer
+        return Build.MANUFACTURER.equals("Xiaomi", ignoreCase = true) ||
+               Build.MANUFACTURER.equals("Redmi", ignoreCase = true)
+    }
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
@@ -298,13 +316,23 @@ class MainActivity: FlutterActivity() {
 
                 "isIgnoringBatteryOptimizations" -> {
                     try {
-                        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-                        val isIgnoring = powerManager.isIgnoringBatteryOptimizations(packageName)
-                        result.success(isIgnoring)
+                        // On MIUI, the standard API may not reflect the actual MIUI battery
+                        // saver settings. Return null to indicate "unknown" status.
+                        if (isMiuiDevice()) {
+                            result.success(null)
+                        } else {
+                            val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+                            val isIgnoring = powerManager.isIgnoringBatteryOptimizations(packageName)
+                            result.success(isIgnoring)
+                        }
                     } catch (e: Exception) {
-                        // If we can't determine, assume not ignoring (safer default)
-                        result.success(false)
+                        // If we can't determine, return null to indicate unknown
+                        result.success(null)
                     }
+                }
+
+                "isMiuiDevice" -> {
+                    result.success(isMiuiDevice())
                 }
 
                 else -> result.notImplemented()

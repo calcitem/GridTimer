@@ -1186,5 +1186,15 @@
   "exactAlarmStatusDenied": "Not allowed (May delay alarms)",
   "@exactAlarmStatusDenied": {
     "description": "Exact alarm permission status: not allowed"
+  },
+
+  "batteryOptimizationStatusUnknown": "Please check manually",
+  "@batteryOptimizationStatusUnknown": {
+    "description": "Battery optimization status: cannot be determined automatically"
+  },
+
+  "batteryOptimizationMiuiHint": "On Xiaomi/MIUI: Go to App Settings → Battery Usage → Set to 'No restrictions'",
+  "@batteryOptimizationMiuiHint": {
+    "description": "Hint for MIUI users about battery optimization settings"
   }
 }

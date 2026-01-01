@@ -84,16 +84,31 @@ class PermissionService implements IPermissionService {
   }
 
   @override
-  Future<bool> isBatteryOptimizationDisabled() async {
+  Future<bool?> isBatteryOptimizationDisabled() async {
     if (!Platform.isAndroid) return true;
 
     try {
-      final result = await _systemSettingsChannel.invokeMethod<bool>(
+      final result = await _systemSettingsChannel.invokeMethod<bool?>(
         'isIgnoringBatteryOptimizations',
+      );
+      // Result can be: true (disabled), false (enabled), or null (unknown/MIUI)
+      return result;
+    } catch (e) {
+      // If we can't determine, return null to indicate unknown
+      return null;
+    }
+  }
+
+  @override
+  Future<bool> isMiuiDevice() async {
+    if (!Platform.isAndroid) return false;
+
+    try {
+      final result = await _systemSettingsChannel.invokeMethod<bool>(
+        'isMiuiDevice',
       );
       return result ?? false;
     } catch (e) {
-      // If we can't determine, assume optimization is enabled (safer default)
       return false;
     }
   }

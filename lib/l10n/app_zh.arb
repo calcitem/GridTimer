@@ -251,5 +251,7 @@
   "batteryOptimizationStatusDisabled": "已关闭（推荐）",
   "batteryOptimizationStatusEnabled": "已开启（可能影响闹钟）",
   "exactAlarmStatusGranted": "已允许",
-  "exactAlarmStatusDenied": "未允许（闹钟可能延迟）"
+  "exactAlarmStatusDenied": "未允许（闹钟可能延迟）",
+  "batteryOptimizationStatusUnknown": "请手动检查",
+  "batteryOptimizationMiuiHint": "小米/MIUI：请在 应用设置 → 电量消耗 中设置为「无限制」"
 }
