@@ -77,6 +77,18 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       body: settingsAsync.when(
         data: (settings) => ListView(
           children: [
+            // Display & Accessibility Section
+            _buildSectionHeader(l10n.displaySettings),
+            ListTile(
+              leading: const Icon(Icons.brightness_medium),
+              title: Text(l10n.themeMode),
+              subtitle: Text(_getThemeName(settings.themeId, l10n)),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () =>
+                  _showThemeDialog(context, ref, l10n, settings.themeId),
+            ),
+            const Divider(),
+
             // App Information Section
             _buildSectionHeader(l10n.appInformation),
             ListTile(
@@ -707,6 +719,58 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         ).showSnackBar(SnackBar(content: Text(l10n.errorText(e.toString()))));
       }
     }
+  }
+
+  String _getThemeName(String themeId, AppLocalizations l10n) {
+    if (themeId == 'high_contrast') return l10n.themeHighContrast;
+    return l10n.themeSoftDark;
+  }
+
+  void _showThemeDialog(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+    String currentThemeId,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.themeMode),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RadioListTile<String>(
+              title: Text(l10n.themeSoftDark),
+              value: 'soft_dark',
+              groupValue: currentThemeId,
+              onChanged: (value) {
+                if (value != null) {
+                  ref.read(appSettingsProvider.notifier).updateTheme(value);
+                  Navigator.pop(context);
+                }
+              },
+            ),
+            RadioListTile<String>(
+              title: Text(l10n.themeHighContrast),
+              value: 'high_contrast',
+              groupValue: currentThemeId,
+              onChanged: (value) {
+                if (value != null) {
+                  ref.read(appSettingsProvider.notifier).updateTheme(value);
+                  Navigator.pop(context);
+                }
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.actionCancel),
+          ),
+        ],
+      ),
+    );
   }
 
   /// Show countdown dialog and exit app after 10 seconds.

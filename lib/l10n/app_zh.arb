@@ -235,5 +235,10 @@
   "resetAllSettingsConfirmTitle": "恢复默认设置？",
   "resetAllSettingsConfirmMessage": "这将把所有设置恢复为默认值。此操作不可撤销。",
   "resetAllSettingsExitMessage": "应用将在 {seconds} 秒后退出以完成重置...",
-  "resetAllSettingsSuccess": "设置重置成功"
+  "resetAllSettingsSuccess": "设置重置成功",
+  "displaySettings": "显示与无障碍",
+  "themeMode": "主题模式",
+  "themeModeDesc": "选择视觉主题",
+  "themeSoftDark": "默认护眼深色",
+  "themeHighContrast": "高对比度模式"
 }

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/domain/entities/app_settings.dart';
 import '../core/domain/enums.dart';
+import '../core/theme/app_theme.dart';
 import '../core/domain/services/i_clock.dart';
 import '../core/domain/services/i_timer_service.dart';
 import '../core/domain/services/i_notification_service.dart';
@@ -74,6 +75,17 @@ final modeServiceProvider = Provider<IModeService>((ref) {
   return ModeService(storage: ref.watch(storageProvider));
 });
 
+/// Theme provider that returns the current AppTheme.
+final themeProvider = Provider<AppTheme>((ref) {
+  final settingsAsync = ref.watch(appSettingsProvider);
+  final themeId = settingsAsync.value?.themeId ?? 'soft_dark';
+
+  if (themeId == 'high_contrast') {
+    return HighContrastTheme();
+  }
+  return SoftDarkTheme();
+});
+
 /// Timer service provider.
 final timerServiceProvider = Provider<ITimerService>((ref) {
   return TimerService(
@@ -143,6 +155,11 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     } catch (e, st) {
       state = AsyncError(e, st);
     }
+  }
+
+  /// Update UI Theme.
+  Future<void> updateTheme(String themeId) async {
+    await updateSettings((s) => s.copyWith(themeId: themeId));
   }
 
   /// Toggle flash animation.
