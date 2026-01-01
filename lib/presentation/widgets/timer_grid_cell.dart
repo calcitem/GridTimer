@@ -59,6 +59,11 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     final showMinutesSeconds =
         settingsAsync.value?.showMinutesSecondsFormat ?? true;
     final remainingMs = widget.session.calculateRemaining(clock.nowEpochMs());
+    final gridNames = settingsAsync.value?.gridNames;
+    final userDefinedName =
+        (gridNames != null && gridNames.length > widget.slotIndex)
+            ? gridNames[widget.slotIndex].trim()
+            : '';
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
       return const SizedBox.shrink();
@@ -152,6 +157,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
                     presetDurationMs,
                     remainingMs,
                     showMinutesSeconds,
+                    userDefinedName,
                     tokens,
                   ),
                 ),
@@ -170,11 +176,12 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     int presetDurationMs,
     int remainingMs,
     bool showMinutesSeconds,
+    String userDefinedName,
     AppThemeTokens tokens,
   ) {
     switch (widget.session.status) {
       case TimerStatus.idle:
-        return _buildIdleContent(l10n, presetDurationMs, tokens);
+        return _buildIdleContent(l10n, presetDurationMs, userDefinedName, tokens);
       case TimerStatus.running:
       case TimerStatus.paused:
         return _buildActiveContent(
@@ -182,16 +189,23 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
           presetDurationMs,
           remainingMs,
           showMinutesSeconds,
+          userDefinedName,
           tokens,
         );
       case TimerStatus.ringing:
-        return _buildRingingContent(l10n, presetDurationMs, tokens);
+        return _buildRingingContent(
+          l10n,
+          presetDurationMs,
+          userDefinedName,
+          tokens,
+        );
     }
   }
 
   Widget _buildIdleContent(
     AppLocalizations l10n,
     int presetDurationMs,
+    String userDefinedName,
     AppThemeTokens tokens,
   ) {
     final isWholeMinute = presetDurationMs % 60000 == 0;
@@ -218,17 +232,16 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Display Name (scrolling if needed)
-            if (!isFlat)
+            if (userDefinedName.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: _AutoScrollText(
-                  text: widget.config.name,
+                  text: userDefinedName,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'monospace',
                     color: tokens.textSecondary,
-                    fontFeatures: const [FontFeature.tabularFigures()],
+                    height: 1.0,
                   ),
                 ),
               ),
@@ -283,6 +296,7 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     int presetDurationMs,
     int remainingMs,
     bool showMinutesSeconds,
+    String userDefinedName,
     AppThemeTokens tokens,
   ) {
     final remainingSeconds = (remainingMs / 1000).ceil();
@@ -298,6 +312,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       displayTime = '$remainingSeconds';
     }
 
+    final presetLabel = _formatPresetLabel(l10n, presetDurationMs);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         // Detect if cell is too flat (landscape orientation)
@@ -306,20 +322,16 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (!isFlat)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: _AutoScrollText(
-                  text: widget.config.name,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'monospace',
-                    color: tokens.textSecondary,
-                    fontFeatures: const [FontFeature.tabularFigures()],
-                  ),
-                ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: _buildNameAndPresetHeader(
+                isFlat: isFlat,
+                userDefinedName: userDefinedName,
+                presetLabel: presetLabel,
+                nameColor: tokens.textPrimary,
+                presetColor: tokens.textPrimary.withValues(alpha: 0.85),
               ),
+            ),
             Expanded(
               flex: isFlat ? 1 : 3,
               child: Center(
@@ -357,8 +369,11 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
   Widget _buildRingingContent(
     AppLocalizations l10n,
     int presetDurationMs,
+    String userDefinedName,
     AppThemeTokens tokens,
   ) {
+    final presetLabel = _formatPresetLabel(l10n, presetDurationMs);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         // Detect if cell is too flat (landscape orientation)
@@ -367,20 +382,16 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (!isFlat)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: _AutoScrollText(
-                  text: widget.config.name,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'monospace',
-                    color: tokens.textPrimary,
-                    fontFeatures: const [FontFeature.tabularFigures()],
-                  ),
-                ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: _buildNameAndPresetHeader(
+                isFlat: isFlat,
+                userDefinedName: userDefinedName,
+                presetLabel: presetLabel,
+                nameColor: tokens.textPrimary,
+                presetColor: tokens.textPrimary.withValues(alpha: 0.9),
               ),
+            ),
             Expanded(
               flex: isFlat ? 1 : 3,
               child: Center(
@@ -410,6 +421,87 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
           ],
         );
       },
+    );
+  }
+
+  String _formatPresetLabel(AppLocalizations l10n, int presetDurationMs) {
+    final isWholeMinute = presetDurationMs % 60000 == 0;
+    final minutes = presetDurationMs ~/ 60000;
+    final seconds = (presetDurationMs % 60000) ~/ 1000;
+
+    if (isWholeMinute) {
+      return '$minutes ${l10n.minutes}';
+    }
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
+  }
+
+  Widget _buildNameAndPresetHeader({
+    required bool isFlat,
+    required String userDefinedName,
+    required String presetLabel,
+    required Color nameColor,
+    required Color presetColor,
+  }) {
+    final name = userDefinedName.trim();
+    final hasName = name.isNotEmpty;
+
+    final nameStyle = TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w900,
+      color: nameColor,
+      height: 1.0,
+    );
+    final presetStyle = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+      color: presetColor,
+      height: 1.0,
+    );
+
+    if (isFlat) {
+      if (!hasName) {
+        return Text(
+          presetLabel,
+          style: presetStyle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+        );
+      }
+
+      return Row(
+        children: [
+          Expanded(
+            child: _AutoScrollText(text: name, style: nameStyle),
+          ),
+          const SizedBox(width: 8),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 96),
+            child: Text(
+              presetLabel,
+              style: presetStyle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.right,
+            ),
+          ),
+        ],
+      );
+    }
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (hasName) _AutoScrollText(text: name, style: nameStyle),
+        if (hasName) const SizedBox(height: 2),
+        Text(
+          presetLabel,
+          style: presetStyle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 

@@ -82,6 +82,9 @@ class AppSettingsHive {
   @HiveField(20, defaultValue: true)
   final bool showMinutesSecondsFormat;
 
+  @HiveField(22, defaultValue: ['', '', '', '', '', '', '', '', ''])
+  final List<String> gridNames;
+
   AppSettingsHive({
     required this.activeModeId,
     required this.flashEnabled,
@@ -105,6 +108,7 @@ class AppSettingsHive {
     required this.shakeSensitivity,
     this.ttsLanguage,
     required this.showMinutesSecondsFormat,
+    required this.gridNames,
   });
 
   /// Convert from domain entity.
@@ -138,6 +142,7 @@ class AppSettingsHive {
       shakeSensitivity: settings.shakeSensitivity,
       ttsLanguage: settings.ttsLanguage,
       showMinutesSecondsFormat: settings.showMinutesSecondsFormat,
+      gridNames: settings.gridNames,
     );
   }
 
@@ -178,6 +183,7 @@ class AppSettingsHive {
       shakeSensitivity: shakeSensitivity,
       ttsLanguage: ttsLanguage,
       showMinutesSecondsFormat: showMinutesSecondsFormat,
+      gridNames: gridNames,
     );
   }
 }
