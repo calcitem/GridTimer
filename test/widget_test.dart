@@ -5,13 +5,19 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:io' show Directory;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
 import 'package:grid_timer/main.dart';
 
 void main() {
   testWidgets('GridTimer app smoke test', (WidgetTester tester) async {
+    final dir = await Directory.systemTemp.createTemp('gridtimer_test_');
+    Hive.init(dir.path);
+
     // Build our app and trigger a frame.
     await tester.pumpWidget(const ProviderScope(child: GridTimerApp()));
 

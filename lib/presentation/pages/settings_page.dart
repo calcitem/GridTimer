@@ -496,6 +496,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   /// Build a section header widget.
   Widget _buildSectionHeader(String title) {
+    final color = Theme.of(context).colorScheme.primary;
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         16,
@@ -505,10 +506,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       ), // Increased vertical spacing
       child: Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 26, // Increased font size (18 -> 26)
           fontWeight: FontWeight.w900, // Bolder font
-          color: Color(0xFFFFD600), // High contrast yellow
+          color: color,
           letterSpacing: 1.2, // Increased letter spacing
         ),
       ),
@@ -732,6 +733,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     AppLocalizations l10n,
     String currentThemeId,
   ) {
+    void selectTheme(String themeId) {
+      ref.read(appSettingsProvider.notifier).updateTheme(themeId);
+      Navigator.pop(context);
+    }
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -739,27 +745,29 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            RadioListTile<String>(
-              title: Text(l10n.themeSoftDark),
-              value: 'soft_dark',
-              groupValue: currentThemeId,
-              onChanged: (value) {
-                if (value != null) {
-                  ref.read(appSettingsProvider.notifier).updateTheme(value);
-                  Navigator.pop(context);
-                }
-              },
+            Semantics(
+              button: true,
+              selected: currentThemeId == 'soft_dark',
+              child: ListTile(
+                leading: const Icon(Icons.nightlight_round),
+                title: Text(l10n.themeSoftDark),
+                trailing: currentThemeId == 'soft_dark'
+                    ? const Icon(Icons.check)
+                    : null,
+                onTap: () => selectTheme('soft_dark'),
+              ),
             ),
-            RadioListTile<String>(
-              title: Text(l10n.themeHighContrast),
-              value: 'high_contrast',
-              groupValue: currentThemeId,
-              onChanged: (value) {
-                if (value != null) {
-                  ref.read(appSettingsProvider.notifier).updateTheme(value);
-                  Navigator.pop(context);
-                }
-              },
+            Semantics(
+              button: true,
+              selected: currentThemeId == 'high_contrast',
+              child: ListTile(
+                leading: const Icon(Icons.contrast),
+                title: Text(l10n.themeHighContrast),
+                trailing: currentThemeId == 'high_contrast'
+                    ? const Icon(Icons.check)
+                    : null,
+                onTap: () => selectTheme('high_contrast'),
+              ),
             ),
           ],
         ),

@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../l10n/app_localizations.dart';
+import '../dialogs/privacy_policy_dialog.dart';
 import 'grid_page.dart';
 
 /// Onboarding page for first-time users.
@@ -19,6 +21,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   late final _LifecycleObserver _lifecycleObserver;
+  bool _privacyPolicyChecked = false;
 
   // Permission statuses
   bool _notificationGranted = false;
@@ -32,6 +35,17 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     // Re-check permissions when returning from settings
     _lifecycleObserver = _LifecycleObserver(this);
     WidgetsBinding.instance.addObserver(_lifecycleObserver);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Check and show privacy policy on first launch only, before onboarding starts
+    if (!_privacyPolicyChecked) {
+      _privacyPolicyChecked = true;
+      _checkAndShowPrivacyPolicy();
+    }
   }
 
   @override
@@ -71,6 +85,89 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   void _refreshPermissions() {
     _checkPermissions();
+  }
+
+  /// Check if the effective locale is Chinese.
+  ///
+  /// Returns true if:
+  /// - User explicitly selected Chinese, OR
+  /// - User is following system and system locale is Chinese
+  bool _isChineseLocale(BuildContext context) {
+    final userLocale = ref.read(localeProvider);
+
+    // If user has explicitly set a locale, use that
+    if (userLocale != null) {
+      return userLocale.languageCode == 'zh';
+    }
+
+    // Otherwise, check the system locale via Localizations
+    final systemLocale = Localizations.localeOf(context);
+    return systemLocale.languageCode == 'zh';
+  }
+
+  /// Check if privacy policy needs to be shown and display it if necessary.
+  ///
+  /// For Chinese locale users:
+  /// - Show privacy policy dialog first (if not yet accepted)
+  ///
+  /// This runs BEFORE the onboarding wizard starts, ensuring users see
+  /// the privacy policy before any permission requests.
+  Future<void> _checkAndShowPrivacyPolicy() async {
+    // Wait for settings to be loaded asynchronously
+    final settingsAsync = ref.read(appSettingsProvider);
+
+    // Wait for the future to complete if still loading
+    await settingsAsync.when(
+      data: (_) async {}, // Already loaded, continue
+      loading: () async {
+        // Wait for settings to load
+        await ref.read(appSettingsProvider.future);
+      },
+      error: (_, _) async {}, // Skip on error
+    );
+
+    // Now read the loaded settings
+    final settings = ref.read(appSettingsProvider).value;
+
+    if (settings == null) {
+      debugPrint('OnboardingPage: Settings not loaded, skipping privacy policy check');
+      return;
+    }
+
+    // Wait for first frame to complete to avoid showing during build
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+
+      // Check if Chinese locale and privacy policy not yet accepted
+      final isChinese = _isChineseLocale(context);
+      debugPrint('OnboardingPage: Is Chinese locale = $isChinese');
+      debugPrint(
+        'OnboardingPage: Privacy policy accepted = ${settings.privacyPolicyAccepted}',
+      );
+
+      if (isChinese && !settings.privacyPolicyAccepted) {
+        debugPrint('OnboardingPage: Showing privacy policy dialog');
+
+        final accepted = await PrivacyPolicyDialog.show(context);
+
+        debugPrint(
+          'OnboardingPage: User ${accepted ? "accepted" : "dismissed"} privacy policy',
+        );
+
+        if (accepted && mounted) {
+          await ref
+              .read(appSettingsProvider.notifier)
+              .updatePrivacyPolicyAccepted(true);
+          debugPrint('OnboardingPage: Saved privacy policy acceptance to storage');
+        } else if (!accepted && mounted) {
+          // User did not accept privacy policy - they cannot proceed
+          // Exit the app
+          debugPrint('OnboardingPage: User did not accept privacy policy, exiting app');
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).pop();
+        }
+      }
+    });
   }
 
   void _nextPage() {
