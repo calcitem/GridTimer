@@ -25,7 +25,7 @@ class _GridDurationsSettingsPageState
     600,
     900,
     1200,
-    2700
+    2700,
   ];
   static const List<String> _defaultNames = [
     '',
@@ -36,7 +36,7 @@ class _GridDurationsSettingsPageState
     '',
     '',
     '',
-    ''
+    '',
   ];
 
   late List<TextEditingController> _controllers;
@@ -53,7 +53,8 @@ class _GridDurationsSettingsPageState
   void _initControllers() {
     final settings = ref.read(appSettingsProvider).value;
     _durations = List<int>.from(
-        settings?.gridDurationsInSeconds ?? _defaultDurations);
+      settings?.gridDurationsInSeconds ?? _defaultDurations,
+    );
     // Handle potential null or shorter list for names
     final savedNames = settings?.gridNames ?? _defaultNames;
     _names = List<String>.generate(
@@ -112,7 +113,9 @@ class _GridDurationsSettingsPageState
 
     if (!hasError) {
       // Save configuration first
-      await ref.read(appSettingsProvider.notifier).updateSettings(
+      await ref
+          .read(appSettingsProvider.notifier)
+          .updateSettings(
             (s) => s.copyWith(
               gridDurationsInSeconds: newDurations,
               gridNames: newNames,
@@ -150,7 +153,9 @@ class _GridDurationsSettingsPageState
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(l10n.configurationSavedButErrorDuringUpdate(e.toString())),
+              content: Text(
+                l10n.configurationSavedButErrorDuringUpdate(e.toString()),
+              ),
               backgroundColor: Colors.orange,
             ),
           );
@@ -227,9 +232,7 @@ class _GridDurationsSettingsPageState
   Widget build(BuildContext context) {
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final l10n = l10nNullable;
 
@@ -264,10 +267,7 @@ class _GridDurationsSettingsPageState
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: Text(
-                  l10n.save,
-                  style: const TextStyle(fontSize: 16),
-                ),
+                child: Text(l10n.save, style: const TextStyle(fontSize: 16)),
               ),
             ),
           ),
@@ -286,10 +286,7 @@ class _GridDurationsSettingsPageState
           children: [
             Text(
               l10n.gridSlot(index + 1),
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
             Row(
@@ -321,9 +318,7 @@ class _GridDurationsSettingsPageState
                     child: TextField(
                       controller: _controllers[index],
                       keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(
                         labelText: l10n.seconds,
                         border: const OutlineInputBorder(),
@@ -348,10 +343,7 @@ class _GridDurationsSettingsPageState
             // Display formatted duration
             Text(
               _formatDuration(_durations[index]),
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.white70,
-              ),
+              style: const TextStyle(fontSize: 14, color: Colors.white70),
             ),
           ],
         ),
