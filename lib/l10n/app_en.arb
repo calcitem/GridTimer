@@ -1065,5 +1065,15 @@
   "privacyPolicyViewDetails": "View Privacy Policy",
   "@privacyPolicyViewDetails": {
     "description": "View privacy policy details button"
+  },
+
+  "ossLicenses": "Open Source Licenses",
+  "@ossLicenses": {
+    "description": "Open source licenses menu item"
+  },
+
+  "ossLicensesDesc": "View third-party library licenses",
+  "@ossLicensesDesc": {
+    "description": "Open source licenses description"
   }
 }

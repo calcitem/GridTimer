@@ -51,8 +51,8 @@
   "notificationPermission": "通知权限",
   "notificationPermissionDesc": "允许计时器通知",
   "about": "关于",
-  "license": "开源许可",
-  "licenseDesc": "查看开源许可证",
+  "license": "软件许可证",
+  "licenseDesc": "查看本应用许可证",
   "comingSoon": "即将推出",
   "selectLanguage": "选择语言",
   "languageEnglish": "English",
@@ -225,5 +225,8 @@
   "privacyPolicyTitle": "隐私政策",
   "privacyPolicyMessage": "在使用本应用前，请阅读并同意我们的隐私政策。",
   "privacyPolicyAgree": "我同意",
-  "privacyPolicyViewDetails": "查看隐私政策"
+  "privacyPolicyViewDetails": "查看隐私政策",
+
+  "ossLicenses": "开源许可",
+  "ossLicensesDesc": "查看第三方库许可证"
 }

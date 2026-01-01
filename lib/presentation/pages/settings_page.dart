@@ -11,6 +11,7 @@ import 'audio_playback_settings_page.dart';
 import 'audio_test_page.dart';
 import 'gesture_settings_page.dart';
 import 'grid_durations_settings_page.dart';
+import 'license_agreement_page.dart';
 import 'sound_settings_page.dart';
 import 'tts_settings_page.dart';
 
@@ -341,10 +342,25 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               trailing: const Icon(Icons.open_in_new, size: 16),
               onTap: () => _openPrivacyPolicy(currentLocale),
             ),
+            // App License (Apache 2.0)
             ListTile(
               leading: const Icon(Icons.description),
               title: Text(l10n.license),
-              subtitle: Text(l10n.licenseDesc),
+              subtitle: const Text('Apache License 2.0'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const LicenseAgreementPage(),
+                  ),
+                );
+              },
+            ),
+            // OSS Licenses (third-party libraries)
+            ListTile(
+              leading: const Icon(Icons.library_books),
+              title: Text(l10n.ossLicenses),
+              subtitle: Text(l10n.ossLicensesDesc),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 showLicensePage(
