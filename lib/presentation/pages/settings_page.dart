@@ -640,26 +640,32 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(l10n.selectLanguage),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: Text(l10n.languageEnglish),
-              leading: const Icon(Icons.language),
-              onTap: () {
-                ref.read(localeProvider.notifier).setLocale(const Locale('en'));
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text(l10n.languageChineseSimplified),
-              leading: const Icon(Icons.language),
-              onTap: () {
-                ref.read(localeProvider.notifier).setLocale(const Locale('zh'));
-                Navigator.pop(context);
-              },
-            ),
-          ],
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text(l10n.languageEnglish),
+                leading: const Icon(Icons.language),
+                onTap: () {
+                  ref
+                      .read(localeProvider.notifier)
+                      .setLocale(const Locale('en'));
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text(l10n.languageChineseSimplified),
+                leading: const Icon(Icons.language),
+                onTap: () {
+                  ref
+                      .read(localeProvider.notifier)
+                      .setLocale(const Locale('zh'));
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -744,46 +750,48 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(l10n.themeMode),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Semantics(
-              button: true,
-              selected: currentThemeId == 'soft_dark',
-              child: ListTile(
-                leading: const Icon(Icons.nightlight_round),
-                title: Text(l10n.themeSoftDark),
-                trailing: currentThemeId == 'soft_dark'
-                    ? const Icon(Icons.check)
-                    : null,
-                onTap: () => selectTheme('soft_dark'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Semantics(
+                button: true,
+                selected: currentThemeId == 'soft_dark',
+                child: ListTile(
+                  leading: const Icon(Icons.nightlight_round),
+                  title: Text(l10n.themeSoftDark),
+                  trailing: currentThemeId == 'soft_dark'
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => selectTheme('soft_dark'),
+                ),
               ),
-            ),
-            Semantics(
-              button: true,
-              selected: currentThemeId == 'high_contrast',
-              child: ListTile(
-                leading: const Icon(Icons.contrast),
-                title: Text(l10n.themeHighContrast),
-                trailing: currentThemeId == 'high_contrast'
-                    ? const Icon(Icons.check)
-                    : null,
-                onTap: () => selectTheme('high_contrast'),
+              Semantics(
+                button: true,
+                selected: currentThemeId == 'high_contrast',
+                child: ListTile(
+                  leading: const Icon(Icons.contrast),
+                  title: Text(l10n.themeHighContrast),
+                  trailing: currentThemeId == 'high_contrast'
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => selectTheme('high_contrast'),
+                ),
               ),
-            ),
-            Semantics(
-              button: true,
-              selected: currentThemeId == 'light_high_contrast',
-              child: ListTile(
-                leading: const Icon(Icons.wb_sunny),
-                title: Text(l10n.themeLightHighContrast),
-                trailing: currentThemeId == 'light_high_contrast'
-                    ? const Icon(Icons.check)
-                    : null,
-                onTap: () => selectTheme('light_high_contrast'),
+              Semantics(
+                button: true,
+                selected: currentThemeId == 'light_high_contrast',
+                child: ListTile(
+                  leading: const Icon(Icons.wb_sunny),
+                  title: Text(l10n.themeLightHighContrast),
+                  trailing: currentThemeId == 'light_high_contrast'
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => selectTheme('light_high_contrast'),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -870,16 +878,18 @@ class _CountdownDialogState extends State<_CountdownDialog> {
       canPop: false,
       child: AlertDialog(
         title: Text(widget.l10n.resetAllSettingsSuccess),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CircularProgressIndicator(),
-            const SizedBox(height: 16),
-            Text(
-              widget.l10n.resetAllSettingsExitMessage(_remainingSeconds),
-              textAlign: TextAlign.center,
-            ),
-          ],
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CircularProgressIndicator(),
+              const SizedBox(height: 16),
+              Text(
+                widget.l10n.resetAllSettingsExitMessage(_remainingSeconds),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

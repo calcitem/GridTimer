@@ -181,16 +181,27 @@ ThemeData _buildThemeData(
     brightness: isDark ? Brightness.dark : Brightness.light,
     useMaterial3: true,
     scaffoldBackgroundColor: tokens.bg,
-    colorScheme: ColorScheme.dark(
-      surface: tokens.surface,
-      onSurface: tokens.textPrimary,
-      primary: tokens.accent,
-      onPrimary: tokens.bg,
-      onSecondary: tokens.bg,
-      error: tokens.danger,
-      onError: tokens.textPrimary,
-      secondary: tokens.textSecondary,
-    ),
+    colorScheme: isDark
+        ? ColorScheme.dark(
+            surface: tokens.surface,
+            onSurface: tokens.textPrimary,
+            primary: tokens.accent,
+            onPrimary: tokens.bg,
+            onSecondary: tokens.bg,
+            error: tokens.danger,
+            onError: tokens.textPrimary,
+            secondary: tokens.textSecondary,
+          )
+        : ColorScheme.light(
+            surface: tokens.surface,
+            onSurface: tokens.textPrimary,
+            primary: tokens.accent,
+            onPrimary: tokens.bg,
+            onSecondary: tokens.bg,
+            error: tokens.danger,
+            onError: tokens.textPrimary,
+            secondary: tokens.textSecondary,
+          ),
     appBarTheme: AppBarTheme(
       backgroundColor: tokens.bg,
       foregroundColor: tokens.textPrimary,
