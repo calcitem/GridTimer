@@ -81,6 +81,11 @@ In test mode:
 - Check that the app package name is correct: `com.calcitem.gridtimer`
 - Ensure the app is installed: `adb shell pm list packages | grep gridtimer`
 
+**Permission Error (INJECT_EVENTS):**
+If you see `java.lang.SecurityException: Injecting input events requires the caller ... to have the INJECT_EVENTS permission`:
+- **Xiaomi/MIUI Devices**: You must enable **USB debugging (Security settings)** / **USB 调试（安全设置）** in Developer Options. This is required to allow ADB to simulate touch events.
+- Note: This setting usually requires a SIM card to be inserted and Wi-Fi to be disabled during activation.
+
 **External apps opening:**
 - Verify you built with `--dart-define=test=true`
 - Check logcat for "blocked in test environment" messages
