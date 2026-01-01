@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:app_settings/app_settings.dart';
+import '../core/config/environment_config.dart';
 import '../core/domain/services/i_permission_service.dart';
 
 /// Permission service implementation.
@@ -38,6 +40,12 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openNotificationSettings() async {
+    // Block opening system settings in test environment to prevent interference with Monkey testing
+    if (EnvironmentConfig.test) {
+      debugPrint('Opening notification settings blocked in test environment');
+      return;
+    }
+
     // app_settings is only available on Android and iOS
     if (Platform.isAndroid || Platform.isIOS) {
       await AppSettings.openAppSettings(type: AppSettingsType.notification);
@@ -51,6 +59,12 @@ class PermissionService implements IPermissionService {
     if (!Platform.isAndroid) return;
     assert(channelId.isNotEmpty, 'channelId must not be empty');
 
+    // Block opening system settings in test environment to prevent interference with Monkey testing
+    if (EnvironmentConfig.test) {
+      debugPrint('Opening notification channel settings blocked in test environment');
+      return;
+    }
+
     await _systemSettingsChannel.invokeMethod<void>(
       'openNotificationChannelSettings',
       {'channelId': channelId},
@@ -59,6 +73,12 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openExactAlarmSettings() async {
+    // Block opening system settings in test environment to prevent interference with Monkey testing
+    if (EnvironmentConfig.test) {
+      debugPrint('Opening exact alarm settings blocked in test environment');
+      return;
+    }
+
     // app_settings is only available on Android and iOS
     if (Platform.isAndroid || Platform.isIOS) {
       await AppSettings.openAppSettings(type: AppSettingsType.alarm);
@@ -67,6 +87,12 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openFullScreenIntentSettings() async {
+    // Block opening system settings in test environment to prevent interference with Monkey testing
+    if (EnvironmentConfig.test) {
+      debugPrint('Opening full screen intent settings blocked in test environment');
+      return;
+    }
+
     // app_settings is only available on Android and iOS
     if (Platform.isAndroid || Platform.isIOS) {
       await AppSettings.openAppSettings();
@@ -75,6 +101,12 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openBatteryOptimizationSettings() async {
+    // Block opening system settings in test environment to prevent interference with Monkey testing
+    if (EnvironmentConfig.test) {
+      debugPrint('Opening battery optimization settings blocked in test environment');
+      return;
+    }
+
     // app_settings is only available on Android and iOS
     if (Platform.isAndroid || Platform.isIOS) {
       await AppSettings.openAppSettings(
@@ -115,6 +147,12 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openAppSettings() async {
+    // Block opening system settings in test environment to prevent interference with Monkey testing
+    if (EnvironmentConfig.test) {
+      debugPrint('Opening app settings blocked in test environment');
+      return;
+    }
+
     // app_settings is only available on Android and iOS
     if (Platform.isAndroid || Platform.isIOS) {
       await AppSettings.openAppSettings();
@@ -123,6 +161,12 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<void> openTtsSettings() async {
+    // Block opening system settings in test environment to prevent interference with Monkey testing
+    if (EnvironmentConfig.test) {
+      debugPrint('Opening TTS settings blocked in test environment');
+      return;
+    }
+
     if (Platform.isAndroid) {
       try {
         await _systemSettingsChannel.invokeMethod<void>('openTtsSettings');

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
+import '../../core/config/environment_config.dart';
 import '../../l10n/app_localizations.dart';
 import '../dialogs/privacy_policy_dialog.dart';
 import 'grid_page.dart';
@@ -165,12 +166,23 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           );
         } else if (!accepted && mounted) {
           // User did not accept privacy policy - they cannot proceed
-          // Exit the app
-          debugPrint(
-            'OnboardingPage: User did not accept privacy policy, exiting app',
-          );
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).pop();
+          // Block exiting app in test environment to prevent interference with Monkey testing
+          if (EnvironmentConfig.test) {
+            debugPrint(
+              'OnboardingPage: User did not accept privacy policy, but exit blocked in test environment',
+            );
+            // In test mode, just mark it as accepted to allow testing to continue
+            await ref
+                .read(appSettingsProvider.notifier)
+                .updatePrivacyPolicyAccepted(true);
+          } else {
+            // Exit the app
+            debugPrint(
+              'OnboardingPage: User did not accept privacy policy, exiting app',
+            );
+            // ignore: use_build_context_synchronously
+            Navigator.of(context).pop();
+          }
         }
       }
     });
