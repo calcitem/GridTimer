@@ -3,6 +3,7 @@ name: AAB Release Build
 on:
   push:
     branches: [release]
+  workflow_dispatch:
 
 jobs:
   linter:
@@ -56,7 +57,8 @@ jobs:
 
       - name: Export Flutter to PATH
         run: |
-          FLUTTER_HOME="${HOME}/flutter-3.38.5"
+          FLUTTER_VERSION=$(grep 'FLUTTER_VERSION="' ./tool/setup-flutter.sh | head -n 1 | cut -d'"' -f2)
+          FLUTTER_HOME="${HOME}/flutter-${FLUTTER_VERSION}"
           echo "${FLUTTER_HOME}/bin" >> $GITHUB_PATH
           echo "FLUTTER_HOME=${FLUTTER_HOME}" >> $GITHUB_ENV
 
@@ -119,4 +121,3 @@ jobs:
         with:
           name: gridtimer-native-debug-symbols-release
           path: build/app/outputs/native-debug-symbols/release/native-debug-symbols.zip
-
