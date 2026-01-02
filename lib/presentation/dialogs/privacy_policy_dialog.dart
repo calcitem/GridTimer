@@ -12,7 +12,7 @@ class PrivacyPolicyDialog extends StatelessWidget {
 
   /// Chinese privacy policy URL.
   static const String _privacyPolicyUrlZh =
-      'https://calcitem.github.io/Grid Timer/privacy-policy_zh';
+      'https://calcitem.github.io/GridTimer/privacy-policy_zh';
 
   /// Show the privacy policy dialog.
   ///

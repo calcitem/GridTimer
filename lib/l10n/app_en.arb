@@ -363,6 +363,10 @@
   "@testSound": {
     "description": "Test sound button"
   },
+  "playing": "Playing...",
+  "@playing": {
+    "description": "Text shown when sound is playing"
+  },
 
   "testTts": "Test Voice",
   "@testTts": {
