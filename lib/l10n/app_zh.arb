@@ -80,6 +80,7 @@
   "ttsLanguage": "语音播报语言",
   "ttsLanguageDesc": "选择语音播报语言",
   "testSound": "测试声音",
+  "playing": "播放中...",
   "testTts": "测试语音",
 
   "gridDurationsSettings": "九宫格设置",

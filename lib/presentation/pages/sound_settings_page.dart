@@ -92,7 +92,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(Icons.play_arrow),
-                    label: Text(_isPlaying ? 'Playing...' : l10n.testSound),
+                    label: Text(_isPlaying ? l10n.playing : l10n.testSound),
                   ),
                 ],
               ),
