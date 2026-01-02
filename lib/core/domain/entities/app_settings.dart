@@ -92,8 +92,7 @@ abstract class AppSettings with _$AppSettings {
 
     /// Custom names for grid slots (9 elements).
     /// If an element is empty string, default formatting (time) is used.
-    @Default(['', '', '', '', '', '', '', '', ''])
-    List<String> gridNames,
+    @Default(['', '', '', '', '', '', '', '', '']) List<String> gridNames,
 
     /// Audio playback mode for alarm.
     @Default(AudioPlaybackMode.loopIndefinitely)

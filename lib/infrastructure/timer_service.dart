@@ -448,7 +448,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         repeatSoundUntilStopped: repeatSoundUntilStopped,
         enableVibration: settings?.vibrationEnabled ?? true,
         ttsLanguage: settings?.ttsLanguage,
-        playNotificationSound: reliabilityMode == AlarmReliabilityMode.notification,
+        playNotificationSound:
+            reliabilityMode == AlarmReliabilityMode.notification,
       );
     }
 
@@ -533,7 +534,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         repeatSoundUntilStopped: repeatSoundUntilStopped,
         enableVibration: settings?.vibrationEnabled ?? true,
         ttsLanguage: settings?.ttsLanguage,
-        playNotificationSound: reliabilityMode == AlarmReliabilityMode.notification,
+        playNotificationSound:
+            reliabilityMode == AlarmReliabilityMode.notification,
       );
     }
 

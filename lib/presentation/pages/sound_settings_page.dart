@@ -82,9 +82,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                   ElevatedButton.icon(
                     onPressed: _isPlaying
                         ? null
-                        : () => _testSound(
-                            settings.soundVolume,
-                          ),
+                        : () => _testSound(settings.soundVolume),
                     icon: _isPlaying
                         ? const SizedBox(
                             width: 20,
@@ -133,8 +131,10 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                   Semantics(
                     label: l10n.volume,
                     value: '${(settings.soundVolume * 100).round()}%',
-                    increasedValue: '${((settings.soundVolume * 100).round() + 1)}%',
-                    decreasedValue: '${((settings.soundVolume * 100).round() - 1)}%',
+                    increasedValue:
+                        '${((settings.soundVolume * 100).round() + 1)}%',
+                    decreasedValue:
+                        '${((settings.soundVolume * 100).round() - 1)}%',
                     slider: true,
                     child: Slider(
                       value: settings.soundVolume,
@@ -158,7 +158,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                 ],
               ),
             ),
-            
+
             // System volume hint
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -175,12 +175,19 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.info_outline, color: Colors.blue, size: 20),
+                    const Icon(
+                      Icons.info_outline,
+                      color: Colors.blue,
+                      size: 20,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         l10n.systemVolumeHint,
-                        style: const TextStyle(fontSize: 13, color: Colors.blue),
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.blue,
+                        ),
                       ),
                     ),
                   ],

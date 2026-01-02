@@ -16,7 +16,6 @@ class GridDurationsSettingsPage extends ConsumerStatefulWidget {
 
 class _GridDurationsSettingsPageState
     extends ConsumerState<GridDurationsSettingsPage> {
-
   late List<TextEditingController> _minutesControllers;
   late List<TextEditingController> _secondsControllers;
   late List<TextEditingController> _nameControllers;
@@ -42,20 +41,14 @@ class _GridDurationsSettingsPageState
     );
 
     // Split duration into minutes and seconds for separate input
-    _minutesControllers = List.generate(
-      9,
-      (i) {
-        final minutes = _durations[i] ~/ 60;
-        return TextEditingController(text: minutes.toString());
-      },
-    );
-    _secondsControllers = List.generate(
-      9,
-      (i) {
-        final seconds = _durations[i] % 60;
-        return TextEditingController(text: seconds.toString());
-      },
-    );
+    _minutesControllers = List.generate(9, (i) {
+      final minutes = _durations[i] ~/ 60;
+      return TextEditingController(text: minutes.toString());
+    });
+    _secondsControllers = List.generate(9, (i) {
+      final seconds = _durations[i] % 60;
+      return TextEditingController(text: seconds.toString());
+    });
     _nameControllers = List.generate(
       9,
       (i) => TextEditingController(text: _names[i]),
@@ -88,10 +81,12 @@ class _GridDurationsSettingsPageState
     for (int i = 0; i < 9; i++) {
       final minutesText = _minutesControllers[i].text.trim();
       final secondsText = _secondsControllers[i].text.trim();
-      
-      final minutes = int.tryParse(minutesText.isEmpty ? '0' : minutesText) ?? 0;
-      final seconds = int.tryParse(secondsText.isEmpty ? '0' : secondsText) ?? 0;
-      
+
+      final minutes =
+          int.tryParse(minutesText.isEmpty ? '0' : minutesText) ?? 0;
+      final seconds =
+          int.tryParse(secondsText.isEmpty ? '0' : secondsText) ?? 0;
+
       final totalSeconds = minutes * 60 + seconds;
 
       if (totalSeconds <= 0) {
@@ -208,7 +203,9 @@ class _GridDurationsSettingsPageState
       });
 
       // Persist defaults immediately so the reset actually takes effect.
-      await ref.read(appSettingsProvider.notifier).updateSettings(
+      await ref
+          .read(appSettingsProvider.notifier)
+          .updateSettings(
             (s) => s.copyWith(
               gridDurationsInSeconds: defaultDurations,
               gridNames: defaultNames,
@@ -373,8 +370,15 @@ class _GridDurationsSettingsPageState
                       ),
                       onChanged: (value) {
                         // Real-time preview
-                        final minutes = int.tryParse(value.isEmpty ? '0' : value) ?? 0;
-                        final seconds = int.tryParse(_secondsControllers[index].text.isEmpty ? '0' : _secondsControllers[index].text) ?? 0;
+                        final minutes =
+                            int.tryParse(value.isEmpty ? '0' : value) ?? 0;
+                        final seconds =
+                            int.tryParse(
+                              _secondsControllers[index].text.isEmpty
+                                  ? '0'
+                                  : _secondsControllers[index].text,
+                            ) ??
+                            0;
                         setState(() {
                           _durations[index] = minutes * 60 + seconds;
                         });
@@ -400,8 +404,15 @@ class _GridDurationsSettingsPageState
                       ),
                       onChanged: (value) {
                         // Real-time preview
-                        final minutes = int.tryParse(_minutesControllers[index].text.isEmpty ? '0' : _minutesControllers[index].text) ?? 0;
-                        final seconds = int.tryParse(value.isEmpty ? '0' : value) ?? 0;
+                        final minutes =
+                            int.tryParse(
+                              _minutesControllers[index].text.isEmpty
+                                  ? '0'
+                                  : _minutesControllers[index].text,
+                            ) ??
+                            0;
+                        final seconds =
+                            int.tryParse(value.isEmpty ? '0' : value) ?? 0;
                         setState(() {
                           _durations[index] = minutes * 60 + seconds;
                         });
