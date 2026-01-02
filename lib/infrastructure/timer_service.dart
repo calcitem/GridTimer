@@ -892,7 +892,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     final isChineseLocale = effectiveLocale.startsWith('zh');
 
     // Check if user has defined a custom name for this slot
-    final customName = (settings?.gridNames != null &&
+    final customName =
+        (settings?.gridNames != null &&
             settings!.gridNames.length > config.slotIndex)
         ? settings.gridNames[config.slotIndex]
         : '';
@@ -907,9 +908,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       timerName = formatter.format(config.presetDurationMs ~/ 1000);
     }
 
-    return isChineseLocale
-        ? '$timerName 时间到'
-        : '$timerName time is up';
+    return isChineseLocale ? '$timerName 时间到' : '$timerName time is up';
   }
 
   Future<TimerGridSet> _createDefaultGrid(AppSettings? settings) async {

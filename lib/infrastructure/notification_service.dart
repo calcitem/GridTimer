@@ -167,12 +167,15 @@ class NotificationService implements INotificationService {
         const silentChannelWithoutGroup = AndroidNotificationChannel(
           _silentTimeUpChannelId,
           'Timer Alarm',
-          description: 'Time up notifications (silent; sound is played separately)',
+          description:
+              'Time up notifications (silent; sound is played separately)',
           importance: Importance.max,
           playSound: false,
           enableVibration: true,
         );
-        await androidPlugin.createNotificationChannel(silentChannelWithoutGroup);
+        await androidPlugin.createNotificationChannel(
+          silentChannelWithoutGroup,
+        );
       } else {
         rethrow;
       }
