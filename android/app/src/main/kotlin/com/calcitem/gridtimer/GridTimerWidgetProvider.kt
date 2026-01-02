@@ -9,7 +9,7 @@ import android.widget.RemoteViews
 import es.antonborri.home_widget.HomeWidgetPlugin
 
 /**
- * GridTimer home screen widget provider
+ * Grid Timer home screen widget provider
  * Displays the status of currently running timers
  */
 class GridTimerWidgetProvider : AppWidgetProvider() {
@@ -48,7 +48,7 @@ class GridTimerWidgetProvider : AppWidgetProvider() {
             val nearestTimerRemaining = widgetData.getString("nearest_timer_remaining", null)
 
             // Update display content
-            views.setTextViewText(R.id.widget_title, "GridTimer")
+            views.setTextViewText(R.id.widget_title, "Grid Timer")
 
             // Status summary
             val statusText = when {
@@ -112,4 +112,3 @@ class GridTimerWidgetProvider : AppWidgetProvider() {
         }
     }
 }
-

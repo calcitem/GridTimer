@@ -1,4 +1,4 @@
-// Core type definitions for GridTimer domain.
+// Core type definitions for Grid Timer domain.
 
 /// Unique identifier for a mode (grid set).
 typedef ModeId = String;
@@ -9,6 +9,3 @@ typedef TimerId = String;
 
 /// Sound key identifier for ringtones.
 typedef SoundKey = String;
-
-
-

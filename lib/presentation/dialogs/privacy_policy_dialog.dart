@@ -12,7 +12,7 @@ class PrivacyPolicyDialog extends StatelessWidget {
 
   /// Chinese privacy policy URL.
   static const String _privacyPolicyUrlZh =
-      'https://calcitem.github.io/GridTimer/privacy-policy_zh';
+      'https://calcitem.github.io/Grid Timer/privacy-policy_zh';
 
   /// Show the privacy policy dialog.
   ///
@@ -31,7 +31,9 @@ class PrivacyPolicyDialog extends StatelessWidget {
   Future<void> _launchPrivacyPolicy() async {
     // Block URL launching in test environment to prevent interference with Monkey testing
     if (EnvironmentConfig.test) {
-      debugPrint('URL launch blocked in test environment: $_privacyPolicyUrlZh');
+      debugPrint(
+        'URL launch blocked in test environment: $_privacyPolicyUrlZh',
+      );
       return;
     }
 

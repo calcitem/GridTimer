@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# GridTimer version generation script
+# Grid Timer version generation script
 # Based on Sanmill's version.sh but simplified for Flutter-only project
 
 PUBSPEC_YAML_FILE=pubspec.yaml
@@ -60,4 +60,3 @@ $SED -i "4i\\version: ${APP_VERSION}" ${PUBSPEC_YAML_FILE}
 echo "Updated $PUBSPEC_YAML_FILE"
 echo
 grep '^version:' ${PUBSPEC_YAML_FILE}
-

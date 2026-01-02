@@ -26,7 +26,7 @@ Future<void> main() async {
   debugPrint('Environment [test]: ${EnvironmentConfig.test}');
 
   // Initialize Hive before anything else
-  await Hive.initFlutter('GridTimer');
+  await Hive.initFlutter('Grid Timer');
 
   if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
     catcher = Catcher2(
@@ -157,7 +157,7 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
       /// Add navigator key from Catcher.
       /// It will be used to navigate user to report page or to show dialog.
       navigatorKey: EnvironmentConfig.catcher ? Catcher2.navigatorKey : null,
-      title: 'GridTimer',
+      title: 'Grid Timer',
       debugShowCheckedModeBanner: false,
       locale: locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# GridTimer release build script
+# Grid Timer release build script
 # Builds signed AAB for Play Store submission
 
 set -e
 
-echo "=== GridTimer Release Build ==="
+echo "=== Grid Timer Release Build ==="
 echo ""
 
 echo "Step 1: Clean build artifacts..."
@@ -43,7 +43,3 @@ echo "  1. Test the AAB using bundletool"
 echo "  2. Upload to Play Console"
 echo "  3. Complete store listing and content rating"
 echo ""
-
-
-
-

@@ -1,1 +1,1 @@
-GridTimer - 9宫格定时器
+Grid Timer - 9宫格定时器

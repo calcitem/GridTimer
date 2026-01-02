@@ -98,7 +98,7 @@
             android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver"
             android:exported="false" />
 
-        <!-- GridTimer home screen widget -->
+        <!-- Grid Timer home screen widget -->
         <receiver
             android:name=".GridTimerWidgetProvider"
             android:exported="true">

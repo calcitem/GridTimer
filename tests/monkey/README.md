@@ -1,4 +1,4 @@
-# Monkey Testing for GridTimer
+# Monkey Testing for Grid Timer
 
 ## Overview
 
@@ -6,7 +6,7 @@ Monkey testing is an automated stress testing technique that generates random UI
 
 ## Test Environment Setup
 
-GridTimer must be built with the **test environment** flag to prevent interference with monkey testing:
+Grid Timer must be built with the **test environment** flag to prevent interference with monkey testing:
 
 ```bash
 flutter build apk --dart-define=test=true
@@ -53,7 +53,7 @@ While monkey test is running, you can monitor for crashes:
 
 ```bash
 # Watch logcat for errors
-adb logcat | grep -E "(FATAL|AndroidRuntime|GridTimer)"
+adb logcat | grep -E "(FATAL|AndroidRuntime|Grid Timer)"
 
 # Check if app is still running
 adb shell ps | grep gridtimer

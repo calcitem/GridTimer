@@ -14,7 +14,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:grid_timer/main.dart';
 
 void main() {
-  testWidgets('GridTimer app smoke test', (WidgetTester tester) async {
+  testWidgets('Grid Timer app smoke test', (WidgetTester tester) async {
     final dir = await Directory.systemTemp.createTemp('gridtimer_test_');
     Hive.init(dir.path);
 

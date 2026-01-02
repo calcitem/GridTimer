@@ -1,4 +1,4 @@
-// Copyright (C) 2025 GridTimer developers
+// Copyright (C) 2025 Grid Timer developers
 // SPDX-License-Identifier: Apache-2.0
 
 import 'package:flutter/material.dart';

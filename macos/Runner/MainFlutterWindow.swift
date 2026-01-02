@@ -13,7 +13,7 @@ class MainFlutterWindow: NSWindow {
     if preferredLanguage.hasPrefix("zh") {
       self.title = "九宫计时"
     } else {
-      self.title = "GridTimer"
+      self.title = "Grid Timer"
     }
 
     RegisterGeneratedPlugins(registry: flutterViewController)

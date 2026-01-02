@@ -1,4 +1,4 @@
-# GridTimer
+# Grid Timer
 
 A 9-grid parallel timer app optimized for seniors with reliable alarm system and minimalist UI.
 
@@ -28,7 +28,7 @@ A 9-grid parallel timer app optimized for seniors with reliable alarm system and
 ```bash
 # 1. Clone repository
 git clone <repository-url>
-cd GridTimer
+cd Grid Timer
 
 # 2. Install dependencies
 flutter pub get

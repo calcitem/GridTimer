@@ -1,8 +1,8 @@
-# GridTimer Project - AI Agent Guidelines
+# Grid Timer Project - AI Agent Guidelines
 
 ## Project Overview
 
-GridTimer is a 9-grid parallel timer app optimized for seniors with reliable alarm system and minimalist UI, built with Flutter following Clean Architecture principles.
+Grid Timer is a 9-grid parallel timer app optimized for seniors with reliable alarm system and minimalist UI, built with Flutter following Clean Architecture principles.
 
 ## Critical Development Rules
 
@@ -211,4 +211,3 @@ final notificationServiceProvider = Provider<INotificationService>((ref) {
 ---
 
 **Remember**: This is a production app for seniors. Reliability and clarity are paramount. Every feature must work flawlessly even after app kills, device restarts, and on problematic OEM ROMs like MIUI.
-

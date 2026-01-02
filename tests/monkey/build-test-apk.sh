@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Build GridTimer APK with test environment configuration for Monkey testing
+# Build Grid Timer APK with test environment configuration for Monkey testing
 # This script builds an APK with test=true flag which disables:
 # - URL launching (privacy policy links)
 # - System settings opening
@@ -8,7 +8,7 @@
 
 set -e
 
-echo "Building GridTimer APK with test environment..."
+echo "Building Grid Timer APK with test environment..."
 echo "This will disable URL launching, system settings, and app exit to prevent Monkey test interference."
 echo ""
 
@@ -24,4 +24,3 @@ echo "  adb install build/app/outputs/flutter-apk/app-release.apk"
 echo ""
 echo "To run Monkey test:"
 echo "  ./tests/monkey/monkey.sh"
-

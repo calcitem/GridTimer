@@ -49,7 +49,7 @@ class StorageRepository {
           final dir = await Directory.systemTemp.createTemp('gridtimer_hive_');
           Hive.init(dir.path);
         } else {
-          await Hive.initFlutter('GridTimer');
+          await Hive.initFlutter('Grid Timer');
         }
 
         // Register adapters

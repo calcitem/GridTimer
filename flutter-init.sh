@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# GridTimer initialization script
+# Grid Timer initialization script
 # This script sets up the project for first-time build
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-echo "=== GridTimer Initialization ==="
+echo "=== Grid Timer Initialization ==="
 echo ""
 
 echo "Step 0: Generate Git information files..."

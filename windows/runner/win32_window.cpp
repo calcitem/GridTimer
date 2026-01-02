@@ -327,7 +327,7 @@ void Win32Window::CreateTrayIcon() {
                                     MAKEINTRESOURCE(IDI_APP_ICON));
 
   // Set tooltip text.
-  wcscpy_s(tray_icon_data_.szTip, L"GridTimer");
+  wcscpy_s(tray_icon_data_.szTip, L"Grid Timer");
 
   Shell_NotifyIconW(NIM_ADD, &tray_icon_data_);
   tray_icon_created_ = true;

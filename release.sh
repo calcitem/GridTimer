@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# GridTimer Release Script
+# Grid Timer Release Script
 # Usage:
 #   ./release.sh       - Bump patch version (1.0.0 -> 1.0.1)
 #   ./release.sh -y    - Bump minor version (1.0.0 -> 1.1.0)
@@ -173,11 +173,11 @@ echo ""
 echo "=== Git Operations ==="
 git status -s
 git add .
-git commit -m "GridTimer v$NEW_VERSION ($BUILD_NUMBER)" -m "Official release version of GridTimer v$NEW_VERSION"
+git commit -m "Grid Timer v$NEW_VERSION ($BUILD_NUMBER)" -m "Official release version of Grid Timer v$NEW_VERSION"
 
 # Create tag (delete existing if present)
 git tag -d "v$NEW_VERSION" 2>/dev/null || true
-git tag -a "v$NEW_VERSION" -m "GridTimer v$NEW_VERSION ($BUILD_NUMBER)" -m "Official release version of GridTimer v$NEW_VERSION"
+git tag -a "v$NEW_VERSION" -m "Grid Timer v$NEW_VERSION ($BUILD_NUMBER)" -m "Official release version of Grid Timer v$NEW_VERSION"
 
 # Show the latest commit details
 echo ""

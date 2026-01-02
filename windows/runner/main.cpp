@@ -14,7 +14,7 @@ const wchar_t* GetLocalizedWindowTitle() {
     // Chinese: U+4E5D U+5BAB U+683C U+8BA1 U+65F6 U+5668 = "九宫计时"
     return L"\x4E5D\x5BAB\x683C\x8BA1\x65F6\x5668";
   }
-  return L"GridTimer";
+  return L"Grid Timer";
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,

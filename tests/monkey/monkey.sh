@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Android Monkey Test Script for GridTimer
-# This script runs random UI stress testing on the GridTimer app
+# Android Monkey Test Script for Grid Timer
+# This script runs random UI stress testing on the Grid Timer app
 # Should be run with the app built in test environment (--dart-define=test=true)
 
 PLATFORM_TOOLS=~/AppData/Local/Android/Sdk/platform-tools
@@ -16,7 +16,7 @@ cd ${PLATFORM_TOOLS} || exit
 
 # Monkey test parameters:
 # -v: verbose output
-# -p: package name (GridTimer)
+# -p: package name (Grid Timer)
 # --pct-touch 50: 50% touch events
 # --pct-motion 50: 50% motion events (drag/swipe)
 # --pct-trackball 0: 0% trackball events (not applicable)
@@ -28,4 +28,3 @@ cd ${PLATFORM_TOOLS} || exit
 # 10000000: total number of events to generate
 
 ./adb shell monkey -v -p com.calcitem.gridtimer --pct-touch 50 --pct-motion 50 --pct-trackball 0 --pct-nav 0 --pct-majornav 0 --pct-syskeys 0 --pct-anyevent 0 --throttle 500 10000000
-

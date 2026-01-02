@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Stop Android Monkey Test for GridTimer
+# Stop Android Monkey Test for Grid Timer
 # This script terminates any running monkey test process
 
 PLATFORM_TOOLS=~/AppData/Local/Android/Sdk/platform-tools
@@ -14,4 +14,3 @@ fi
 cd ${PLATFORM_TOOLS} || exit
 
 ./adb shell kill $(./adb shell ps | grep monkey | xargs | cut -d' ' -f2)
-

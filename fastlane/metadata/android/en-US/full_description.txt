@@ -1,6 +1,6 @@
 ⚠️ IMPORTANT SAFETY NOTICE
 
-GridTimer is a free open-source timer app for daily reminders and non-critical use.
+Grid Timer is a free open-source timer app for daily reminders and non-critical use.
 
 ❌ NOT SUITABLE FOR:
 • Critical medical use (use medical-grade apps for medication reminders)
@@ -18,7 +18,7 @@ See full disclaimer in-app. Please test thoroughly before relying on this app.
 
 🎯 Key Features
 
-GridTimer is a 9-grid parallel timer designed for seniors and caregiving scenarios, making it easy to manage multiple timing tasks.
+Grid Timer is a 9-grid parallel timer designed for seniors and caregiving scenarios, making it easy to manage multiple timing tasks.
 
 ✨ Core Features
 
@@ -96,7 +96,7 @@ For complete legal disclaimer, please view the Safety Notice page in-app.
 
 📖 Open Source
 
-GridTimer is an open-source project under MIT License.
+Grid Timer is an open-source project under MIT License.
 Visit GitHub to view source code, report issues, or contribute.
 
 🙏 Acknowledgments

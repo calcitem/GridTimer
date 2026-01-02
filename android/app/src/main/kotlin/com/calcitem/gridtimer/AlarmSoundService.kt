@@ -219,7 +219,7 @@ class AlarmSoundService : Service() {
         val notification: Notification =
             NotificationCompat.Builder(this, FGS_CHANNEL_ID)
                 .setSmallIcon(R.mipmap.launcher_icon)
-                .setContentTitle("GridTimer Alarm")
+                .setContentTitle("Grid Timer Alarm")
                 .setContentText("Playing alarm sound (foreground service)")
                 .setOngoing(true)
                 .addAction(

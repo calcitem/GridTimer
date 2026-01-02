@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# GridTimer code generation script
+# Grid Timer code generation script
 # Run this after modifying entities or adding new translations
 
 set -e
@@ -14,7 +14,3 @@ echo "Generating Dart code (Hive, Freezed, JSON)..."
 dart run build_runner build --delete-conflicting-outputs
 
 echo "=== Code Generation Complete ==="
-
-
-
-

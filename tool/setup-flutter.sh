@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# GridTimer Flutter version setup script
+# Grid Timer Flutter version setup script
 # This script automatically downloads and configures Flutter SDK with Dart 3.8.0+
 
 set -e

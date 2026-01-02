@@ -421,7 +421,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                           if (context.mounted) {
                             showLicensePage(
                               context: context,
-                              applicationName: 'GridTimer',
+                              applicationName: 'Grid Timer',
                               applicationVersion: packageInfo.version,
                             );
                           }
@@ -646,8 +646,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   /// Open privacy policy URL based on locale.
   ///
-  /// Chinese locale: https://calcitem.github.io/GridTimer/privacy-policy_zh
-  /// Non-Chinese: https://calcitem.github.io/GridTimer/privacy-policy
+  /// Chinese locale: https://calcitem.github.io/Grid Timer/privacy-policy_zh
+  /// Non-Chinese: https://calcitem.github.io/Grid Timer/privacy-policy
   Future<void> _openPrivacyPolicy(Locale? locale) async {
     // Block URL launching in test environment to prevent interference with Monkey testing
     if (EnvironmentConfig.test) {
@@ -657,8 +657,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
     final isChinese = _isChineseLocale(locale);
     final url = isChinese
-        ? 'https://calcitem.github.io/GridTimer/privacy-policy_zh'
-        : 'https://calcitem.github.io/GridTimer/privacy-policy';
+        ? 'https://calcitem.github.io/Grid Timer/privacy-policy_zh'
+        : 'https://calcitem.github.io/Grid Timer/privacy-policy';
 
     final uri = Uri.parse(url);
     // Try to launch URL directly without canLaunchUrl check

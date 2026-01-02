@@ -5,7 +5,7 @@ class Constants {
   const Constants._();
 
   // Project information
-  static const String projectName = "GridTimer";
+  static const String projectName = "Grid Timer";
   static String projectNameLower = projectName.toLowerCase();
 
   // Email configuration for error reports

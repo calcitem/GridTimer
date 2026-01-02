@@ -30,7 +30,7 @@ static const gchar* get_localized_window_title() {
     // Chinese: "Nine-grid Timer" in Chinese
     return "\xe4\xb9\x9d\xe5\xae\xab\xe6\xa0\xbc\xe8\xae\xa1\xe6\x97\xb6\xe5\x99\xa8";
   }
-  return "GridTimer";
+  return "Grid Timer";
 }
 
 // Called when first Flutter frame received.

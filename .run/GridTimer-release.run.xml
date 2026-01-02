@@ -1,9 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <!-- Release build configuration with optimizations enabled -->
-  <configuration default="false" name="GridTimer-release" type="FlutterRunConfigurationType" factoryName="Flutter">
+  <configuration default="false" name="Grid Timer-release" type="FlutterRunConfigurationType" factoryName="Flutter">
     <option name="additionalArgs" value="--release" />
     <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
     <method v="2" />
   </configuration>
 </component>
-

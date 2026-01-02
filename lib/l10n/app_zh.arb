@@ -107,7 +107,7 @@
   "minutesUnit": "分钟",
 
   "safetyDisclaimerTitle": "安全使用提示",
-  "safetyDisclaimerMessage": "GridTimer 是一个免费开源定时器应用。为了您的安全，请了解以下重要信息：",
+  "safetyDisclaimerMessage": "Grid Timer 是一个免费开源定时器应用。为了您的安全，请了解以下重要信息：",
   "safetyRecommendedUses": "✅ 适用场景",
   "safetyRecommendedUsesList": "• 日常烹饪计时\n• 一般生活提醒\n• 非关键场合\n• 测试后使用",
   "safetyNotRecommendedUses": "❌ 不适用场景",

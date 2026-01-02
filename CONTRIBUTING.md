@@ -1,6 +1,6 @@
-# Contributing to GridTimer
+# Contributing to Grid Timer
 
-Thank you for considering contributing to GridTimer!
+Thank you for considering contributing to Grid Timer!
 
 ## Development Setup
 
@@ -95,6 +95,3 @@ By contributing, you agree that your contributions will be licensed under the Ap
 ## Questions?
 
 Open an issue for discussion!
-
-
-

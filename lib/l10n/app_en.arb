@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
 
-  "appTitle": "GridTimer",
+  "appTitle": "Grid Timer",
   "@appTitle": {
     "description": "Application title"
   },
@@ -490,7 +490,7 @@
     "description": "Safety disclaimer dialog title"
   },
 
-  "safetyDisclaimerMessage": "GridTimer is a free open-source timer app. For your safety, please understand the following:",
+  "safetyDisclaimerMessage": "Grid Timer is a free open-source timer app. For your safety, please understand the following:",
   "@safetyDisclaimerMessage": {
     "description": "Safety disclaimer message"
   },
@@ -715,12 +715,12 @@
     "description": "Intro text for the alarm troubleshooting dialog"
   },
 
-  "alarmTroubleshootingSteps": "1. Turn off Do Not Disturb and raise Alarm volume\n2. Enable notifications for GridTimer\n3. In the \"Timer Alarm (default)\" channel, make sure sound is not Silent\n4. Disable battery optimizations for GridTimer (allow background running)\n5. Android 14+: allow \"Alarms & reminders\" (exact alarms)",
+  "alarmTroubleshootingSteps": "1. Turn off Do Not Disturb and raise Alarm volume\n2. Enable notifications for Grid Timer\n3. In the \"Timer Alarm (default)\" channel, make sure sound is not Silent\n4. Disable battery optimizations for Grid Timer (allow background running)\n5. Android 14+: allow \"Alarms & reminders\" (exact alarms)",
   "@alarmTroubleshootingSteps": {
     "description": "Step-by-step checklist for alarm troubleshooting"
   },
 
-  "alarmTroubleshootingMiui": "Custom Android skins: also allow Auto-start and Background activity, and avoid aggressive battery saving. If needed, lock GridTimer in Recents.",
+  "alarmTroubleshootingMiui": "Custom Android skins: also allow Auto-start and Background activity, and avoid aggressive battery saving. If needed, lock Grid Timer in Recents.",
   "@alarmTroubleshootingMiui": {
     "description": "Additional Xiaomi/MIUI-specific tips for alarm troubleshooting"
   },
@@ -997,7 +997,7 @@
     "description": "Onboarding start using button"
   },
 
-  "onboardingWelcomeTitle": "Welcome to GridTimer",
+  "onboardingWelcomeTitle": "Welcome to Grid Timer",
   "@onboardingWelcomeTitle": {
     "description": "Onboarding welcome step title"
   },
@@ -1012,7 +1012,7 @@
     "description": "Onboarding notification step title"
   },
 
-  "onboardingNotificationDesc": "GridTimer needs notification permission to remind you when countdown ends.\n\nWithout this permission, you may miss timer completion alerts.",
+  "onboardingNotificationDesc": "Grid Timer needs notification permission to remind you when countdown ends.\n\nWithout this permission, you may miss timer completion alerts.",
   "@onboardingNotificationDesc": {
     "description": "Onboarding notification step description"
   },
@@ -1027,7 +1027,7 @@
     "description": "Onboarding exact alarm step title"
   },
 
-  "onboardingExactAlarmDesc": "To ensure timer accuracy to the second, GridTimer needs \"exact alarm\" permission.\n\nPlease allow in the upcoming dialog or settings.",
+  "onboardingExactAlarmDesc": "To ensure timer accuracy to the second, Grid Timer needs \"exact alarm\" permission.\n\nPlease allow in the upcoming dialog or settings.",
   "@onboardingExactAlarmDesc": {
     "description": "Onboarding exact alarm step description"
   },
@@ -1042,7 +1042,7 @@
     "description": "Onboarding battery optimization step title"
   },
 
-  "onboardingBatteryDesc": "To prevent system from closing timer in background, recommend setting GridTimer to \"Don't optimize battery usage\".\n\nThis ensures long-duration timers won't be interrupted.",
+  "onboardingBatteryDesc": "To prevent system from closing timer in background, recommend setting Grid Timer to \"Don't optimize battery usage\".\n\nThis ensures long-duration timers won't be interrupted.",
   "@onboardingBatteryDesc": {
     "description": "Onboarding battery optimization step description"
   },
