@@ -141,6 +141,7 @@
   "shakeSensitivityHigh": "高（轻轻摇即可）",
   "shakeSensitivityDesc": "调整摇晃手机的灵敏度",
   "gestureHint": "长辈友好：建议开启触摸屏幕、音量键和翻转手机",
+  "gestureLimitationsHint": "提示：不同品牌 / 系统在锁屏状态下可能会限制按键与传感器。若锁屏时手势无响应，请先解锁，再尝试翻转手机或按音量键。",
 
   "onboardingCheckSoundTitle": "重要：检查声音",
   "onboardingCheckSoundDesc": "请点击下方按钮，确保 \"Timer Alarm (default)\" 的声音**不是**“无”或“静音”。\n\n如果设为静音，倒计时结束时您将只收到通知而听不到铃声。",
@@ -224,7 +225,7 @@
   "onboardingExactAlarmDesc": "为确保计时器精确到秒，九宫计时需要“精确闹钟”权限。\n\n请在即将出现的对话框或设置中允许。",
   "onboardingGrantExactAlarm": "授予精确闹钟权限",
   "onboardingBatteryTitle": "电池优化",
-  "onboardingBatteryDesc": "为防止系统在后台关闭计时器，建议将九宫计时设置为“不优化电池使用”。\n\n这可确保长时间计时器不会被中断。",
+  "onboardingBatteryDesc": "为防止系统在后台关闭计时器，建议将九宫计时设置为“不优化电池使用”。\n\n这可确保长时间计时器不会被中断。\n\n提示：部分设备点击“打开电池优化设置”可能无法跳转，或跳转后看不到对应选项。请在系统设置中手动搜索「电池优化」「省电」「自启动」「后台运行」等，并将九宫计时设为“不优化 / 无限制”。",
   "onboardingOpenBatterySettings": "打开电池优化设置",
   "onboardingCompletionTitle": "准备就绪",
   "onboardingCompletionDesc": "所有设置已完成！\n\n提示：不同设备和系统版本的表现可能不同。建议锁屏 / 后台先测试一次，再用于较长计时。\n\n您可以随时在设置页面重新配置这些选项。",
