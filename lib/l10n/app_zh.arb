@@ -44,8 +44,8 @@
   "gitBranch": "Git 分支",
   "gitRevision": "Git 提交哈希",
   "timerSettings": "计时器设置",
-  "soundSettings": "声音设置",
-  "soundSettingsDesc": "配置提醒声音",
+  "soundSettings": "音量设置",
+  "soundSettingsDesc": "配置音量",
   "ttsSettings": "语音播报设置",
   "ttsSettingsDesc": "配置语音播报",
   "languageSettings": "语言",
@@ -257,6 +257,8 @@
   "exactAlarmStatusDenied": "未允许（闹钟可能延迟）",
   "batteryOptimizationStatusUnknown": "请手动检查",
   "batteryOptimizationMiuiHint": "部分设备：请在 应用设置 → 电量消耗 中设置为「无限制」",
+
+  "batteryOptimizationOemHint": "提示：部分定制系统（MIUI / EMUI / HarmonyOS）可能需要手动在设置中搜索「电池优化」、「自启动」或「受保护应用」",
 
   "gridDurationMustBePositive": "宫格 {index} 的时长必须是正整数",
   "savedSuccessfullyGridUpdated": "保存成功，九宫格已更新",

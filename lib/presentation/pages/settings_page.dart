@@ -145,6 +145,52 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
             const Divider(),
 
+            // Alarm Channel Sound (Android 8+)
+            Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.volume_up),
+                  title: Text(l10n.alarmSoundSettings),
+                  subtitle: Text(l10n.alarmSoundSettingsDesc),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final permissionService = ref.read(
+                          permissionServiceProvider,
+                        );
+                        try {
+                          await permissionService
+                              .openNotificationChannelSettings(
+                                channelId: 'gt.alarm.timeup.default.v2',
+                              );
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  l10n.failedToOpenChannelSettings(
+                                    e.toString(),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      child: Text(l10n.goToSettings),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
             // Sound Settings
             ListTile(
               leading: const Icon(Icons.volume_up),
@@ -234,51 +280,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               },
             ),
 
-            // Alarm Channel Sound (Android 8+)
-            Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.volume_up),
-                  title: Text(l10n.alarmSoundSettings),
-                  subtitle: Text(l10n.alarmSoundSettingsDesc),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 8.0,
-                  ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final permissionService = ref.read(
-                          permissionServiceProvider,
-                        );
-                        try {
-                          await permissionService
-                              .openNotificationChannelSettings(
-                                channelId: 'gt.alarm.timeup.default.v2',
-                              );
-                        } catch (e) {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  l10n.failedToOpenChannelSettings(
-                                    e.toString(),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                        }
-                      },
-                      child: Text(l10n.goToSettings),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            const Divider(),
 
             // Alarm Troubleshooting / Compatibility Guide
             ListTile(
@@ -354,11 +356,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               statusFuture: ref
                   .read(permissionServiceProvider)
                   .isBatteryOptimizationDisabled(),
-              isMiuiFuture: ref.read(permissionServiceProvider).isMiuiDevice(),
+              manufacturerTypeFuture: ref
+                  .read(permissionServiceProvider)
+                  .getDeviceManufacturerType(),
               disabledText: l10n.batteryOptimizationStatusDisabled,
               enabledText: l10n.batteryOptimizationStatusEnabled,
               unknownText: l10n.batteryOptimizationStatusUnknown,
-              miuiHint: l10n.batteryOptimizationMiuiHint,
+              oemHint: l10n.batteryOptimizationOemHint,
               buttonText: l10n.settingsButton,
               onButtonPressed: () async {
                 final permissionService = ref.read(permissionServiceProvider);
@@ -1046,11 +1050,11 @@ class _BatteryOptimizationTile extends StatelessWidget {
   final String title;
   final String description;
   final Future<bool?> statusFuture;
-  final Future<bool> isMiuiFuture;
+  final Future<String> manufacturerTypeFuture;
   final String disabledText; // Battery optimization disabled (recommended)
   final String enabledText; // Battery optimization enabled (may affect alarms)
   final String unknownText; // Status cannot be determined (e.g., MIUI)
-  final String miuiHint; // Hint for MIUI users
+  final String oemHint; // Hint for OEM users
   final String buttonText;
   final VoidCallback onButtonPressed;
 
@@ -1058,11 +1062,11 @@ class _BatteryOptimizationTile extends StatelessWidget {
     required this.title,
     required this.description,
     required this.statusFuture,
-    required this.isMiuiFuture,
+    required this.manufacturerTypeFuture,
     required this.disabledText,
     required this.enabledText,
     required this.unknownText,
-    required this.miuiHint,
+    required this.oemHint,
     required this.buttonText,
     required this.onButtonPressed,
   });
@@ -1070,17 +1074,18 @@ class _BatteryOptimizationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
-      future: Future.wait([statusFuture, isMiuiFuture]),
+      future: Future.wait([statusFuture, manufacturerTypeFuture]),
       builder: (context, snapshot) {
         final isLoading = snapshot.connectionState == ConnectionState.waiting;
 
         // status can be: true (disabled/good), false (enabled/bad), null (unknown)
         final bool? status = snapshot.data?[0] as bool?;
-        final bool isMiui = (snapshot.data?[1] as bool?) ?? false;
+        final String manufacturerType = (snapshot.data?[1] as String?) ?? 'standard';
 
         // Determine display state
         final bool isUnknown = status == null;
         final bool isDisabled = status == true;
+        final bool isOemDevice = manufacturerType != 'standard';
 
         // Choose icon and color
         IconData statusIcon;
@@ -1133,11 +1138,11 @@ class _BatteryOptimizationTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Show MIUI hint if on MIUI device
-                    if (isMiui) ...[
+                    // Show OEM-specific hint if on special device
+                    if (isOemDevice) ...[
                       const SizedBox(height: 4),
                       Text(
-                        miuiHint,
+                        oemHint,
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey[600],

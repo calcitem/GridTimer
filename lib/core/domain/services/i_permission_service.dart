@@ -20,6 +20,10 @@ abstract interface class IPermissionService {
   /// Returns true if the device is running MIUI (Xiaomi).
   Future<bool> isMiuiDevice();
 
+  /// Returns the device manufacturer type for specific handling.
+  /// Returns: "miui", "honor_huawei", or "standard"
+  Future<String> getDeviceManufacturerType();
+
   /// Opens system settings pages (best-effort, platform-specific).
   Future<void> openNotificationSettings();
 
