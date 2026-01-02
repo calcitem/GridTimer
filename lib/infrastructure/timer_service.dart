@@ -4,6 +4,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hive_ce/hive.dart';
 import '../core/domain/entities/app_settings.dart';
 import '../core/domain/entities/timer_config.dart';
 import '../core/domain/entities/timer_grid_set.dart';
@@ -170,7 +171,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     _currentGrid = await _storage.getMode(activeModeId);
     if (_currentGrid == null) {
       // Create default mode using configured durations
-      _currentGrid = _createDefaultGrid(settings);
+      _currentGrid = await _createDefaultGrid(settings);
       await _storage.saveMode(_currentGrid!);
     }
 
@@ -378,26 +379,9 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         await _tts.setSpeechRate(ttsSpeechRate);
         await _tts.setPitch(ttsPitch);
 
-        // Use user-selected TTS language, or fall back to system language detection
-        final userTtsLanguage = settings?.ttsLanguage;
-        final String localeTag;
-        final String ttsText;
-
-        if (userTtsLanguage != null) {
-          // User has explicitly set a TTS language
-          localeTag = userTtsLanguage;
-          ttsText = userTtsLanguage.startsWith('zh')
-              ? '${config.name} 时间到'
-              : '${config.name} time is up';
-        } else {
-          // Fall back to system language detection
-          final systemLocale = Platform.localeName;
-          final isChineseSystem = systemLocale.startsWith('zh');
-          localeTag = isChineseSystem ? 'zh-CN' : 'en-US';
-          ttsText = isChineseSystem
-              ? '${config.name} 时间到'
-              : '${config.name} time is up';
-        }
+        // Build TTS text with dynamically localized timer name
+        final ttsText = _buildTtsText(config, settings);
+        final localeTag = _getTtsLocaleTag(settings);
 
         await _tts.speak(text: ttsText, localeTag: localeTag, interrupt: true);
       }
@@ -664,7 +648,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     final settings = await _storage.getSettings();
     if (_currentGrid?.modeId == 'default') {
       // Recreate default grid
-      _currentGrid = _createDefaultGrid(settings);
+      _currentGrid = await _createDefaultGrid(settings);
       await _storage.saveMode(_currentGrid!);
 
       // Re-initialize sessions
@@ -759,26 +743,9 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         await _tts.setSpeechRate(ttsSpeechRate);
         await _tts.setPitch(ttsPitch);
 
-        // Use user-selected TTS language, or fall back to system language detection
-        final userTtsLanguage = settings?.ttsLanguage;
-        final String localeTag;
-        final String ttsText;
-
-        if (userTtsLanguage != null) {
-          // User has explicitly set a TTS language
-          localeTag = userTtsLanguage;
-          ttsText = userTtsLanguage.startsWith('zh')
-              ? '${config.name} 时间到'
-              : '${config.name} time is up';
-        } else {
-          // Fall back to system language detection
-          final systemLocale = Platform.localeName;
-          final isChineseSystem = systemLocale.startsWith('zh');
-          localeTag = isChineseSystem ? 'zh-CN' : 'en-US';
-          ttsText = isChineseSystem
-              ? '${config.name} 时间到'
-              : '${config.name} time is up';
-        }
+        // Build TTS text with dynamically localized timer name
+        final ttsText = _buildTtsText(config, settings);
+        final localeTag = _getTtsLocaleTag(settings);
 
         await _tts.speak(text: ttsText, localeTag: localeTag, interrupt: true);
       }
@@ -886,7 +853,66 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     _stateController.add((_currentGrid!, sessions));
   }
 
-  TimerGridSet _createDefaultGrid(AppSettings? settings) {
+  /// Get the effective locale for TTS and localization, considering user's app
+  /// language preference, TTS language override, and system locale.
+  String _getEffectiveLocale(AppSettings? settings) {
+    // First, check if user has explicitly set a TTS language
+    final userTtsLanguage = settings?.ttsLanguage;
+    if (userTtsLanguage != null) {
+      return userTtsLanguage;
+    }
+
+    // Fall back to app locale from Hive, then system locale
+    String effectiveLocale = Platform.localeName;
+    try {
+      if (Hive.isBoxOpen('settings')) {
+        final box = Hive.box('settings');
+        final savedLocale = box.get('app_locale') as String?;
+        if (savedLocale != null && savedLocale.isNotEmpty) {
+          effectiveLocale = savedLocale;
+        }
+      }
+    } catch (_) {
+      // Ignore errors, use system default
+    }
+    return effectiveLocale;
+  }
+
+  /// Get the TTS locale tag for speech synthesis.
+  String _getTtsLocaleTag(AppSettings? settings) {
+    final effectiveLocale = _getEffectiveLocale(settings);
+    final isChineseLocale = effectiveLocale.startsWith('zh');
+    return isChineseLocale ? 'zh-CN' : 'en-US';
+  }
+
+  /// Build the TTS text for timer completion announcement.
+  /// Dynamically formats the timer name based on current locale.
+  String _buildTtsText(TimerConfig config, AppSettings? settings) {
+    final effectiveLocale = _getEffectiveLocale(settings);
+    final isChineseLocale = effectiveLocale.startsWith('zh');
+
+    // Check if user has defined a custom name for this slot
+    final customName = (settings?.gridNames != null &&
+            settings!.gridNames.length > config.slotIndex)
+        ? settings.gridNames[config.slotIndex]
+        : '';
+
+    final String timerName;
+    if (customName.isNotEmpty) {
+      // User has custom name, use it
+      timerName = customName;
+    } else {
+      // No custom name, format duration based on current locale
+      final formatter = DurationFormatter(effectiveLocale);
+      timerName = formatter.format(config.presetDurationMs ~/ 1000);
+    }
+
+    return isChineseLocale
+        ? '$timerName 时间到'
+        : '$timerName time is up';
+  }
+
+  Future<TimerGridSet> _createDefaultGrid(AppSettings? settings) async {
     // Get configured durations from settings, use defaults if not available
     // Default time configuration (in seconds): 2min, 3min, 5min, 8min, 9min, 10min, 15min, 20min, 45min
     final durationsInSeconds =
@@ -898,9 +924,22 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       'Grid duration configuration must contain 9 elements',
     );
 
-    // Create duration formatter based on system locale
-    final systemLocale = Platform.localeName;
-    final formatter = DurationFormatter(systemLocale);
+    // Create duration formatter based on user's app language preference.
+    // First, try to read from Hive 'settings' box ('app_locale' key) which is set
+    // by the locale_provider when user changes language in app settings.
+    // Fall back to system locale if not set.
+    String effectiveLocale = Platform.localeName;
+    try {
+      // Open the settings box if not already open (locale_provider uses this box)
+      final box = await Hive.openBox('settings');
+      final savedLocale = box.get('app_locale') as String?;
+      if (savedLocale != null && savedLocale.isNotEmpty) {
+        effectiveLocale = savedLocale;
+      }
+    } catch (_) {
+      // Ignore any errors reading locale, use system default
+    }
+    final formatter = DurationFormatter(effectiveLocale);
 
     final configs = List.generate(9, (i) {
       final seconds = durationsInSeconds[i];

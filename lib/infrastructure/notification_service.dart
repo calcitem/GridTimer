@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 import '../core/domain/entities/timer_config.dart';
@@ -286,14 +287,28 @@ class NotificationService implements INotificationService {
       tz.local,
     );
 
-    // Determine language for notification content
+    // Determine language for notification content based on:
+    // 1. Explicit ttsLanguage if set
+    // 2. User's app language preference from Hive
+    // 3. System locale as fallback
     final bool useChineseText;
     if (ttsLanguage != null) {
       useChineseText = ttsLanguage.startsWith('zh');
     } else {
-      // Fall back to system language detection
-      final systemLocale = Platform.localeName;
-      useChineseText = systemLocale.startsWith('zh');
+      // Fall back to app locale from Hive, then system locale
+      String effectiveLocale = Platform.localeName;
+      try {
+        if (Hive.isBoxOpen('settings')) {
+          final box = Hive.box('settings');
+          final savedLocale = box.get('app_locale') as String?;
+          if (savedLocale != null && savedLocale.isNotEmpty) {
+            effectiveLocale = savedLocale;
+          }
+        }
+      } catch (_) {
+        // Ignore errors, use system default
+      }
+      useChineseText = effectiveLocale.startsWith('zh');
     }
     final notificationBody = useChineseText ? '时间到!' : 'Time is up!';
     final stopButtonText = useChineseText ? '停止' : 'Stop';
@@ -427,14 +442,28 @@ class NotificationService implements INotificationService {
       'soundKey': config.soundKey,
     });
 
-    // Determine language for notification content
+    // Determine language for notification content based on:
+    // 1. Explicit ttsLanguage if set
+    // 2. User's app language preference from Hive
+    // 3. System locale as fallback
     final bool useChineseText;
     if (ttsLanguage != null) {
       useChineseText = ttsLanguage.startsWith('zh');
     } else {
-      // Fall back to system language detection
-      final systemLocale = Platform.localeName;
-      useChineseText = systemLocale.startsWith('zh');
+      // Fall back to app locale from Hive, then system locale
+      String effectiveLocale = Platform.localeName;
+      try {
+        if (Hive.isBoxOpen('settings')) {
+          final box = Hive.box('settings');
+          final savedLocale = box.get('app_locale') as String?;
+          if (savedLocale != null && savedLocale.isNotEmpty) {
+            effectiveLocale = savedLocale;
+          }
+        }
+      } catch (_) {
+        // Ignore errors, use system default
+      }
+      useChineseText = effectiveLocale.startsWith('zh');
     }
     final notificationBody = useChineseText ? '时间到!' : 'Time is up!';
     final stopButtonText = useChineseText ? '停止' : 'Stop';
