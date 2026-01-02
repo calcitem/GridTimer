@@ -101,55 +101,84 @@ class GestureSettingsPage extends ConsumerWidget {
 
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: ExpansionTile(
-                  leading: Icon(
-                    _getGestureIcon(gestureType),
-                    size: 32,
-                    color: currentAction != AlarmGestureAction.none
-                        ? Colors.green
-                        : Colors.white54,
-                  ),
-                  title: Text(_getGestureTypeName(gestureType, l10n)),
-                  subtitle: Text(
-                    _getActionName(currentAction, l10n),
-                    style: TextStyle(
-                      color: currentAction != AlarmGestureAction.none
-                          ? Colors.green
-                          : Colors.white54,
-                      fontWeight: currentAction != AlarmGestureAction.none
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                    ),
-                  ),
-                  children: AlarmGestureAction.values.map((action) {
-                    final isSelected = currentAction == action;
-                    return ListTile(
+                child: Column(
+                  children: [
+                    ExpansionTile(
                       leading: Icon(
-                        isSelected
-                            ? Icons.radio_button_checked
-                            : Icons.radio_button_unchecked,
-                        color: isSelected
-                            ? Theme.of(context).colorScheme.primary
-                            : null,
+                        _getGestureIcon(gestureType),
+                        size: 32,
+                        color: currentAction != AlarmGestureAction.none
+                            ? Colors.green
+                            : Colors.white54,
                       ),
-                      title: Text(
-                        _getActionName(action, l10n),
+                      title: Text(_getGestureTypeName(gestureType, l10n)),
+                      subtitle: Text(
+                        _getActionName(currentAction, l10n),
                         style: TextStyle(
-                          fontWeight: isSelected
+                          color: currentAction != AlarmGestureAction.none
+                              ? Colors.green
+                              : Colors.white54,
+                          fontWeight: currentAction != AlarmGestureAction.none
                               ? FontWeight.bold
                               : FontWeight.normal,
-                          color: isSelected
-                              ? Theme.of(context).colorScheme.primary
-                              : null,
                         ),
                       ),
-                      onTap: () {
-                        ref
-                            .read(appSettingsProvider.notifier)
-                            .updateGestureAction(gestureType, action);
-                      },
-                    );
-                  }).toList(),
+                      children: AlarmGestureAction.values.map((action) {
+                        final isSelected = currentAction == action;
+                        return ListTile(
+                          leading: Icon(
+                            isSelected
+                                ? Icons.radio_button_checked
+                                : Icons.radio_button_unchecked,
+                            color: isSelected
+                                ? Theme.of(context).colorScheme.primary
+                                : null,
+                          ),
+                          title: Text(
+                            _getActionName(action, l10n),
+                            style: TextStyle(
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                              color: isSelected
+                                  ? Theme.of(context).colorScheme.primary
+                                  : null,
+                            ),
+                          ),
+                          onTap: () {
+                            ref
+                                .read(appSettingsProvider.notifier)
+                                .updateGestureAction(gestureType, action);
+                          },
+                        );
+                      }).toList(),
+                    ),
+                    // Add hint text for volume buttons
+                    if (gestureType == AlarmGestureType.volumeUp ||
+                        gestureType == AlarmGestureType.volumeDown)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.info_outline,
+                              size: 16,
+                              color: Colors.orange,
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                l10n.volumeButtonLockScreenHint,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.orange,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
                 ),
               );
             }),
