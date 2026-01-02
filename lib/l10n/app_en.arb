@@ -183,14 +183,14 @@
     "description": "Section: Timer Settings"
   },
 
-  "soundSettings": "Sound Settings",
+  "soundSettings": "Volume Settings",
   "@soundSettings": {
-    "description": "Sound settings option"
+    "description": "Volume settings option"
   },
 
-  "soundSettingsDesc": "Configure alarm sound",
+  "soundSettingsDesc": "Configure volume",
   "@soundSettingsDesc": {
-    "description": "Description for sound settings"
+    "description": "Description for volume settings"
   },
 
   "ttsSettings": "TTS Settings",
@@ -1210,6 +1210,11 @@
   "batteryOptimizationMiuiHint": "On some devices: Go to App Settings → Battery Usage → Set to 'No restrictions'",
   "@batteryOptimizationMiuiHint": {
     "description": "Hint for MIUI users about battery optimization settings"
+  },
+
+  "batteryOptimizationOemHint": "Tip: On some custom systems (MIUI/EMUI/HarmonyOS), you may need to manually search for 'Battery Optimization', 'Auto-start', or 'Protected Apps' in settings",
+  "@batteryOptimizationOemHint": {
+    "description": "Hint for OEM device users (MIUI/Honor/Huawei) about battery optimization settings"
   },
 
   "gridDurationMustBePositive": "Grid {index} duration must be a positive integer",

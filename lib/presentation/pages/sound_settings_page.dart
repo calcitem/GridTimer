@@ -4,7 +4,7 @@ import '../../app/providers.dart';
 import '../../core/domain/enums.dart';
 import '../../l10n/app_localizations.dart';
 
-/// Sound settings page for configuring alarm sound and volume.
+/// Volume settings page for configuring alarm volume.
 class SoundSettingsPage extends ConsumerStatefulWidget {
   const SoundSettingsPage({super.key});
 
@@ -96,14 +96,6 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                   ),
                 ],
               ),
-            ),
-            const Divider(),
-
-            // Sound Information
-            ListTile(
-              leading: const Icon(Icons.music_note),
-              title: Text(l10n.alarmSound),
-              subtitle: Text(settings.selectedSoundKey),
             ),
             const Divider(),
 
