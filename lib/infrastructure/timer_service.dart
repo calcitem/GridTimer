@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive_ce/hive.dart';
 import '../core/domain/entities/app_settings.dart';
@@ -20,10 +19,6 @@ import '../core/domain/services/i_vibration_service.dart';
 import '../core/domain/types.dart';
 import '../core/services/duration_formatter.dart';
 import '../data/repositories/storage_repository.dart';
-
-const _alarmServiceChannel = MethodChannel(
-  'com.calcitem.gridtimer/system_settings',
-);
 
 /// Timer service implementation with full state management and recovery.
 class TimerService with WidgetsBindingObserver implements ITimerService {
@@ -658,9 +653,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     final nowMs = _clock.nowEpochMs();
     final settings = await _storage.getSettings();
     final repeatSoundUntilStopped =
-        (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
-        AudioPlaybackMode.playOnce;
-    final androidLoop =
         (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
         AudioPlaybackMode.playOnce;
     final reliabilityMode =

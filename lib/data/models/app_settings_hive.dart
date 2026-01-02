@@ -189,7 +189,8 @@ class AppSettingsHive {
       ttsLanguage: ttsLanguage,
       showMinutesSecondsFormat: showMinutesSecondsFormat,
       gridNames: gridNames,
-      alarmReliabilityMode: alarmReliabilityModeIndex >= 0 &&
+      alarmReliabilityMode:
+          alarmReliabilityModeIndex >= 0 &&
               alarmReliabilityModeIndex < AlarmReliabilityMode.values.length
           ? AlarmReliabilityMode.values[alarmReliabilityModeIndex]
           : AlarmReliabilityMode.alarmClock,

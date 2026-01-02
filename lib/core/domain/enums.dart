@@ -26,12 +26,7 @@ enum NotificationEventType {
 }
 
 /// Permission state enum.
-enum PermissionState {
-  granted,
-  denied,
-  permanentlyDenied,
-  unknown,
-}
+enum PermissionState { granted, denied, permanentlyDenied, unknown }
 
 /// Exact alarm state (Android 14+).
 enum ExactAlarmState {
@@ -41,18 +36,10 @@ enum ExactAlarmState {
 }
 
 /// Full-screen intent state (Android 14+).
-enum FullScreenIntentState {
-  granted,
-  denied,
-  notApplicable,
-}
+enum FullScreenIntentState { granted, denied, notApplicable }
 
 /// Battery optimization state.
-enum BatteryOptState {
-  optimized,
-  notOptimized,
-  unknown,
-}
+enum BatteryOptState { optimized, notOptimized, unknown }
 
 /// Audio playback mode for alarm.
 enum AudioPlaybackMode {
