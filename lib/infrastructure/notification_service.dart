@@ -256,6 +256,7 @@ class NotificationService implements INotificationService {
     bool repeatSoundUntilStopped = false,
     bool enableVibration = true,
     String? ttsLanguage,
+    bool playNotificationSound = false,
   }) async {
     // Schedule notification only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -265,9 +266,12 @@ class NotificationService implements INotificationService {
     if (session.endAtEpochMs == null) return;
 
     final notificationId = 1000 + session.slotIndex;
-    // Use a dedicated silent channel to avoid double-playing sound on Android.
-    // Alarm sound is handled by a native foreground service.
-    final channelId = _silentTimeUpChannelId;
+    // Choose channel based on playNotificationSound:
+    // - If true: use sound channel (for notification mode)
+    // - If false: use silent channel (for alarmClock mode with foreground service)
+    final channelId = playNotificationSound
+        ? 'gt.alarm.timeup.${config.soundKey}.v2'
+        : _silentTimeUpChannelId;
 
     // Cancel existing notifications with the same ID. Otherwise Android may treat this as an
     // update and suppress alerting behaviour (sound/vibration).
@@ -331,7 +335,7 @@ class NotificationService implements INotificationService {
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
       fullScreenIntent: true,
-      playSound: false,
+      playSound: playNotificationSound,
       enableVibration: enableVibration,
       // Ensure this notification can alert.
       onlyAlertOnce: false,

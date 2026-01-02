@@ -433,18 +433,28 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     final repeatSoundUntilStopped =
         (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
         AudioPlaybackMode.playOnce;
+    final reliabilityMode =
+        settings?.alarmReliabilityMode ?? AlarmReliabilityMode.notification;
 
-    // Schedule notification
-    await _notification.scheduleTimeUp(
-      session: session,
-      config: config,
-      repeatSoundUntilStopped: repeatSoundUntilStopped,
-      enableVibration: settings?.vibrationEnabled ?? true,
-      ttsLanguage: settings?.ttsLanguage,
-    );
+    // Schedule based on reliability mode to avoid double-ringing:
+    // - appOnly: no system scheduling (alarm only works when app is running)
+    // - notification: schedule notification with sound, no native alarm
+    // - alarmClock: schedule silent notification + native AlarmManager alarm
+    if (reliabilityMode == AlarmReliabilityMode.notification ||
+        reliabilityMode == AlarmReliabilityMode.alarmClock) {
+      await _notification.scheduleTimeUp(
+        session: session,
+        config: config,
+        repeatSoundUntilStopped: repeatSoundUntilStopped,
+        enableVibration: settings?.vibrationEnabled ?? true,
+        ttsLanguage: settings?.ttsLanguage,
+        playNotificationSound: reliabilityMode == AlarmReliabilityMode.notification,
+      );
+    }
 
-    // Schedule native alarm playback for Android (works even if Flutter process is killed).
-    if (Platform.isAndroid) {
+    // Schedule native alarm playback for Android (only in alarmClock mode).
+    if (Platform.isAndroid &&
+        reliabilityMode == AlarmReliabilityMode.alarmClock) {
       final mode =
           settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely;
       final loop = mode != AudioPlaybackMode.playOnce;
@@ -509,17 +519,26 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     final repeatSoundUntilStopped =
         (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
         AudioPlaybackMode.playOnce;
+    final reliabilityMode =
+        settings?.alarmReliabilityMode ?? AlarmReliabilityMode.notification;
 
     final config = _currentGrid!.slots[session.slotIndex];
-    await _notification.scheduleTimeUp(
-      session: updated,
-      config: config,
-      repeatSoundUntilStopped: repeatSoundUntilStopped,
-      enableVibration: settings?.vibrationEnabled ?? true,
-      ttsLanguage: settings?.ttsLanguage,
-    );
 
-    if (Platform.isAndroid) {
+    // Schedule based on reliability mode (same logic as start()).
+    if (reliabilityMode == AlarmReliabilityMode.notification ||
+        reliabilityMode == AlarmReliabilityMode.alarmClock) {
+      await _notification.scheduleTimeUp(
+        session: updated,
+        config: config,
+        repeatSoundUntilStopped: repeatSoundUntilStopped,
+        enableVibration: settings?.vibrationEnabled ?? true,
+        ttsLanguage: settings?.ttsLanguage,
+        playNotificationSound: reliabilityMode == AlarmReliabilityMode.notification,
+      );
+    }
+
+    if (Platform.isAndroid &&
+        reliabilityMode == AlarmReliabilityMode.alarmClock) {
       final mode =
           settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely;
       final loop = mode != AudioPlaybackMode.playOnce;
@@ -780,6 +799,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     final androidLoop =
         (settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely) !=
         AudioPlaybackMode.playOnce;
+    final reliabilityMode =
+        settings?.alarmReliabilityMode ?? AlarmReliabilityMode.notification;
 
     for (final session in _sessions.values.toList()) {
       if (session.status == TimerStatus.running) {
@@ -799,18 +820,25 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
             firedAtEpochMs: session.endAtEpochMs!,
           );
         } else {
-          // Reschedule notification
+          // Reschedule notification (based on reliability mode).
           final config = _currentGrid!.slots[session.slotIndex];
-          await _notification.scheduleTimeUp(
-            session: session,
-            config: config,
-            repeatSoundUntilStopped: repeatSoundUntilStopped,
-            enableVibration: settings?.vibrationEnabled ?? true,
-            ttsLanguage: settings?.ttsLanguage,
-          );
+          if (reliabilityMode == AlarmReliabilityMode.notification ||
+              reliabilityMode == AlarmReliabilityMode.alarmClock) {
+            await _notification.scheduleTimeUp(
+              session: session,
+              config: config,
+              repeatSoundUntilStopped: repeatSoundUntilStopped,
+              enableVibration: settings?.vibrationEnabled ?? true,
+              ttsLanguage: settings?.ttsLanguage,
+              playNotificationSound:
+                  reliabilityMode == AlarmReliabilityMode.notification,
+            );
+          }
 
-          // Reschedule native alarm playback (and vibration) for Android.
-          if (Platform.isAndroid && session.endAtEpochMs != null) {
+          // Reschedule native alarm playback (only in alarmClock mode).
+          if (Platform.isAndroid &&
+              session.endAtEpochMs != null &&
+              reliabilityMode == AlarmReliabilityMode.alarmClock) {
             await _scheduleAndroidAlarmSound(
               triggerAtEpochMs: session.endAtEpochMs!,
               channelId: 'gt.alarm.timeup.${config.soundKey}.v2',

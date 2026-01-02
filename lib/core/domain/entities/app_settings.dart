@@ -120,6 +120,11 @@ abstract class AppSettings with _$AppSettings {
     /// Display countdown in minutes:seconds format (true) or total seconds (false).
     /// Default is true (minutes:seconds format).
     @Default(true) bool showMinutesSecondsFormat,
+
+    /// Alarm reliability mode: determines how alarms are scheduled.
+    /// Default is notification (balanced reliability and battery).
+    @Default(AlarmReliabilityMode.notification)
+    AlarmReliabilityMode alarmReliabilityMode,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>

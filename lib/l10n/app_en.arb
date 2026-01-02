@@ -773,6 +773,46 @@
     "description": "Button label to open battery optimization settings"
   },
 
+  "alarmReliabilityMode": "Alarm Reliability Mode",
+  "@alarmReliabilityMode": {
+    "description": "Alarm reliability mode setting title"
+  },
+
+  "alarmReliabilityModeDesc": "Choose how alarms are scheduled (affects whether alarms fire after app is killed)",
+  "@alarmReliabilityModeDesc": {
+    "description": "Alarm reliability mode setting description"
+  },
+
+  "alarmReliabilityModeAppOnly": "App Only",
+  "@alarmReliabilityModeAppOnly": {
+    "description": "App-only reliability mode name"
+  },
+
+  "alarmReliabilityModeAppOnlyDesc": "Most battery-efficient, but alarms won't fire if app is killed",
+  "@alarmReliabilityModeAppOnlyDesc": {
+    "description": "App-only reliability mode description"
+  },
+
+  "alarmReliabilityModeNotification": "Notification",
+  "@alarmReliabilityModeNotification": {
+    "description": "Notification reliability mode name"
+  },
+
+  "alarmReliabilityModeNotificationDesc": "Use system scheduled notifications, better background reliability (recommended)",
+  "@alarmReliabilityModeNotificationDesc": {
+    "description": "Notification reliability mode description"
+  },
+
+  "alarmReliabilityModeAlarmClock": "Alarm Clock",
+  "@alarmReliabilityModeAlarmClock": {
+    "description": "Alarm clock reliability mode name"
+  },
+
+  "alarmReliabilityModeAlarmClockDesc": "Maximum reliability, fires even if app is killed (uses more battery)",
+  "@alarmReliabilityModeAlarmClockDesc": {
+    "description": "Alarm clock reliability mode description"
+  },
+
   "alarmTroubleshootingViewSafetyNotice": "View safety notice",
   "@alarmTroubleshootingViewSafetyNotice": {
     "description": "Button label to view safety notice and disclaimer"

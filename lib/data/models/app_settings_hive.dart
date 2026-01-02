@@ -85,6 +85,9 @@ class AppSettingsHive {
   @HiveField(22, defaultValue: ['', '', '', '', '', '', '', '', ''])
   final List<String> gridNames;
 
+  @HiveField(23, defaultValue: 1)
+  final int alarmReliabilityModeIndex;
+
   AppSettingsHive({
     required this.activeModeId,
     required this.flashEnabled,
@@ -109,6 +112,7 @@ class AppSettingsHive {
     this.ttsLanguage,
     required this.showMinutesSecondsFormat,
     required this.gridNames,
+    required this.alarmReliabilityModeIndex,
   });
 
   /// Convert from domain entity.
@@ -143,6 +147,7 @@ class AppSettingsHive {
       ttsLanguage: settings.ttsLanguage,
       showMinutesSecondsFormat: settings.showMinutesSecondsFormat,
       gridNames: settings.gridNames,
+      alarmReliabilityModeIndex: settings.alarmReliabilityMode.index,
     );
   }
 
@@ -184,6 +189,10 @@ class AppSettingsHive {
       ttsLanguage: ttsLanguage,
       showMinutesSecondsFormat: showMinutesSecondsFormat,
       gridNames: gridNames,
+      alarmReliabilityMode: alarmReliabilityModeIndex >= 0 &&
+              alarmReliabilityModeIndex < AlarmReliabilityMode.values.length
+          ? AlarmReliabilityMode.values[alarmReliabilityModeIndex]
+          : AlarmReliabilityMode.notification,
     );
   }
 }

@@ -8,6 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../core/config/environment_config.dart';
+import '../../core/domain/entities/app_settings.dart';
+import '../../core/domain/enums.dart';
 import '../../l10n/app_localizations.dart';
 import '../dialogs/alarm_troubleshooting_dialog.dart';
 import '../dialogs/safety_disclaimer_dialog.dart';
@@ -262,6 +264,21 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             ),
 
             const Divider(),
+
+            // Alarm Reliability Mode
+            ListTile(
+              leading: const Icon(Icons.settings_suggest),
+              title: Text(l10n.alarmReliabilityMode),
+              subtitle: Text(
+                _getAlarmReliabilityModeName(
+                  settings.alarmReliabilityMode,
+                  l10n,
+                ),
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () =>
+                  _showAlarmReliabilityModeDialog(context, ref, l10n, settings),
+            ),
 
             // Alarm Troubleshooting / Compatibility Guide
             ListTile(
@@ -816,6 +833,20 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     return l10n.themeSoftDark;
   }
 
+  String _getAlarmReliabilityModeName(
+    AlarmReliabilityMode mode,
+    AppLocalizations l10n,
+  ) {
+    switch (mode) {
+      case AlarmReliabilityMode.appOnly:
+        return l10n.alarmReliabilityModeAppOnly;
+      case AlarmReliabilityMode.notification:
+        return l10n.alarmReliabilityModeNotification;
+      case AlarmReliabilityMode.alarmClock:
+        return l10n.alarmReliabilityModeAlarmClock;
+    }
+  }
+
   void _showThemeDialog(
     BuildContext context,
     WidgetRef ref,
@@ -869,6 +900,89 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ? const Icon(Icons.check)
                       : null,
                   onTap: () => selectTheme('light_high_contrast'),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.actionCancel),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAlarmReliabilityModeDialog(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+    AppSettings settings,
+  ) {
+    void selectMode(AlarmReliabilityMode mode) {
+      ref.read(appSettingsProvider.notifier).updateAlarmReliabilityMode(mode);
+      Navigator.pop(context);
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.alarmReliabilityMode),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.alarmReliabilityModeDesc,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 16),
+              Semantics(
+                button: true,
+                selected: settings.alarmReliabilityMode ==
+                    AlarmReliabilityMode.appOnly,
+                child: ListTile(
+                  leading: const Icon(Icons.phone_android),
+                  title: Text(l10n.alarmReliabilityModeAppOnly),
+                  subtitle: Text(l10n.alarmReliabilityModeAppOnlyDesc),
+                  trailing: settings.alarmReliabilityMode ==
+                          AlarmReliabilityMode.appOnly
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => selectMode(AlarmReliabilityMode.appOnly),
+                ),
+              ),
+              Semantics(
+                button: true,
+                selected: settings.alarmReliabilityMode ==
+                    AlarmReliabilityMode.notification,
+                child: ListTile(
+                  leading: const Icon(Icons.notifications_active),
+                  title: Text(l10n.alarmReliabilityModeNotification),
+                  subtitle: Text(l10n.alarmReliabilityModeNotificationDesc),
+                  trailing: settings.alarmReliabilityMode ==
+                          AlarmReliabilityMode.notification
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => selectMode(AlarmReliabilityMode.notification),
+                ),
+              ),
+              Semantics(
+                button: true,
+                selected: settings.alarmReliabilityMode ==
+                    AlarmReliabilityMode.alarmClock,
+                child: ListTile(
+                  leading: const Icon(Icons.alarm),
+                  title: Text(l10n.alarmReliabilityModeAlarmClock),
+                  subtitle: Text(l10n.alarmReliabilityModeAlarmClockDesc),
+                  trailing: settings.alarmReliabilityMode ==
+                          AlarmReliabilityMode.alarmClock
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => selectMode(AlarmReliabilityMode.alarmClock),
                 ),
               ),
             ],

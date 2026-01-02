@@ -99,4 +99,19 @@ enum AlarmGestureType {
   flip,
 }
 
+/// Alarm reliability mode - determines how alarms are scheduled and played.
+enum AlarmReliabilityMode {
+  /// App-only mode: alarms work only when app is running in foreground/background.
+  /// Lightest on battery, but alarms won't fire if app is killed.
+  appOnly,
 
+  /// Notification mode: use system scheduled notifications with sound.
+  /// More reliable than appOnly, works even if app is backgrounded.
+  /// May not fire reliably if app is force-stopped or on aggressive battery saving.
+  notification,
+
+  /// Alarm clock mode: use AlarmManager + foreground service for maximum reliability.
+  /// Works like system alarm clock, fires even if app is killed (but not force-stopped).
+  /// Highest reliability but uses more battery and shows persistent notification.
+  alarmClock,
+}

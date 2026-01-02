@@ -42,6 +42,10 @@ abstract interface class INotificationService {
     /// TTS language for notification content (e.g., 'zh-CN', 'en-US').
     /// If null, falls back to name-based detection.
     String? ttsLanguage,
+    /// Whether the notification itself should play sound.
+    /// - true: use sound channel (for notification mode)
+    /// - false: use silent channel (for alarmClock mode with foreground service)
+    bool playNotificationSound = false,
   });
 
   /// Cancels the scheduled notification for a timer.
@@ -91,6 +95,3 @@ class NotificationEvent {
     this.actionId,
   });
 }
-
-
-

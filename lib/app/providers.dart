@@ -312,6 +312,18 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     await updateSettings((s) => s.copyWith(shakeSensitivity: sensitivity));
   }
 
+  /// Update alarm reliability mode.
+  Future<void> updateAlarmReliabilityMode(AlarmReliabilityMode mode) async {
+    await updateSettings((s) => s.copyWith(alarmReliabilityMode: mode));
+
+    // Apply reliability mode changes to running timers by rescheduling alarms.
+    try {
+      await ref.read(timerServiceProvider).refreshFromClock();
+    } catch (e) {
+      debugPrint('AppSettingsNotifier: Failed to refresh timers: $e');
+    }
+  }
+
   /// Update grid durations configuration (for debugging/testing).
   Future<void> updateGridDurations(List<int> durationsInSeconds) async {
     assert(
