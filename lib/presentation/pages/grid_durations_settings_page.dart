@@ -185,16 +185,19 @@ class _GridDurationsSettingsPageState
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(l10n.actionStart),
+            child: Text(l10n.ok),
           ),
         ],
       ),
     );
 
     if (confirmed == true) {
+      final defaultDurations = List<int>.from(AppSettings.defaultGridDurations);
+      final defaultNames = List<String>.from(AppSettings.defaultGridNames);
+
       setState(() {
-        _durations = List<int>.from(AppSettings.defaultGridDurations);
-        _names = List<String>.from(AppSettings.defaultGridNames);
+        _durations = List<int>.from(defaultDurations);
+        _names = List<String>.from(defaultNames);
         for (int i = 0; i < 9; i++) {
           final minutes = _durations[i] ~/ 60;
           final seconds = _durations[i] % 60;
@@ -203,6 +206,51 @@ class _GridDurationsSettingsPageState
           _nameControllers[i].text = _names[i];
         }
       });
+
+      // Persist defaults immediately so the reset actually takes effect.
+      await ref.read(appSettingsProvider.notifier).updateSettings(
+            (s) => s.copyWith(
+              gridDurationsInSeconds: defaultDurations,
+              gridNames: defaultNames,
+            ),
+          );
+
+      // Try to immediately update the active grid if possible.
+      try {
+        final timerService = ref.read(timerServiceProvider);
+        if (timerService.hasActiveTimers()) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(l10n.activeTimersRunningConfigWillApplyOnRestart),
+                backgroundColor: Colors.orange,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
+        } else {
+          await timerService.updateDefaultGridDurations();
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(l10n.savedSuccessfullyGridUpdated),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                l10n.configurationSavedButErrorDuringUpdate(e.toString()),
+              ),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+      }
     }
   }
 
