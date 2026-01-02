@@ -8,6 +8,33 @@ part 'app_settings.g.dart';
 /// Global application settings.
 @freezed
 abstract class AppSettings with _$AppSettings {
+  /// Default grid durations in seconds for 9 grid slots.
+  /// Values: [2min, 3min, 5min, 8min, 9min, 10min, 15min, 20min, 45min]
+  static const List<int> defaultGridDurations = [
+    120,
+    180,
+    300,
+    480,
+    540,
+    600,
+    900,
+    1200,
+    2700,
+  ];
+
+  /// Default grid names (empty strings = use default time formatting).
+  static const List<String> defaultGridNames = [
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+  ];
+
   const factory AppSettings({
     /// Currently active mode ID.
     required ModeId activeModeId,

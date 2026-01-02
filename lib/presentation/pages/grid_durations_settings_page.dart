@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
+import '../../core/domain/entities/app_settings.dart';
 import '../../l10n/app_localizations.dart';
 
 /// Grid durations and names configuration page
@@ -15,29 +16,6 @@ class GridDurationsSettingsPage extends ConsumerStatefulWidget {
 
 class _GridDurationsSettingsPageState
     extends ConsumerState<GridDurationsSettingsPage> {
-  // Default duration configuration (in seconds)
-  static const List<int> _defaultDurations = [
-    10,
-    120,
-    180,
-    300,
-    480,
-    600,
-    900,
-    1200,
-    2700,
-  ];
-  static const List<String> _defaultNames = [
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-  ];
 
   late List<TextEditingController> _minutesControllers;
   late List<TextEditingController> _secondsControllers;
@@ -54,10 +32,10 @@ class _GridDurationsSettingsPageState
   void _initControllers() {
     final settings = ref.read(appSettingsProvider).value;
     _durations = List<int>.from(
-      settings?.gridDurationsInSeconds ?? _defaultDurations,
+      settings?.gridDurationsInSeconds ?? AppSettings.defaultGridDurations,
     );
     // Handle potential null or shorter list for names
-    final savedNames = settings?.gridNames ?? _defaultNames;
+    final savedNames = settings?.gridNames ?? AppSettings.defaultGridNames;
     _names = List<String>.generate(
       9,
       (i) => (i < savedNames.length) ? savedNames[i] : '',
@@ -215,8 +193,8 @@ class _GridDurationsSettingsPageState
 
     if (confirmed == true) {
       setState(() {
-        _durations = List<int>.from(_defaultDurations);
-        _names = List<String>.from(_defaultNames);
+        _durations = List<int>.from(AppSettings.defaultGridDurations);
+        _names = List<String>.from(AppSettings.defaultGridNames);
         for (int i = 0; i < 9; i++) {
           final minutes = _durations[i] ~/ 60;
           final seconds = _durations[i] % 60;
