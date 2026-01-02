@@ -31,35 +31,14 @@ class SettingsPage extends ConsumerStatefulWidget {
 class _SettingsPageState extends ConsumerState<SettingsPage> {
   // Developer mode state
   bool _isDeveloperMode = false;
-  int _versionTapCount = 0;
-  DateTime? _lastTapTime;
 
-  // Tap on version to enable developer mode (5 taps within 3 seconds)
-  void _onVersionTap() {
-    final l10nNullable = AppLocalizations.of(context);
-    if (l10nNullable == null) return;
-    final l10n = l10nNullable;
-
-    final now = DateTime.now();
-    if (_lastTapTime == null ||
-        now.difference(_lastTapTime!) > const Duration(seconds: 3)) {
-      // Reset if too much time has passed
-      _versionTapCount = 1;
-    } else {
-      _versionTapCount++;
-    }
-    _lastTapTime = now;
-
-    if (_versionTapCount >= 5 && !_isDeveloperMode) {
+  /// Open version info dialog and enable developer mode if activated.
+  Future<void> _openVersionInfo() async {
+    final developerModeEnabled = await VersionInfoDialog.show(context);
+    if (developerModeEnabled && !_isDeveloperMode && mounted) {
       setState(() {
         _isDeveloperMode = true;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.developerModeEnabled),
-          duration: const Duration(seconds: 2),
-        ),
-      );
     }
   }
 
@@ -105,10 +84,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     error: (error, _) => const Text('--'),
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                  onTap: () {
-                    _onVersionTap();
-                    VersionInfoDialog.show(context);
-                  },
+                  onTap: _openVersionInfo,
                 );
               },
             ),
@@ -525,7 +501,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 onTap: () {
                   setState(() {
                     _isDeveloperMode = false;
-                    _versionTapCount = 0;
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
