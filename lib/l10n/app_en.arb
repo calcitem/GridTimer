@@ -653,6 +653,10 @@
   "@gestureHint": {
     "description": "Gesture hint for seniors"
   },
+  "gestureLimitationsHint": "Note: Some devices/systems restrict buttons or sensors on the lock screen. If gestures don't respond while locked, unlock first, then try flipping the phone or pressing volume buttons.",
+  "@gestureLimitationsHint": {
+    "description": "Unified hint about lock screen restrictions for gesture controls"
+  },
 
   "onboardingCheckSoundTitle": "Important: Check Sound",
   "@onboardingCheckSoundTitle": {
@@ -1061,7 +1065,7 @@
     "description": "Onboarding battery optimization step title"
   },
 
-  "onboardingBatteryDesc": "To prevent system from closing timer in background, recommend setting Grid Timer to \"Don't optimize battery usage\".\n\nThis ensures long-duration timers won't be interrupted.",
+  "onboardingBatteryDesc": "To prevent the system from closing the timer in background, recommend setting Grid Timer to \"Don't optimize battery usage\".\n\nThis ensures long-duration timers won't be interrupted.\n\nTip: On some devices, the \"Open Battery Optimization Settings\" button may be blocked or the exact option may not be shown. Please search in system settings for \"Battery optimization\", \"Power saving\", \"Auto-start\", or \"Background activity\" and set Grid Timer to \"Don't optimize\" / \"No restrictions\".",
   "@onboardingBatteryDesc": {
     "description": "Onboarding battery optimization step description"
   },

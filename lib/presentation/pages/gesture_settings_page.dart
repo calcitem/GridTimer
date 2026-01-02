@@ -73,9 +73,19 @@ class GestureSettingsPage extends ConsumerWidget {
                   const Icon(Icons.lightbulb_outline, color: Colors.blue),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: Text(
-                      l10n.gestureHint,
-                      style: const TextStyle(fontSize: 13),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.gestureHint,
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          l10n.gestureLimitationsHint,
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -153,31 +163,6 @@ class GestureSettingsPage extends ConsumerWidget {
                         );
                       }).toList(),
                     ),
-                    // Add hint text for volume buttons
-                    if (gestureType == AlarmGestureType.volumeUp ||
-                        gestureType == AlarmGestureType.volumeDown)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.info_outline,
-                              size: 16,
-                              color: Colors.orange,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                l10n.volumeButtonLockScreenHint,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.orange,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                   ],
                 ),
               );
