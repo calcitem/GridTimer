@@ -1,5 +1,3 @@
 /* Localized versions of Info.plist keys */
-CFBundleName = "九宫格计时器";
-CFBundleDisplayName = "九宫格计时器";
-
-
+CFBundleName = "九宫计时";
+CFBundleDisplayName = "九宫计时";

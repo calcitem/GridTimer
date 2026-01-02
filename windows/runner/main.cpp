@@ -11,7 +11,7 @@ const wchar_t* GetLocalizedWindowTitle() {
   WORD primaryLangId = PRIMARYLANGID(langId);
 
   if (primaryLangId == LANG_CHINESE) {
-    // Chinese: U+4E5D U+5BAB U+683C U+8BA1 U+65F6 U+5668 = "九宫格计时器"
+    // Chinese: U+4E5D U+5BAB U+683C U+8BA1 U+65F6 U+5668 = "九宫计时"
     return L"\x4E5D\x5BAB\x683C\x8BA1\x65F6\x5668";
   }
   return L"GridTimer";

@@ -11,7 +11,7 @@ class MainFlutterWindow: NSWindow {
     // Set localized window title based on system language
     let preferredLanguage = Locale.preferredLanguages.first ?? "en"
     if preferredLanguage.hasPrefix("zh") {
-      self.title = "九宫格计时器"
+      self.title = "九宫计时"
     } else {
       self.title = "GridTimer"
     }
