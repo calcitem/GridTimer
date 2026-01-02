@@ -1329,5 +1329,15 @@
   "waitingForTest": "Waiting for test...",
   "@waitingForTest": {
     "description": "Message shown when test log is empty"
+  },
+
+  "testTimerStarted": "10-second test timer started! First slot now set to 10s.",
+  "@testTimerStarted": {
+    "description": "Message shown when test timer starts"
+  },
+
+  "stopActiveTimersBeforeTest": "Please stop all active timers before starting test timer",
+  "@stopActiveTimersBeforeTest": {
+    "description": "Warning message when trying to start test timer while other timers are running"
   }
 }

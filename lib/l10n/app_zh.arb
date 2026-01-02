@@ -277,5 +277,7 @@
   "clearLog": "清空日志",
   "startTest": "开始测试",
   "testLog": "测试日志：",
-  "waitingForTest": "等待测试..."
+  "waitingForTest": "等待测试...",
+  "testTimerStarted": "10 秒测试计时器已启动！第一个宫格现已设为 10 秒。",
+  "stopActiveTimersBeforeTest": "启动测试计时器前，请先停止所有运行中的计时器"
 }

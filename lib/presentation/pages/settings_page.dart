@@ -562,6 +562,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   /// Start a 10-second test timer (Debug Tool).
   Future<void> _start10SecondTestTimer(WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
+
     try {
       final timerService = ref.read(timerServiceProvider);
 
@@ -569,11 +572,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       if (timerService.hasActiveTimers()) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Please stop all active timers before starting test timer',
-              ),
-              duration: Duration(seconds: 3),
+            SnackBar(
+              content: Text(l10n.stopActiveTimersBeforeTest),
+              duration: const Duration(seconds: 3),
             ),
           );
         }
@@ -603,11 +604,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              '10-second test timer started! First slot now set to 10s.',
-            ),
-            duration: Duration(seconds: 3),
+          SnackBar(
+            content: Text(l10n.testTimerStarted),
+            duration: const Duration(seconds: 3),
           ),
         );
 
@@ -616,15 +615,12 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       }
     } catch (e) {
       if (mounted) {
-        final l10n = AppLocalizations.of(context);
-        if (l10n != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.failedToStartTestTimer(e.toString())),
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.failedToStartTestTimer(e.toString())),
+            duration: const Duration(seconds: 3),
+          ),
+        );
       }
     }
   }
