@@ -349,6 +349,21 @@
     "description": "Description for volume"
   },
 
+  "systemVolumeHint": "If volume is too low, you can adjust alarm volume in system settings. On Android, press physical volume button then tap menu (three dots) to set alarm volume separately.",
+  "@systemVolumeHint": {
+    "description": "Hint about adjusting system alarm volume"
+  },
+
+  "vibrationSystemWarning": "The in-app vibration setting has been changed. Please note that system vibration settings (such as Do Not Disturb mode, system vibration toggle, etc.) may also affect whether vibration actually works. To ensure vibration works, please also check system settings.",
+  "@vibrationSystemWarning": {
+    "description": "Warning about system vibration settings when toggling vibration"
+  },
+
+  "volumeButtonLockScreenHint": "On some systems, volume buttons only work when device is unlocked",
+  "@volumeButtonLockScreenHint": {
+    "description": "Hint about volume button limitation on lock screen"
+  },
+
   "ttsLanguage": "TTS Language",
   "@ttsLanguage": {
     "description": "TTS language setting"

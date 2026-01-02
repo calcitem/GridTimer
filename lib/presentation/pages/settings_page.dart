@@ -68,26 +68,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               onTap: () =>
                   _showThemeDialog(context, ref, l10n, settings.themeId),
             ),
-            const Divider(),
-
-            // App Information Section
-            _buildSectionHeader(l10n.appInformation),
-            Consumer(
-              builder: (context, ref, child) {
-                final packageInfoAsync = ref.watch(packageInfoProvider);
-                return ListTile(
-                  leading: const Icon(Icons.info_outline),
-                  title: Text(l10n.version),
-                  subtitle: packageInfoAsync.when(
-                    data: (info) => Text('${info.version}+${info.buildNumber}'),
-                    loading: () => const Text('...'),
-                    error: (error, _) => const Text('--'),
-                  ),
-                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                  onTap: _openVersionInfo,
-                );
-              },
-            ),
 
             // Language
             ListTile(
@@ -226,7 +206,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               subtitle: Text(l10n.vibrationDesc),
               value: settings.vibrationEnabled,
               onChanged: (value) {
-                ref.read(appSettingsProvider.notifier).toggleVibration(value);
+                // Show dialog to warn about system vibration settings
+                _showVibrationWarningDialog(context, ref, l10n, value);
               },
             ),
 
@@ -378,6 +359,23 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
             // About Section
             _buildSectionHeader(l10n.about),
+            // Version
+            Consumer(
+              builder: (context, ref, child) {
+                final packageInfoAsync = ref.watch(packageInfoProvider);
+                return ListTile(
+                  leading: const Icon(Icons.info_outline),
+                  title: Text(l10n.version),
+                  subtitle: packageInfoAsync.when(
+                    data: (info) => Text('${info.version}+${info.buildNumber}'),
+                    loading: () => const Text('...'),
+                    error: (error, _) => const Text('--'),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: _openVersionInfo,
+                );
+              },
+            ),
             // Safety Disclaimer
             ListTile(
               leading: Icon(Icons.info_outline, color: tokens.warning),
@@ -680,6 +678,37 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     // Otherwise, check the system locale
     final systemLocale = WidgetsBinding.instance.platformDispatcher.locale;
     return systemLocale.languageCode == 'zh';
+  }
+
+  /// Show vibration warning dialog.
+  void _showVibrationWarningDialog(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+    bool newValue,
+  ) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.vibration),
+        content: SingleChildScrollView(
+          child: Text(l10n.vibrationSystemWarning),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(l10n.actionCancel),
+          ),
+          FilledButton(
+            onPressed: () {
+              ref.read(appSettingsProvider.notifier).toggleVibration(newValue);
+              Navigator.of(dialogContext).pop();
+            },
+            child: Text(l10n.ok),
+          ),
+        ],
+      ),
+    );
   }
 
   /// Show language selection dialog.

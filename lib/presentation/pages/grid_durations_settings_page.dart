@@ -39,7 +39,8 @@ class _GridDurationsSettingsPageState
     '',
   ];
 
-  late List<TextEditingController> _controllers;
+  late List<TextEditingController> _minutesControllers;
+  late List<TextEditingController> _secondsControllers;
   late List<TextEditingController> _nameControllers;
   late List<int> _durations;
   late List<String> _names;
@@ -62,9 +63,20 @@ class _GridDurationsSettingsPageState
       (i) => (i < savedNames.length) ? savedNames[i] : '',
     );
 
-    _controllers = List.generate(
+    // Split duration into minutes and seconds for separate input
+    _minutesControllers = List.generate(
       9,
-      (i) => TextEditingController(text: _durations[i].toString()),
+      (i) {
+        final minutes = _durations[i] ~/ 60;
+        return TextEditingController(text: minutes.toString());
+      },
+    );
+    _secondsControllers = List.generate(
+      9,
+      (i) {
+        final seconds = _durations[i] % 60;
+        return TextEditingController(text: seconds.toString());
+      },
     );
     _nameControllers = List.generate(
       9,
@@ -74,7 +86,10 @@ class _GridDurationsSettingsPageState
 
   @override
   void dispose() {
-    for (var controller in _controllers) {
+    for (var controller in _minutesControllers) {
+      controller.dispose();
+    }
+    for (var controller in _secondsControllers) {
       controller.dispose();
     }
     for (var controller in _nameControllers) {
@@ -93,10 +108,15 @@ class _GridDurationsSettingsPageState
     bool hasError = false;
 
     for (int i = 0; i < 9; i++) {
-      final text = _controllers[i].text.trim();
-      final value = int.tryParse(text);
+      final minutesText = _minutesControllers[i].text.trim();
+      final secondsText = _secondsControllers[i].text.trim();
+      
+      final minutes = int.tryParse(minutesText.isEmpty ? '0' : minutesText) ?? 0;
+      final seconds = int.tryParse(secondsText.isEmpty ? '0' : secondsText) ?? 0;
+      
+      final totalSeconds = minutes * 60 + seconds;
 
-      if (value == null || value <= 0) {
+      if (totalSeconds <= 0) {
         hasError = true;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -107,7 +127,7 @@ class _GridDurationsSettingsPageState
         break;
       }
 
-      newDurations.add(value);
+      newDurations.add(totalSeconds);
       newNames.add(_nameControllers[i].text.trim());
     }
 
@@ -198,7 +218,10 @@ class _GridDurationsSettingsPageState
         _durations = List<int>.from(_defaultDurations);
         _names = List<String>.from(_defaultNames);
         for (int i = 0; i < 9; i++) {
-          _controllers[i].text = _durations[i].toString();
+          final minutes = _durations[i] ~/ 60;
+          final seconds = _durations[i] % 60;
+          _minutesControllers[i].text = minutes.toString();
+          _secondsControllers[i].text = seconds.toString();
           _nameControllers[i].text = _names[i];
         }
       });
@@ -289,34 +312,58 @@ class _GridDurationsSettingsPageState
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
+            // Name Input field
+            TextField(
+              controller: _nameControllers[index],
+              decoration: InputDecoration(
+                labelText: '${l10n.name} (${l10n.optional})',
+                border: const OutlineInputBorder(),
+                isDense: true,
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _names[index] = value;
+                });
+              },
+            ),
+            const SizedBox(height: 12),
+            // Duration Input: Minutes and Seconds side by side
             Row(
               children: [
-                // Name Input field
+                // Minutes Input
                 Expanded(
-                  flex: 2,
-                  child: TextField(
-                    controller: _nameControllers[index],
-                    decoration: InputDecoration(
-                      labelText: '${l10n.name} (${l10n.optional})',
-                      border: const OutlineInputBorder(),
-                      isDense: true,
+                  child: Semantics(
+                    label: '${l10n.gridSlot(index + 1)}, ${l10n.minutes}',
+                    textField: true,
+                    child: TextField(
+                      controller: _minutesControllers[index],
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        labelText: l10n.minutes,
+                        border: const OutlineInputBorder(),
+                        isDense: true,
+                        suffixText: 'min',
+                      ),
+                      onChanged: (value) {
+                        // Real-time preview
+                        final minutes = int.tryParse(value.isEmpty ? '0' : value) ?? 0;
+                        final seconds = int.tryParse(_secondsControllers[index].text.isEmpty ? '0' : _secondsControllers[index].text) ?? 0;
+                        setState(() {
+                          _durations[index] = minutes * 60 + seconds;
+                        });
+                      },
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        _names[index] = value;
-                      });
-                    },
                   ),
                 ),
                 const SizedBox(width: 12),
-                // Duration Input field
+                // Seconds Input
                 Expanded(
-                  flex: 1,
                   child: Semantics(
                     label: '${l10n.gridSlot(index + 1)}, ${l10n.seconds}',
                     textField: true,
                     child: TextField(
-                      controller: _controllers[index],
+                      controller: _secondsControllers[index],
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(
@@ -327,12 +374,11 @@ class _GridDurationsSettingsPageState
                       ),
                       onChanged: (value) {
                         // Real-time preview
-                        final seconds = int.tryParse(value);
-                        if (seconds != null && seconds > 0) {
-                          setState(() {
-                            _durations[index] = seconds;
-                          });
-                        }
+                        final minutes = int.tryParse(_minutesControllers[index].text.isEmpty ? '0' : _minutesControllers[index].text) ?? 0;
+                        final seconds = int.tryParse(value.isEmpty ? '0' : value) ?? 0;
+                        setState(() {
+                          _durations[index] = minutes * 60 + seconds;
+                        });
                       },
                     ),
                   ),
