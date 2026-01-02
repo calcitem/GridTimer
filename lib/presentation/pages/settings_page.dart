@@ -235,31 +235,49 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             ),
 
             // Alarm Channel Sound (Android 8+)
-            ListTile(
-              leading: const Icon(Icons.volume_up),
-              title: Text(l10n.alarmSoundSettings),
-              subtitle: Text(l10n.alarmSoundSettingsDesc),
-              trailing: ElevatedButton(
-                onPressed: () async {
-                  final permissionService = ref.read(permissionServiceProvider);
-                  try {
-                    await permissionService.openNotificationChannelSettings(
-                      channelId: 'gt.alarm.timeup.default.v2',
-                    );
-                  } catch (e) {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            l10n.failedToOpenChannelSettings(e.toString()),
-                          ),
-                        ),
-                      );
-                    }
-                  }
-                },
-                child: Text(l10n.goToSettings),
-              ),
+            Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.volume_up),
+                  title: Text(l10n.alarmSoundSettings),
+                  subtitle: Text(l10n.alarmSoundSettingsDesc),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final permissionService = ref.read(
+                          permissionServiceProvider,
+                        );
+                        try {
+                          await permissionService
+                              .openNotificationChannelSettings(
+                                channelId: 'gt.alarm.timeup.default.v2',
+                              );
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  l10n.failedToOpenChannelSettings(
+                                    e.toString(),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      child: Text(l10n.goToSettings),
+                    ),
+                  ),
+                ),
+              ],
             ),
 
             // Alarm Troubleshooting / Compatibility Guide
@@ -966,47 +984,60 @@ class _PermissionStatusTile extends StatelessWidget {
         final isGranted = snapshot.data ?? false;
         final isLoading = snapshot.connectionState == ConnectionState.waiting;
 
-        return ListTile(
-          leading: Icon(icon),
-          title: Text(title),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(description),
-              const SizedBox(height: 4),
-              if (isLoading)
-                const SizedBox(
-                  height: 16,
-                  width: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              else
-                Row(
-                  children: [
-                    Icon(
-                      isGranted ? Icons.check_circle : Icons.warning,
-                      size: 16,
-                      color: isGranted ? Colors.green : Colors.orange,
-                    ),
-                    const SizedBox(width: 4),
-                    Flexible(
-                      child: Text(
-                        isGranted ? grantedText : deniedText,
-                        style: TextStyle(
+        return Column(
+          children: [
+            ListTile(
+              leading: Icon(icon),
+              title: Text(title),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(description),
+                  const SizedBox(height: 4),
+                  if (isLoading)
+                    const SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  else
+                    Row(
+                      children: [
+                        Icon(
+                          isGranted ? Icons.check_circle : Icons.warning,
+                          size: 16,
                           color: isGranted ? Colors.green : Colors.orange,
-                          fontWeight: FontWeight.w500,
                         ),
-                      ),
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            isGranted ? grantedText : deniedText,
+                            style: TextStyle(
+                              color: isGranted ? Colors.green : Colors.orange,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                ],
+              ),
+              isThreeLine: true,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: onButtonPressed,
+                  child: Text(buttonText),
                 ),
-            ],
-          ),
-          isThreeLine: true,
-          trailing: ElevatedButton(
-            onPressed: onButtonPressed,
-            child: Text(buttonText),
-          ),
+              ),
+            ),
+          ],
         );
       },
     );
@@ -1074,56 +1105,69 @@ class _BatteryOptimizationTile extends StatelessWidget {
           statusText = enabledText;
         }
 
-        return ListTile(
-          leading: const Icon(Icons.battery_saver),
-          title: Text(title),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(description),
-              const SizedBox(height: 4),
-              if (isLoading)
-                const SizedBox(
-                  height: 16,
-                  width: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              else ...[
-                Row(
-                  children: [
-                    Icon(statusIcon, size: 16, color: statusColor),
-                    const SizedBox(width: 4),
-                    Flexible(
-                      child: Text(
-                        statusText,
+        return Column(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.battery_saver),
+              title: Text(title),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(description),
+                  const SizedBox(height: 4),
+                  if (isLoading)
+                    const SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  else ...[
+                    Row(
+                      children: [
+                        Icon(statusIcon, size: 16, color: statusColor),
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            statusText,
+                            style: TextStyle(
+                              color: statusColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    // Show MIUI hint if on MIUI device
+                    if (isMiui) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        miuiHint,
                         style: TextStyle(
-                          color: statusColor,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                          fontStyle: FontStyle.italic,
                         ),
                       ),
-                    ),
+                    ],
                   ],
-                ),
-                // Show MIUI hint if on MIUI device
-                if (isMiui) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    miuiHint,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[600],
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
                 ],
-              ],
-            ],
-          ),
-          isThreeLine: true,
-          trailing: ElevatedButton(
-            onPressed: onButtonPressed,
-            child: Text(buttonText),
-          ),
+              ),
+              isThreeLine: true,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: onButtonPressed,
+                  child: Text(buttonText),
+                ),
+              ),
+            ),
+          ],
         );
       },
     );
