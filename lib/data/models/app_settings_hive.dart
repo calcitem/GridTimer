@@ -85,7 +85,7 @@ class AppSettingsHive {
   @HiveField(22, defaultValue: ['', '', '', '', '', '', '', '', ''])
   final List<String> gridNames;
 
-  @HiveField(23, defaultValue: 1)
+  @HiveField(23, defaultValue: 2)
   final int alarmReliabilityModeIndex;
 
   AppSettingsHive({
@@ -192,7 +192,7 @@ class AppSettingsHive {
       alarmReliabilityMode: alarmReliabilityModeIndex >= 0 &&
               alarmReliabilityModeIndex < AlarmReliabilityMode.values.length
           ? AlarmReliabilityMode.values[alarmReliabilityModeIndex]
-          : AlarmReliabilityMode.notification,
+          : AlarmReliabilityMode.alarmClock,
     );
   }
 }

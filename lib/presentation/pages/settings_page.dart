@@ -265,21 +265,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
             const Divider(),
 
-            // Alarm Reliability Mode
-            ListTile(
-              leading: const Icon(Icons.settings_suggest),
-              title: Text(l10n.alarmReliabilityMode),
-              subtitle: Text(
-                _getAlarmReliabilityModeName(
-                  settings.alarmReliabilityMode,
-                  l10n,
-                ),
-              ),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () =>
-                  _showAlarmReliabilityModeDialog(context, ref, l10n, settings),
-            ),
-
             // Alarm Troubleshooting / Compatibility Guide
             ListTile(
               leading: const Icon(Icons.help_outline),
@@ -488,6 +473,25 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             if (_isDeveloperMode) ...[
               const Divider(),
               _buildSectionHeader(l10n.debugTools),
+
+              // Alarm Reliability Mode (Debug only)
+              ListTile(
+                leading: const Icon(Icons.settings_suggest),
+                title: Text(l10n.alarmReliabilityMode),
+                subtitle: Text(
+                  _getAlarmReliabilityModeName(
+                    settings.alarmReliabilityMode,
+                    l10n,
+                  ),
+                ),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: () => _showAlarmReliabilityModeDialog(
+                  context,
+                  ref,
+                  l10n,
+                  settings,
+                ),
+              ),
 
               // 10-Second Test Timer
               ListTile(
@@ -942,13 +946,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               const SizedBox(height: 16),
               Semantics(
                 button: true,
-                selected: settings.alarmReliabilityMode ==
+                selected:
+                    settings.alarmReliabilityMode ==
                     AlarmReliabilityMode.appOnly,
                 child: ListTile(
                   leading: const Icon(Icons.phone_android),
                   title: Text(l10n.alarmReliabilityModeAppOnly),
                   subtitle: Text(l10n.alarmReliabilityModeAppOnlyDesc),
-                  trailing: settings.alarmReliabilityMode ==
+                  trailing:
+                      settings.alarmReliabilityMode ==
                           AlarmReliabilityMode.appOnly
                       ? const Icon(Icons.check)
                       : null,
@@ -957,13 +963,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
               Semantics(
                 button: true,
-                selected: settings.alarmReliabilityMode ==
+                selected:
+                    settings.alarmReliabilityMode ==
                     AlarmReliabilityMode.notification,
                 child: ListTile(
                   leading: const Icon(Icons.notifications_active),
                   title: Text(l10n.alarmReliabilityModeNotification),
                   subtitle: Text(l10n.alarmReliabilityModeNotificationDesc),
-                  trailing: settings.alarmReliabilityMode ==
+                  trailing:
+                      settings.alarmReliabilityMode ==
                           AlarmReliabilityMode.notification
                       ? const Icon(Icons.check)
                       : null,
@@ -972,13 +980,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
               Semantics(
                 button: true,
-                selected: settings.alarmReliabilityMode ==
+                selected:
+                    settings.alarmReliabilityMode ==
                     AlarmReliabilityMode.alarmClock,
                 child: ListTile(
                   leading: const Icon(Icons.alarm),
                   title: Text(l10n.alarmReliabilityModeAlarmClock),
                   subtitle: Text(l10n.alarmReliabilityModeAlarmClockDesc),
-                  trailing: settings.alarmReliabilityMode ==
+                  trailing:
+                      settings.alarmReliabilityMode ==
                           AlarmReliabilityMode.alarmClock
                       ? const Icon(Icons.check)
                       : null,
@@ -1223,7 +1233,8 @@ class _BatteryOptimizationTile extends StatelessWidget {
 
         // status can be: true (disabled/good), false (enabled/bad), null (unknown)
         final bool? status = snapshot.data?[0] as bool?;
-        final String manufacturerType = (snapshot.data?[1] as String?) ?? 'standard';
+        final String manufacturerType =
+            (snapshot.data?[1] as String?) ?? 'standard';
 
         // Determine display state
         final bool isUnknown = status == null;

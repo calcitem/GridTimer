@@ -122,8 +122,8 @@ abstract class AppSettings with _$AppSettings {
     @Default(true) bool showMinutesSecondsFormat,
 
     /// Alarm reliability mode: determines how alarms are scheduled.
-    /// Default is notification (balanced reliability and battery).
-    @Default(AlarmReliabilityMode.notification)
+    /// Default is alarmClock (maximum reliability, maintains backward compatibility).
+    @Default(AlarmReliabilityMode.alarmClock)
     AlarmReliabilityMode alarmReliabilityMode,
   }) = _AppSettings;
 
