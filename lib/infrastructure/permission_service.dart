@@ -166,6 +166,20 @@ class PermissionService implements IPermissionService {
   }
 
   @override
+  Future<String> getDeviceManufacturerType() async {
+    if (!Platform.isAndroid) return 'standard';
+
+    try {
+      final result = await _systemSettingsChannel.invokeMethod<String>(
+        'getDeviceManufacturerType',
+      );
+      return result ?? 'standard';
+    } catch (e) {
+      return 'standard';
+    }
+  }
+
+  @override
   Future<void> openAppSettings() async {
     // Block opening system settings in test environment to prevent interference with Monkey testing
     if (EnvironmentConfig.test) {

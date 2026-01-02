@@ -46,6 +46,37 @@ class MainActivity: FlutterActivity() {
                Build.MANUFACTURER.equals("Redmi", ignoreCase = true)
     }
 
+    /** Check if the device is running EMUI/HarmonyOS (Honor/Huawei). */
+    private fun isHonorHuaweiDevice(): Boolean {
+        try {
+            val clazz = Class.forName("android.os.SystemProperties")
+            val getMethod = clazz.getMethod("get", String::class.java)
+            val emuiVersion = getMethod.invoke(null, "ro.build.version.emui") as? String
+            if (!emuiVersion.isNullOrEmpty()) {
+                return true
+            }
+            val harmonyVersion = getMethod.invoke(null, "hw_sc.build.platform.version") as? String
+            if (!harmonyVersion.isNullOrEmpty()) {
+                return true
+            }
+        } catch (e: Exception) {
+            // Ignore reflection errors
+        }
+
+        // Fallback: check manufacturer
+        return Build.MANUFACTURER.equals("HUAWEI", ignoreCase = true) ||
+               Build.MANUFACTURER.equals("HONOR", ignoreCase = true)
+    }
+
+    /** Get the device manufacturer category for specific handling. */
+    private fun getDeviceManufacturerType(): String {
+        return when {
+            isMiuiDevice() -> "miui"
+            isHonorHuaweiDevice() -> "honor_huawei"
+            else -> "standard"
+        }
+    }
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
@@ -471,55 +502,114 @@ class MainActivity: FlutterActivity() {
                     result.success(isMiuiDevice())
                 }
 
+                "getDeviceManufacturerType" -> {
+                    result.success(getDeviceManufacturerType())
+                }
+
                 "openBatteryOptimizationSettings" -> {
                     // Try multiple intents for battery optimization settings,
-                    // including MIUI-specific ones
+                    // with manufacturer-specific optimizations for MIUI, Honor, Huawei, etc.
                     val intentsToTry = mutableListOf<Intent>()
+                    val manufacturerType = getDeviceManufacturerType()
 
-                    // Standard Android: Request to ignore battery optimizations (shows a dialog)
-                    // This is the most reliable method and works on most devices including MIUI
-                    intentsToTry.add(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                        data = Uri.parse("package:$packageName")
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    })
-
-                    // For MIUI devices, add MIUI-specific intents as fallbacks
-                    if (isMiuiDevice()) {
-                        // MIUI app-specific battery saver settings
-                        intentsToTry.add(Intent().apply {
-                            setClassName(
-                                "com.miui.powerkeeper",
-                                "com.miui.powerkeeper.ui.HiddenAppsConfigActivity"
-                            )
-                            putExtra("package_name", packageName)
-                            putExtra("package_label", applicationInfo.loadLabel(packageManager))
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        })
-
-                        // MIUI Battery settings main page
-                        intentsToTry.add(Intent().apply {
-                            action = "miui.intent.action.POWER_SAVE_MODE_SETTING"
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        })
-
-                        // MIUI Power Keeper app list
-                        intentsToTry.add(Intent().apply {
-                            setClassName(
-                                "com.miui.powerkeeper",
-                                "com.miui.powerkeeper.ui.HiddenAppsContainerManagementActivity"
-                            )
+                    // Priority 1: Standard Android request dialog (works on most devices)
+                    // This shows a system dialog allowing the user to whitelist the app
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        intentsToTry.add(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                            data = Uri.parse("package:$packageName")
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         })
                     }
 
-                    // Standard Android: Battery optimization settings list
+                    // Priority 2: Manufacturer-specific battery settings
+                    when (manufacturerType) {
+                        "miui" -> {
+                            // MIUI-specific battery saver settings
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.miui.powerkeeper",
+                                    "com.miui.powerkeeper.ui.HiddenAppsConfigActivity"
+                                )
+                                putExtra("package_name", packageName)
+                                putExtra("package_label", applicationInfo.loadLabel(packageManager))
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            intentsToTry.add(Intent().apply {
+                                action = "miui.intent.action.POWER_SAVE_MODE_SETTING"
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.miui.powerkeeper",
+                                    "com.miui.powerkeeper.ui.HiddenAppsContainerManagementActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+                        }
+                        "honor_huawei" -> {
+                            // Honor/Huawei EMUI/HarmonyOS specific battery settings
+                            // These intents are tested on Honor and Huawei devices
+                            
+                            // Method 1: Direct to app launch management (most reliable)
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.huawei.systemmanager",
+                                    "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 2: Power consumption detail page for this app
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.huawei.systemmanager",
+                                    "com.huawei.systemmanager.power.ui.HwPowerManagerActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 3: App battery optimization detail page
+                            intentsToTry.add(Intent().apply {
+                                action = "huawei.intent.action.POWER_MANAGER"
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 4: Protected apps settings (older EMUI versions)
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.huawei.systemmanager",
+                                    "com.huawei.systemmanager.optimize.process.ProtectActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 5: System manager main page (user can navigate from there)
+                            intentsToTry.add(Intent().apply {
+                                action = Intent.ACTION_MAIN
+                                setClassName(
+                                    "com.huawei.systemmanager",
+                                    "com.huawei.systemmanager.MainActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+                        }
+                    }
+
+                    // Priority 3: Standard Android battery optimization list
                     intentsToTry.add(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     })
 
-                    // Fallback: App details settings (user can find battery settings there)
+                    // Priority 4: App details settings (universal fallback)
                     intentsToTry.add(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                         data = Uri.parse("package:$packageName")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    })
+
+                    // Priority 5: General settings as last resort
+                    intentsToTry.add(Intent(Settings.ACTION_SETTINGS).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     })
 
