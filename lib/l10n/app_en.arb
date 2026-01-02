@@ -710,7 +710,7 @@
     "description": "Dialog title for alarm troubleshooting and reliability guidance"
   },
 
-  "alarmTroubleshootingDialogIntro": "Different Android versions and OEM ROMs (e.g., Xiaomi/MIUI) apply different background/notification restrictions. This can silence or delay alarms. We keep improving compatibility, but please try the following:",
+  "alarmTroubleshootingDialogIntro": "Different Android versions and OEM ROMs (e.g., custom skins) apply different background/notification restrictions. This can silence or delay alarms. We keep improving compatibility, but please try the following:",
   "@alarmTroubleshootingDialogIntro": {
     "description": "Intro text for the alarm troubleshooting dialog"
   },
@@ -720,7 +720,7 @@
     "description": "Step-by-step checklist for alarm troubleshooting"
   },
 
-  "alarmTroubleshootingMiui": "Xiaomi/MIUI: also allow Auto-start and Background activity, and avoid aggressive battery saving. If needed, lock GridTimer in Recents.",
+  "alarmTroubleshootingMiui": "Custom Android skins: also allow Auto-start and Background activity, and avoid aggressive battery saving. If needed, lock GridTimer in Recents.",
   "@alarmTroubleshootingMiui": {
     "description": "Additional Xiaomi/MIUI-specific tips for alarm troubleshooting"
   },
@@ -852,7 +852,7 @@
     "description": "No TTS engine dialog title"
   },
 
-  "ttsNoEngineMessage": "No TTS (Text-to-Speech) engine is available on your device. This is common on some Xiaomi/MIUI devices.",
+  "ttsNoEngineMessage": "No TTS (Text-to-Speech) engine is available on your device. This is common on some devices with custom Android skins.",
   "@ttsNoEngineMessage": {
     "description": "No TTS engine dialog message"
   },
@@ -872,7 +872,7 @@
     "description": "TTS unavailable dialog message"
   },
 
-  "ttsUnavailableHint": "Tip: On Xiaomi/MIUI devices, check \"Xiao AI Voice Engine\" settings, or install Google TTS engine.",
+  "ttsUnavailableHint": "Tip: On some devices, check your system voice engine settings, or install Google TTS engine.",
   "@ttsUnavailableHint": {
     "description": "TTS unavailable hint for Xiaomi devices"
   },
@@ -1203,7 +1203,7 @@
     "description": "Battery optimization status: cannot be determined automatically"
   },
 
-  "batteryOptimizationMiuiHint": "On Xiaomi/MIUI: Go to App Settings → Battery Usage → Set to 'No restrictions'",
+  "batteryOptimizationMiuiHint": "On some devices: Go to App Settings → Battery Usage → Set to 'No restrictions'",
   "@batteryOptimizationMiuiHint": {
     "description": "Hint for MIUI users about battery optimization settings"
   },
