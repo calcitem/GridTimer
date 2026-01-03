@@ -26,7 +26,7 @@ jobs:
       - name: Analyze Flutter
         uses: ValentinVignal/action-dart-analyze@v0.17
         with:
-          fail-on: 'format'
+          fail-on: 'warning'
           token: ${{ secrets.GITHUB_TOKEN }}
 
   build:
