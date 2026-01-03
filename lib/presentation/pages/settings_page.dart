@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io' show Platform, exit;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show SystemNavigator;
+import 'package:flutter/services.dart' show MethodChannel, SystemNavigator;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../app/locale_provider.dart';
@@ -713,7 +713,27 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       builder: (dialogContext) => AlertDialog(
         title: Text(l10n.vibration),
         content: SingleChildScrollView(
-          child: Text(l10n.vibrationSystemWarning),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.vibrationSystemWarning),
+              if (Platform.isAndroid) ...[
+                const SizedBox(height: 12),
+                GestureDetector(
+                  onTap: () =>
+                      _openSystemVibrationSettings(dialogContext, l10n),
+                  child: Text(
+                    l10n.openSystemVibrationSettings,
+                    style: TextStyle(
+                      color: Theme.of(dialogContext).colorScheme.primary,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -730,6 +750,23 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         ],
       ),
     );
+  }
+
+  /// Open system vibration settings (Android only).
+  Future<void> _openSystemVibrationSettings(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
+    const channel = MethodChannel('com.calcitem.gridtimer/system_settings');
+    try {
+      await channel.invokeMethod<void>('openVibrationSettings');
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.errorText(e.toString()))));
+      }
+    }
   }
 
   /// Show language selection dialog.

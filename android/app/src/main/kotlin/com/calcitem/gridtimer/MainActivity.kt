@@ -492,6 +492,34 @@ class MainActivity: FlutterActivity() {
                     result.success(getDeviceManufacturerType())
                 }
 
+                "openVibrationSettings" -> {
+                    // Try to open the vibration/haptic feedback settings
+                    val intentsToTry = listOf(
+                        // Android 12+ Sound & Vibration settings
+                        Intent(Settings.ACTION_SOUND_SETTINGS),
+                        // Fallback to main settings
+                        Intent(Settings.ACTION_SETTINGS)
+                    )
+
+                    var success = false
+                    for (intent in intentsToTry) {
+                        try {
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            success = true
+                            break
+                        } catch (e: Exception) {
+                            // Try next intent
+                        }
+                    }
+
+                    if (success) {
+                        result.success(null)
+                    } else {
+                        result.error("open_failed", "Could not open vibration settings", null)
+                    }
+                }
+
                 "openBatteryOptimizationSettings" -> {
                     // Try multiple intents for battery optimization settings,
                     // with manufacturer-specific optimizations for MIUI, Honor, Huawei, etc.
@@ -499,8 +527,8 @@ class MainActivity: FlutterActivity() {
                     val manufacturerType = getDeviceManufacturerType()
 
                     // Priority 1: Manufacturer-specific battery settings
-                    // We skip ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS because it requires 
-                    // the high-risk REQUEST_IGNORE_BATTERY_OPTIMIZATIONS permission, which often 
+                    // We skip ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS because it requires
+                    // the high-risk REQUEST_IGNORE_BATTERY_OPTIMIZATIONS permission, which often
                     // leads to Google Play rejection for non-core apps.
                     when (manufacturerType) {
                         "miui" -> {
@@ -531,7 +559,7 @@ class MainActivity: FlutterActivity() {
                         "honor_huawei" -> {
                             // Honor/Huawei EMUI/HarmonyOS specific battery settings
                             // These intents are tested on Honor and Huawei devices
-                            
+
                             // Method 1: Direct to app launch management (most reliable)
                             intentsToTry.add(Intent().apply {
                                 setClassName(
