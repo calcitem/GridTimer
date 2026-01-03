@@ -41,9 +41,10 @@ class MainActivity: FlutterActivity() {
             // Ignore reflection errors
         }
 
-        // Fallback: check manufacturer
-        return Build.MANUFACTURER.equals("Xiaomi", ignoreCase = true) ||
-               Build.MANUFACTURER.equals("Redmi", ignoreCase = true)
+        // Do NOT use Build.MANUFACTURER as fallback because it represents hardware,
+        // not the OS. A Xiaomi device running LineageOS/custom ROM should not be
+        // treated as MIUI.
+        return false
     }
 
     /** Check if the device is running EMUI/HarmonyOS (Honor/Huawei). */
@@ -63,9 +64,10 @@ class MainActivity: FlutterActivity() {
             // Ignore reflection errors
         }
 
-        // Fallback: check manufacturer
-        return Build.MANUFACTURER.equals("HUAWEI", ignoreCase = true) ||
-               Build.MANUFACTURER.equals("HONOR", ignoreCase = true)
+        // Do NOT use Build.MANUFACTURER as fallback because it represents hardware,
+        // not the OS. A Huawei/Honor device running stock Android should not be
+        // treated as EMUI/HarmonyOS.
+        return false
     }
 
     /** Get the device manufacturer category for specific handling. */
