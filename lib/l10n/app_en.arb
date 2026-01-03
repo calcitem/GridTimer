@@ -354,6 +354,42 @@
     "description": "Hint about adjusting system alarm volume"
   },
 
+  "autoRaiseAlarmVolumeTitle": "Auto-boost system alarm volume (Android)",
+  "@autoRaiseAlarmVolumeTitle": {
+    "description": "Setting title for automatically boosting Android system alarm volume when ringing"
+  },
+
+  "autoRaiseAlarmVolumeDesc": "Temporarily raise the system Alarm volume when a timer rings, then restore it after you stop the alarm.",
+  "@autoRaiseAlarmVolumeDesc": {
+    "description": "Setting description for automatically boosting Android system alarm volume"
+  },
+
+  "alarmVolumeBoostLevelTitle": "Boost level",
+  "@alarmVolumeBoostLevelTitle": {
+    "description": "Title for selecting alarm volume boost level"
+  },
+
+  "alarmVolumeBoostLevelMinAudible": "Minimum audible (recommended)",
+  "@alarmVolumeBoostLevelMinAudible": {
+    "description": "Option label for minimum audible alarm volume boost"
+  },
+
+  "alarmVolumeBoostLevelMax": "Maximum",
+  "@alarmVolumeBoostLevelMax": {
+    "description": "Option label for maximum alarm volume boost"
+  },
+
+  "autoRaiseAlarmVolumeNote": "Note: This feature changes the system Alarm volume. It restores your previous volume when you stop the alarm (or after {minutes} minutes).",
+  "@autoRaiseAlarmVolumeNote": {
+    "description": "Disclaimer for alarm volume boost feature",
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+
   "vibrationSystemWarning": "The in-app vibration setting has been changed. Please note that system vibration settings (such as Do Not Disturb mode, system vibration toggle, etc.) may also affect whether vibration actually works. To ensure vibration works, please also check system settings.",
   "@vibrationSystemWarning": {
     "description": "Warning about system vibration settings when toggling vibration"

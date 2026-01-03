@@ -59,6 +59,18 @@ enum AudioPlaybackMode {
   playOnce,
 }
 
+/// Target level when temporarily boosting the Android system alarm stream volume.
+///
+/// This is used to ensure alarms remain audible on lock screen and are less likely
+/// to be interrupted by other notification sounds.
+enum AlarmVolumeBoostLevel {
+  /// Raise to a reasonable minimum audible level (based on the device max volume).
+  minimumAudible,
+
+  /// Raise to the maximum alarm volume.
+  maximum,
+}
+
 /// Action to take when gesture is detected during alarm.
 enum AlarmGestureAction {
   /// Stop the alarm and reset timer.

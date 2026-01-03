@@ -362,6 +362,7 @@ class NotificationService implements INotificationService {
     bool enableVibration = true,
     String? ttsLanguage,
     bool playNotificationSound = false,
+    bool preferAlarmAudioUsage = false,
   }) async {
     // Schedule notification only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -381,10 +382,14 @@ class NotificationService implements INotificationService {
     // (if it exists) to avoid "no sound while locked" scenarios.
     String channelId;
     if (playNotificationSound && Platform.isAndroid) {
-      channelId = await _selectAndroidTimeUpSoundChannelId(
-        alarmChannelIdV3: 'gt.alarm.timeup.${config.soundKey}.v3',
-        legacyChannelIdV2: 'gt.alarm.timeup.${config.soundKey}.v2',
-      );
+      if (preferAlarmAudioUsage) {
+        channelId = 'gt.alarm.timeup.${config.soundKey}.v3';
+      } else {
+        channelId = await _selectAndroidTimeUpSoundChannelId(
+          alarmChannelIdV3: 'gt.alarm.timeup.${config.soundKey}.v3',
+          legacyChannelIdV2: 'gt.alarm.timeup.${config.soundKey}.v2',
+        );
+      }
     } else {
       channelId = playNotificationSound
           ? 'gt.alarm.timeup.${config.soundKey}.v3'

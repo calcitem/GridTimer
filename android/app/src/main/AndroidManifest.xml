@@ -14,6 +14,9 @@
     <!-- Optional but common for alarm UX -->
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+    <!-- Needed to temporarily adjust system alarm stream volume for reliable ringing -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+
     <!-- Internet for TTS engine downloads (optional) -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -91,6 +94,11 @@
 
         <receiver
             android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver"
+            android:exported="false" />
+
+        <!-- Boost/restore Android alarm stream volume at ringing time -->
+        <receiver
+            android:name=".AlarmVolumeBoostReceiver"
             android:exported="false" />
 
         <!-- Grid Timer home screen widget -->

@@ -72,6 +72,22 @@ abstract class AppSettings with _$AppSettings {
     /// Selected sound key for alarm.
     @Default('default') String selectedSoundKey,
 
+    /// Whether to temporarily boost the Android system alarm volume when ringing.
+    ///
+    /// This helps ensure alarms are audible on the lock screen and reduces the
+    /// chance of being interrupted by other notification sounds.
+    @Default(false) bool autoRaiseAlarmVolumeEnabled,
+
+    /// Target boost level for the Android system alarm volume.
+    @Default(AlarmVolumeBoostLevel.minimumAudible)
+    AlarmVolumeBoostLevel alarmVolumeBoostLevel,
+
+    /// Safety timeout for restoring the original alarm volume.
+    ///
+    /// If the user doesn't stop the alarm (e.g. dismisses the notification),
+    /// we restore after this many minutes to avoid leaving the alarm volume high.
+    @Default(10) int alarmVolumeBoostRestoreAfterMinutes,
+
     /// TTS volume (0.0 - 1.0).
     @Default(1.0) double ttsVolume,
 

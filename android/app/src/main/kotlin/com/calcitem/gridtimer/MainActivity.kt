@@ -297,6 +297,131 @@ class MainActivity: FlutterActivity() {
                     }
                 }
 
+                "scheduleAlarmVolumeBoost" -> {
+                    val requestCode = call.argument<Int>("requestCode")
+                    val triggerAtAny = call.argument<Any>("triggerAtEpochMs")
+                    val level = call.argument<String>("level") ?: AlarmVolumeBoostReceiver.LEVEL_MIN_AUDIBLE
+                    val restoreAfterMinutes = call.argument<Int>("restoreAfterMinutes") ?: 10
+
+                    val triggerAtEpochMs = when (triggerAtAny) {
+                        is Int -> triggerAtAny.toLong()
+                        is Long -> triggerAtAny
+                        is Double -> triggerAtAny.toLong()
+                        else -> null
+                    }
+
+                    if (requestCode == null || triggerAtEpochMs == null) {
+                        result.error("invalid_args", "requestCode/triggerAtEpochMs required", null)
+                        return@setMethodCallHandler
+                    }
+
+                    try {
+                        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                        val intent = Intent(this, AlarmVolumeBoostReceiver::class.java).apply {
+                            action = AlarmVolumeBoostReceiver.ACTION_BOOST
+                            putExtra(AlarmVolumeBoostReceiver.EXTRA_LEVEL, level)
+                            putExtra(AlarmVolumeBoostReceiver.EXTRA_RESTORE_AFTER_MINUTES, restoreAfterMinutes)
+                        }
+
+                        val pendingIntent = PendingIntent.getBroadcast(
+                            this,
+                            requestCode,
+                            intent,
+                            pendingIntentFlags(updateCurrent = true),
+                        )
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            alarmManager.setExactAndAllowWhileIdle(
+                                AlarmManager.RTC_WAKEUP,
+                                triggerAtEpochMs,
+                                pendingIntent,
+                            )
+                        } else {
+                            alarmManager.setExact(
+                                AlarmManager.RTC_WAKEUP,
+                                triggerAtEpochMs,
+                                pendingIntent,
+                            )
+                        }
+                        result.success(null)
+                    } catch (e: Exception) {
+                        result.error("schedule_failed", e.toString(), null)
+                    }
+                }
+
+                "cancelAlarmVolumeBoost" -> {
+                    val requestCode = call.argument<Int>("requestCode")
+                    if (requestCode == null) {
+                        result.error("invalid_args", "requestCode required", null)
+                        return@setMethodCallHandler
+                    }
+
+                    try {
+                        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                        val intent = Intent(this, AlarmVolumeBoostReceiver::class.java).apply {
+                            action = AlarmVolumeBoostReceiver.ACTION_BOOST
+                        }
+                        val pendingIntent = PendingIntent.getBroadcast(
+                            this,
+                            requestCode,
+                            intent,
+                            pendingIntentFlagsNoCreate(),
+                        )
+                        if (pendingIntent != null) {
+                            alarmManager.cancel(pendingIntent)
+                            pendingIntent.cancel()
+                        }
+                        result.success(null)
+                    } catch (e: Exception) {
+                        result.error("cancel_failed", e.toString(), null)
+                    }
+                }
+
+                "boostAlarmVolumeNow" -> {
+                    val level = call.argument<String>("level") ?: AlarmVolumeBoostReceiver.LEVEL_MIN_AUDIBLE
+                    val restoreAfterMinutes = call.argument<Int>("restoreAfterMinutes") ?: 10
+                    try {
+                        val intent = Intent(this, AlarmVolumeBoostReceiver::class.java).apply {
+                            action = AlarmVolumeBoostReceiver.ACTION_BOOST
+                            putExtra(AlarmVolumeBoostReceiver.EXTRA_LEVEL, level)
+                            putExtra(AlarmVolumeBoostReceiver.EXTRA_RESTORE_AFTER_MINUTES, restoreAfterMinutes)
+                        }
+                        sendBroadcast(intent)
+                        result.success(null)
+                    } catch (e: Exception) {
+                        result.error("boost_failed", e.toString(), null)
+                    }
+                }
+
+                "restoreAlarmVolumeNow" -> {
+                    try {
+                        val intent = Intent(this, AlarmVolumeBoostReceiver::class.java).apply {
+                            action = AlarmVolumeBoostReceiver.ACTION_RESTORE
+                        }
+                        sendBroadcast(intent)
+                        result.success(null)
+                    } catch (e: Exception) {
+                        result.error("restore_failed", e.toString(), null)
+                    }
+                }
+
+                "getActiveTimeUpNotificationCount" -> {
+                    try {
+                        val notificationManager =
+                            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            val active = notificationManager.activeNotifications
+                            val count = active.count { it.id in 1000..1008 }
+                            result.success(count)
+                        } else {
+                            result.success(0)
+                        }
+                    } catch (_: Exception) {
+                        // Unknown. Dart side treats null as "safe to restore".
+                        result.success(null)
+                    }
+                }
+
                 "openTtsSettings" -> {
                     // Try multiple methods to open TTS settings, as different Android versions
                     // and OEM ROMs may require different intents
@@ -519,5 +644,21 @@ class MainActivity: FlutterActivity() {
         if (now - lastVolumeKeyEventAtMs < volumeKeyThrottleMs) return
         lastVolumeKeyEventAtMs = now
         volumeKeyEventSink?.success(direction)
+    }
+
+    private fun pendingIntentFlags(updateCurrent: Boolean): Int {
+        var flags = if (updateCurrent) PendingIntent.FLAG_UPDATE_CURRENT else 0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            flags = flags or PendingIntent.FLAG_IMMUTABLE
+        }
+        return flags
+    }
+
+    private fun pendingIntentFlagsNoCreate(): Int {
+        var flags = PendingIntent.FLAG_NO_CREATE
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            flags = flags or PendingIntent.FLAG_IMMUTABLE
+        }
+        return flags
     }
 }

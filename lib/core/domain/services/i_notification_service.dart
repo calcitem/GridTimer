@@ -48,6 +48,14 @@ abstract interface class INotificationService {
     /// - true: use sound channel (for notification mode)
     /// - false: use silent channel (for alarmClock mode with foreground service)
     bool playNotificationSound = false,
+
+    /// Android-only: Prefer an alarm-usage notification channel even if the
+    /// alarm stream volume is currently muted.
+    ///
+    /// When enabled, the app may independently manage the system alarm volume
+    /// (e.g., temporarily boosting it at ringing time) and therefore does not
+    /// need to fall back to a notification-usage channel.
+    bool preferAlarmAudioUsage = false,
   });
 
   /// Cancels the scheduled notification for a timer.

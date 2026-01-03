@@ -40,6 +40,15 @@ class AppSettingsHive {
   @HiveField(8, defaultValue: 'default')
   final String selectedSoundKey;
 
+  @HiveField(24, defaultValue: false)
+  final bool autoRaiseAlarmVolumeEnabled;
+
+  @HiveField(25, defaultValue: 0)
+  final int alarmVolumeBoostLevelIndex;
+
+  @HiveField(26, defaultValue: 10)
+  final int alarmVolumeBoostRestoreAfterMinutes;
+
   @HiveField(9, defaultValue: 1.0)
   final double ttsVolume;
 
@@ -100,6 +109,9 @@ class AppSettingsHive {
     required this.privacyPolicyAccepted,
     required this.soundVolume,
     required this.selectedSoundKey,
+    required this.autoRaiseAlarmVolumeEnabled,
+    required this.alarmVolumeBoostLevelIndex,
+    required this.alarmVolumeBoostRestoreAfterMinutes,
     required this.ttsVolume,
     required this.ttsSpeechRate,
     required this.ttsPitch,
@@ -135,6 +147,10 @@ class AppSettingsHive {
       privacyPolicyAccepted: settings.privacyPolicyAccepted,
       soundVolume: settings.soundVolume,
       selectedSoundKey: settings.selectedSoundKey,
+      autoRaiseAlarmVolumeEnabled: settings.autoRaiseAlarmVolumeEnabled,
+      alarmVolumeBoostLevelIndex: settings.alarmVolumeBoostLevel.index,
+      alarmVolumeBoostRestoreAfterMinutes:
+          settings.alarmVolumeBoostRestoreAfterMinutes,
       ttsVolume: settings.ttsVolume,
       ttsSpeechRate: settings.ttsSpeechRate,
       ttsPitch: settings.ttsPitch,
@@ -177,6 +193,13 @@ class AppSettingsHive {
       privacyPolicyAccepted: privacyPolicyAccepted,
       soundVolume: soundVolume,
       selectedSoundKey: selectedSoundKey,
+      autoRaiseAlarmVolumeEnabled: autoRaiseAlarmVolumeEnabled,
+      alarmVolumeBoostLevel:
+          alarmVolumeBoostLevelIndex >= 0 &&
+              alarmVolumeBoostLevelIndex < AlarmVolumeBoostLevel.values.length
+          ? AlarmVolumeBoostLevel.values[alarmVolumeBoostLevelIndex]
+          : AlarmVolumeBoostLevel.minimumAudible,
+      alarmVolumeBoostRestoreAfterMinutes: alarmVolumeBoostRestoreAfterMinutes,
       ttsVolume: ttsVolume,
       ttsSpeechRate: ttsSpeechRate,
       ttsPitch: ttsPitch,

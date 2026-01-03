@@ -12,6 +12,7 @@ import '../core/domain/enums.dart';
 import '../core/domain/services/i_timer_service.dart';
 import '../core/domain/services/i_notification_service.dart';
 import '../core/domain/services/i_audio_service.dart';
+import '../core/domain/services/i_alarm_volume_service.dart';
 import '../core/domain/services/i_tts_service.dart';
 import '../core/domain/services/i_clock.dart';
 import '../core/domain/services/i_gesture_service.dart';
@@ -25,6 +26,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
   final StorageRepository _storage;
   final INotificationService _notification;
   final IAudioService _audio;
+  final IAlarmVolumeService _alarmVolume;
   final ITtsService _tts;
   final IClock _clock;
   final IGestureService _gesture;
@@ -57,6 +59,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     required StorageRepository storage,
     required INotificationService notification,
     required IAudioService audio,
+    required IAlarmVolumeService alarmVolume,
     required ITtsService tts,
     required IClock clock,
     required IGestureService gesture,
@@ -64,6 +67,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
   }) : _storage = storage,
        _notification = notification,
        _audio = audio,
+       _alarmVolume = alarmVolume,
        _tts = tts,
        _clock = clock,
        _gesture = gesture,
@@ -166,6 +170,12 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         // still cancel the notification to stop any repeating alert.
         await reset(timerId);
       }
+
+      // Best-effort: restore alarm volume if we boosted it for ringing.
+      final settings = await _storage.getSettings();
+      if (Platform.isAndroid && (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
+        await _alarmVolume.restoreIfBoosted();
+      }
     } catch (e, stackTrace) {
       debugPrint('TimerService: Failed to handle notification event: $e');
       debugPrint('Stack trace: $stackTrace');
@@ -261,6 +271,17 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         // Update shake sensitivity from settings
         if (settings != null) {
           _gesture.updateShakeSensitivity(settings.shakeSensitivity);
+        }
+
+        // Best-effort: boost Android system alarm volume when ringing starts.
+        // This helps ensure the alarm is audible on the lock screen.
+        if (Platform.isAndroid && (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
+          await _alarmVolume.boostNow(
+            level: settings?.alarmVolumeBoostLevel ??
+                AlarmVolumeBoostLevel.minimumAudible,
+            restoreAfterMinutes:
+                settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,
+          );
         }
 
         if (!Platform.isAndroid) {
@@ -361,6 +382,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         AudioPlaybackMode.playOnce;
     final reliabilityMode =
         settings?.alarmReliabilityMode ?? AlarmReliabilityMode.notification;
+    final autoBoostEnabled = settings?.autoRaiseAlarmVolumeEnabled ?? false;
 
     // Schedule based on reliability mode to avoid double-ringing:
     // - appOnly: no system scheduling (alarm only works when app is running)
@@ -377,7 +399,21 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         // In alarmClock mode, we now rely on the notification channel sound (via AlarmManager in FLN)
         // rather than a separate native service. So we enable notification sound for both modes.
         playNotificationSound: true,
+        preferAlarmAudioUsage: autoBoostEnabled,
       );
+
+      if (autoBoostEnabled && Platform.isAndroid) {
+        await _alarmVolume.scheduleBoost(
+          slotIndex: slotIndex,
+          triggerAtEpochMs: endMs,
+          level: settings?.alarmVolumeBoostLevel ??
+              AlarmVolumeBoostLevel.minimumAudible,
+          restoreAfterMinutes:
+              settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,
+        );
+      } else {
+        await _alarmVolume.cancelScheduledBoost(slotIndex: slotIndex);
+      }
     }
 
     _emitState();
@@ -403,6 +439,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       timerId: timerId,
       slotIndex: session.slotIndex,
     );
+    await _alarmVolume.cancelScheduledBoost(slotIndex: session.slotIndex);
 
     _emitState();
   }
@@ -431,6 +468,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         AudioPlaybackMode.playOnce;
     final reliabilityMode =
         settings?.alarmReliabilityMode ?? AlarmReliabilityMode.notification;
+    final autoBoostEnabled = settings?.autoRaiseAlarmVolumeEnabled ?? false;
 
     final config = _currentGrid!.slots[session.slotIndex];
 
@@ -444,7 +482,21 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         enableVibration: settings?.vibrationEnabled ?? true,
         ttsLanguage: settings?.ttsLanguage,
         playNotificationSound: true,
+        preferAlarmAudioUsage: autoBoostEnabled,
       );
+
+      if (autoBoostEnabled && Platform.isAndroid) {
+        await _alarmVolume.scheduleBoost(
+          slotIndex: session.slotIndex,
+          triggerAtEpochMs: newEndMs,
+          level: settings?.alarmVolumeBoostLevel ??
+              AlarmVolumeBoostLevel.minimumAudible,
+          restoreAfterMinutes:
+              settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,
+        );
+      } else {
+        await _alarmVolume.cancelScheduledBoost(slotIndex: session.slotIndex);
+      }
     }
 
     _emitState();
@@ -473,6 +525,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       timerId: timerId,
       slotIndex: session.slotIndex,
     );
+    await _alarmVolume.cancelScheduledBoost(slotIndex: session.slotIndex);
 
     // Stop audio/TTS if ringing
     if (session.status == TimerStatus.ringing) {
@@ -488,6 +541,10 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       if (_ringingTimers.isEmpty) {
         await _audio.stop();
         _gesture.stopMonitoring();
+        final settings = await _storage.getSettings();
+        if (Platform.isAndroid && (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
+          await _alarmVolume.restoreIfBoosted();
+        }
       }
     }
 
@@ -509,6 +566,9 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
     // Clear all sessions
     await _notification.cancelAll();
+    for (int i = 0; i < 9; i++) {
+      await _alarmVolume.cancelScheduledBoost(slotIndex: i);
+    }
     _currentGrid = newGrid;
     _initializeIdleSessions();
 
@@ -590,6 +650,15 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         if (settings != null) {
           _gesture.updateShakeSensitivity(settings.shakeSensitivity);
         }
+
+        if (Platform.isAndroid && (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
+          await _alarmVolume.boostNow(
+            level: settings?.alarmVolumeBoostLevel ??
+                AlarmVolumeBoostLevel.minimumAudible,
+            restoreAfterMinutes:
+                settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,
+          );
+        }
       }
 
       // IMPORTANT: Do NOT call showTimeUpNow() here!
@@ -657,6 +726,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         AudioPlaybackMode.playOnce;
     final reliabilityMode =
         settings?.alarmReliabilityMode ?? AlarmReliabilityMode.notification;
+    final autoBoostEnabled = settings?.autoRaiseAlarmVolumeEnabled ?? false;
 
     for (final session in _sessions.values.toList()) {
       if (session.status == TimerStatus.running) {
@@ -687,7 +757,19 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
               enableVibration: settings?.vibrationEnabled ?? true,
               ttsLanguage: settings?.ttsLanguage,
               playNotificationSound: true,
+              preferAlarmAudioUsage: autoBoostEnabled,
             );
+
+            if (autoBoostEnabled && Platform.isAndroid && session.endAtEpochMs != null) {
+              await _alarmVolume.scheduleBoost(
+                slotIndex: session.slotIndex,
+                triggerAtEpochMs: session.endAtEpochMs!,
+                level: settings?.alarmVolumeBoostLevel ??
+                    AlarmVolumeBoostLevel.minimumAudible,
+                restoreAfterMinutes:
+                    settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,
+              );
+            }
           }
         }
       }

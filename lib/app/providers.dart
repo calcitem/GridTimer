@@ -8,6 +8,7 @@ import '../core/domain/services/i_clock.dart';
 import '../core/domain/services/i_timer_service.dart';
 import '../core/domain/services/i_notification_service.dart';
 import '../core/domain/services/i_audio_service.dart';
+import '../core/domain/services/i_alarm_volume_service.dart';
 import '../core/domain/services/i_tts_service.dart';
 import '../core/domain/services/i_permission_service.dart';
 import '../core/domain/services/i_mode_service.dart';
@@ -19,6 +20,7 @@ import '../infrastructure/mode_service.dart';
 import '../infrastructure/notification_service.dart';
 import '../infrastructure/audio_service.dart';
 import '../infrastructure/windows_audio_service.dart';
+import '../infrastructure/alarm_volume_service.dart';
 import '../infrastructure/tts_service.dart';
 import '../infrastructure/permission_service.dart';
 import '../infrastructure/widget_service.dart';
@@ -41,6 +43,11 @@ final storageProvider = Provider<StorageRepository>(
 /// Notification service provider.
 final notificationServiceProvider = Provider<INotificationService>((ref) {
   return NotificationService();
+});
+
+/// Android alarm volume service provider.
+final alarmVolumeServiceProvider = Provider<IAlarmVolumeService>((ref) {
+  return AlarmVolumeService();
 });
 
 /// Audio service provider.
@@ -101,6 +108,7 @@ final timerServiceProvider = Provider<ITimerService>((ref) {
     storage: ref.watch(storageProvider),
     notification: ref.watch(notificationServiceProvider),
     audio: ref.watch(audioServiceProvider),
+    alarmVolume: ref.watch(alarmVolumeServiceProvider),
     tts: ref.watch(ttsServiceProvider),
     clock: ref.watch(clockProvider),
     gesture: ref.watch(gestureServiceProvider),
@@ -235,6 +243,28 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
       'Volume must be between 0.0 and 1.0',
     );
     await updateSettings((s) => s.copyWith(soundVolume: volume));
+  }
+
+  /// Toggle automatic alarm volume boost (Android).
+  Future<void> toggleAutoRaiseAlarmVolume(bool enabled) async {
+    await updateSettings((s) => s.copyWith(autoRaiseAlarmVolumeEnabled: enabled));
+    // Apply changes to running timers by rescheduling.
+    try {
+      await ref.read(timerServiceProvider).refreshFromClock();
+    } catch (e) {
+      debugPrint('AppSettingsNotifier: Failed to refresh timers: $e');
+    }
+  }
+
+  /// Update the alarm volume boost level (Android).
+  Future<void> updateAlarmVolumeBoostLevel(AlarmVolumeBoostLevel level) async {
+    await updateSettings((s) => s.copyWith(alarmVolumeBoostLevel: level));
+    // Apply changes to running timers by rescheduling.
+    try {
+      await ref.read(timerServiceProvider).refreshFromClock();
+    } catch (e) {
+      debugPrint('AppSettingsNotifier: Failed to refresh timers: $e');
+    }
   }
 
   /// Update selected sound key.

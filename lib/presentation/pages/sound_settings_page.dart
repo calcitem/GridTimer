@@ -194,6 +194,89 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                 ),
               ),
             ),
+
+            const Divider(),
+
+            // Android system alarm volume boost
+            SwitchListTile(
+              secondary: const Icon(Icons.alarm),
+              title: Text(l10n.autoRaiseAlarmVolumeTitle),
+              subtitle: Text(l10n.autoRaiseAlarmVolumeDesc),
+              value: settings.autoRaiseAlarmVolumeEnabled,
+              onChanged: (value) {
+                ref
+                    .read(appSettingsProvider.notifier)
+                    .toggleAutoRaiseAlarmVolume(value);
+              },
+            ),
+
+            if (settings.autoRaiseAlarmVolumeEnabled) ...[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  l10n.alarmVolumeBoostLevelTitle,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              RadioListTile<AlarmVolumeBoostLevel>(
+                value: AlarmVolumeBoostLevel.minimumAudible,
+                groupValue: settings.alarmVolumeBoostLevel,
+                onChanged: (value) {
+                  if (value == null) return;
+                  ref
+                      .read(appSettingsProvider.notifier)
+                      .updateAlarmVolumeBoostLevel(value);
+                },
+                title: Text(l10n.alarmVolumeBoostLevelMinAudible),
+              ),
+              RadioListTile<AlarmVolumeBoostLevel>(
+                value: AlarmVolumeBoostLevel.maximum,
+                groupValue: settings.alarmVolumeBoostLevel,
+                onChanged: (value) {
+                  if (value == null) return;
+                  ref
+                      .read(appSettingsProvider.notifier)
+                      .updateAlarmVolumeBoostLevel(value);
+                },
+                title: Text(l10n.alarmVolumeBoostLevelMax),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(12.0),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.withAlpha(25),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.orange.withAlpha(76)),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.warning_amber_outlined,
+                        color: Colors.orange,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          l10n.autoRaiseAlarmVolumeNote(
+                            settings.alarmVolumeBoostRestoreAfterMinutes,
+                          ),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Colors.orange,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
