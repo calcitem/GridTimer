@@ -524,6 +524,57 @@ class MainActivity: FlutterActivity() {
                     }
                 }
 
+                "openSystemSoundSettings" -> {
+                    // Open system sound settings for changing default alarm/ringtone
+                    // This is a fallback for MIUI and other devices where notification channel
+                    // sound settings don't work properly.
+                    val intentsToTry = mutableListOf<Intent>()
+
+                    // On MIUI, try to open the alarm ringtone picker directly
+                    if (isMiuiDevice()) {
+                        // MIUI Sound & Vibration settings
+                        intentsToTry.add(Intent().apply {
+                            action = "android.settings.SOUND_SETTINGS"
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        })
+                        // Try to open ringtone picker directly
+                        intentsToTry.add(Intent(RingtoneManager.ACTION_RINGTONE_PICKER).apply {
+                            putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM)
+                            putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Alarm Sound")
+                            putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false)
+                            putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        })
+                    }
+
+                    // Standard sound settings
+                    intentsToTry.add(Intent(Settings.ACTION_SOUND_SETTINGS).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    })
+
+                    // Fallback to main settings
+                    intentsToTry.add(Intent(Settings.ACTION_SETTINGS).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    })
+
+                    var success = false
+                    for (intent in intentsToTry) {
+                        try {
+                            startActivity(intent)
+                            success = true
+                            break
+                        } catch (e: Exception) {
+                            // Try next intent
+                        }
+                    }
+
+                    if (success) {
+                        result.success(null)
+                    } else {
+                        result.error("open_failed", "Could not open sound settings", null)
+                    }
+                }
+
                 "openBatteryOptimizationSettings" -> {
                     // Try multiple intents for battery optimization settings,
                     // with manufacturer-specific optimizations for MIUI, Honor, Huawei, etc.

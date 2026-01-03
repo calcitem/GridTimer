@@ -330,12 +330,36 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         // - On other platforms: Always play in-app audio.
         final reliabilityMode =
             settings?.alarmReliabilityMode ?? AlarmReliabilityMode.notification;
-        final useNotificationSound = Platform.isAndroid &&
+        final useNotificationSound =
+            Platform.isAndroid &&
             (reliabilityMode == AlarmReliabilityMode.notification ||
-             reliabilityMode == AlarmReliabilityMode.alarmClock);
+                reliabilityMode == AlarmReliabilityMode.alarmClock);
 
-        if (!useNotificationSound) {
-          // On other platforms or appOnly mode, play in-app audio.
+        // Determine if we need in-app audio fallback:
+        // - On non-Android: always play in-app audio
+        // - On Android appOnly mode: play in-app audio (no notification)
+        // - On Android notification modes: check if notification channel is using
+        //   app's default sound. If yes, play in-app audio as fallback for OEM ROMs
+        //   (like MIUI) that may not play notification sounds. If user customized
+        //   the sound in system settings, don't play in-app audio to avoid double-playing.
+        bool shouldPlayInAppAudio = !useNotificationSound;
+        if (Platform.isAndroid && useNotificationSound) {
+          // Check if notification channel is using app's default sound resource
+          final channelInfo = await _notification.getChannelInfo(
+            channelId: 'gt.alarm.timeup.${config.soundKey}.v3',
+          );
+          final channelSound = channelInfo?['sound'] as String?;
+          final isUsingAppDefaultSound =
+              channelSound != null &&
+              channelSound.contains('android.resource://') &&
+              channelSound.contains('com.calcitem.gridtimer');
+
+          // Only use in-app audio fallback if channel is using app's default sound
+          // (which may not play on some OEM ROMs like MIUI Android 11)
+          shouldPlayInAppAudio = isUsingAppDefaultSound;
+        }
+
+        if (shouldPlayInAppAudio) {
           try {
             await _audio.playWithMode(
               soundKey: config.soundKey,
@@ -724,23 +748,34 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       }
 
       // Audio playback strategy (same as in _triggerRingingAsync):
-      // - On Android with notification/alarmClock modes: Let the notification channel
-      //   sound play (user can customize it in system settings). Don't play in-app audio.
-      // - On Android with appOnly mode: Play in-app audio (no notification sound).
-      // - On other platforms: Always play in-app audio.
+      // Determine if we need in-app audio fallback
       final reliabilityMode =
           settings?.alarmReliabilityMode ?? AlarmReliabilityMode.notification;
-      final useNotificationSound = Platform.isAndroid &&
+      final useNotificationSound =
+          Platform.isAndroid &&
           (reliabilityMode == AlarmReliabilityMode.notification ||
-           reliabilityMode == AlarmReliabilityMode.alarmClock);
+              reliabilityMode == AlarmReliabilityMode.alarmClock);
 
-      if (!useNotificationSound) {
-        // On other platforms or appOnly mode, play in-app audio.
+      bool shouldPlayInAppAudio = !useNotificationSound;
+      if (Platform.isAndroid && useNotificationSound) {
+        final channelInfo = await _notification.getChannelInfo(
+          channelId: 'gt.alarm.timeup.${config.soundKey}.v3',
+        );
+        final channelSound = channelInfo?['sound'] as String?;
+        final isUsingAppDefaultSound =
+            channelSound != null &&
+            channelSound.contains('android.resource://') &&
+            channelSound.contains('com.calcitem.gridtimer');
+        shouldPlayInAppAudio = isUsingAppDefaultSound;
+      }
+
+      if (shouldPlayInAppAudio) {
         try {
           await _audio.playWithMode(
             soundKey: config.soundKey,
             mode:
-                settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
+                settings?.audioPlaybackMode ??
+                AudioPlaybackMode.loopIndefinitely,
             volume: settings?.soundVolume ?? 1.0,
             loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
             intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,

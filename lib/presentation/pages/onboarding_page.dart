@@ -32,11 +32,15 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   // Android SDK version (0 = non-Android or unknown)
   int _androidSdkVersion = 0;
 
+  // Whether this is a MIUI device
+  bool _isMiuiDevice = false;
+
   @override
   void initState() {
     super.initState();
     _checkPermissions();
     _loadAndroidSdkVersion();
+    _loadMiuiDeviceInfo();
     // Re-check permissions when returning from settings
     _lifecycleObserver = _LifecycleObserver(this);
     WidgetsBinding.instance.addObserver(_lifecycleObserver);
@@ -50,6 +54,18 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     if (mounted) {
       setState(() {
         _androidSdkVersion = sdkVersion;
+      });
+    }
+  }
+
+  Future<void> _loadMiuiDeviceInfo() async {
+    if (!Platform.isAndroid) return;
+
+    final permissionService = ref.read(permissionServiceProvider);
+    final isMiui = await permissionService.isMiuiDevice();
+    if (mounted) {
+      setState(() {
+        _isMiuiDevice = isMiui;
       });
     }
   }
@@ -425,8 +441,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       action = const _NotRequiredLabel();
     } else if (isApi33) {
       // Android 13: Pre-granted by system, show special label
-      action =
-          _exactAlarmGranted ? const _PreGrantedLabel() : const _GrantedLabel();
+      action = _exactAlarmGranted
+          ? const _PreGrantedLabel()
+          : const _GrantedLabel();
     } else {
       // Android 12, 14+: Requires manual grant
       action = _exactAlarmGranted
@@ -500,31 +517,68 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       title: l10n.onboardingCheckSoundTitle,
       description: l10n.onboardingCheckSoundDesc,
       icon: Icons.volume_up,
-      action: ElevatedButton.icon(
-        onPressed: () async {
-          // Ensure notification channel exists before opening settings.
-          // This avoids the issue where Android immediately returns to the app
-          // if the channel doesn't exist.
-          final notificationService = ref.read(notificationServiceProvider);
-          await notificationService.ensureAndroidChannels(
-            soundKeys: {'default'},
-          );
-
-          final service = ref.read(permissionServiceProvider);
-          try {
-            await service.openNotificationChannelSettings(
-              channelId: 'gt.alarm.timeup.default.v3',
-            );
-          } catch (e) {
-            if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.errorText(e.toString()))),
+      action: Column(
+        children: [
+          // Show MIUI-specific hint
+          if (_isMiuiDevice)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.green.withAlpha(25),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.green, width: 1),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.green,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        l10n.onboardingCheckSoundMiuiHint,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.green,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ElevatedButton.icon(
+            onPressed: () async {
+              // Ensure notification channel exists before opening settings.
+              // This avoids the issue where Android immediately returns to the app
+              // if the channel doesn't exist.
+              final notificationService = ref.read(notificationServiceProvider);
+              await notificationService.ensureAndroidChannels(
+                soundKeys: {'default'},
               );
-            }
-          }
-        },
-        icon: const Icon(Icons.settings_voice),
-        label: Text(l10n.onboardingCheckSoundBtn),
+
+              final service = ref.read(permissionServiceProvider);
+              try {
+                await service.openNotificationChannelSettings(
+                  channelId: 'gt.alarm.timeup.default.v3',
+                );
+              } catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.errorText(e.toString()))),
+                  );
+                }
+              }
+            },
+            icon: const Icon(Icons.settings_voice),
+            label: Text(l10n.onboardingCheckSoundBtn),
+          ),
+        ],
       ),
     );
   }

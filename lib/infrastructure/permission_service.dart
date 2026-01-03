@@ -220,6 +220,29 @@ class PermissionService implements IPermissionService {
   bool get canOpenTtsSettings => Platform.isAndroid || Platform.isIOS;
 
   @override
+  Future<void> openSystemSoundSettings() async {
+    // Block opening system settings in test environment
+    if (EnvironmentConfig.test) {
+      debugPrint('Opening system sound settings blocked in test environment');
+      return;
+    }
+
+    if (Platform.isAndroid) {
+      try {
+        await _systemSettingsChannel.invokeMethod<void>(
+          'openSystemSoundSettings',
+        );
+      } catch (e) {
+        // Fallback to app_settings if native method fails
+        debugPrint('Native openSystemSoundSettings failed, using fallback: $e');
+        await AppSettings.openAppSettings(type: AppSettingsType.sound);
+      }
+    } else if (Platform.isIOS) {
+      await AppSettings.openAppSettings(type: AppSettingsType.sound);
+    }
+  }
+
+  @override
   Future<int> getAndroidSdkVersion() async {
     if (!Platform.isAndroid) return 0;
 

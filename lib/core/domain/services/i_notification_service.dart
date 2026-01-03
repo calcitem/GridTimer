@@ -92,6 +92,10 @@ abstract interface class INotificationService {
 
   /// Stream of notification events (tap, action, full-screen trigger).
   Stream<NotificationEvent> events();
+
+  /// Gets notification channel information (Android only).
+  /// Returns null on non-Android platforms or if channel doesn't exist.
+  Future<Map<dynamic, dynamic>?> getChannelInfo({required String channelId});
 }
 
 /// Notification event from user interaction.
