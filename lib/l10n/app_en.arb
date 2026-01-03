@@ -395,6 +395,11 @@
     "description": "Warning about system vibration settings when toggling vibration"
   },
 
+  "openSystemVibrationSettings": "Open system vibration settings",
+  "@openSystemVibrationSettings": {
+    "description": "Button to open system sound and vibration settings"
+  },
+
   "volumeButtonLockScreenHint": "On some systems, volume buttons only work when device is unlocked",
   "@volumeButtonLockScreenHint": {
     "description": "Hint about volume button limitation on lock screen"
