@@ -402,11 +402,18 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
             ),
 
             // Exact Alarm Permission with status
+            // Description varies by Android version:
+            // - Android < 31: Not required
+            // - Android 31-32: Required, user must manually grant
+            // - Android 33: Pre-granted by system
+            // - Android 34+: Required, user must manually grant
             _PermissionStatusTile(
               key: ValueKey('exact_alarm_$_permissionRefreshKey'),
               icon: Icons.alarm,
               title: l10n.exactAlarmPermission,
-              description: l10n.exactAlarmPermissionDesc,
+              description: _androidSdkVersion == 33
+                  ? l10n.exactAlarmPermissionDescApi33
+                  : l10n.exactAlarmPermissionDesc,
               statusFuture: ref
                   .read(permissionServiceProvider)
                   .canScheduleExactAlarms(),

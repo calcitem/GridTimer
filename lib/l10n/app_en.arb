@@ -734,9 +734,14 @@
     "description": "Exact alarm permission option"
   },
 
-  "exactAlarmPermissionDesc": "Ensure timers notify on time (Required on Android 14+)",
+  "exactAlarmPermissionDesc": "Ensure timers notify on time (Required on Android 12, 14+)",
   "@exactAlarmPermissionDesc": {
     "description": "Description for exact alarm permission"
+  },
+
+  "exactAlarmPermissionDescApi33": "Pre-granted on Android 13, can be revoked in system settings",
+  "@exactAlarmPermissionDescApi33": {
+    "description": "Description for exact alarm permission on Android 13"
   },
 
   "batteryOptimizationSettings": "Battery Optimization Settings",
@@ -1189,6 +1194,16 @@
   "onboardingNotRequiredExactAlarmDesc": "Your Android version (below 12) supports exact alarms by default. No manual authorization needed.",
   "@onboardingNotRequiredExactAlarmDesc": {
     "description": "Description for exact alarm permission on older Android versions"
+  },
+
+  "onboardingPreGrantedExactAlarmDesc": "Android 13 automatically pre-grants exact alarm permission to newly installed apps.\n\nIf you revoke this permission, you can re-enable it in Settings > Apps > Grid Timer > Alarms & reminders.",
+  "@onboardingPreGrantedExactAlarmDesc": {
+    "description": "Description for exact alarm permission on Android 13 where it is pre-granted"
+  },
+
+  "onboardingPreGranted": "Pre-granted",
+  "@onboardingPreGranted": {
+    "description": "Label shown when permission is automatically pre-granted by the system"
   },
 
   "onboardingBatteryLegacyDesc": "To prevent the system from closing the timer in background, recommend allowing Grid Timer to run in battery saver mode.\n\nPath reference: Settings → Battery / Power management → Battery saver → Apps allowed in battery saver → Enable \"Grid Timer\"\n\nTip: The exact path may vary by device brand and OS version. Please find the relevant option in your settings.",
