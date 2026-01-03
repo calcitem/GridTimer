@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
@@ -19,6 +21,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
     if (_isPlaying) return;
 
     final audioService = ref.read(audioServiceProvider);
+    final alarmVolumeService = ref.read(alarmVolumeServiceProvider);
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return;
 
@@ -29,6 +32,19 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
     setState(() => _isPlaying = true);
 
     try {
+      // Boost alarm volume if the setting is enabled (Android only)
+      final shouldBoostVolume =
+          Platform.isAndroid && (settings?.autoRaiseAlarmVolumeEnabled ?? false);
+      if (shouldBoostVolume) {
+        await alarmVolumeService.boostNow(
+          level:
+              settings?.alarmVolumeBoostLevel ??
+              AlarmVolumeBoostLevel.minimumAudible,
+          restoreAfterMinutes:
+              settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,
+        );
+      }
+
       // Play test sound with current volume and configured playback mode
       await audioService.playWithMode(
         soundKey: 'default',
@@ -41,6 +57,11 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
       // Stop after 2 seconds
       await Future.delayed(const Duration(seconds: 2));
       await audioService.stop();
+
+      // Restore alarm volume after test completes
+      if (shouldBoostVolume) {
+        await alarmVolumeService.restoreIfBoosted();
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
