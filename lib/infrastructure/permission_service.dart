@@ -218,4 +218,18 @@ class PermissionService implements IPermissionService {
 
   @override
   bool get canOpenTtsSettings => Platform.isAndroid || Platform.isIOS;
+
+  @override
+  Future<int> getAndroidSdkVersion() async {
+    if (!Platform.isAndroid) return 0;
+
+    try {
+      final result = await _systemSettingsChannel.invokeMethod<int>(
+        'getAndroidSdkVersion',
+      );
+      return result ?? 0;
+    } catch (e) {
+      return 0;
+    }
+  }
 }

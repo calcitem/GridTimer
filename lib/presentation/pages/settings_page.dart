@@ -34,6 +34,27 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   // Developer mode state
   bool _isDeveloperMode = false;
 
+  // Android SDK version (0 = non-Android or unknown)
+  int _androidSdkVersion = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAndroidSdkVersion();
+  }
+
+  Future<void> _loadAndroidSdkVersion() async {
+    if (!Platform.isAndroid) return;
+
+    final permissionService = ref.read(permissionServiceProvider);
+    final sdkVersion = await permissionService.getAndroidSdkVersion();
+    if (mounted) {
+      setState(() {
+        _androidSdkVersion = sdkVersion;
+      });
+    }
+  }
+
   /// Open version info dialog and enable developer mode if activated.
   Future<void> _openVersionInfo() async {
     final developerModeEnabled = await VersionInfoDialog.show(context);
@@ -127,51 +148,54 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
             const Divider(),
 
-            // Alarm Channel Sound (Android 8+)
-            Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.volume_up),
-                  title: Text(l10n.alarmSoundSettings),
-                  subtitle: Text(l10n.alarmSoundSettingsDesc),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 8.0,
+            // Alarm Channel Sound (Android 8.0+ only, API 26+)
+            // Notification channels were introduced in Android 8.0 (Oreo).
+            // On older versions, this setting is not applicable.
+            if (_androidSdkVersion >= 26)
+              Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.volume_up),
+                    title: Text(l10n.alarmSoundSettings),
+                    subtitle: Text(l10n.alarmSoundSettingsDesc),
                   ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final permissionService = ref.read(
-                          permissionServiceProvider,
-                        );
-                        try {
-                          await permissionService
-                              .openNotificationChannelSettings(
-                                channelId: 'gt.alarm.timeup.default.v3',
-                              );
-                        } catch (e) {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  l10n.failedToOpenChannelSettings(
-                                    e.toString(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 8.0,
+                    ),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final permissionService = ref.read(
+                            permissionServiceProvider,
+                          );
+                          try {
+                            await permissionService
+                                .openNotificationChannelSettings(
+                                  channelId: 'gt.alarm.timeup.default.v3',
+                                );
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    l10n.failedToOpenChannelSettings(
+                                      e.toString(),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
+                              );
+                            }
                           }
-                        }
-                      },
-                      child: Text(l10n.goToSettings),
+                        },
+                        child: Text(l10n.goToSettings),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
 
             // Sound Settings
             ListTile(
