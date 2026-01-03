@@ -323,36 +323,32 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
           _startVibrationLoop();
         }
 
-        // Play in-app audio on all platforms (including Android).
-        // On Android, we rely on this for reliable, uninterrupted playback even if
-        // the notification sound is interrupted by IM messages.
-        try {
-          await _audio.playWithMode(
-            soundKey: config.soundKey,
-            mode:
-                settings?.audioPlaybackMode ??
-                AudioPlaybackMode.loopIndefinitely,
-            volume: settings?.soundVolume ?? 1.0,
-            loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
-            intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
-          );
+        // Audio playback strategy:
+        // - On Android with notification/alarmClock modes: Let the notification channel
+        //   sound play (user can customize it in system settings). Don't play in-app audio.
+        // - On Android with appOnly mode: Play in-app audio (no notification sound).
+        // - On other platforms: Always play in-app audio.
+        final reliabilityMode =
+            settings?.alarmReliabilityMode ?? AlarmReliabilityMode.notification;
+        final useNotificationSound = Platform.isAndroid &&
+            (reliabilityMode == AlarmReliabilityMode.notification ||
+             reliabilityMode == AlarmReliabilityMode.alarmClock);
 
-          // On Android, if we successfully started in-app audio, update the notification
-          // to be silent. This prevents double-playing sound (notification sound + in-app audio)
-          // and ensures that if the notification sound WAS playing but got interrupted,
-          // the in-app audio continues.
-          if (Platform.isAndroid) {
-            await _notification.showTimeUpNow(
-              session: session,
-              config: config,
-              enableVibration: settings?.vibrationEnabled ?? true,
-              playSound: false, // Silent visual notification
-              repeatSoundUntilStopped: false,
-              ttsLanguage: settings?.ttsLanguage,
+        if (!useNotificationSound) {
+          // On other platforms or appOnly mode, play in-app audio.
+          try {
+            await _audio.playWithMode(
+              soundKey: config.soundKey,
+              mode:
+                  settings?.audioPlaybackMode ??
+                  AudioPlaybackMode.loopIndefinitely,
+              volume: settings?.soundVolume ?? 1.0,
+              loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
+              intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
             );
+          } catch (e) {
+            debugPrint('TimerService: Failed to play in-app audio: $e');
           }
-        } catch (e) {
-          debugPrint('TimerService: Failed to play in-app audio: $e');
         }
       }
 
@@ -727,32 +723,31 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         }
       }
 
-      // Play in-app audio on all platforms (including Android).
-      // This is especially important when recovering from a full-screen intent launch
-      // on the lock screen, where we need the robust, focus-ignoring player to start.
-      try {
-        await _audio.playWithMode(
-          soundKey: config.soundKey,
-          mode:
-              settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
-          volume: settings?.soundVolume ?? 1.0,
-          loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
-          intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
-        );
+      // Audio playback strategy (same as in _triggerRingingAsync):
+      // - On Android with notification/alarmClock modes: Let the notification channel
+      //   sound play (user can customize it in system settings). Don't play in-app audio.
+      // - On Android with appOnly mode: Play in-app audio (no notification sound).
+      // - On other platforms: Always play in-app audio.
+      final reliabilityMode =
+          settings?.alarmReliabilityMode ?? AlarmReliabilityMode.notification;
+      final useNotificationSound = Platform.isAndroid &&
+          (reliabilityMode == AlarmReliabilityMode.notification ||
+           reliabilityMode == AlarmReliabilityMode.alarmClock);
 
-        // On Android, silence the notification once in-app audio takes over.
-        if (Platform.isAndroid) {
-          await _notification.showTimeUpNow(
-            session: session,
-            config: config,
-            enableVibration: settings?.vibrationEnabled ?? true,
-            playSound: false, // Silent visual notification
-            repeatSoundUntilStopped: false,
-            ttsLanguage: settings?.ttsLanguage,
+      if (!useNotificationSound) {
+        // On other platforms or appOnly mode, play in-app audio.
+        try {
+          await _audio.playWithMode(
+            soundKey: config.soundKey,
+            mode:
+                settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
+            volume: settings?.soundVolume ?? 1.0,
+            loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
+            intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
           );
+        } catch (e) {
+          debugPrint('TimerService: Failed to play in-app audio: $e');
         }
-      } catch (e) {
-        debugPrint('TimerService: Failed to play in-app audio: $e');
       }
 
       // TTS playback logic:
