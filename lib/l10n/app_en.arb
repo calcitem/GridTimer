@@ -1272,24 +1272,24 @@
     "description": "Traditional theme name"
   },
 
-  "themeKoreanStyle": "Pastel Garden",
-  "@themeKoreanStyle": {
-    "description": "Korean style theme name"
+  "themePastelGarden": "Pastel Garden",
+  "@themePastelGarden": {
+    "description": "Pastel garden theme name"
   },
 
-  "themeChineseFestive": "Ink & Vermilion",
-  "@themeChineseFestive": {
-    "description": "Chinese elegant theme name"
+  "themeInkVermilion": "Ink & Vermilion",
+  "@themeInkVermilion": {
+    "description": "Ink and vermilion theme name"
   },
 
-  "themeNordicMinimal": "Glacial Blue",
-  "@themeNordicMinimal": {
-    "description": "Nordic minimal theme name"
+  "themeGlacialBlue": "Glacial Blue",
+  "@themeGlacialBlue": {
+    "description": "Glacial blue theme name"
   },
 
-  "themeAmericanClassic": "Classic Navy",
-  "@themeAmericanClassic": {
-    "description": "American classic theme name"
+  "themeClassicNavy": "Classic Navy",
+  "@themeClassicNavy": {
+    "description": "Classic navy theme name"
   },
 
   "permissionStatusGranted": "Granted",
