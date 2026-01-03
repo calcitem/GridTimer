@@ -35,15 +35,13 @@ class AlarmVolumeService implements IAlarmVolumeService {
     final triggerMs = (triggerAtEpochMs - 500).clamp(nowMs, triggerAtEpochMs);
 
     try {
-      await _channel.invokeMethod<void>(
-        'scheduleAlarmVolumeBoost',
-        <String, dynamic>{
-          'requestCode': _boostRequestCode(slotIndex),
-          'triggerAtEpochMs': triggerMs,
-          'level': level.name,
-          'restoreAfterMinutes': restoreAfterMinutes,
-        },
-      );
+      await _channel
+          .invokeMethod<void>('scheduleAlarmVolumeBoost', <String, dynamic>{
+            'requestCode': _boostRequestCode(slotIndex),
+            'triggerAtEpochMs': triggerMs,
+            'level': level.name,
+            'restoreAfterMinutes': restoreAfterMinutes,
+          });
     } catch (e, st) {
       debugPrint('AlarmVolumeService: scheduleBoost failed: $e');
       debugPrint('Stack trace: $st');
@@ -58,9 +56,7 @@ class AlarmVolumeService implements IAlarmVolumeService {
     try {
       await _channel.invokeMethod<void>(
         'cancelAlarmVolumeBoost',
-        <String, dynamic>{
-          'requestCode': _boostRequestCode(slotIndex),
-        },
+        <String, dynamic>{'requestCode': _boostRequestCode(slotIndex)},
       );
     } catch (e, st) {
       debugPrint('AlarmVolumeService: cancelScheduledBoost failed: $e');
@@ -108,5 +104,3 @@ class AlarmVolumeService implements IAlarmVolumeService {
     }
   }
 }
-
-

@@ -1,7 +1,7 @@
 name: grid_timer
 description: "A 9-grid parallel timer app optimized for seniors with reliable alarm system"
 publish_to: 'none'
-version: 1.0.2+258
+version: 1.0.3+272
 
 environment:
   sdk: ">=3.8.0 <4.0.0"

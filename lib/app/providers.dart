@@ -247,7 +247,9 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
 
   /// Toggle automatic alarm volume boost (Android).
   Future<void> toggleAutoRaiseAlarmVolume(bool enabled) async {
-    await updateSettings((s) => s.copyWith(autoRaiseAlarmVolumeEnabled: enabled));
+    await updateSettings(
+      (s) => s.copyWith(autoRaiseAlarmVolumeEnabled: enabled),
+    );
     // Apply changes to running timers by rescheduling.
     try {
       await ref.read(timerServiceProvider).refreshFromClock();

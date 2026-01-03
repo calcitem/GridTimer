@@ -27,7 +27,3 @@ abstract class TimerGridSet with _$TimerGridSet {
   /// Validate that slots length is exactly 9.
   bool get isValid => slots.length == 9;
 }
-
-
-
-

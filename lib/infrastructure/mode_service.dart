@@ -99,8 +99,8 @@ class ModeService implements IModeService {
   }
 
   Future<void> _updateActiveModeInSettings(ModeId modeId) async {
-    final settings = await _storage.getSettings() ??
-        AppSettings(activeModeId: modeId);
+    final settings =
+        await _storage.getSettings() ?? AppSettings(activeModeId: modeId);
     await _storage.saveSettings(settings.copyWith(activeModeId: modeId));
   }
 
@@ -116,7 +116,3 @@ class ModeService implements IModeService {
     _activeModeController.close();
   }
 }
-
-
-
-

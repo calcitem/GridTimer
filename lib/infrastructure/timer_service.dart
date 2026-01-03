@@ -173,7 +173,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
       // Best-effort: restore alarm volume if we boosted it for ringing.
       final settings = await _storage.getSettings();
-      if (Platform.isAndroid && (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
+      if (Platform.isAndroid &&
+          (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
         await _alarmVolume.restoreIfBoosted();
       }
     } catch (e, stackTrace) {
@@ -275,9 +276,11 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
         // Best-effort: boost Android system alarm volume when ringing starts.
         // This helps ensure the alarm is audible on the lock screen.
-        if (Platform.isAndroid && (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
+        if (Platform.isAndroid &&
+            (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
           await _alarmVolume.boostNow(
-            level: settings?.alarmVolumeBoostLevel ??
+            level:
+                settings?.alarmVolumeBoostLevel ??
                 AlarmVolumeBoostLevel.minimumAudible,
             restoreAfterMinutes:
                 settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,
@@ -421,7 +424,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         await _alarmVolume.scheduleBoost(
           slotIndex: slotIndex,
           triggerAtEpochMs: endMs,
-          level: settings?.alarmVolumeBoostLevel ??
+          level:
+              settings?.alarmVolumeBoostLevel ??
               AlarmVolumeBoostLevel.minimumAudible,
           restoreAfterMinutes:
               settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,
@@ -504,7 +508,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         await _alarmVolume.scheduleBoost(
           slotIndex: session.slotIndex,
           triggerAtEpochMs: newEndMs,
-          level: settings?.alarmVolumeBoostLevel ??
+          level:
+              settings?.alarmVolumeBoostLevel ??
               AlarmVolumeBoostLevel.minimumAudible,
           restoreAfterMinutes:
               settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,
@@ -557,7 +562,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         await _audio.stop();
         _gesture.stopMonitoring();
         final settings = await _storage.getSettings();
-        if (Platform.isAndroid && (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
+        if (Platform.isAndroid &&
+            (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
           await _alarmVolume.restoreIfBoosted();
         }
       }
@@ -668,9 +674,11 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
           _gesture.updateShakeSensitivity(settings.shakeSensitivity);
         }
 
-        if (Platform.isAndroid && (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
+        if (Platform.isAndroid &&
+            (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
           await _alarmVolume.boostNow(
-            level: settings?.alarmVolumeBoostLevel ??
+            level:
+                settings?.alarmVolumeBoostLevel ??
                 AlarmVolumeBoostLevel.minimumAudible,
             restoreAfterMinutes:
                 settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,
@@ -678,36 +686,35 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         }
       }
 
-        // Play in-app audio on all platforms (including Android).
-        // This is especially important when recovering from a full-screen intent launch
-        // on the lock screen, where we need the robust, focus-ignoring player to start.
-        try {
-          await _audio.playWithMode(
-            soundKey: config.soundKey,
-            mode:
-                settings?.audioPlaybackMode ??
-                AudioPlaybackMode.loopIndefinitely,
-            volume: settings?.soundVolume ?? 1.0,
-            loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
-            intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+      // Play in-app audio on all platforms (including Android).
+      // This is especially important when recovering from a full-screen intent launch
+      // on the lock screen, where we need the robust, focus-ignoring player to start.
+      try {
+        await _audio.playWithMode(
+          soundKey: config.soundKey,
+          mode:
+              settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely,
+          volume: settings?.soundVolume ?? 1.0,
+          loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
+          intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+        );
+
+        // On Android, silence the notification once in-app audio takes over.
+        if (Platform.isAndroid) {
+          await _notification.showTimeUpNow(
+            session: session,
+            config: config,
+            enableVibration: settings?.vibrationEnabled ?? true,
+            playSound: false, // Silent visual notification
+            repeatSoundUntilStopped: false,
+            ttsLanguage: settings?.ttsLanguage,
           );
-
-          // On Android, silence the notification once in-app audio takes over.
-          if (Platform.isAndroid) {
-            await _notification.showTimeUpNow(
-              session: session,
-              config: config,
-              enableVibration: settings?.vibrationEnabled ?? true,
-              playSound: false, // Silent visual notification
-              repeatSoundUntilStopped: false,
-              ttsLanguage: settings?.ttsLanguage,
-            );
-          }
-        } catch (e) {
-          debugPrint('TimerService: Failed to play in-app audio: $e');
         }
+      } catch (e) {
+        debugPrint('TimerService: Failed to play in-app audio: $e');
+      }
 
-        // TTS playback logic:
+      // TTS playback logic:
       // - Android/iOS: Only reliable in foreground (background may be restricted by system)
       // - Windows/Desktop: Can play even in background, no restriction
       final isDesktop =
@@ -797,11 +804,14 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
               preferAlarmAudioUsage: autoBoostEnabled,
             );
 
-            if (autoBoostEnabled && Platform.isAndroid && session.endAtEpochMs != null) {
+            if (autoBoostEnabled &&
+                Platform.isAndroid &&
+                session.endAtEpochMs != null) {
               await _alarmVolume.scheduleBoost(
                 slotIndex: session.slotIndex,
                 triggerAtEpochMs: session.endAtEpochMs!,
-                level: settings?.alarmVolumeBoostLevel ??
+                level:
+                    settings?.alarmVolumeBoostLevel ??
                     AlarmVolumeBoostLevel.minimumAudible,
                 restoreAfterMinutes:
                     settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,

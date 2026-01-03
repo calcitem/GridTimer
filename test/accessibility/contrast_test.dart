@@ -33,12 +33,18 @@ void main() {
       final t = SoftDarkTheme().tokens;
 
       // Main digits should be safe on all state surfaces.
-      expect(contrastRatio(t.textPrimary, t.surfaceIdle), greaterThanOrEqualTo(4.5));
+      expect(
+        contrastRatio(t.textPrimary, t.surfaceIdle),
+        greaterThanOrEqualTo(4.5),
+      );
       expect(
         contrastRatio(t.textPrimary, t.surfaceRunning),
         greaterThanOrEqualTo(4.5),
       );
-      expect(contrastRatio(t.textPrimary, t.surfacePaused), greaterThanOrEqualTo(4.5));
+      expect(
+        contrastRatio(t.textPrimary, t.surfacePaused),
+        greaterThanOrEqualTo(4.5),
+      );
       expect(
         contrastRatio(t.textPrimary, t.surfaceRinging),
         greaterThanOrEqualTo(4.5),
@@ -72,5 +78,3 @@ void main() {
     });
   });
 }
-
-

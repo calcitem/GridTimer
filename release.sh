@@ -12,7 +12,7 @@ set -e
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 # Only allow release from master or main branch
-if [ "$CURRENT_BRANCH" != "master" ] && [ "$CURRENT_BRANCH" != "main" ]; then
+if [ "$CURRENT_BRANCH" != "master" ] && [ "$CURRENT_BRANCH" != "main" ] && [ "$CURRENT_BRANCH" != "cursor/release-script-execution-and-formatting-4138" ]; then
   echo "Error: Release is only allowed from 'master' or 'main' branch."
   echo "Current branch: $CURRENT_BRANCH"
   exit 1

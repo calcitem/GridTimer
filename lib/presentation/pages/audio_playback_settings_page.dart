@@ -37,17 +37,13 @@ class AudioPlaybackSettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final l10n = l10nNullable;
     final settingsAsync = ref.watch(appSettingsProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.audioPlaybackSettings),
-      ),
+      appBar: AppBar(title: Text(l10n.audioPlaybackSettings)),
       body: settingsAsync.when(
         data: (settings) => ListView(
           children: [
@@ -60,15 +56,15 @@ class AudioPlaybackSettingsPage extends ConsumerWidget {
                   Text(
                     l10n.audioPlaybackMode,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     l10n.audioPlaybackSettingsDesc,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.white70,
-                        ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: Colors.white70),
                   ),
                 ],
               ),
@@ -145,26 +141,28 @@ class AudioPlaybackSettingsPage extends ConsumerWidget {
                         ),
                         Text(
                           '${settings.audioLoopDurationMinutes} ${l10n.minutesUnit}',
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
                     Semantics(
                       label: l10n.loopDuration,
-                      value: '${settings.audioLoopDurationMinutes} ${l10n.minutesUnit}',
-                      increasedValue: '${settings.audioLoopDurationMinutes + 1} ${l10n.minutesUnit}',
-                      decreasedValue: '${settings.audioLoopDurationMinutes - 1} ${l10n.minutesUnit}',
+                      value:
+                          '${settings.audioLoopDurationMinutes} ${l10n.minutesUnit}',
+                      increasedValue:
+                          '${settings.audioLoopDurationMinutes + 1} ${l10n.minutesUnit}',
+                      decreasedValue:
+                          '${settings.audioLoopDurationMinutes - 1} ${l10n.minutesUnit}',
                       slider: true,
                       child: Slider(
                         value: settings.audioLoopDurationMinutes.toDouble(),
                         min: 1,
                         max: 60,
                         divisions: 59,
-                        label: '${settings.audioLoopDurationMinutes} ${l10n.minutesUnit}',
+                        label:
+                            '${settings.audioLoopDurationMinutes} ${l10n.minutesUnit}',
                         onChanged: (value) {
                           ref
                               .read(appSettingsProvider.notifier)
@@ -195,26 +193,28 @@ class AudioPlaybackSettingsPage extends ConsumerWidget {
                         ),
                         Text(
                           '${settings.audioIntervalPauseMinutes} ${l10n.minutesUnit}',
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
                     Semantics(
                       label: l10n.intervalPause,
-                      value: '${settings.audioIntervalPauseMinutes} ${l10n.minutesUnit}',
-                      increasedValue: '${settings.audioIntervalPauseMinutes + 1} ${l10n.minutesUnit}',
-                      decreasedValue: '${settings.audioIntervalPauseMinutes - 1} ${l10n.minutesUnit}',
+                      value:
+                          '${settings.audioIntervalPauseMinutes} ${l10n.minutesUnit}',
+                      increasedValue:
+                          '${settings.audioIntervalPauseMinutes + 1} ${l10n.minutesUnit}',
+                      decreasedValue:
+                          '${settings.audioIntervalPauseMinutes - 1} ${l10n.minutesUnit}',
                       slider: true,
                       child: Slider(
                         value: settings.audioIntervalPauseMinutes.toDouble(),
                         min: 1,
                         max: 30,
                         divisions: 29,
-                        label: '${settings.audioIntervalPauseMinutes} ${l10n.minutesUnit}',
+                        label:
+                            '${settings.audioIntervalPauseMinutes} ${l10n.minutesUnit}',
                         onChanged: (value) {
                           ref
                               .read(appSettingsProvider.notifier)
@@ -228,9 +228,8 @@ class AudioPlaybackSettingsPage extends ConsumerWidget {
           ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(
-          child: Text(l10n.errorText(err.toString())),
-        ),
+        error: (err, stack) =>
+            Center(child: Text(l10n.errorText(err.toString()))),
       ),
     );
   }

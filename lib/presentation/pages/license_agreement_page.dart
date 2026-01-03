@@ -56,4 +56,3 @@ class LicenseAgreementPage extends StatelessWidget {
     );
   }
 }
-

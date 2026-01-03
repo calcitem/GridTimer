@@ -18,7 +18,3 @@ abstract interface class IModeService {
   /// Caller must confirm if timers are running.
   Future<void> setActiveMode(ModeId modeId);
 }
-
-
-
-

@@ -19,10 +19,7 @@ abstract interface class ITimerService {
   ///
   /// Note: Caller (UI) must enforce "start protection"
   /// (confirm when other timers are running).
-  Future<void> start({
-    required ModeId modeId,
-    required int slotIndex,
-  });
+  Future<void> start({required ModeId modeId, required int slotIndex});
 
   /// Pauses a running timer.
   Future<void> pause(TimerId timerId);
@@ -55,6 +52,3 @@ abstract interface class ITimerService {
   /// Throws if any timer is active.
   Future<void> updateDefaultGridDurations();
 }
-
-
-

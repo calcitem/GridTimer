@@ -32,7 +32,3 @@ abstract class TimerConfig with _$TimerConfig {
   /// Get preset duration as Duration object.
   Duration get presetDuration => Duration(milliseconds: presetDurationMs);
 }
-
-
-
-

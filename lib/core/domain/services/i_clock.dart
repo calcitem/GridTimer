@@ -17,6 +17,3 @@ class SystemClock implements IClock {
   @override
   DateTime now() => DateTime.now();
 }
-
-
-
