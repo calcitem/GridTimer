@@ -49,6 +49,9 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
   Timer? _uiRefreshTimer;
 
+  /// Timer for repeating vibration pattern during alarm.
+  Timer? _vibrationTimer;
+
   /// Tracks current app lifecycle state to decide foreground/background behaviours.
   AppLifecycleState _lifecycleState = AppLifecycleState.resumed;
 
@@ -210,6 +213,31 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     }
   }
 
+  /// Start a repeating vibration loop for alarm.
+  ///
+  /// Uses a pattern of vibrate -> pause -> vibrate to simulate alarm vibration.
+  /// The loop continues until [_stopVibrationLoop] is called.
+  void _startVibrationLoop() {
+    // Cancel any existing timer first
+    _stopVibrationLoop();
+
+    // Vibration pattern: vibrate 500ms, pause 500ms, repeat
+    // Using a Timer.periodic to loop the vibration
+    _vibrationTimer = Timer.periodic(const Duration(milliseconds: 1000), (_) {
+      _vibration.vibrate(duration: 500);
+    });
+
+    // Trigger the first vibration immediately
+    _vibration.vibrate(duration: 500);
+  }
+
+  /// Stop the vibration loop.
+  void _stopVibrationLoop() {
+    _vibrationTimer?.cancel();
+    _vibrationTimer = null;
+    _vibration.cancel();
+  }
+
   void _checkActiveTimers() {
     if (_currentGrid == null) return;
 
@@ -285,6 +313,14 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
             restoreAfterMinutes:
                 settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,
           );
+        }
+
+        // Start vibration if enabled.
+        // Using direct VibrationService instead of relying on notification channel
+        // because notification channel settings are fixed after creation and may
+        // have vibration disabled by user in system settings.
+        if (settings?.vibrationEnabled ?? false) {
+          _startVibrationLoop();
         }
 
         // Play in-app audio on all platforms (including Android).
@@ -551,14 +587,14 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     if (session.status == TimerStatus.ringing) {
       await _tts.stop();
 
-      // Stop vibration.
-      await _vibration.cancel();
-
       // Remove from ringing timers
       _ringingTimers.remove(timerId);
 
-      // Stop gesture monitoring if no more ringing timers
+      // Stop gesture monitoring, vibration, and audio if no more ringing timers
       if (_ringingTimers.isEmpty) {
+        // Stop vibration loop
+        _stopVibrationLoop();
+
         await _audio.stop();
         _gesture.stopMonitoring();
         final settings = await _storage.getSettings();
@@ -683,6 +719,11 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
             restoreAfterMinutes:
                 settings?.alarmVolumeBoostRestoreAfterMinutes ?? 10,
           );
+        }
+
+        // Start vibration if enabled.
+        if (settings?.vibrationEnabled ?? false) {
+          _startVibrationLoop();
         }
       }
 
