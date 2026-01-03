@@ -381,7 +381,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       try {
         final channelInfo = await _systemSettingsChannel
             .invokeMethod<Map<dynamic, dynamic>>('getNotificationChannelInfo', {
-              'channelId': 'gt.alarm.timeup.default.v2',
+              'channelId': 'gt.alarm.timeup.default.v3',
             });
         _debugLogTest(
           'audio_test_page.dart:_testShowNotification:channelInfo',
@@ -490,7 +490,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       // Try to open the notification channel settings directly
       await _systemSettingsChannel.invokeMethod<void>(
         'openNotificationChannelSettings',
-        {'channelId': 'gt.alarm.timeup.default.v2'},
+        {'channelId': 'gt.alarm.timeup.default.v3'},
       );
 
       _addLog('[Test 3c] ✅ Settings opened');

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
@@ -19,9 +20,67 @@ class NotificationService implements INotificationService {
   final StreamController<NotificationEvent> _eventController =
       StreamController<NotificationEvent>.broadcast();
 
+  static const MethodChannel _systemSettingsChannel = MethodChannel(
+    'com.calcitem.gridtimer/system_settings',
+  );
+
   static const String _channelGroupId = 'gt.group.timers';
   static const String _actionIdStop = 'gt.action.stop';
   static const String _silentTimeUpChannelId = 'gt.alarm.timeup.silent.v1';
+
+  Future<Map<dynamic, dynamic>?> _getAndroidNotificationChannelInfo({
+    required String channelId,
+  }) async {
+    if (!Platform.isAndroid) return null;
+    try {
+      return await _systemSettingsChannel.invokeMethod<Map<dynamic, dynamic>>(
+        'getNotificationChannelInfo',
+        {'channelId': channelId},
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Selects the most reliable channel ID for time-up sound on Android.
+  ///
+  /// - Prefer the newer alarm-stream channel (v3) to reduce interruption by other
+  ///   notification sounds (e.g. IM apps).
+  /// - If the alarm stream is muted (alarm volume == 0) or the channel appears
+  ///   to be silenced by the user, fall back to the legacy v2 channel (if it
+  ///   exists) to avoid a "no sound on lock screen" regression.
+  Future<String> _selectAndroidTimeUpSoundChannelId({
+    required String alarmChannelIdV3,
+    required String legacyChannelIdV2,
+  }) async {
+    if (!Platform.isAndroid) return alarmChannelIdV3;
+
+    final v3 = await _getAndroidNotificationChannelInfo(channelId: alarmChannelIdV3);
+    final v2 = await _getAndroidNotificationChannelInfo(channelId: legacyChannelIdV2);
+
+    final v2Exists = v2?['exists'] == true;
+
+    final v3Exists = v3?['exists'] == true;
+    final v3Importance = v3?['importance'] as int?;
+    final v3Sound = v3?['sound'] as String?;
+
+    final alarmVolume = v3?['alarmVolume'] as int?;
+
+    final v3SilencedByUser =
+        v3Exists &&
+        (v3Importance == null ||
+            v3Importance <= 0 ||
+            v3Sound == null ||
+            v3Sound.isEmpty);
+
+    final alarmStreamMuted = (alarmVolume ?? 0) == 0;
+
+    if ((alarmStreamMuted || v3SilencedByUser) && v2Exists) {
+      return legacyChannelIdV2;
+    }
+
+    return alarmChannelIdV3;
+  }
 
   @override
   Future<void> init() async {
@@ -99,15 +158,23 @@ class NotificationService implements INotificationService {
 
     // Create one channel per sound key
     for (final soundKey in soundKeys) {
-      // v2: Stable channel ID. On Android 8+, channel settings are controlled by the user.
-      // We keep the channel ID stable so users don't have to reconfigure lockscreen/sound
-      // settings after upgrades (especially on OEM ROMs like MIUI).
-      final channelId = 'gt.alarm.timeup.$soundKey.v2';
+      // v3: Channel audio attributes explicitly use USAGE_ALARM so alarm sound plays on
+      // the alarm stream and is less likely to be interrupted by other notification sounds
+      // (e.g., IM apps like WeChat/WhatsApp).
+      //
+      // Note: On Android 8+ notification channel properties (including sound/audio attributes)
+      // cannot be changed after creation. We bump the channel version to ensure existing
+      // installs migrate to the corrected audio attributes.
+      final alarmChannelId = 'gt.alarm.timeup.$soundKey.v3';
+      // v2: Legacy compatibility channel. Uses notification audio usage so it follows
+      // notification volume. This is used as a fallback when the alarm stream is muted
+      // or when the alarm channel is silenced by the user.
+      final legacyChannelId = 'gt.alarm.timeup.$soundKey.v2';
 
       // Try with groupId first, fall back to without groupId if it fails.
       // This handles OEM ROMs where NotificationChannelGroup creation may fail.
-      final channelWithGroup = AndroidNotificationChannel(
-        channelId,
+      final alarmChannelWithGroup = AndroidNotificationChannel(
+        alarmChannelId,
         'Timer Alarm ($soundKey)',
         description: 'Time up notifications for $soundKey ringtone',
         importance: Importance.max,
@@ -116,16 +183,17 @@ class NotificationService implements INotificationService {
           _soundKeyToResource(soundKey),
         ),
         enableVibration: true,
+        audioAttributesUsage: AudioAttributesUsage.alarm,
         groupId: groupCreated ? _channelGroupId : null,
       );
 
       try {
-        await androidPlugin.createNotificationChannel(channelWithGroup);
+        await androidPlugin.createNotificationChannel(alarmChannelWithGroup);
       } catch (e) {
         // If channel creation with groupId fails, try without groupId.
         if (groupCreated) {
-          final channelWithoutGroup = AndroidNotificationChannel(
-            channelId,
+          final alarmChannelWithoutGroup = AndroidNotificationChannel(
+            alarmChannelId,
             'Timer Alarm ($soundKey)',
             description: 'Time up notifications for $soundKey ringtone',
             importance: Importance.max,
@@ -134,8 +202,49 @@ class NotificationService implements INotificationService {
               _soundKeyToResource(soundKey),
             ),
             enableVibration: true,
+            audioAttributesUsage: AudioAttributesUsage.alarm,
           );
-          await androidPlugin.createNotificationChannel(channelWithoutGroup);
+          await androidPlugin.createNotificationChannel(alarmChannelWithoutGroup);
+        } else {
+          rethrow;
+        }
+      }
+
+      // Create the legacy compatibility channel (v2) for fallback.
+      final legacyChannelWithGroup = AndroidNotificationChannel(
+        legacyChannelId,
+        'Timer Alarm ($soundKey) (compatibility)',
+        description: 'Compatibility channel (notification stream) for $soundKey',
+        importance: Importance.max,
+        playSound: true,
+        sound: RawResourceAndroidNotificationSound(
+          _soundKeyToResource(soundKey),
+        ),
+        enableVibration: true,
+        audioAttributesUsage: AudioAttributesUsage.notification,
+        groupId: groupCreated ? _channelGroupId : null,
+      );
+
+      try {
+        await androidPlugin.createNotificationChannel(legacyChannelWithGroup);
+      } catch (e) {
+        if (groupCreated) {
+          final legacyChannelWithoutGroup = AndroidNotificationChannel(
+            legacyChannelId,
+            'Timer Alarm ($soundKey) (compatibility)',
+            description:
+                'Compatibility channel (notification stream) for $soundKey',
+            importance: Importance.max,
+            playSound: true,
+            sound: RawResourceAndroidNotificationSound(
+              _soundKeyToResource(soundKey),
+            ),
+            enableVibration: true,
+            audioAttributesUsage: AudioAttributesUsage.notification,
+          );
+          await androidPlugin.createNotificationChannel(
+            legacyChannelWithoutGroup,
+          );
         } else {
           rethrow;
         }
@@ -263,11 +372,24 @@ class NotificationService implements INotificationService {
 
     final notificationId = 1000 + session.slotIndex;
     // Choose channel based on playNotificationSound:
-    // - If true: use sound channel (for notification mode)
-    // - If false: use silent channel (for alarmClock mode with foreground service)
-    final channelId = playNotificationSound
-        ? 'gt.alarm.timeup.${config.soundKey}.v2'
-        : _silentTimeUpChannelId;
+    // - If true: use a sound channel
+    // - If false: use silent channel (visual notification only)
+    //
+    // On Android 8+, channel settings are controlled by the OS/user. A new v3 channel
+    // uses alarm audio attributes to reduce interruption by other notification sounds.
+    // However, if the alarm stream is muted, we fall back to the legacy v2 channel
+    // (if it exists) to avoid "no sound while locked" scenarios.
+    String channelId;
+    if (playNotificationSound && Platform.isAndroid) {
+      channelId = await _selectAndroidTimeUpSoundChannelId(
+        alarmChannelIdV3: 'gt.alarm.timeup.${config.soundKey}.v3',
+        legacyChannelIdV2: 'gt.alarm.timeup.${config.soundKey}.v2',
+      );
+    } else {
+      channelId = playNotificationSound
+          ? 'gt.alarm.timeup.${config.soundKey}.v3'
+          : _silentTimeUpChannelId;
+    }
 
     // Cancel existing notifications with the same ID. Otherwise Android may treat this as an
     // update and suppress alerting behaviour (sound/vibration).

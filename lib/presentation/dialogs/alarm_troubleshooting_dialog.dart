@@ -86,7 +86,7 @@ class AlarmTroubleshootingDialog extends ConsumerWidget {
                         soundKeys: {'default'},
                       );
                       await permissionService.openNotificationChannelSettings(
-                        channelId: 'gt.alarm.timeup.default.v2',
+                        channelId: 'gt.alarm.timeup.default.v3',
                       );
                     } catch (e) {
                       if (context.mounted) {

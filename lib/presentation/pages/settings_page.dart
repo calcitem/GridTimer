@@ -150,7 +150,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                         try {
                           await permissionService
                               .openNotificationChannelSettings(
-                                channelId: 'gt.alarm.timeup.default.v2',
+                                channelId: 'gt.alarm.timeup.default.v3',
                               );
                         } catch (e) {
                           if (context.mounted) {

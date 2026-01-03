@@ -431,7 +431,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           final service = ref.read(permissionServiceProvider);
           try {
             await service.openNotificationChannelSettings(
-              channelId: 'gt.alarm.timeup.default.v2',
+              channelId: 'gt.alarm.timeup.default.v3',
             );
           } catch (e) {
             if (mounted) {
