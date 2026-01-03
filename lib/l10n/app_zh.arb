@@ -79,7 +79,7 @@
   "volumeDesc": "调整提醒音量",
   "systemVolumeHint": "如果音量不够大，可在系统设置中调整闹铃音量。Android 设备可按物理音量键后点击菜单（三个点）来单独设置闹铃音量。",
 
-  "autoRaiseAlarmVolumeTitle": "自动提升闹钟音量（Android）",
+  "autoRaiseAlarmVolumeTitle": "自动提升闹钟音量",
   "autoRaiseAlarmVolumeDesc": "计时结束响铃时临时提高系统“闹钟”音量，停止后恢复原来的音量。",
   "alarmVolumeBoostLevelTitle": "提升到",
   "alarmVolumeBoostLevelMinAudible": "最低可听（推荐）",
