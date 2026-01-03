@@ -399,7 +399,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       builder: (context, snapshot) {
         final manufacturerType = snapshot.data ?? 'standard';
         String description = l10n.onboardingBatteryDesc;
-        
+
         // Append manufacturer specific hint
         if (manufacturerType == 'miui') {
           description += '\n\n${l10n.batteryOptimizationMiuiHint}';
