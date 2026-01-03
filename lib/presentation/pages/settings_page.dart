@@ -835,10 +835,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     if (themeId == 'light_high_contrast') return l10n.themeLightHighContrast;
     if (themeId == 'high_contrast') return l10n.themeHighContrast;
     if (themeId == 'traditional') return l10n.themeTraditional;
-    if (themeId == 'pastel_garden') return l10n.themeKoreanStyle;
-    if (themeId == 'ink_vermilion') return l10n.themeChineseFestive;
-    if (themeId == 'glacial_blue') return l10n.themeNordicMinimal;
-    if (themeId == 'classic_navy') return l10n.themeAmericanClassic;
+    if (themeId == 'pastel_garden') return l10n.themePastelGarden;
+    if (themeId == 'ink_vermilion') return l10n.themeInkVermilion;
+    if (themeId == 'glacial_blue') return l10n.themeGlacialBlue;
+    if (themeId == 'classic_navy') return l10n.themeClassicNavy;
     return l10n.themeSoftDark;
   }
 
@@ -928,7 +928,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 selected: currentThemeId == 'pastel_garden',
                 child: ListTile(
                   leading: const Icon(Icons.palette),
-                  title: Text(l10n.themeKoreanStyle),
+                  title: Text(l10n.themePastelGarden),
                   trailing: currentThemeId == 'pastel_garden'
                       ? const Icon(Icons.check)
                       : null,
@@ -940,7 +940,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 selected: currentThemeId == 'ink_vermilion',
                 child: ListTile(
                   leading: const Icon(Icons.brush),
-                  title: Text(l10n.themeChineseFestive),
+                  title: Text(l10n.themeInkVermilion),
                   trailing: currentThemeId == 'ink_vermilion'
                       ? const Icon(Icons.check)
                       : null,
@@ -952,7 +952,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 selected: currentThemeId == 'glacial_blue',
                 child: ListTile(
                   leading: const Icon(Icons.snowing),
-                  title: Text(l10n.themeNordicMinimal),
+                  title: Text(l10n.themeGlacialBlue),
                   trailing: currentThemeId == 'glacial_blue'
                       ? const Icon(Icons.check)
                       : null,
@@ -964,7 +964,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 selected: currentThemeId == 'classic_navy',
                 child: ListTile(
                   leading: const Icon(Icons.flag),
-                  title: Text(l10n.themeAmericanClassic),
+                  title: Text(l10n.themeClassicNavy),
                   trailing: currentThemeId == 'classic_navy'
                       ? const Icon(Icons.check)
                       : null,
