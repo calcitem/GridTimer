@@ -218,8 +218,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
-              RadioListTile<AlarmVolumeBoostLevel>(
-                value: AlarmVolumeBoostLevel.minimumAudible,
+              RadioGroup<AlarmVolumeBoostLevel>(
                 groupValue: settings.alarmVolumeBoostLevel,
                 onChanged: (value) {
                   if (value == null) return;
@@ -227,18 +226,18 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
                       .read(appSettingsProvider.notifier)
                       .updateAlarmVolumeBoostLevel(value);
                 },
-                title: Text(l10n.alarmVolumeBoostLevelMinAudible),
-              ),
-              RadioListTile<AlarmVolumeBoostLevel>(
-                value: AlarmVolumeBoostLevel.maximum,
-                groupValue: settings.alarmVolumeBoostLevel,
-                onChanged: (value) {
-                  if (value == null) return;
-                  ref
-                      .read(appSettingsProvider.notifier)
-                      .updateAlarmVolumeBoostLevel(value);
-                },
-                title: Text(l10n.alarmVolumeBoostLevelMax),
+                child: Column(
+                  children: [
+                    RadioListTile<AlarmVolumeBoostLevel>(
+                      value: AlarmVolumeBoostLevel.minimumAudible,
+                      title: Text(l10n.alarmVolumeBoostLevelMinAudible),
+                    ),
+                    RadioListTile<AlarmVolumeBoostLevel>(
+                      value: AlarmVolumeBoostLevel.maximum,
+                      title: Text(l10n.alarmVolumeBoostLevelMax),
+                    ),
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
