@@ -334,14 +334,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                       style: Theme.of(context).textTheme.headlineMedium,
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 24),
+                    // Action button placed before description to ensure
+                    // visibility on small screens
+                    action,
+                    const SizedBox(height: 24),
                     Text(
                       description,
                       style: Theme.of(context).textTheme.bodyLarge,
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 48),
-                    action,
                   ],
                 ),
               ),

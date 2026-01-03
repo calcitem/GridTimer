@@ -550,7 +550,7 @@
     "description": "Safety disclaimer dialog title"
   },
 
-  "safetyDisclaimerMessage": "Grid Timer is a timer app. For your safety, please understand the following:",
+  "safetyDisclaimerMessage": "For your safety, please understand the following:",
   "@safetyDisclaimerMessage": {
     "description": "Safety disclaimer message"
   },
