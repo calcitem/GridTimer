@@ -102,17 +102,17 @@ final themeProvider = Provider<AppTheme>((ref) {
   if (themeId == 'traditional') {
     return TraditionalTheme();
   }
-  if (themeId == 'korean_style') {
-    return KoreanStyleTheme();
+  if (themeId == 'pastel_garden') {
+    return PastelGardenTheme();
   }
-  if (themeId == 'chinese_festive') {
-    return ChineseFestiveTheme();
+  if (themeId == 'ink_vermilion') {
+    return InkVermilionTheme();
   }
-  if (themeId == 'nordic_minimal') {
-    return NordicMinimalTheme();
+  if (themeId == 'glacial_blue') {
+    return GlacialBlueTheme();
   }
-  if (themeId == 'american_classic') {
-    return AmericanClassicTheme();
+  if (themeId == 'classic_navy') {
+    return ClassicNavyTheme();
   }
   return SoftDarkTheme();
 });
