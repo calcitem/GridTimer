@@ -111,13 +111,6 @@ jobs:
           name: gridtimer-flutter-aab-release
           path: build/app/outputs/bundle/release/app-release.aab
 
-      # Archive mapping file for crash analysis
-      - name: Archive Proguard mapping file
-        uses: actions/upload-artifact@v4
-        with:
-          name: gridtimer-mapping-release
-          path: build/app/outputs/mapping/release/mapping.txt
-
       # Archive native debug symbols
       - name: Archive native debug symbols
         uses: actions/upload-artifact@v4
