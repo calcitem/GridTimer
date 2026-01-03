@@ -1,1 +1,1 @@
-low_freq_520Hz_T3_alarm_30s
+alarm_low_melody_CEG_T3_30s
