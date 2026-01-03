@@ -30,17 +30,47 @@ class SettingsPage extends ConsumerStatefulWidget {
   ConsumerState<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends ConsumerState<SettingsPage> {
+class _SettingsPageState extends ConsumerState<SettingsPage>
+    with WidgetsBindingObserver {
   // Developer mode state
   bool _isDeveloperMode = false;
 
   // Android SDK version (0 = non-Android or unknown)
   int _androidSdkVersion = 0;
 
+  // Unique key to force rebuild of permission-related FutureBuilders
+  // when returning from system settings
+  int _permissionRefreshKey = 0;
+
   @override
   void initState() {
     super.initState();
     _loadAndroidSdkVersion();
+    // Add lifecycle observer to refresh permission status when returning from settings
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Refresh permission status when app resumes (e.g., returning from system settings)
+    if (state == AppLifecycleState.resumed) {
+      _refreshPermissionStatus();
+    }
+  }
+
+  /// Refresh permission status by incrementing the key and triggering rebuild.
+  void _refreshPermissionStatus() {
+    if (mounted) {
+      setState(() {
+        _permissionRefreshKey++;
+      });
+    }
   }
 
   Future<void> _loadAndroidSdkVersion() async {
@@ -335,7 +365,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             _buildSectionHeader(l10n.permissions),
 
             // Notification Permission with status
+            // Use key to force rebuild when returning from system settings
             _PermissionStatusTile(
+              key: ValueKey('notification_$_permissionRefreshKey'),
               icon: Icons.notifications_active,
               title: l10n.notificationPermission,
               description: l10n.notificationPermissionDesc,
@@ -364,14 +396,14 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       duration: const Duration(seconds: 2),
                     ),
                   );
-                  // Refresh the UI to show updated status
-                  setState(() {});
+                  _refreshPermissionStatus();
                 }
               },
             ),
 
             // Exact Alarm Permission with status
             _PermissionStatusTile(
+              key: ValueKey('exact_alarm_$_permissionRefreshKey'),
               icon: Icons.alarm,
               title: l10n.exactAlarmPermission,
               description: l10n.exactAlarmPermissionDesc,
@@ -388,15 +420,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               onButtonPressed: () async {
                 final permissionService = ref.read(permissionServiceProvider);
                 await permissionService.openExactAlarmSettings();
-                // Refresh the UI after returning from settings
-                if (context.mounted) {
-                  setState(() {});
-                }
+                // Status will be refreshed when app resumes via lifecycle observer
               },
             ),
 
             // Battery Optimization with status
             _BatteryOptimizationTile(
+              key: ValueKey('battery_$_permissionRefreshKey'),
               title: l10n.batteryOptimizationSettings,
               description: l10n.batteryOptimizationDesc,
               legacyDescription: l10n.batteryOptimizationLegacyDesc,
@@ -415,10 +445,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               onButtonPressed: () async {
                 final permissionService = ref.read(permissionServiceProvider);
                 await permissionService.openBatteryOptimizationSettings();
-                // Refresh the UI after returning from settings
-                if (context.mounted) {
-                  setState(() {});
-                }
+                // Status will be refreshed when app resumes via lifecycle observer
               },
             ),
 
@@ -1289,6 +1316,7 @@ class _PermissionStatusTile extends StatelessWidget {
   final int minSdkVersionRequired;
 
   const _PermissionStatusTile({
+    super.key,
     required this.icon,
     required this.title,
     required this.description,
@@ -1409,6 +1437,7 @@ class _BatteryOptimizationTile extends StatelessWidget {
   final int androidSdkVersion;
 
   const _BatteryOptimizationTile({
+    super.key,
     required this.title,
     required this.description,
     required this.legacyDescription,
