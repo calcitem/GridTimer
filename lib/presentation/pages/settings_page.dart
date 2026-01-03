@@ -344,7 +344,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   .canPostNotifications(),
               grantedText: l10n.permissionStatusGranted,
               deniedText: l10n.permissionStatusDenied,
+              notRequiredText: l10n.permissionNotRequiredStatus,
               buttonText: l10n.grantPermission,
+              androidSdkVersion: _androidSdkVersion,
+              // Android 13 (API 33)+ requires runtime notification permission
+              minSdkVersionRequired: 33,
               onButtonPressed: () async {
                 final notification = ref.read(notificationServiceProvider);
                 final granted = await notification
@@ -376,7 +380,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   .canScheduleExactAlarms(),
               grantedText: l10n.exactAlarmStatusGranted,
               deniedText: l10n.exactAlarmStatusDenied,
+              notRequiredText: l10n.permissionNotRequiredStatus,
               buttonText: l10n.settingsButton,
+              androidSdkVersion: _androidSdkVersion,
+              // Android 12 (API 31)+ restricts exact alarms
+              minSdkVersionRequired: 31,
               onButtonPressed: () async {
                 final permissionService = ref.read(permissionServiceProvider);
                 await permissionService.openExactAlarmSettings();
@@ -391,6 +399,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             _BatteryOptimizationTile(
               title: l10n.batteryOptimizationSettings,
               description: l10n.batteryOptimizationDesc,
+              legacyDescription: l10n.batteryOptimizationLegacyDesc,
               statusFuture: ref
                   .read(permissionServiceProvider)
                   .isBatteryOptimizationDisabled(),
@@ -402,6 +411,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               unknownText: l10n.batteryOptimizationStatusUnknown,
               l10n: l10n,
               buttonText: l10n.settingsButton,
+              androidSdkVersion: _androidSdkVersion,
               onButtonPressed: () async {
                 final permissionService = ref.read(permissionServiceProvider);
                 await permissionService.openBatteryOptimizationSettings();
@@ -1272,8 +1282,11 @@ class _PermissionStatusTile extends StatelessWidget {
   final Future<bool> statusFuture;
   final String grantedText;
   final String deniedText;
+  final String notRequiredText;
   final String buttonText;
   final VoidCallback onButtonPressed;
+  final int androidSdkVersion;
+  final int minSdkVersionRequired;
 
   const _PermissionStatusTile({
     required this.icon,
@@ -1282,17 +1295,44 @@ class _PermissionStatusTile extends StatelessWidget {
     required this.statusFuture,
     required this.grantedText,
     required this.deniedText,
+    required this.notRequiredText,
     required this.buttonText,
     required this.onButtonPressed,
+    required this.androidSdkVersion,
+    required this.minSdkVersionRequired,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Check if permission is not required on this Android version
+    // androidSdkVersion == 0 means we don't know yet or it's not Android
+    final isNotRequired =
+        androidSdkVersion > 0 && androidSdkVersion < minSdkVersionRequired;
+
     return FutureBuilder<bool>(
       future: statusFuture,
       builder: (context, snapshot) {
         final isGranted = snapshot.data ?? false;
         final isLoading = snapshot.connectionState == ConnectionState.waiting;
+
+        // Determine status display
+        IconData statusIcon;
+        Color statusColor;
+        String statusText;
+
+        if (isNotRequired) {
+          statusIcon = Icons.info_outline;
+          statusColor = Colors.blue;
+          statusText = notRequiredText;
+        } else if (isGranted) {
+          statusIcon = Icons.check_circle;
+          statusColor = Colors.green;
+          statusText = grantedText;
+        } else {
+          statusIcon = Icons.warning;
+          statusColor = Colors.orange;
+          statusText = deniedText;
+        }
 
         return Column(
           children: [
@@ -1304,7 +1344,7 @@ class _PermissionStatusTile extends StatelessWidget {
                 children: [
                   Text(description),
                   const SizedBox(height: 4),
-                  if (isLoading)
+                  if (isLoading && !isNotRequired)
                     const SizedBox(
                       height: 16,
                       width: 16,
@@ -1313,17 +1353,13 @@ class _PermissionStatusTile extends StatelessWidget {
                   else
                     Row(
                       children: [
-                        Icon(
-                          isGranted ? Icons.check_circle : Icons.warning,
-                          size: 16,
-                          color: isGranted ? Colors.green : Colors.orange,
-                        ),
+                        Icon(statusIcon, size: 16, color: statusColor),
                         const SizedBox(width: 4),
                         Flexible(
                           child: Text(
-                            isGranted ? grantedText : deniedText,
+                            statusText,
                             style: TextStyle(
-                              color: isGranted ? Colors.green : Colors.orange,
+                              color: statusColor,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -1334,19 +1370,21 @@ class _PermissionStatusTile extends StatelessWidget {
               ),
               isThreeLine: true,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: onButtonPressed,
-                  child: Text(buttonText),
+            // Hide the button if permission is not required on this Android version
+            if (!isNotRequired)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: onButtonPressed,
+                    child: Text(buttonText),
+                  ),
                 ),
               ),
-            ),
           ],
         );
       },
@@ -1359,6 +1397,7 @@ class _PermissionStatusTile extends StatelessWidget {
 class _BatteryOptimizationTile extends StatelessWidget {
   final String title;
   final String description;
+  final String legacyDescription;
   final Future<bool?> statusFuture;
   final Future<String> manufacturerTypeFuture;
   final String disabledText; // Battery optimization disabled (recommended)
@@ -1367,10 +1406,12 @@ class _BatteryOptimizationTile extends StatelessWidget {
   final AppLocalizations l10n; // Localization delegate
   final String buttonText;
   final VoidCallback onButtonPressed;
+  final int androidSdkVersion;
 
   const _BatteryOptimizationTile({
     required this.title,
     required this.description,
+    required this.legacyDescription,
     required this.statusFuture,
     required this.manufacturerTypeFuture,
     required this.disabledText,
@@ -1379,10 +1420,17 @@ class _BatteryOptimizationTile extends StatelessWidget {
     required this.l10n,
     required this.buttonText,
     required this.onButtonPressed,
+    required this.androidSdkVersion,
   });
 
   @override
   Widget build(BuildContext context) {
+    // For older Android versions (< Android 8 / API 26), use legacy description
+    final useLegacyDesc = androidSdkVersion > 0 && androidSdkVersion < 26;
+    final effectiveDescription = useLegacyDesc
+        ? legacyDescription
+        : description;
+
     return FutureBuilder<List<dynamic>>(
       future: Future.wait([statusFuture, manufacturerTypeFuture]),
       builder: (context, snapshot) {
@@ -1396,14 +1444,16 @@ class _BatteryOptimizationTile extends StatelessWidget {
         // Determine display state
         final bool isUnknown = status == null;
         final bool isDisabled = status == true;
-        // Determine hint text based on manufacturer
+        // Determine hint text based on manufacturer (only for newer Android)
         String? specificHint;
-        if (manufacturerType == 'miui') {
-          specificHint = l10n.batteryOptimizationMiuiHint;
-        } else if (manufacturerType == 'honor_huawei') {
-          specificHint = l10n.batteryOptimizationHuaweiHint;
-        } else if (manufacturerType != 'standard') {
-          specificHint = l10n.batteryOptimizationOemHint;
+        if (!useLegacyDesc) {
+          if (manufacturerType == 'miui') {
+            specificHint = l10n.batteryOptimizationMiuiHint;
+          } else if (manufacturerType == 'honor_huawei') {
+            specificHint = l10n.batteryOptimizationHuaweiHint;
+          } else if (manufacturerType != 'standard') {
+            specificHint = l10n.batteryOptimizationOemHint;
+          }
         }
 
         // Choose icon and color
@@ -1433,7 +1483,7 @@ class _BatteryOptimizationTile extends StatelessWidget {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(description),
+                  Text(effectiveDescription),
                   const SizedBox(height: 4),
                   if (isLoading)
                     const SizedBox(

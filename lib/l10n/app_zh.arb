@@ -249,6 +249,12 @@
   "onboardingCompletionTitle": "准备就绪",
   "onboardingCompletionDesc": "所有设置已完成！\n\n提示：不同设备和系统版本的表现可能不同。建议锁屏 / 后台先测试一次，再用于较长计时。\n\n您可以随时在设置页面重新配置这些选项。",
   "onboardingGranted": "已授予",
+  "onboardingNotRequired": "无需手动设置",
+  "onboardingNotRequiredNotificationDesc": "您的 Android 版本（低于 13）默认允许通知，无需手动授权。",
+  "onboardingNotRequiredExactAlarmDesc": "您的 Android 版本（低于 12）默认支持精确闹钟，无需手动授权。",
+  "onboardingBatteryLegacyDesc": "为防止系统在后台关闭计时器，建议在省电设置中允许九宫计时在省电模式下运行。\n\n路径参考：设置 → 电池 / 电源管理 → 省电模式 → 省电模式下仍启用的应用 → 勾选「九宫计时」\n\n提示：不同品牌和系统版本的路径可能略有不同，请根据实际情况查找相关选项。",
+  "permissionNotRequiredStatus": "无需手动设置（您的系统版本默认支持）",
+  "batteryOptimizationLegacyDesc": "请在省电设置中允许九宫计时在省电模式下运行。\n路径参考：设置 → 电池 → 省电模式 → 省电模式下仍启用的应用",
 
   "privacyPolicy": "隐私政策",
   "privacyPolicyTitle": "隐私政策",

@@ -1176,6 +1176,36 @@
     "description": "Permission granted label"
   },
 
+  "onboardingNotRequired": "Not Required",
+  "@onboardingNotRequired": {
+    "description": "Label shown when permission is not required on this Android version"
+  },
+
+  "onboardingNotRequiredNotificationDesc": "Your Android version (below 13) allows notifications by default. No manual authorization needed.",
+  "@onboardingNotRequiredNotificationDesc": {
+    "description": "Description for notification permission on older Android versions"
+  },
+
+  "onboardingNotRequiredExactAlarmDesc": "Your Android version (below 12) supports exact alarms by default. No manual authorization needed.",
+  "@onboardingNotRequiredExactAlarmDesc": {
+    "description": "Description for exact alarm permission on older Android versions"
+  },
+
+  "onboardingBatteryLegacyDesc": "To prevent the system from closing the timer in background, recommend allowing Grid Timer to run in battery saver mode.\n\nPath reference: Settings → Battery / Power management → Battery saver → Apps allowed in battery saver → Enable \"Grid Timer\"\n\nTip: The exact path may vary by device brand and OS version. Please find the relevant option in your settings.",
+  "@onboardingBatteryLegacyDesc": {
+    "description": "Battery optimization guidance for older Android versions"
+  },
+
+  "permissionNotRequiredStatus": "Not required (supported by default on your system)",
+  "@permissionNotRequiredStatus": {
+    "description": "Status text shown when a permission is not required on older Android versions"
+  },
+
+  "batteryOptimizationLegacyDesc": "Please allow Grid Timer to run in battery saver mode.\nPath: Settings → Battery → Battery saver → Apps allowed in battery saver",
+  "@batteryOptimizationLegacyDesc": {
+    "description": "Battery optimization description for older Android in settings page"
+  },
+
   "privacyPolicy": "Privacy Policy",
   "@privacyPolicy": {
     "description": "Privacy policy menu item"
