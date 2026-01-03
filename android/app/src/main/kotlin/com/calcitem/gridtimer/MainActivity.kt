@@ -498,16 +498,10 @@ class MainActivity: FlutterActivity() {
                     val intentsToTry = mutableListOf<Intent>()
                     val manufacturerType = getDeviceManufacturerType()
 
-                    // Priority 1: Standard Android request dialog (works on most devices)
-                    // This shows a system dialog allowing the user to whitelist the app
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        intentsToTry.add(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                            data = Uri.parse("package:$packageName")
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        })
-                    }
-
-                    // Priority 2: Manufacturer-specific battery settings
+                    // Priority 1: Manufacturer-specific battery settings
+                    // We skip ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS because it requires 
+                    // the high-risk REQUEST_IGNORE_BATTERY_OPTIMIZATIONS permission, which often 
+                    // leads to Google Play rejection for non-core apps.
                     when (manufacturerType) {
                         "miui" -> {
                             // MIUI-specific battery saver settings
