@@ -277,8 +277,8 @@
   "exactAlarmStatusGranted": "已允许",
   "exactAlarmStatusDenied": "未允许（闹钟可能延迟）",
   "batteryOptimizationStatusUnknown": "请手动检查",
-  "batteryOptimizationMiuiHint": "部分设备：请在 应用设置 → 电量消耗 中设置为「无限制」",
-
+  "batteryOptimizationMiuiHint": "MIUI 设备：请在“省电策略”中设置为“无限制”",
+  "batteryOptimizationHuaweiHint": "华为/荣耀设备：请在“应用启动管理”中改为“手动管理”，并允许“后台运行”",
   "batteryOptimizationOemHint": "提示：部分定制系统（MIUI / EMUI / HarmonyOS）可能需要手动在设置中搜索「电池优化」、「自启动」或「受保护应用」",
 
   "gridDurationMustBePositive": "宫格 {index} 的时长必须是正整数",

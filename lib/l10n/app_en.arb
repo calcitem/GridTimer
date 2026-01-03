@@ -1302,9 +1302,14 @@
     "description": "Battery optimization status: cannot be determined automatically"
   },
 
-  "batteryOptimizationMiuiHint": "On some devices: Go to App Settings → Battery Usage → Set to 'No restrictions'",
+  "batteryOptimizationMiuiHint": "MIUI: Set 'Battery saver' to 'No restrictions'",
   "@batteryOptimizationMiuiHint": {
     "description": "Hint for MIUI users about battery optimization settings"
+  },
+
+  "batteryOptimizationHuaweiHint": "Huawei/Honor: Set 'App launch' to 'Manage manually' and enable 'Run in background'",
+  "@batteryOptimizationHuaweiHint": {
+    "description": "Hint for Huawei/Honor users about battery optimization settings"
   },
 
   "batteryOptimizationOemHint": "Tip: On some custom systems (MIUI/EMUI/HarmonyOS), you may need to manually search for 'Battery Optimization', 'Auto-start', or 'Protected Apps' in settings",

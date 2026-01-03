@@ -345,7 +345,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               disabledText: l10n.batteryOptimizationStatusDisabled,
               enabledText: l10n.batteryOptimizationStatusEnabled,
               unknownText: l10n.batteryOptimizationStatusUnknown,
-              oemHint: l10n.batteryOptimizationOemHint,
+              l10n: l10n,
               buttonText: l10n.settingsButton,
               onButtonPressed: () async {
                 final permissionService = ref.read(permissionServiceProvider);
@@ -1207,7 +1207,7 @@ class _BatteryOptimizationTile extends StatelessWidget {
   final String disabledText; // Battery optimization disabled (recommended)
   final String enabledText; // Battery optimization enabled (may affect alarms)
   final String unknownText; // Status cannot be determined (e.g., MIUI)
-  final String oemHint; // Hint for OEM users
+  final AppLocalizations l10n; // Localization delegate
   final String buttonText;
   final VoidCallback onButtonPressed;
 
@@ -1219,7 +1219,7 @@ class _BatteryOptimizationTile extends StatelessWidget {
     required this.disabledText,
     required this.enabledText,
     required this.unknownText,
-    required this.oemHint,
+    required this.l10n,
     required this.buttonText,
     required this.onButtonPressed,
   });
@@ -1239,7 +1239,15 @@ class _BatteryOptimizationTile extends StatelessWidget {
         // Determine display state
         final bool isUnknown = status == null;
         final bool isDisabled = status == true;
-        final bool isOemDevice = manufacturerType != 'standard';
+        // Determine hint text based on manufacturer
+        String? specificHint;
+        if (manufacturerType == 'miui') {
+          specificHint = l10n.batteryOptimizationMiuiHint;
+        } else if (manufacturerType == 'honor_huawei') {
+          specificHint = l10n.batteryOptimizationHuaweiHint;
+        } else if (manufacturerType != 'standard') {
+          specificHint = l10n.batteryOptimizationOemHint;
+        }
 
         // Choose icon and color
         IconData statusIcon;
@@ -1292,11 +1300,11 @@ class _BatteryOptimizationTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Show OEM-specific hint if on special device
-                    if (isOemDevice) ...[
+                    // Show OEM-specific hint if applicable
+                    if (specificHint != null) ...[
                       const SizedBox(height: 4),
                       Text(
-                        oemHint,
+                        specificHint,
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey[600],
