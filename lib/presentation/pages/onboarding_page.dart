@@ -368,45 +368,62 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Widget _buildNotificationStep(bool isAndroid) {
     final l10n = AppLocalizations.of(context)!;
 
+    // Android 13 (API 33)+ requires runtime notification permission.
+    // On older versions, notifications are granted by default.
+    final showNotRequired =
+        isAndroid && _androidSdkVersion > 0 && _androidSdkVersion < 33;
+
     return _buildStepContainer(
       title: l10n.onboardingNotificationTitle,
-      description: l10n.onboardingNotificationDesc,
+      description: showNotRequired
+          ? l10n.onboardingNotRequiredNotificationDesc
+          : l10n.onboardingNotificationDesc,
       icon: Icons.notifications_active,
-      action: _notificationGranted
-          ? const _GrantedLabel()
-          : ElevatedButton.icon(
-              onPressed: () async {
-                final service = ref.read(notificationServiceProvider);
-                // On Android 13+, this triggers the dialog.
-                // On iOS, it triggers the dialog.
-                await service.requestPostNotificationsPermission();
-                await _checkPermissions();
-              },
-              icon: const Icon(Icons.notification_add),
-              label: Text(l10n.onboardingGrantNotification),
-            ),
+      action: showNotRequired
+          ? const _NotRequiredLabel()
+          : (_notificationGranted
+                ? const _GrantedLabel()
+                : ElevatedButton.icon(
+                    onPressed: () async {
+                      final service = ref.read(notificationServiceProvider);
+                      // On Android 13+, this triggers the dialog.
+                      // On iOS, it triggers the dialog.
+                      await service.requestPostNotificationsPermission();
+                      await _checkPermissions();
+                    },
+                    icon: const Icon(Icons.notification_add),
+                    label: Text(l10n.onboardingGrantNotification),
+                  )),
     );
   }
 
   Widget _buildExactAlarmStep() {
     final l10n = AppLocalizations.of(context)!;
 
+    // Android 12 (API 31)+ restricts exact alarms.
+    // On older versions, exact alarms are available by default.
+    final showNotRequired = _androidSdkVersion > 0 && _androidSdkVersion < 31;
+
     return _buildStepContainer(
       title: l10n.onboardingExactAlarmTitle,
-      description: l10n.onboardingExactAlarmDesc,
+      description: showNotRequired
+          ? l10n.onboardingNotRequiredExactAlarmDesc
+          : l10n.onboardingExactAlarmDesc,
       icon: Icons.access_alarm,
-      action: _exactAlarmGranted
-          ? const _GrantedLabel()
-          : ElevatedButton.icon(
-              onPressed: () async {
-                final service = ref.read(notificationServiceProvider);
-                // This might open system settings on some Android versions
-                await service.requestExactAlarmPermission();
-                await _checkPermissions();
-              },
-              icon: const Icon(Icons.settings),
-              label: Text(l10n.onboardingGrantExactAlarm),
-            ),
+      action: showNotRequired
+          ? const _NotRequiredLabel()
+          : (_exactAlarmGranted
+                ? const _GrantedLabel()
+                : ElevatedButton.icon(
+                    onPressed: () async {
+                      final service = ref.read(notificationServiceProvider);
+                      // This might open system settings on some Android versions
+                      await service.requestExactAlarmPermission();
+                      await _checkPermissions();
+                    },
+                    icon: const Icon(Icons.settings),
+                    label: Text(l10n.onboardingGrantExactAlarm),
+                  )),
     );
   }
 
@@ -417,13 +434,22 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       future: ref.read(permissionServiceProvider).getDeviceManufacturerType(),
       builder: (context, snapshot) {
         final manufacturerType = snapshot.data ?? 'standard';
-        String description = l10n.onboardingBatteryDesc;
 
-        // Append manufacturer specific hint
-        if (manufacturerType == 'miui') {
-          description += '\n\n${l10n.batteryOptimizationMiuiHint}';
-        } else if (manufacturerType == 'honor_huawei') {
-          description += '\n\n${l10n.batteryOptimizationHuaweiHint}';
+        // For older Android versions (< Android 8 / API 26), use legacy description
+        // as the standard battery optimization APIs may not be available or work differently.
+        final useLegacyDesc = _androidSdkVersion > 0 && _androidSdkVersion < 26;
+
+        String description = useLegacyDesc
+            ? l10n.onboardingBatteryLegacyDesc
+            : l10n.onboardingBatteryDesc;
+
+        // Append manufacturer specific hint (only for newer Android versions)
+        if (!useLegacyDesc) {
+          if (manufacturerType == 'miui') {
+            description += '\n\n${l10n.batteryOptimizationMiuiHint}';
+          } else if (manufacturerType == 'honor_huawei') {
+            description += '\n\n${l10n.batteryOptimizationHuaweiHint}';
+          }
         }
 
         return _buildStepContainer(
@@ -514,6 +540,39 @@ class _GrantedLabel extends StatelessWidget {
             l10n.onboardingGranted,
             style: const TextStyle(
               color: Colors.green,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Label shown when a permission is not required on this Android version.
+class _NotRequiredLabel extends StatelessWidget {
+  const _NotRequiredLabel();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.blue.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.blue),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.info_outline, color: Colors.blue),
+          const SizedBox(width: 8),
+          Text(
+            l10n.onboardingNotRequired,
+            style: const TextStyle(
+              color: Colors.blue,
               fontWeight: FontWeight.bold,
             ),
           ),
