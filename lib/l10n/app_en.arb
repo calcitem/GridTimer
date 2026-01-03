@@ -1267,6 +1267,11 @@
     "description": "Light high contrast theme name"
   },
 
+  "themeJapaneseTraditional": "Traditional Japan",
+  "@themeJapaneseTraditional": {
+    "description": "Japanese traditional theme name"
+  },
+
   "permissionStatusGranted": "Granted",
   "@permissionStatusGranted": {
     "description": "Permission status: granted"
