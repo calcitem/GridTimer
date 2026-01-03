@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:catcher_2/catcher_2.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
@@ -20,6 +21,12 @@ part 'core/services/catcher_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Explicitly show status bar and navigation bar
+  await SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: SystemUiOverlay.values,
+  );
 
   debugPrint('Environment [catcher]: ${EnvironmentConfig.catcher}');
   debugPrint('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
