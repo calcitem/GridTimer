@@ -1267,9 +1267,9 @@
     "description": "Light high contrast theme name"
   },
 
-  "themeJapaneseTraditional": "Traditional Japan",
-  "@themeJapaneseTraditional": {
-    "description": "Japanese traditional theme name"
+  "themeTraditional": "Traditional",
+  "@themeTraditional": {
+    "description": "Traditional theme name"
   },
 
   "permissionStatusGranted": "Granted",

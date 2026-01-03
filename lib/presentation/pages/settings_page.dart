@@ -834,6 +834,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   String _getThemeName(String themeId, AppLocalizations l10n) {
     if (themeId == 'light_high_contrast') return l10n.themeLightHighContrast;
     if (themeId == 'high_contrast') return l10n.themeHighContrast;
+    if (themeId == 'traditional') return l10n.themeTraditional;
     return l10n.themeSoftDark;
   }
 
@@ -904,6 +905,18 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ? const Icon(Icons.check)
                       : null,
                   onTap: () => selectTheme('light_high_contrast'),
+                ),
+              ),
+              Semantics(
+                button: true,
+                selected: currentThemeId == 'traditional',
+                child: ListTile(
+                  leading: const Icon(Icons.palette),
+                  title: Text(l10n.themeTraditional),
+                  trailing: currentThemeId == 'traditional'
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => selectTheme('traditional'),
                 ),
               ),
             ],
