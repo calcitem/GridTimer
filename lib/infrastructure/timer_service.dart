@@ -645,6 +645,9 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         return;
       }
 
+      final config = _currentGrid!.slots[session.slotIndex];
+      final settings = await _storage.getSettings();
+
       final nowMs = _clock.nowEpochMs();
       final updated = session.copyWith(
         status: TimerStatus.ringing,
@@ -661,7 +664,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         _gesture.startMonitoring();
 
         // Update shake sensitivity from settings
-        final settings = await _storage.getSettings();
         if (settings != null) {
           _gesture.updateShakeSensitivity(settings.shakeSensitivity);
         }
