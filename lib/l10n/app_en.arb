@@ -714,6 +714,11 @@
     "description": "Onboarding check sound button label"
   },
 
+  "onboardingCheckSoundMiuiHint": "MIUI Users: If you cannot select a sound in the notification channel, this is normal (MIUI system limitation). The app has automatically enabled in-app audio playback, and the alarm will work properly. Note: Try to avoid heavy messaging during alarms to prevent audio interruption.",
+  "@onboardingCheckSoundMiuiHint": {
+    "description": "MIUI-specific hint for sound settings on onboarding page"
+  },
+
   "grantPermission": "Grant Permission",
   "@grantPermission": {
     "description": "Grant permission button"
@@ -762,6 +767,11 @@
   "alarmSoundSettingsDesc": "If 'Timer Alarm (default)' sound is set to 'None', timer will only show notification without sound",
   "@alarmSoundSettingsDesc": {
     "description": "Description for alarm sound settings"
+  },
+
+  "alarmSoundSettingsMiuiHint": "MIUI Users: Due to MIUI system limitations, some devices may not allow changing notification channel sounds. The app has automatically enabled in-app audio playback to ensure the alarm works properly. Note: In-app audio may be interrupted or lowered by other notification sounds. Try to avoid heavy messaging during alarms.",
+  "@alarmSoundSettingsMiuiHint": {
+    "description": "MIUI-specific hint for alarm sound settings"
   },
 
   "appKilledWarning": "Important: If this app is force-closed by the system or user, timers will not ring. Please keep the app running in the background and disable battery optimization.",

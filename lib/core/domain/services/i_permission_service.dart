@@ -40,6 +40,13 @@ abstract interface class IPermissionService {
   /// Opens the system TTS (Text-to-Speech) settings.
   Future<void> openTtsSettings();
 
+  /// Opens the system sound settings page.
+  ///
+  /// This is a fallback for MIUI and other devices where notification channel
+  /// sound settings don't work properly. Users can change the default alarm
+  /// sound from the system sound settings.
+  Future<void> openSystemSoundSettings();
+
   /// Returns true if TTS settings can be opened on this platform.
   bool get canOpenTtsSettings;
 

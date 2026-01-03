@@ -651,6 +651,11 @@ class NotificationService implements INotificationService {
   @override
   Stream<NotificationEvent> events() => _eventController.stream;
 
+  @override
+  Future<Map<dynamic, dynamic>?> getChannelInfo({required String channelId}) async {
+    return _getAndroidNotificationChannelInfo(channelId: channelId);
+  }
+
   void _onNotificationResponse(NotificationResponse response) {
     _handleNotificationResponse(response);
   }

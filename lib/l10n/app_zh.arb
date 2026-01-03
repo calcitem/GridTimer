@@ -153,8 +153,9 @@
   "gestureLimitationsHint": "提示：不同品牌 / 系统在锁屏状态下可能会限制按键与传感器。若锁屏时手势无响应，请先解锁，再尝试翻转手机或按音量键。",
 
   "onboardingCheckSoundTitle": "重要：检查声音",
-  "onboardingCheckSoundDesc": "请点击下方按钮，确保 \"Timer Alarm (default)\" 的声音**不是**“无”或“静音”。\n\n如果设为静音，倒计时结束时您将只收到通知而听不到铃声。",
+  "onboardingCheckSoundDesc": "请点击下方按钮，确保 \"Timer Alarm (default)\" 的声音**不是**「无」或「静音」。\n\n如果设为静音，倒计时结束时您将只收到通知而听不到铃声。",
   "onboardingCheckSoundBtn": "去检查声音设置",
+  "onboardingCheckSoundMiuiHint": "MIUI 用户提示：如果无法在通知渠道中选择声音，这是正常的（MIUI 系统限制）。应用已自动启用音频播放功能，闹铃会正常响起。注意：响铃时请尽量避免接收大量消息通知，以免音频被打断。",
 
   "grantPermission": "授予权限",
   "notificationPermissionGranted": "通知权限已授予",
@@ -166,6 +167,7 @@
   "batteryOptimizationDesc": "禁用电池优化以确保后台闹钟可靠运行",
   "alarmSoundSettings": "闹铃声音设置",
   "alarmSoundSettingsDesc": "如果 \"Timer Alarm (default)\" 声音设为「无」，计时器将只显示通知而无声音",
+  "alarmSoundSettingsMiuiHint": "MIUI 用户提示：由于 MIUI 系统限制，部分设备可能无法修改通知渠道声音。应用已自动启用音频播放功能确保闹铃正常响起。注意：应用内音频可能会被其他消息通知音打断或音量降低，建议响铃时避免接收大量消息。",
   "appKilledWarning": "重要提示：如果本 App 被系统或用户强制关闭，计时器将无法响铃。请保持 App 在后台运行，并关闭电池优化。",
   "alarmTroubleshooting": "闹铃不响 / 延迟？",
   "alarmTroubleshootingDesc": "不同 Android 版本 / 厂商 ROM 可能会限制后台提醒。点这里查看解决方法。",

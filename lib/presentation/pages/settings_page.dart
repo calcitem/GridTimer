@@ -38,6 +38,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
   // Android SDK version (0 = non-Android or unknown)
   int _androidSdkVersion = 0;
 
+  // Whether this is a MIUI device
+  bool _isMiuiDevice = false;
+
   // Unique key to force rebuild of permission-related FutureBuilders
   // when returning from system settings
   int _permissionRefreshKey = 0;
@@ -46,6 +49,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
   void initState() {
     super.initState();
     _loadAndroidSdkVersion();
+    _loadMiuiDeviceInfo();
     // Add lifecycle observer to refresh permission status when returning from settings
     WidgetsBinding.instance.addObserver(this);
   }
@@ -81,6 +85,18 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
     if (mounted) {
       setState(() {
         _androidSdkVersion = sdkVersion;
+      });
+    }
+  }
+
+  Future<void> _loadMiuiDeviceInfo() async {
+    if (!Platform.isAndroid) return;
+
+    final permissionService = ref.read(permissionServiceProvider);
+    final isMiui = await permissionService.isMiuiDevice();
+    if (mounted) {
+      setState(() {
+        _isMiuiDevice = isMiui;
       });
     }
   }
@@ -189,6 +205,41 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
                     title: Text(l10n.alarmSoundSettings),
                     subtitle: Text(l10n.alarmSoundSettingsDesc),
                   ),
+                  // Show MIUI-specific hint
+                  if (_isMiuiDevice)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.green.withAlpha(25),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.green, width: 1),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.check_circle_outline,
+                              color: Colors.green,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                l10n.alarmSoundSettingsMiuiHint,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16.0,
