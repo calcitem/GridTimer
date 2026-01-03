@@ -394,22 +394,35 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Widget _buildBatteryStep() {
     final l10n = AppLocalizations.of(context)!;
 
-    return _buildStepContainer(
-      title: l10n.onboardingBatteryTitle,
-      description: l10n.onboardingBatteryDesc,
-      icon: Icons.battery_alert,
-      action: _batteryOptimizationIgnored
-          ? const _GrantedLabel()
-          : ElevatedButton.icon(
-              onPressed: () async {
-                final service = ref.read(permissionServiceProvider);
-                await service.openBatteryOptimizationSettings();
-                // User has to manually change it, so we can't auto-detect immediately often,
-                // but checking on resume helps.
-              },
-              icon: const Icon(Icons.settings_power),
-              label: Text(l10n.onboardingOpenBatterySettings),
-            ),
+    return FutureBuilder<String>(
+      future: ref.read(permissionServiceProvider).getDeviceManufacturerType(),
+      builder: (context, snapshot) {
+        final manufacturerType = snapshot.data ?? 'standard';
+        String description = l10n.onboardingBatteryDesc;
+        
+        // Append manufacturer specific hint
+        if (manufacturerType == 'miui') {
+          description += '\n\n${l10n.batteryOptimizationMiuiHint}';
+        } else if (manufacturerType == 'honor_huawei') {
+          description += '\n\n${l10n.batteryOptimizationHuaweiHint}';
+        }
+
+        return _buildStepContainer(
+          title: l10n.onboardingBatteryTitle,
+          description: description,
+          icon: Icons.battery_alert,
+          action: _batteryOptimizationIgnored
+              ? const _GrantedLabel()
+              : ElevatedButton.icon(
+                  onPressed: () async {
+                    final service = ref.read(permissionServiceProvider);
+                    await service.openBatteryOptimizationSettings();
+                  },
+                  icon: const Icon(Icons.settings_power),
+                  label: Text(l10n.onboardingOpenBatterySettings),
+                ),
+        );
+      },
     );
   }
 
