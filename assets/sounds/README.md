@@ -1,0 +1,1 @@
+low_freq_520Hz_T3_alarm_30s
