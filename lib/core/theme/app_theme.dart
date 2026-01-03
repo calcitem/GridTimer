@@ -246,42 +246,42 @@ class KoreanStyleTheme extends AppTheme {
       _buildThemeData(tokens, borderWidth: 1.0, isDark: false);
 }
 
-/// Theme F: Chinese Festive (Red, Gold, auspicious colors)
+/// Theme F: Chinese Elegant (Ink, Rice Paper, Vermilion - High legibility, cultural but not overwhelming)
 class ChineseFestiveTheme extends AppTheme {
   @override
   String get id => 'chinese_festive';
 
   @override
-  String get name => 'Chinese Festive';
+  String get name => 'Chinese Elegant';
 
   @override
   AppThemeTokens get tokens => const AppThemeTokens(
-    bg: Color(0xFF8B0000), // Dark Red background
-    surface: Color(0xFFA61C1C), // Slightly lighter red
-    surfacePressed: Color(0xFFC62828),
-    surfaceDisabled: Color(0xFF5D0000),
+    bg: Color(0xFFF7F7F7), // Very Light Grey (Clean, modern paper)
+    surface: Color(0xFFFFFFFF), // Pure White
+    surfacePressed: Color(0xFFEEEEEE),
+    surfaceDisabled: Color(0xFFE0E0E0),
 
-    // High energy colors
-    surfaceIdle: Color(0xFFA61C1C),
-    surfaceRunning: Color(0xFF1B5E20), // Dark Green (Jade) - Contrast
-    surfacePaused: Color(0xFFE65100), // Dark Orange
-    surfaceRinging: Color(0xFFFFD700), // Gold (Ringing needs to pop on red)
+    // Traditional but functional colors (Ink & Vermilion)
+    surfaceIdle: Color(0xFFFFFFFF),
+    surfaceRunning: Color(0xFFE8F5E9), // Very pale green tint
+    surfacePaused: Color(0xFFFFF3E0), // Very pale orange tint
+    surfaceRinging: Color(0xFFFFEBEE), // Very pale red tint
 
-    border: Color(0xFFFFD700), // Gold Border
-    textPrimary: Color(0xFFFFE0B2), // Light Orange/Gold text
-    textSecondary: Color(0xFFFFB74D), // Orange text
-    accent: Color(0xFFFFD700), // Gold
-    focusRing: Color(0xFFFFECB3),
-    success: Color(0xFF4CAF50),
-    warning: Color(0xFFFF9800),
-    danger: Color(0xFFD32F2F), // Brighter Red
-    icon: Color(0xFFFFD700), // Gold icons
-    divider: Color(0xFFB71C1C),
+    border: Color(0xFF8D6E63), // Brownish Grey (Subtle frame)
+    textPrimary: Color(0xFF212121), // Ink Black (Very high contrast)
+    textSecondary: Color(0xFF757575), // Grey
+    accent: Color(0xFFB71C1C), // Vermilion / Chinese Red (Deep, authoritative)
+    focusRing: Color(0xFFD32F2F),
+    success: Color(0xFF2E7D32), // Bamboo Green
+    warning: Color(0xFFEF6C00), // Persimmon Orange
+    danger: Color(0xFFC62828), // Rich Red
+    icon: Color(0xFFB71C1C), // Red icons for vitality
+    divider: Color(0xFFBDBDBD),
   );
 
   @override
   ThemeData get themeData =>
-      _buildThemeData(tokens, borderWidth: 1.5, isDark: true);
+      _buildThemeData(tokens, borderWidth: 1.5, isDark: false);
 }
 
 /// Theme G: Nordic Minimal (Cool greys, blues, nature-inspired, high legibility)
