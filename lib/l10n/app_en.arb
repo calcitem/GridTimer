@@ -1272,6 +1272,26 @@
     "description": "Traditional theme name"
   },
 
+  "themeKoreanStyle": "Korean Pastel",
+  "@themeKoreanStyle": {
+    "description": "Korean style theme name"
+  },
+
+  "themeChineseFestive": "Festive Red",
+  "@themeChineseFestive": {
+    "description": "Chinese festive theme name"
+  },
+
+  "themeNordicMinimal": "Nordic Blue",
+  "@themeNordicMinimal": {
+    "description": "Nordic minimal theme name"
+  },
+
+  "themeAmericanClassic": "Classic Blue",
+  "@themeAmericanClassic": {
+    "description": "American classic theme name"
+  },
+
   "permissionStatusGranted": "Granted",
   "@permissionStatusGranted": {
     "description": "Permission status: granted"

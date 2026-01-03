@@ -835,6 +835,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     if (themeId == 'light_high_contrast') return l10n.themeLightHighContrast;
     if (themeId == 'high_contrast') return l10n.themeHighContrast;
     if (themeId == 'traditional') return l10n.themeTraditional;
+    if (themeId == 'korean_style') return l10n.themeKoreanStyle;
+    if (themeId == 'chinese_festive') return l10n.themeChineseFestive;
+    if (themeId == 'nordic_minimal') return l10n.themeNordicMinimal;
+    if (themeId == 'american_classic') return l10n.themeAmericanClassic;
     return l10n.themeSoftDark;
   }
 
@@ -917,6 +921,54 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ? const Icon(Icons.check)
                       : null,
                   onTap: () => selectTheme('traditional'),
+                ),
+              ),
+              Semantics(
+                button: true,
+                selected: currentThemeId == 'korean_style',
+                child: ListTile(
+                  leading: const Icon(Icons.palette),
+                  title: Text(l10n.themeKoreanStyle),
+                  trailing: currentThemeId == 'korean_style'
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => selectTheme('korean_style'),
+                ),
+              ),
+              Semantics(
+                button: true,
+                selected: currentThemeId == 'chinese_festive',
+                child: ListTile(
+                  leading: const Icon(Icons.celebration),
+                  title: Text(l10n.themeChineseFestive),
+                  trailing: currentThemeId == 'chinese_festive'
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => selectTheme('chinese_festive'),
+                ),
+              ),
+              Semantics(
+                button: true,
+                selected: currentThemeId == 'nordic_minimal',
+                child: ListTile(
+                  leading: const Icon(Icons.snowing),
+                  title: Text(l10n.themeNordicMinimal),
+                  trailing: currentThemeId == 'nordic_minimal'
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => selectTheme('nordic_minimal'),
+                ),
+              ),
+              Semantics(
+                button: true,
+                selected: currentThemeId == 'american_classic',
+                child: ListTile(
+                  leading: const Icon(Icons.flag),
+                  title: Text(l10n.themeAmericanClassic),
+                  trailing: currentThemeId == 'american_classic'
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => selectTheme('american_classic'),
                 ),
               ),
             ],

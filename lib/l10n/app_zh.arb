@@ -270,6 +270,10 @@
   "themeHighContrast": "高对比度模式",
   "themeLightHighContrast": "日间高亮模式",
   "themeTraditional": "传统暖色",
+  "themeKoreanStyle": "韩系柔彩",
+  "themeChineseFestive": "喜庆红金",
+  "themeNordicMinimal": "北欧极简",
+  "themeAmericanClassic": "美式经典",
 
   "permissionStatusGranted": "已授予",
   "permissionStatusDenied": "未授予",
