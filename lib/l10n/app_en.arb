@@ -1277,9 +1277,9 @@
     "description": "Korean style theme name"
   },
 
-  "themeChineseFestive": "Festive Red",
+  "themeChineseFestive": "Chinese Elegant",
   "@themeChineseFestive": {
-    "description": "Chinese festive theme name"
+    "description": "Chinese elegant theme name"
   },
 
   "themeNordicMinimal": "Nordic Blue",
