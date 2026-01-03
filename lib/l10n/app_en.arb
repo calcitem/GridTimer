@@ -759,6 +759,11 @@
     "description": "Description for alarm sound settings"
   },
 
+  "appKilledWarning": "Important: If this app is force-closed by the system or user, timers will not ring. Please keep the app running in the background and disable battery optimization.",
+  "@appKilledWarning": {
+    "description": "Warning message about app being killed preventing alarms"
+  },
+
   "alarmTroubleshooting": "Alarm not ringing / delayed?",
   "@alarmTroubleshooting": {
     "description": "Settings entry title for alarm troubleshooting and compatibility guidance"
