@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// Semantic color tokens for the application.
 class AppThemeTokens {
@@ -395,6 +396,11 @@ ThemeData _buildThemeData(
     appBarTheme: AppBarTheme(
       backgroundColor: tokens.bg,
       foregroundColor: tokens.textPrimary,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+        statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
+      ),
       elevation: 0,
       centerTitle: true,
       titleTextStyle: TextStyle(
