@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
@@ -9,7 +10,7 @@ import 'safety_disclaimer_dialog.dart';
 /// This dialog helps users understand why alarm behavior can differ across
 /// Android versions and OEM ROMs, and provides quick links to the most relevant
 /// system settings.
-class AlarmTroubleshootingDialog extends ConsumerWidget {
+class AlarmTroubleshootingDialog extends ConsumerStatefulWidget {
   const AlarmTroubleshootingDialog({super.key});
 
   static Future<void> show(BuildContext context) async {
@@ -20,7 +21,35 @@ class AlarmTroubleshootingDialog extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AlarmTroubleshootingDialog> createState() =>
+      _AlarmTroubleshootingDialogState();
+}
+
+class _AlarmTroubleshootingDialogState
+    extends ConsumerState<AlarmTroubleshootingDialog> {
+  // Android SDK version (0 = non-Android or unknown)
+  int _androidSdkVersion = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAndroidSdkVersion();
+  }
+
+  Future<void> _loadAndroidSdkVersion() async {
+    if (!Platform.isAndroid) return;
+
+    final permissionService = ref.read(permissionServiceProvider);
+    final sdkVersion = await permissionService.getAndroidSdkVersion();
+    if (mounted) {
+      setState(() {
+        _androidSdkVersion = sdkVersion;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return const SizedBox.shrink();
 
@@ -79,31 +108,34 @@ class AlarmTroubleshootingDialog extends ConsumerWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                FilledButton.icon(
-                  onPressed: () async {
-                    try {
-                      await notificationService.ensureAndroidChannels(
-                        soundKeys: {'default'},
-                      );
-                      await permissionService.openNotificationChannelSettings(
-                        channelId: 'gt.alarm.timeup.default.v3',
-                      );
-                    } catch (e) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              l10n.failedToOpenChannelSettings(e.toString()),
-                            ),
-                          ),
+                // Notification channel settings only for Android 8.0+ (API 26+)
+                if (_androidSdkVersion >= 26) ...[
+                  FilledButton.icon(
+                    onPressed: () async {
+                      try {
+                        await notificationService.ensureAndroidChannels(
+                          soundKeys: {'default'},
                         );
+                        await permissionService.openNotificationChannelSettings(
+                          channelId: 'gt.alarm.timeup.default.v3',
+                        );
+                      } catch (e) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                l10n.failedToOpenChannelSettings(e.toString()),
+                              ),
+                            ),
+                          );
+                        }
                       }
-                    }
-                  },
-                  icon: const Icon(Icons.volume_up),
-                  label: Text(l10n.alarmTroubleshootingOpenChannel),
-                ),
-                const SizedBox(height: 12),
+                    },
+                    icon: const Icon(Icons.volume_up),
+                    label: Text(l10n.alarmTroubleshootingOpenChannel),
+                  ),
+                  const SizedBox(height: 12),
+                ],
                 FilledButton.icon(
                   onPressed: () async {
                     try {

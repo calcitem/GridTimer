@@ -29,13 +29,29 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   bool _exactAlarmGranted = false;
   bool _batteryOptimizationIgnored = false;
 
+  // Android SDK version (0 = non-Android or unknown)
+  int _androidSdkVersion = 0;
+
   @override
   void initState() {
     super.initState();
     _checkPermissions();
+    _loadAndroidSdkVersion();
     // Re-check permissions when returning from settings
     _lifecycleObserver = _LifecycleObserver(this);
     WidgetsBinding.instance.addObserver(_lifecycleObserver);
+  }
+
+  Future<void> _loadAndroidSdkVersion() async {
+    if (!Platform.isAndroid) return;
+
+    final permissionService = ref.read(permissionServiceProvider);
+    final sdkVersion = await permissionService.getAndroidSdkVersion();
+    if (mounted) {
+      setState(() {
+        _androidSdkVersion = sdkVersion;
+      });
+    }
   }
 
   @override
@@ -217,7 +233,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       _buildNotificationStep(isAndroid),
       if (isAndroid) _buildExactAlarmStep(),
       if (isAndroid) _buildBatteryStep(),
-      if (isAndroid) _buildAlarmSoundStep(l10n),
+      // Alarm sound step only for Android 8.0+ (API 26+) where notification channels exist
+      if (isAndroid && _androidSdkVersion >= 26) _buildAlarmSoundStep(l10n),
       // Full screen intent is implicitly handled or less critical to nag about upfront if exact alarm works
       // but let's include it if we want to be "comprehensive"
       _buildCompletionStep(),

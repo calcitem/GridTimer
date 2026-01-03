@@ -42,4 +42,10 @@ abstract interface class IPermissionService {
 
   /// Returns true if TTS settings can be opened on this platform.
   bool get canOpenTtsSettings;
+
+  /// Returns the Android SDK version (API level).
+  ///
+  /// Returns 0 on non-Android platforms.
+  /// Android 8.0 (Oreo) = API 26, which introduced notification channels.
+  Future<int> getAndroidSdkVersion();
 }

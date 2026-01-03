@@ -492,6 +492,10 @@ class MainActivity: FlutterActivity() {
                     result.success(getDeviceManufacturerType())
                 }
 
+                "getAndroidSdkVersion" -> {
+                    result.success(Build.VERSION.SDK_INT)
+                }
+
                 "openVibrationSettings" -> {
                     // Try to open the vibration/haptic feedback settings
                     val intentsToTry = listOf(
