@@ -284,21 +284,36 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
           );
         }
 
-        if (!Platform.isAndroid) {
-          // Non-Android platforms use in-app audio playback.
-          try {
-            await _audio.playWithMode(
-              soundKey: config.soundKey,
-              mode:
-                  settings?.audioPlaybackMode ??
-                  AudioPlaybackMode.loopIndefinitely,
-              volume: settings?.soundVolume ?? 1.0,
-              loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
-              intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+        // Play in-app audio on all platforms (including Android).
+        // On Android, we rely on this for reliable, uninterrupted playback even if
+        // the notification sound is interrupted by IM messages.
+        try {
+          await _audio.playWithMode(
+            soundKey: config.soundKey,
+            mode:
+                settings?.audioPlaybackMode ??
+                AudioPlaybackMode.loopIndefinitely,
+            volume: settings?.soundVolume ?? 1.0,
+            loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
+            intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+          );
+
+          // On Android, if we successfully started in-app audio, update the notification
+          // to be silent. This prevents double-playing sound (notification sound + in-app audio)
+          // and ensures that if the notification sound WAS playing but got interrupted,
+          // the in-app audio continues.
+          if (Platform.isAndroid) {
+            await _notification.showTimeUpNow(
+              session: session,
+              config: config,
+              enableVibration: settings?.vibrationEnabled ?? true,
+              playSound: false, // Silent visual notification
+              repeatSoundUntilStopped: false,
+              ttsLanguage: settings?.ttsLanguage,
             );
-          } catch (e) {
-            debugPrint('TimerService: Failed to play in-app audio: $e');
           }
+        } catch (e) {
+          debugPrint('TimerService: Failed to play in-app audio: $e');
         }
       }
 
@@ -661,16 +676,36 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         }
       }
 
-      // IMPORTANT: Do NOT call showTimeUpNow() here!
-      // The scheduled notification from scheduleTimeUp() will trigger and play sound.
-      // Calling showTimeUpNow() would cancel the scheduled notification, and immediate
-      // notifications don't play sound reliably when app is in foreground/background.
+        // Play in-app audio on all platforms (including Android).
+        // This is especially important when recovering from a full-screen intent launch
+        // on the lock screen, where we need the robust, focus-ignoring player to start.
+        try {
+          await _audio.playWithMode(
+            soundKey: config.soundKey,
+            mode:
+                settings?.audioPlaybackMode ??
+                AudioPlaybackMode.loopIndefinitely,
+            volume: settings?.soundVolume ?? 1.0,
+            loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
+            intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+          );
 
-      // Load settings for TTS.
-      final settings = await _storage.getSettings();
-      final config = _currentGrid!.slots[session.slotIndex];
+          // On Android, silence the notification once in-app audio takes over.
+          if (Platform.isAndroid) {
+            await _notification.showTimeUpNow(
+              session: session,
+              config: config,
+              enableVibration: settings?.vibrationEnabled ?? true,
+              playSound: false, // Silent visual notification
+              repeatSoundUntilStopped: false,
+              ttsLanguage: settings?.ttsLanguage,
+            );
+          }
+        } catch (e) {
+          debugPrint('TimerService: Failed to play in-app audio: $e');
+        }
 
-      // TTS playback logic:
+        // TTS playback logic:
       // - Android/iOS: Only reliable in foreground (background may be restricted by system)
       // - Windows/Desktop: Can play even in background, no restriction
       final isDesktop =
