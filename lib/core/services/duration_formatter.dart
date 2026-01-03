@@ -64,4 +64,3 @@ class DurationFormatter {
     return 'h'; // Default to English
   }
 }
-

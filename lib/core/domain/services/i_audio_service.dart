@@ -9,10 +9,7 @@ abstract interface class IAudioService {
   /// Plays the ringtone in a loop (backward compatible).
   ///
   /// Must interrupt any currently playing sound (newer overrides older).
-  Future<void> playLoop({
-    required SoundKey soundKey,
-    double volume = 1.0,
-  });
+  Future<void> playLoop({required SoundKey soundKey, double volume = 1.0});
 
   /// Plays the ringtone with specified playback mode.
   ///

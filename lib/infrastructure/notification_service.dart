@@ -55,8 +55,12 @@ class NotificationService implements INotificationService {
   }) async {
     if (!Platform.isAndroid) return alarmChannelIdV3;
 
-    final v3 = await _getAndroidNotificationChannelInfo(channelId: alarmChannelIdV3);
-    final v2 = await _getAndroidNotificationChannelInfo(channelId: legacyChannelIdV2);
+    final v3 = await _getAndroidNotificationChannelInfo(
+      channelId: alarmChannelIdV3,
+    );
+    final v2 = await _getAndroidNotificationChannelInfo(
+      channelId: legacyChannelIdV2,
+    );
 
     final v2Exists = v2?['exists'] == true;
 
@@ -204,7 +208,9 @@ class NotificationService implements INotificationService {
             enableVibration: true,
             audioAttributesUsage: AudioAttributesUsage.alarm,
           );
-          await androidPlugin.createNotificationChannel(alarmChannelWithoutGroup);
+          await androidPlugin.createNotificationChannel(
+            alarmChannelWithoutGroup,
+          );
         } else {
           rethrow;
         }
@@ -214,7 +220,8 @@ class NotificationService implements INotificationService {
       final legacyChannelWithGroup = AndroidNotificationChannel(
         legacyChannelId,
         'Timer Alarm ($soundKey) (compatibility)',
-        description: 'Compatibility channel (notification stream) for $soundKey',
+        description:
+            'Compatibility channel (notification stream) for $soundKey',
         importance: Importance.max,
         playSound: true,
         sound: RawResourceAndroidNotificationSound(
@@ -272,8 +279,7 @@ class NotificationService implements INotificationService {
         const silentChannelWithoutGroup = AndroidNotificationChannel(
           _silentTimeUpChannelId,
           'Timer Alarm',
-          description:
-              'Time up notifications (silent)',
+          description: 'Time up notifications (silent)',
           importance: Importance.max,
           playSound: false,
           enableVibration: true,

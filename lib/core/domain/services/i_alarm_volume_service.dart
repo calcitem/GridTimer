@@ -30,5 +30,3 @@ abstract interface class IAlarmVolumeService {
   /// notifications remain, to avoid affecting other concurrently ringing timers.
   Future<void> restoreIfBoosted();
 }
-
-

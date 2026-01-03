@@ -22,14 +22,13 @@ class _WinmmWavPlayer implements WindowsWavPlayer {
 
   static void _free(Pointer<Uint8> ptr) => malloc.free(ptr);
 
-  static final Finalizer<Pointer<Uint8>> _finalizer =
-      Finalizer<Pointer<Uint8>>(_free);
+  static final Finalizer<Pointer<Uint8>> _finalizer = Finalizer<Pointer<Uint8>>(
+    _free,
+  );
 
   late final DynamicLibrary _winmm = DynamicLibrary.open('winmm.dll');
-  late final _PlaySoundDart _playSound = _winmm.lookupFunction<
-    _PlaySoundNative,
-    _PlaySoundDart
-  >('PlaySoundW');
+  late final _PlaySoundDart _playSound = _winmm
+      .lookupFunction<_PlaySoundNative, _PlaySoundDart>('PlaySoundW');
 
   bool _initialized = false;
   Pointer<Uint8>? _wavPtr;

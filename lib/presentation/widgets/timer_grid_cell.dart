@@ -61,8 +61,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     final gridNames = settingsAsync.value?.gridNames;
     final userDefinedName =
         (gridNames != null && gridNames.length > widget.slotIndex)
-            ? gridNames[widget.slotIndex].trim()
-            : '';
+        ? gridNames[widget.slotIndex].trim()
+        : '';
     final l10nNullable = AppLocalizations.of(context);
     if (l10nNullable == null) {
       return const SizedBox.shrink();
@@ -180,7 +180,12 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
   ) {
     switch (widget.session.status) {
       case TimerStatus.idle:
-        return _buildIdleContent(l10n, presetDurationMs, userDefinedName, tokens);
+        return _buildIdleContent(
+          l10n,
+          presetDurationMs,
+          userDefinedName,
+          tokens,
+        );
       case TimerStatus.running:
       case TimerStatus.paused:
         return _buildActiveContent(
@@ -769,7 +774,8 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       builder: (context) => AlertDialog(
         title: Text(l10n.confirmStartTitle),
         content: SingleChildScrollView(
-            child: Text(l10n.confirmStartBody(widget.config.name))),
+          child: Text(l10n.confirmStartBody(widget.config.name)),
+        ),
         actionsPadding: const EdgeInsets.all(16),
         actions: [
           Row(
@@ -1003,10 +1009,7 @@ class _AutoScrollText extends StatefulWidget {
   final String text;
   final TextStyle style;
 
-  const _AutoScrollText({
-    required this.text,
-    required this.style,
-  });
+  const _AutoScrollText({required this.text, required this.style});
 
   @override
   State<_AutoScrollText> createState() => _AutoScrollTextState();
@@ -1067,7 +1070,7 @@ class _AutoScrollTextState extends State<_AutoScrollText> {
     _scrollTimer = null;
     // Reset position if possible
     if (_scrollController.hasClients) {
-        _scrollController.jumpTo(0);
+      _scrollController.jumpTo(0);
     }
   }
 
@@ -1076,37 +1079,33 @@ class _AutoScrollTextState extends State<_AutoScrollText> {
 
     // 1. Wait a bit at the start
     _scrollTimer = Timer(const Duration(seconds: 2), () {
-        if (!mounted || !_needScrolling) return;
+      if (!mounted || !_needScrolling) return;
 
-        // 2. Animate to end
-        final double maxExtent = _scrollController.position.maxScrollExtent;
-        final double durationSeconds = maxExtent / 30; // 30 pixels per second
-        final duration = Duration(milliseconds: (durationSeconds * 1000).round());
+      // 2. Animate to end
+      final double maxExtent = _scrollController.position.maxScrollExtent;
+      final double durationSeconds = maxExtent / 30; // 30 pixels per second
+      final duration = Duration(milliseconds: (durationSeconds * 1000).round());
 
-        _scrollController.animateTo(
-          maxExtent,
-          duration: duration,
-          curve: Curves.linear,
-        ).then((_) {
+      _scrollController
+          .animateTo(maxExtent, duration: duration, curve: Curves.linear)
+          .then((_) {
             if (!mounted || !_needScrolling) return;
 
             // 3. Wait a bit at the end
             _scrollTimer = Timer(const Duration(seconds: 1), () {
-                 if (!mounted || !_needScrolling) return;
+              if (!mounted || !_needScrolling) return;
 
-                 // 4. Animate back to start (or jump)
-                 // Jumping back is better for marquee usually, but animating back is smoother
-                 _scrollController.animateTo(
-                    0,
-                    duration: duration,
-                    curve: Curves.linear,
-                 ).then((_) {
-                     if (!mounted || !_needScrolling) return;
-                     // Loop
-                     _scrollLoop();
-                 });
+              // 4. Animate back to start (or jump)
+              // Jumping back is better for marquee usually, but animating back is smoother
+              _scrollController
+                  .animateTo(0, duration: duration, curve: Curves.linear)
+                  .then((_) {
+                    if (!mounted || !_needScrolling) return;
+                    // Loop
+                    _scrollLoop();
+                  });
             });
-        });
+          });
     });
   }
 

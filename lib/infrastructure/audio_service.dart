@@ -71,7 +71,10 @@ class AudioService implements IAudioService {
   }
 
   @override
-  Future<void> playLoop({required SoundKey soundKey, double volume = 1.0}) async {
+  Future<void> playLoop({
+    required SoundKey soundKey,
+    double volume = 1.0,
+  }) async {
     // Use default mode for backward compatibility.
     await playWithMode(
       soundKey: soundKey,
@@ -141,9 +144,12 @@ class AudioService implements IAudioService {
 
       case AudioPlaybackMode.loopForDuration:
         // Stop after N minutes.
-        _autoStopTimer = Timer(Duration(minutes: loopDurationMinutes), () async {
-          await stop();
-        });
+        _autoStopTimer = Timer(
+          Duration(minutes: loopDurationMinutes),
+          () async {
+            await stop();
+          },
+        );
         break;
 
       case AudioPlaybackMode.loopWithInterval:
@@ -176,7 +182,8 @@ class AudioService implements IAudioService {
     required bool repeating,
   }) {
     int cycleCount = 0;
-    const maxCycles = 2; // For non-repeating: play twice with one pause in between.
+    const maxCycles =
+        2; // For non-repeating: play twice with one pause in between.
 
     void scheduleCycle() {
       if (!repeating && cycleCount >= maxCycles) {
@@ -189,25 +196,31 @@ class AudioService implements IAudioService {
         await _player.pause();
 
         // Phase 2: Pause for M minutes.
-        _intervalTimer = Timer(Duration(minutes: intervalPauseMinutes), () async {
-          cycleCount++;
+        _intervalTimer = Timer(
+          Duration(minutes: intervalPauseMinutes),
+          () async {
+            cycleCount++;
 
-          if (repeating || cycleCount < maxCycles) {
-            // Resume audio.
-            await _player.resume();
+            if (repeating || cycleCount < maxCycles) {
+              // Resume audio.
+              await _player.resume();
 
-            // Schedule next cycle.
-            scheduleCycle();
-          } else {
-            // Non-repeating mode: final cycle, just resume and let it play.
-            await _player.resume();
+              // Schedule next cycle.
+              scheduleCycle();
+            } else {
+              // Non-repeating mode: final cycle, just resume and let it play.
+              await _player.resume();
 
-            // Stop after the final loop duration.
-            _autoStopTimer = Timer(Duration(minutes: loopDurationMinutes), () async {
-              await stop();
-            });
-          }
-        });
+              // Stop after the final loop duration.
+              _autoStopTimer = Timer(
+                Duration(minutes: loopDurationMinutes),
+                () async {
+                  await stop();
+                },
+              );
+            }
+          },
+        );
       });
     }
 

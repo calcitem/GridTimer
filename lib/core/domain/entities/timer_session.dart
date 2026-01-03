@@ -56,11 +56,7 @@ abstract class TimerSession with _$TimerSession {
   /// Check if timer should be ringing based on current time.
   bool shouldBeRinging(int nowEpochMs) {
     return status == TimerStatus.running &&
-           endAtEpochMs != null &&
-           nowEpochMs >= endAtEpochMs!;
+        endAtEpochMs != null &&
+        nowEpochMs >= endAtEpochMs!;
   }
 }
-
-
-
-
