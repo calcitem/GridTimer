@@ -102,6 +102,18 @@ final themeProvider = Provider<AppTheme>((ref) {
   if (themeId == 'traditional') {
     return TraditionalTheme();
   }
+  if (themeId == 'korean_style') {
+    return KoreanStyleTheme();
+  }
+  if (themeId == 'chinese_festive') {
+    return ChineseFestiveTheme();
+  }
+  if (themeId == 'nordic_minimal') {
+    return NordicMinimalTheme();
+  }
+  if (themeId == 'american_classic') {
+    return AmericanClassicTheme();
+  }
   return SoftDarkTheme();
 });
 

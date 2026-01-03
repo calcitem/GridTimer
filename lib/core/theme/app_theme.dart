@@ -208,6 +208,158 @@ class TraditionalTheme extends AppTheme {
       _buildThemeData(tokens, borderWidth: 1.5, isDark: false);
 }
 
+/// Theme E: Korean Style (Subtle pastels, airy, modern traditional)
+class KoreanStyleTheme extends AppTheme {
+  @override
+  String get id => 'korean_style';
+
+  @override
+  String get name => 'Korean Style';
+
+  @override
+  AppThemeTokens get tokens => const AppThemeTokens(
+    bg: Color(0xFFF8F9FA), // Off-white/Clean greyish white
+    surface: Color(0xFFFFFFFF), // Pure white
+    surfacePressed: Color(0xFFE9ECEF),
+    surfaceDisabled: Color(0xFFDEE2E6),
+
+    // Pastel tones commonly found in Hanbok/modern Korean design
+    surfaceIdle: Color(0xFFFFFFFF),
+    surfaceRunning: Color(0xFFD4E4BC), // Pale Green (Jade-like)
+    surfacePaused: Color(0xFFFBE4D8), // Pale Pink/Peach
+    surfaceRinging: Color(0xFFFFC9C9), // Light Coral Red
+
+    border: Color(0xFFADB5BD), // Clean Grey
+    textPrimary: Color(0xFF343A40), // Dark Grey (Charcoal)
+    textSecondary: Color(0xFF6C757D), // Medium Grey
+    accent: Color(0xFF9FA8DA), // Periwinkle Blue (Serenity)
+    focusRing: Color(0xFFFBE4D8),
+    success: Color(0xFF82C91E), // Lime Green
+    warning: Color(0xFFFD7E14), // Orange
+    danger: Color(0xFFFA5252), // Red
+    icon: Color(0xFF495057),
+    divider: Color(0xFFE9ECEF),
+  );
+
+  @override
+  ThemeData get themeData =>
+      _buildThemeData(tokens, borderWidth: 1.0, isDark: false);
+}
+
+/// Theme F: Chinese Festive (Red, Gold, auspicious colors)
+class ChineseFestiveTheme extends AppTheme {
+  @override
+  String get id => 'chinese_festive';
+
+  @override
+  String get name => 'Chinese Festive';
+
+  @override
+  AppThemeTokens get tokens => const AppThemeTokens(
+    bg: Color(0xFF8B0000), // Dark Red background
+    surface: Color(0xFFA61C1C), // Slightly lighter red
+    surfacePressed: Color(0xFFC62828),
+    surfaceDisabled: Color(0xFF5D0000),
+
+    // High energy colors
+    surfaceIdle: Color(0xFFA61C1C),
+    surfaceRunning: Color(0xFF1B5E20), // Dark Green (Jade) - Contrast
+    surfacePaused: Color(0xFFE65100), // Dark Orange
+    surfaceRinging: Color(0xFFFFD700), // Gold (Ringing needs to pop on red)
+
+    border: Color(0xFFFFD700), // Gold Border
+    textPrimary: Color(0xFFFFE0B2), // Light Orange/Gold text
+    textSecondary: Color(0xFFFFB74D), // Orange text
+    accent: Color(0xFFFFD700), // Gold
+    focusRing: Color(0xFFFFECB3),
+    success: Color(0xFF4CAF50),
+    warning: Color(0xFFFF9800),
+    danger: Color(0xFFD32F2F), // Brighter Red
+    icon: Color(0xFFFFD700), // Gold icons
+    divider: Color(0xFFB71C1C),
+  );
+
+  @override
+  ThemeData get themeData =>
+      _buildThemeData(tokens, borderWidth: 1.5, isDark: true);
+}
+
+/// Theme G: Nordic Minimal (Cool greys, blues, nature-inspired, high legibility)
+class NordicMinimalTheme extends AppTheme {
+  @override
+  String get id => 'nordic_minimal';
+
+  @override
+  String get name => 'Nordic Minimal';
+
+  @override
+  AppThemeTokens get tokens => const AppThemeTokens(
+    bg: Color(0xFFECEFF1), // Blue-grey white
+    surface: Color(0xFFFFFFFF),
+    surfacePressed: Color(0xFFCFD8DC),
+    surfaceDisabled: Color(0xFFB0BEC5),
+
+    // Cool, calm nature tones
+    surfaceIdle: Color(0xFFFFFFFF),
+    surfaceRunning: Color(0xFFB2DFDB), // Teal 100
+    surfacePaused: Color(0xFFFFF9C4), // Pale Yellow
+    surfaceRinging: Color(0xFFFFCCBC), // Deep Orange 100
+
+    border: Color(0xFF546E7A), // Blue-grey
+    textPrimary: Color(0xFF263238), // Dark Blue-grey
+    textSecondary: Color(0xFF546E7A), // Medium Blue-grey
+    accent: Color(0xFF009688), // Teal
+    focusRing: Color(0xFF80CBC4),
+    success: Color(0xFF00796B),
+    warning: Color(0xFFF57C00),
+    danger: Color(0xFFD32F2F),
+    icon: Color(0xFF37474F),
+    divider: Color(0xFFCFD8DC),
+  );
+
+  @override
+  ThemeData get themeData =>
+      _buildThemeData(tokens, borderWidth: 1.0, isDark: false);
+}
+
+/// Theme H: American Classic (High contrast, bold blue/white/red hints, sturdy)
+class AmericanClassicTheme extends AppTheme {
+  @override
+  String get id => 'american_classic';
+
+  @override
+  String get name => 'American Classic';
+
+  @override
+  AppThemeTokens get tokens => const AppThemeTokens(
+    bg: Color(0xFFFFFFFF),
+    surface: Color(0xFFF5F5F5), // Light Grey
+    surfacePressed: Color(0xFFE0E0E0),
+    surfaceDisabled: Color(0xFFBDBDBD),
+
+    // Familiar, standard functional colors
+    surfaceIdle: Color(0xFFF5F5F5),
+    surfaceRunning: Color(0xFFE3F2FD), // Light Blue
+    surfacePaused: Color(0xFFFFF3E0), // Light Orange
+    surfaceRinging: Color(0xFFFFEBEE), // Light Red
+
+    border: Color(0xFF1565C0), // Corporate Blue (Trustworthy)
+    textPrimary: Color(0xFF0D47A1), // Dark Blue (High readability)
+    textSecondary: Color(0xFF424242), // Dark Grey
+    accent: Color(0xFFD32F2F), // Red (Accent)
+    focusRing: Color(0xFF64B5F6),
+    success: Color(0xFF2E7D32),
+    warning: Color(0xFFEF6C00),
+    danger: Color(0xFFC62828),
+    icon: Color(0xFF1565C0), // Blue icons
+    divider: Color(0xFF1565C0),
+  );
+
+  @override
+  ThemeData get themeData =>
+      _buildThemeData(tokens, borderWidth: 2.0, isDark: false);
+}
+
 ThemeData _buildThemeData(
   AppThemeTokens tokens, {
   required double borderWidth,
