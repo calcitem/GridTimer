@@ -400,30 +400,54 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Widget _buildExactAlarmStep() {
     final l10n = AppLocalizations.of(context)!;
 
-    // Android 12 (API 31)+ restricts exact alarms.
-    // On older versions, exact alarms are available by default.
-    final showNotRequired = _androidSdkVersion > 0 && _androidSdkVersion < 31;
+    // Android exact alarm permission behavior varies by version:
+    // - Android < 31: No restriction, exact alarms available by default
+    // - Android 31-32: SCHEDULE_EXACT_ALARM requires user to manually grant
+    // - Android 33: SCHEDULE_EXACT_ALARM is PRE-GRANTED to newly installed apps
+    // - Android 34+: SCHEDULE_EXACT_ALARM requires user to manually grant again
+    final isPreApi31 = _androidSdkVersion > 0 && _androidSdkVersion < 31;
+    final isApi33 = _androidSdkVersion == 33;
+
+    // Determine description text based on Android version
+    String description;
+    if (isPreApi31) {
+      description = l10n.onboardingNotRequiredExactAlarmDesc;
+    } else if (isApi33) {
+      description = l10n.onboardingPreGrantedExactAlarmDesc;
+    } else {
+      description = l10n.onboardingExactAlarmDesc;
+    }
+
+    // Determine action widget based on Android version and permission state
+    Widget action;
+    if (isPreApi31) {
+      // Android < 31: Not required
+      action = const _NotRequiredLabel();
+    } else if (isApi33) {
+      // Android 13: Pre-granted by system, show special label
+      action =
+          _exactAlarmGranted ? const _PreGrantedLabel() : const _GrantedLabel();
+    } else {
+      // Android 12, 14+: Requires manual grant
+      action = _exactAlarmGranted
+          ? const _GrantedLabel()
+          : ElevatedButton.icon(
+              onPressed: () async {
+                final service = ref.read(notificationServiceProvider);
+                // This might open system settings on some Android versions
+                await service.requestExactAlarmPermission();
+                await _checkPermissions();
+              },
+              icon: const Icon(Icons.settings),
+              label: Text(l10n.onboardingGrantExactAlarm),
+            );
+    }
 
     return _buildStepContainer(
       title: l10n.onboardingExactAlarmTitle,
-      description: showNotRequired
-          ? l10n.onboardingNotRequiredExactAlarmDesc
-          : l10n.onboardingExactAlarmDesc,
+      description: description,
       icon: Icons.access_alarm,
-      action: showNotRequired
-          ? const _NotRequiredLabel()
-          : (_exactAlarmGranted
-                ? const _GrantedLabel()
-                : ElevatedButton.icon(
-                    onPressed: () async {
-                      final service = ref.read(notificationServiceProvider);
-                      // This might open system settings on some Android versions
-                      await service.requestExactAlarmPermission();
-                      await _checkPermissions();
-                    },
-                    icon: const Icon(Icons.settings),
-                    label: Text(l10n.onboardingGrantExactAlarm),
-                  )),
+      action: action,
     );
   }
 
@@ -573,6 +597,40 @@ class _NotRequiredLabel extends StatelessWidget {
             l10n.onboardingNotRequired,
             style: const TextStyle(
               color: Colors.blue,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Label shown when a permission is automatically pre-granted by the system.
+/// Used for Android 13 where SCHEDULE_EXACT_ALARM is pre-granted to new apps.
+class _PreGrantedLabel extends StatelessWidget {
+  const _PreGrantedLabel();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.teal.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.teal),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.auto_awesome, color: Colors.teal),
+          const SizedBox(width: 8),
+          Text(
+            l10n.onboardingPreGranted,
+            style: const TextStyle(
+              color: Colors.teal,
               fontWeight: FontWeight.bold,
             ),
           ),
