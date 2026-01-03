@@ -144,16 +144,12 @@ class NotificationService implements INotificationService {
 
     // Create a dedicated silent channel for alarm notifications.
     //
-    // IMPORTANT:
-    // - We intentionally keep time-up notifications silent to avoid double-playing sound.
-    // - Actual alarm sound on Android is produced by a native foreground service that reads
-    //   the user-configured ringtone from the "Timer Alarm (default)" channel settings.
-    //
-    // Users should configure alarm sound via 'gt.alarm.timeup.<soundKey>.v2' channels.
+    // This channel is used when playSound is false (e.g. if sound is managed elsewhere
+    // or if we only want a visual notification).
     final silentChannelWithGroup = AndroidNotificationChannel(
       _silentTimeUpChannelId,
       'Timer Alarm',
-      description: 'Time up notifications (silent; sound is played separately)',
+      description: 'Time up notifications (silent)',
       importance: Importance.max,
       playSound: false,
       enableVibration: true,
@@ -168,7 +164,7 @@ class NotificationService implements INotificationService {
           _silentTimeUpChannelId,
           'Timer Alarm',
           description:
-              'Time up notifications (silent; sound is played separately)',
+              'Time up notifications (silent)',
           importance: Importance.max,
           playSound: false,
           enableVibration: true,

@@ -76,56 +76,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
   bool _initialized = false;
 
-  static const int _androidAlarmSoundRequestCodeBase = 52000;
-
-  int _androidAlarmSoundRequestCodeForSlot(int slotIndex) {
-    assert(slotIndex >= 0 && slotIndex < 9, 'slotIndex must be in [0, 8]');
-    return _androidAlarmSoundRequestCodeBase + slotIndex;
-  }
-
-  Future<void> _scheduleAndroidAlarmSound({
-    required int triggerAtEpochMs,
-    required String channelId,
-    required int slotIndex,
-    required bool loop,
-    required bool vibrate,
-  }) async {
-    if (!Platform.isAndroid) return;
-    assert(channelId.isNotEmpty, 'channelId must not be empty');
-    assert(triggerAtEpochMs > 0, 'triggerAtEpochMs must be > 0');
-
-    try {
-      await _alarmServiceChannel.invokeMethod<void>('scheduleAlarmSound', {
-        'triggerAtEpochMs': triggerAtEpochMs,
-        'channelId': channelId,
-        'requestCode': _androidAlarmSoundRequestCodeForSlot(slotIndex),
-        'loop': loop,
-        'vibrate': vibrate,
-        // Fallback used if channel sound cannot be resolved (e.g., channel missing).
-        'soundFallback': 'raw',
-      });
-    } catch (e) {
-      debugPrint('TimerService: Failed to schedule AlarmSoundService: $e');
-    }
-  }
-
-  Future<void> _cancelAndroidAlarmSound({required int slotIndex}) async {
-    if (!Platform.isAndroid) return;
-    try {
-      await _alarmServiceChannel.invokeMethod<void>('cancelAlarmSound', {
-        'requestCode': _androidAlarmSoundRequestCodeForSlot(slotIndex),
-      });
-    } catch (e) {
-      debugPrint('TimerService: Failed to cancel AlarmSoundService alarm: $e');
-    }
-  }
-
-  Future<void> _cancelAllAndroidAlarmSounds() async {
-    if (!Platform.isAndroid) return;
-    for (int i = 0; i < 9; i++) {
-      await _cancelAndroidAlarmSound(slotIndex: i);
-    }
-  }
+  // Native AlarmSoundService helpers removed.
 
   @override
   Future<void> init() async {
@@ -136,17 +87,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     // Observe app lifecycle so we can switch between in-app audio and system
     // notification sound when the app is backgrounded/locked.
     WidgetsBinding.instance.addObserver(this);
-
-    // Best-effort cleanup: stop any existing foreground alarm playback and cancel
-    // pending native alarms. This prevents stray playback after process restarts.
-    if (Platform.isAndroid) {
-      try {
-        await _alarmServiceChannel.invokeMethod<void>('stopAlarmSoundService');
-      } catch (_) {
-        // Ignore.
-      }
-      await _cancelAllAndroidAlarmSounds();
-    }
 
     // Listen for notification action events (e.g., Stop).
     _notificationSubscription = _notification.events().listen(
@@ -221,15 +161,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         // If state is unknown (e.g., app restarted), still try to stop alarm playback.
         await _tts.stop();
         await _vibration.cancel();
-        if (Platform.isAndroid) {
-          try {
-            await _alarmServiceChannel.invokeMethod<void>(
-              'stopAlarmSoundService',
-            );
-          } catch (_) {
-            // Ignore.
-          }
-        }
         return;
       }
 
@@ -438,8 +369,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
     // Schedule based on reliability mode to avoid double-ringing:
     // - appOnly: no system scheduling (alarm only works when app is running)
-    // - notification: schedule notification with sound, no native alarm
-    // - alarmClock: schedule silent notification + native AlarmManager alarm
+    // - notification: schedule notification with sound
+    // - alarmClock: schedule alarm clock notification with sound
     if (reliabilityMode == AlarmReliabilityMode.notification ||
         reliabilityMode == AlarmReliabilityMode.alarmClock) {
       await _notification.scheduleTimeUp(
@@ -448,22 +379,9 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         repeatSoundUntilStopped: repeatSoundUntilStopped,
         enableVibration: settings?.vibrationEnabled ?? true,
         ttsLanguage: settings?.ttsLanguage,
-        playNotificationSound: reliabilityMode == AlarmReliabilityMode.notification,
-      );
-    }
-
-    // Schedule native alarm playback for Android (only in alarmClock mode).
-    if (Platform.isAndroid &&
-        reliabilityMode == AlarmReliabilityMode.alarmClock) {
-      final mode =
-          settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely;
-      final loop = mode != AudioPlaybackMode.playOnce;
-      await _scheduleAndroidAlarmSound(
-        triggerAtEpochMs: endMs,
-        channelId: 'gt.alarm.timeup.${config.soundKey}.v2',
-        slotIndex: slotIndex,
-        loop: loop,
-        vibrate: settings?.vibrationEnabled ?? false,
+        // In alarmClock mode, we now rely on the notification channel sound (via AlarmManager in FLN)
+        // rather than a separate native service. So we enable notification sound for both modes.
+        playNotificationSound: true,
       );
     }
 
@@ -490,9 +408,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       timerId: timerId,
       slotIndex: session.slotIndex,
     );
-    if (Platform.isAndroid) {
-      await _cancelAndroidAlarmSound(slotIndex: session.slotIndex);
-    }
 
     _emitState();
   }
@@ -533,21 +448,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         repeatSoundUntilStopped: repeatSoundUntilStopped,
         enableVibration: settings?.vibrationEnabled ?? true,
         ttsLanguage: settings?.ttsLanguage,
-        playNotificationSound: reliabilityMode == AlarmReliabilityMode.notification,
-      );
-    }
-
-    if (Platform.isAndroid &&
-        reliabilityMode == AlarmReliabilityMode.alarmClock) {
-      final mode =
-          settings?.audioPlaybackMode ?? AudioPlaybackMode.loopIndefinitely;
-      final loop = mode != AudioPlaybackMode.playOnce;
-      await _scheduleAndroidAlarmSound(
-        triggerAtEpochMs: newEndMs,
-        channelId: 'gt.alarm.timeup.${config.soundKey}.v2',
-        slotIndex: session.slotIndex,
-        loop: loop,
-        vibrate: settings?.vibrationEnabled ?? false,
+        playNotificationSound: true,
       );
     }
 
@@ -577,9 +478,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       timerId: timerId,
       slotIndex: session.slotIndex,
     );
-    if (Platform.isAndroid) {
-      await _cancelAndroidAlarmSound(slotIndex: session.slotIndex);
-    }
 
     // Stop audio/TTS if ringing
     if (session.status == TimerStatus.ringing) {
@@ -595,32 +493,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       if (_ringingTimers.isEmpty) {
         await _audio.stop();
         _gesture.stopMonitoring();
-
-        // Stop foreground alarm service when no timers are ringing
-        if (Platform.isAndroid) {
-          try {
-            await _alarmServiceChannel.invokeMethod<void>(
-              'stopAlarmSoundService',
-            );
-            debugPrint(
-              'TimerService: Foreground alarm service stopped (from reset)',
-            );
-          } catch (e) {
-            debugPrint(
-              'TimerService: Failed to stop foreground alarm service: $e',
-            );
-          }
-        }
-      }
-    }
-
-    // Best-effort: if no timers are ringing locally, ensure foreground alarm playback is stopped.
-    // This covers cases where the native alarm service started while Flutter state is out of sync.
-    if (Platform.isAndroid && _ringingTimers.isEmpty) {
-      try {
-        await _alarmServiceChannel.invokeMethod<void>('stopAlarmSoundService');
-      } catch (_) {
-        // Ignore.
       }
     }
 
@@ -642,14 +514,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
     // Clear all sessions
     await _notification.cancelAll();
-    if (Platform.isAndroid) {
-      await _cancelAllAndroidAlarmSounds();
-      try {
-        await _alarmServiceChannel.invokeMethod<void>('stopAlarmSoundService');
-      } catch (_) {
-        // Ignore.
-      }
-    }
     _currentGrid = newGrid;
     _initializeIdleSessions();
 
@@ -830,21 +694,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
               repeatSoundUntilStopped: repeatSoundUntilStopped,
               enableVibration: settings?.vibrationEnabled ?? true,
               ttsLanguage: settings?.ttsLanguage,
-              playNotificationSound:
-                  reliabilityMode == AlarmReliabilityMode.notification,
-            );
-          }
-
-          // Reschedule native alarm playback (only in alarmClock mode).
-          if (Platform.isAndroid &&
-              session.endAtEpochMs != null &&
-              reliabilityMode == AlarmReliabilityMode.alarmClock) {
-            await _scheduleAndroidAlarmSound(
-              triggerAtEpochMs: session.endAtEpochMs!,
-              channelId: 'gt.alarm.timeup.${config.soundKey}.v2',
-              slotIndex: session.slotIndex,
-              loop: androidLoop,
-              vibrate: settings?.vibrationEnabled ?? false,
+              playNotificationSound: true,
             );
           }
         }
