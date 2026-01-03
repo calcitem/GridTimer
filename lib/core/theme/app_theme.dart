@@ -170,6 +170,44 @@ class LightHighContrastTheme extends AppTheme {
       _buildThemeData(tokens, borderWidth: 2, isDark: false);
 }
 
+/// Theme D: Traditional Theme (Warm, muted tones preferred by seniors)
+class TraditionalTheme extends AppTheme {
+  @override
+  String get id => 'traditional';
+
+  @override
+  String get name => 'Traditional';
+
+  @override
+  AppThemeTokens get tokens => const AppThemeTokens(
+    bg: Color(0xFFF5F1E8), // Washi paper color (off-white/beige)
+    surface: Color(0xFFE6DBC6), // Slightly darker beige
+    surfacePressed: Color(0xFFD4C5A9),
+    surfaceDisabled: Color(0xFFC7BCA5),
+
+    // Subdued, natural colors for states
+    surfaceIdle: Color(0xFFE6DBC6),
+    surfaceRunning: Color(0xFF8DA399), // Matcha Green (muted green)
+    surfacePaused: Color(0xFFD4A59A), // Old Rose (muted pink/red)
+    surfaceRinging: Color(0xFFC97F7F), // Muted Red
+
+    border: Color(0xFF594F4F), // Dark Brown/Grey (Sumi ink-like but softer)
+    textPrimary: Color(0xFF4A403A), // Dark Brown (Tea color)
+    textSecondary: Color(0xFF7D7269), // Muted Brown
+    accent: Color(0xFF9E7A7A), // Azuki Red (Muted Red/Brown)
+    focusRing: Color(0xFFD4A59A), // Matches paused state
+    success: Color(0xFF6B8E23), // Olive Green
+    warning: Color(0xFFCD853F), // Peru (muted orange)
+    danger: Color(0xFFB22222), // Firebrick (muted red)
+    icon: Color(0xFF4A403A), // Match text primary
+    divider: Color(0xFF8C8279), // Grey-brown
+  );
+
+  @override
+  ThemeData get themeData =>
+      _buildThemeData(tokens, borderWidth: 1.5, isDark: false);
+}
+
 ThemeData _buildThemeData(
   AppThemeTokens tokens, {
   required double borderWidth,
