@@ -25,7 +25,10 @@ class AudioService implements IAudioService {
         stayAwake: true,
         contentType: AndroidContentType.sonification,
         usageType: AndroidUsageType.alarm,
-        audioFocus: AndroidAudioFocus.gain,
+        // Use 'none' to ignore audio focus.
+        // This ensures the alarm sound is mixed with other sounds (e.g. IM notifications)
+        // and is NOT interrupted/paused when other apps request focus.
+        audioFocus: AndroidAudioFocus.none,
       ),
       iOS: AudioContextIOS(
         category: AVAudioSessionCategory.playback,

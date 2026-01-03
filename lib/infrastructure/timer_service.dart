@@ -284,21 +284,36 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
           );
         }
 
-        if (!Platform.isAndroid) {
-          // Non-Android platforms use in-app audio playback.
-          try {
-            await _audio.playWithMode(
-              soundKey: config.soundKey,
-              mode:
-                  settings?.audioPlaybackMode ??
-                  AudioPlaybackMode.loopIndefinitely,
-              volume: settings?.soundVolume ?? 1.0,
-              loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
-              intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+        // Play in-app audio on all platforms (including Android).
+        // On Android, we rely on this for reliable, uninterrupted playback even if
+        // the notification sound is interrupted by IM messages.
+        try {
+          await _audio.playWithMode(
+            soundKey: config.soundKey,
+            mode:
+                settings?.audioPlaybackMode ??
+                AudioPlaybackMode.loopIndefinitely,
+            volume: settings?.soundVolume ?? 1.0,
+            loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
+            intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+          );
+
+          // On Android, if we successfully started in-app audio, update the notification
+          // to be silent. This prevents double-playing sound (notification sound + in-app audio)
+          // and ensures that if the notification sound WAS playing but got interrupted,
+          // the in-app audio continues.
+          if (Platform.isAndroid) {
+            await _notification.showTimeUpNow(
+              session: session,
+              config: config,
+              enableVibration: settings?.vibrationEnabled ?? true,
+              playSound: false, // Silent visual notification
+              repeatSoundUntilStopped: false,
+              ttsLanguage: settings?.ttsLanguage,
             );
-          } catch (e) {
-            debugPrint('TimerService: Failed to play in-app audio: $e');
           }
+        } catch (e) {
+          debugPrint('TimerService: Failed to play in-app audio: $e');
         }
       }
 
