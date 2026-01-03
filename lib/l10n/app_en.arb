@@ -238,7 +238,7 @@
     "description": "License option"
   },
 
-  "licenseDesc": "View open source licenses",
+  "licenseDesc": "View third-party licenses",
   "@licenseDesc": {
     "description": "Description for license"
   },
@@ -545,7 +545,7 @@
     "description": "Safety disclaimer dialog title"
   },
 
-  "safetyDisclaimerMessage": "Grid Timer is a free open-source timer app. For your safety, please understand the following:",
+  "safetyDisclaimerMessage": "Grid Timer is a timer app. For your safety, please understand the following:",
   "@safetyDisclaimerMessage": {
     "description": "Safety disclaimer message"
   },
@@ -1191,7 +1191,7 @@
     "description": "View privacy policy details button"
   },
 
-  "ossLicenses": "Open Source Licenses",
+  "ossLicenses": "Third-Party Licenses",
   "@ossLicenses": {
     "description": "Open source licenses menu item"
   },
