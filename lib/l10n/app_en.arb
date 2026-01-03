@@ -1257,7 +1257,7 @@
     "description": "Description for theme mode"
   },
 
-  "themeSoftDark": "Default Soft Dark",
+  "themeSoftDark": "Soft Dark",
   "@themeSoftDark": {
     "description": "Soft dark theme name"
   },
@@ -1267,7 +1267,7 @@
     "description": "High contrast theme name"
   },
 
-  "themeLightHighContrast": "Light High Contrast",
+  "themeLightHighContrast": "Daylight Highlight",
   "@themeLightHighContrast": {
     "description": "Light high contrast theme name"
   },
