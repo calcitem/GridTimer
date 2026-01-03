@@ -577,14 +577,14 @@ class MainActivity: FlutterActivity() {
                         }
                     }
 
-                    // Priority 3: Standard Android battery optimization list
-                    intentsToTry.add(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
+                    // Priority 3: App details settings (universal fallback, better UX than list)
+                    intentsToTry.add(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.parse("package:$packageName")
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     })
 
-                    // Priority 4: App details settings (universal fallback)
-                    intentsToTry.add(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                        data = Uri.parse("package:$packageName")
+                    // Priority 4: Standard Android battery optimization list (last resort specific setting)
+                    intentsToTry.add(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     })
 
