@@ -208,13 +208,13 @@ class TraditionalTheme extends AppTheme {
       _buildThemeData(tokens, borderWidth: 1.5, isDark: false);
 }
 
-/// Theme E: Korean Style (Subtle pastels, airy, modern traditional)
-class KoreanStyleTheme extends AppTheme {
+/// Theme E: Pastel Garden (Subtle pastels, airy, modern traditional)
+class PastelGardenTheme extends AppTheme {
   @override
-  String get id => 'korean_style';
+  String get id => 'pastel_garden';
 
   @override
-  String get name => 'Korean Style';
+  String get name => 'Pastel Garden';
 
   @override
   AppThemeTokens get tokens => const AppThemeTokens(
@@ -246,13 +246,13 @@ class KoreanStyleTheme extends AppTheme {
       _buildThemeData(tokens, borderWidth: 1.0, isDark: false);
 }
 
-/// Theme F: Chinese Elegant (Ink, Rice Paper, Vermilion - High legibility, cultural but not overwhelming)
-class ChineseFestiveTheme extends AppTheme {
+/// Theme F: Ink & Vermilion (Ink, Rice Paper, Vermilion - High legibility)
+class InkVermilionTheme extends AppTheme {
   @override
-  String get id => 'chinese_festive';
+  String get id => 'ink_vermilion';
 
   @override
-  String get name => 'Chinese Elegant';
+  String get name => 'Ink & Vermilion';
 
   @override
   AppThemeTokens get tokens => const AppThemeTokens(
@@ -284,13 +284,13 @@ class ChineseFestiveTheme extends AppTheme {
       _buildThemeData(tokens, borderWidth: 1.5, isDark: false);
 }
 
-/// Theme G: Nordic Minimal (Cool greys, blues, nature-inspired, high legibility)
-class NordicMinimalTheme extends AppTheme {
+/// Theme G: Glacial Blue (Cool greys, blues, nature-inspired, high legibility)
+class GlacialBlueTheme extends AppTheme {
   @override
-  String get id => 'nordic_minimal';
+  String get id => 'glacial_blue';
 
   @override
-  String get name => 'Nordic Minimal';
+  String get name => 'Glacial Blue';
 
   @override
   AppThemeTokens get tokens => const AppThemeTokens(
@@ -322,13 +322,13 @@ class NordicMinimalTheme extends AppTheme {
       _buildThemeData(tokens, borderWidth: 1.0, isDark: false);
 }
 
-/// Theme H: American Classic (High contrast, bold blue/white/red hints, sturdy)
-class AmericanClassicTheme extends AppTheme {
+/// Theme H: Classic Navy (High contrast, bold blue/white/red hints, sturdy)
+class ClassicNavyTheme extends AppTheme {
   @override
-  String get id => 'american_classic';
+  String get id => 'classic_navy';
 
   @override
-  String get name => 'American Classic';
+  String get name => 'Classic Navy';
 
   @override
   AppThemeTokens get tokens => const AppThemeTokens(

@@ -1272,22 +1272,22 @@
     "description": "Traditional theme name"
   },
 
-  "themeKoreanStyle": "Korean Pastel",
+  "themeKoreanStyle": "Pastel Garden",
   "@themeKoreanStyle": {
     "description": "Korean style theme name"
   },
 
-  "themeChineseFestive": "Chinese Elegant",
+  "themeChineseFestive": "Ink & Vermilion",
   "@themeChineseFestive": {
     "description": "Chinese elegant theme name"
   },
 
-  "themeNordicMinimal": "Nordic Blue",
+  "themeNordicMinimal": "Glacial Blue",
   "@themeNordicMinimal": {
     "description": "Nordic minimal theme name"
   },
 
-  "themeAmericanClassic": "Classic Blue",
+  "themeAmericanClassic": "Classic Navy",
   "@themeAmericanClassic": {
     "description": "American classic theme name"
   },

@@ -835,10 +835,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     if (themeId == 'light_high_contrast') return l10n.themeLightHighContrast;
     if (themeId == 'high_contrast') return l10n.themeHighContrast;
     if (themeId == 'traditional') return l10n.themeTraditional;
-    if (themeId == 'korean_style') return l10n.themeKoreanStyle;
-    if (themeId == 'chinese_festive') return l10n.themeChineseFestive;
-    if (themeId == 'nordic_minimal') return l10n.themeNordicMinimal;
-    if (themeId == 'american_classic') return l10n.themeAmericanClassic;
+    if (themeId == 'pastel_garden') return l10n.themeKoreanStyle;
+    if (themeId == 'ink_vermilion') return l10n.themeChineseFestive;
+    if (themeId == 'glacial_blue') return l10n.themeNordicMinimal;
+    if (themeId == 'classic_navy') return l10n.themeAmericanClassic;
     return l10n.themeSoftDark;
   }
 
@@ -925,50 +925,50 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
               Semantics(
                 button: true,
-                selected: currentThemeId == 'korean_style',
+                selected: currentThemeId == 'pastel_garden',
                 child: ListTile(
                   leading: const Icon(Icons.palette),
                   title: Text(l10n.themeKoreanStyle),
-                  trailing: currentThemeId == 'korean_style'
+                  trailing: currentThemeId == 'pastel_garden'
                       ? const Icon(Icons.check)
                       : null,
-                  onTap: () => selectTheme('korean_style'),
+                  onTap: () => selectTheme('pastel_garden'),
                 ),
               ),
               Semantics(
                 button: true,
-                selected: currentThemeId == 'chinese_festive',
+                selected: currentThemeId == 'ink_vermilion',
                 child: ListTile(
-                  leading: const Icon(Icons.celebration),
+                  leading: const Icon(Icons.brush),
                   title: Text(l10n.themeChineseFestive),
-                  trailing: currentThemeId == 'chinese_festive'
+                  trailing: currentThemeId == 'ink_vermilion'
                       ? const Icon(Icons.check)
                       : null,
-                  onTap: () => selectTheme('chinese_festive'),
+                  onTap: () => selectTheme('ink_vermilion'),
                 ),
               ),
               Semantics(
                 button: true,
-                selected: currentThemeId == 'nordic_minimal',
+                selected: currentThemeId == 'glacial_blue',
                 child: ListTile(
                   leading: const Icon(Icons.snowing),
                   title: Text(l10n.themeNordicMinimal),
-                  trailing: currentThemeId == 'nordic_minimal'
+                  trailing: currentThemeId == 'glacial_blue'
                       ? const Icon(Icons.check)
                       : null,
-                  onTap: () => selectTheme('nordic_minimal'),
+                  onTap: () => selectTheme('glacial_blue'),
                 ),
               ),
               Semantics(
                 button: true,
-                selected: currentThemeId == 'american_classic',
+                selected: currentThemeId == 'classic_navy',
                 child: ListTile(
                   leading: const Icon(Icons.flag),
                   title: Text(l10n.themeAmericanClassic),
-                  trailing: currentThemeId == 'american_classic'
+                  trailing: currentThemeId == 'classic_navy'
                       ? const Icon(Icons.check)
                       : null,
-                  onTap: () => selectTheme('american_classic'),
+                  onTap: () => selectTheme('classic_navy'),
                 ),
               ),
             ],
