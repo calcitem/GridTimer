@@ -1543,5 +1543,57 @@
   "stopActiveTimersBeforeTest": "Please stop all active timers before starting test timer",
   "@stopActiveTimersBeforeTest": {
     "description": "Warning message when trying to start test timer while other timers are running"
+  },
+
+  "timeIsUp": "Time is up!",
+  "@timeIsUp": {
+    "description": "Notification body when timer completes"
+  },
+
+  "widgetTimersRinging": "{count, plural, =1{1 timer ringing} other{{count} timers ringing}}",
+  "@widgetTimersRinging": {
+    "description": "Widget status text when timers are ringing",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+
+  "widgetTimersActive": "{count, plural, =1{1 timer active} other{{count} timers active}}",
+  "@widgetTimersActive": {
+    "description": "Widget status text when timers are running",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+
+  "widgetTapToOpen": "Tap to open app",
+  "@widgetTapToOpen": {
+    "description": "Widget status text when no timers are active"
+  },
+
+  "widgetTimerRemaining": "{name}: {remaining}",
+  "@widgetTimerRemaining": {
+    "description": "Widget nearest timer display format",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Timer 1"
+      },
+      "remaining": {
+        "type": "String",
+        "example": "5:30"
+      }
+    }
+  },
+
+  "widgetDescription": "Display Grid Timer status",
+  "@widgetDescription": {
+    "description": "Widget description for Android widget settings"
   }
 }

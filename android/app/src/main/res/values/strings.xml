@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Grid Timer</string>
-    <string name="widget_description">显示 Grid Timer 计时器状态</string>
+    <string name="widget_description">Display Grid Timer status</string>
+    <string name="widget_timers_ringing">%d timer(s) ringing</string>
+    <string name="widget_timers_active">%d timer(s) active</string>
+    <string name="widget_tap_to_open">Tap to open app</string>
 </resources>

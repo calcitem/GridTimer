@@ -322,5 +322,12 @@
   "testLog": "测试日志：",
   "waitingForTest": "等待测试...",
   "testTimerStarted": "10 秒测试计时器已启动！第一个宫格现已设为 10 秒。",
-  "stopActiveTimersBeforeTest": "启动测试计时器前，请先停止所有运行中的计时器"
+  "stopActiveTimersBeforeTest": "启动测试计时器前，请先停止所有运行中的计时器",
+
+  "timeIsUp": "时间到!",
+  "widgetTimersRinging": "{count, plural, other{{count} 个计时器响铃}}",
+  "widgetTimersActive": "{count, plural, other{{count} 个计时器运行中}}",
+  "widgetTapToOpen": "点击打开应用",
+  "widgetTimerRemaining": "{name}: {remaining}",
+  "widgetDescription": "显示九宫计时状态"
 }

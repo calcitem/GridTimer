@@ -50,11 +50,14 @@ class GridTimerWidgetProvider : AppWidgetProvider() {
             // Update display content
             views.setTextViewText(R.id.widget_title, "Grid Timer")
 
-            // Status summary
+            // Status summary - use localized strings from resources
             val statusText = when {
-                ringingTimersCount > 0 -> "🔔 $ringingTimersCount 个计时器响铃"
-                activeTimersCount > 0 -> "⏱️ $activeTimersCount 个计时器运行中"
-                else -> "📱 点击打开应用"
+                ringingTimersCount > 0 ->
+                    "🔔 " + context.getString(R.string.widget_timers_ringing, ringingTimersCount)
+                activeTimersCount > 0 ->
+                    "⏱️ " + context.getString(R.string.widget_timers_active, activeTimersCount)
+                else ->
+                    "📱 " + context.getString(R.string.widget_tap_to_open)
             }
             views.setTextViewText(R.id.widget_status, statusText)
 

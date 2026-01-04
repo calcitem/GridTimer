@@ -12,6 +12,7 @@ import '../core/domain/entities/timer_session.dart';
 import '../core/domain/enums.dart';
 import '../core/domain/services/i_notification_service.dart';
 import '../core/domain/types.dart';
+import '../core/services/service_localizations.dart';
 
 /// Android notification service implementation.
 class NotificationService implements INotificationService {
@@ -463,27 +464,30 @@ class NotificationService implements INotificationService {
     // 1. Explicit ttsLanguage if set
     // 2. User's app language preference from Hive
     // 3. System locale as fallback
-    final bool useChineseText;
+    final String effectiveLocale;
     if (ttsLanguage != null) {
-      useChineseText = ttsLanguage.startsWith('zh');
+      effectiveLocale = ttsLanguage;
     } else {
       // Fall back to app locale from Hive, then system locale
-      String effectiveLocale = Platform.localeName;
+      String locale = Platform.localeName;
       try {
         if (Hive.isBoxOpen('settings')) {
           final box = Hive.box('settings');
           final savedLocale = box.get('app_locale') as String?;
           if (savedLocale != null && savedLocale.isNotEmpty) {
-            effectiveLocale = savedLocale;
+            locale = savedLocale;
           }
         }
       } catch (_) {
         // Ignore errors, use system default
       }
-      useChineseText = effectiveLocale.startsWith('zh');
+      effectiveLocale = locale;
     }
-    final notificationBody = useChineseText ? '时间到!' : 'Time is up!';
-    final stopButtonText = useChineseText ? '停止' : 'Stop';
+
+    // Use service localizations for notification text
+    final localizations = ServiceLocalizations(effectiveLocale);
+    final notificationBody = localizations.timeIsUp;
+    final stopButtonText = localizations.stop;
 
     // Notification.FLAG_INSISTENT: repeat sound/vibration until the notification is cancelled.
     // Using a numeric constant here keeps this Flutter code platform-independent.
@@ -618,27 +622,30 @@ class NotificationService implements INotificationService {
     // 1. Explicit ttsLanguage if set
     // 2. User's app language preference from Hive
     // 3. System locale as fallback
-    final bool useChineseText;
+    final String effectiveLocale;
     if (ttsLanguage != null) {
-      useChineseText = ttsLanguage.startsWith('zh');
+      effectiveLocale = ttsLanguage;
     } else {
       // Fall back to app locale from Hive, then system locale
-      String effectiveLocale = Platform.localeName;
+      String locale = Platform.localeName;
       try {
         if (Hive.isBoxOpen('settings')) {
           final box = Hive.box('settings');
           final savedLocale = box.get('app_locale') as String?;
           if (savedLocale != null && savedLocale.isNotEmpty) {
-            effectiveLocale = savedLocale;
+            locale = savedLocale;
           }
         }
       } catch (_) {
         // Ignore errors, use system default
       }
-      useChineseText = effectiveLocale.startsWith('zh');
+      effectiveLocale = locale;
     }
-    final notificationBody = useChineseText ? '时间到!' : 'Time is up!';
-    final stopButtonText = useChineseText ? '停止' : 'Stop';
+
+    // Use service localizations for notification text
+    final localizations = ServiceLocalizations(effectiveLocale);
+    final notificationBody = localizations.timeIsUp;
+    final stopButtonText = localizations.stop;
 
     // Notification.FLAG_INSISTENT: repeat sound/vibration until the notification is cancelled.
     // Using a numeric constant here keeps this Flutter code platform-independent.
@@ -698,7 +705,7 @@ class NotificationService implements INotificationService {
   Future<void> showAppRunningIndicator() async {
     if (!Platform.isAndroid) return;
 
-    final bool useChineseText;
+    // Determine effective locale for app running indicator
     String effectiveLocale = Platform.localeName;
     try {
       if (Hive.isBoxOpen('settings')) {
@@ -711,10 +718,11 @@ class NotificationService implements INotificationService {
     } catch (_) {
       // Ignore errors, use system default
     }
-    useChineseText = effectiveLocale.startsWith('zh');
 
-    final title = useChineseText ? '九宫计时' : 'Grid Timer';
-    final body = useChineseText ? '运行中' : 'Running';
+    // Use service localizations for app running indicator
+    final localizations = ServiceLocalizations(effectiveLocale);
+    final title = localizations.appTitle;
+    final body = localizations.running;
 
     final androidDetails = const AndroidNotificationDetails(
       _runningIndicatorChannelId,

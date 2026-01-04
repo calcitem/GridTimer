@@ -6,14 +6,30 @@
 #include "utils.h"
 
 // Get localized window title based on system language.
+// To add more languages:
+// 1. Add the language constant (e.g., LANG_JAPANESE)
+// 2. Add the corresponding if condition with localized title
+// 3. Use Unicode escape sequences (e.g., L"\xXXXX") for non-ASCII characters
 const wchar_t* GetLocalizedWindowTitle() {
   LANGID langId = GetUserDefaultUILanguage();
   WORD primaryLangId = PRIMARYLANGID(langId);
 
   if (primaryLangId == LANG_CHINESE) {
-    // Chinese: U+4E5D U+5BAB U+683C U+8BA1 U+65F6 U+5668 = "九宫计时"
+    // Simplified Chinese: 九宫计时
     return L"\x4E5D\x5BAB\x683C\x8BA1\x65F6\x5668";
   }
+  // Add more languages here as needed:
+  // if (primaryLangId == LANG_JAPANESE) {
+  //   return L"\x30B0\x30EA\x30C3\x30C9\x30BF\x30A4\x30DE\x30FC"; // グリッドタイマー
+  // }
+  // if (primaryLangId == LANG_KOREAN) {
+  //   return L"\xADF8\xB9AC\xB4DC \xD0C0\xC774\xBA38"; // 그리드 타이머
+  // }
+  // if (primaryLangId == LANG_SPANISH) {
+  //   return L"Temporizador de Cuadrícula";
+  // }
+
+  // Default to English
   return L"Grid Timer";
 }
 

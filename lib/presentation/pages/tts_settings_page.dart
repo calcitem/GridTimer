@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
+import '../../core/services/service_localizations.dart';
 import '../../l10n/app_localizations.dart';
 
 /// TTS settings page for configuring voice announcements.
@@ -63,10 +64,9 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
       await ttsService.setPitch(pitch);
 
       // Test TTS with sample message
-      // Use localized test message based on selected language
-      final testMessage = localeTag.startsWith('zh')
-          ? '计时器 1 时间到了'
-          : 'Timer 1 time is up';
+      // Use service localizations for test message (supports multi-language)
+      final localizations = ServiceLocalizations(localeTag);
+      final testMessage = localizations.ttsTestMessage;
 
       // Flag to track if completion was received
       bool completionReceived = false;

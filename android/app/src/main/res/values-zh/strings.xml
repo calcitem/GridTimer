@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">九宫计时</string>
+    <string name="widget_description">显示九宫计时状态</string>
+    <string name="widget_timers_ringing">%d 个计时器响铃</string>
+    <string name="widget_timers_active">%d 个计时器运行中</string>
+    <string name="widget_tap_to_open">点击打开应用</string>
 </resources>

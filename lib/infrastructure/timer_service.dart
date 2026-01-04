@@ -19,6 +19,7 @@ import '../core/domain/services/i_gesture_service.dart';
 import '../core/domain/services/i_vibration_service.dart';
 import '../core/domain/types.dart';
 import '../core/services/duration_formatter.dart';
+import '../core/services/service_localizations.dart';
 import '../data/repositories/storage_repository.dart';
 
 /// Timer service implementation with full state management and recovery.
@@ -984,7 +985,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
   /// Dynamically formats the timer name based on current locale.
   String _buildTtsText(TimerConfig config, AppSettings? settings) {
     final effectiveLocale = _getEffectiveLocale(settings);
-    final isChineseLocale = effectiveLocale.startsWith('zh');
 
     // Check if user has defined a custom name for this slot
     final customName =
@@ -1003,7 +1003,9 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
       timerName = formatter.format(config.presetDurationMs ~/ 1000);
     }
 
-    return isChineseLocale ? '$timerName 时间到' : '$timerName time is up';
+    // Use service localizations for TTS text
+    final localizations = ServiceLocalizations(effectiveLocale);
+    return localizations.timeIsUpSuffix(timerName);
   }
 
   Future<TimerGridSet> _createDefaultGrid(AppSettings? settings) async {
