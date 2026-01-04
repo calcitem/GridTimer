@@ -1407,6 +1407,11 @@
     "description": "Hint for OEM device users (MIUI/Honor/Huawei) about battery optimization settings"
   },
 
+  "batteryOptimizationStandardHint": "Tip: If you can't find 'Unrestricted', try tapping the 'Allow background usage' text (not the toggle) to access more options",
+  "@batteryOptimizationStandardHint": {
+    "description": "Hint for standard Android users about finding battery optimization settings"
+  },
+
   "gridDurationMustBePositive": "Grid {index} duration must be a positive integer",
   "@gridDurationMustBePositive": {
     "description": "Error message when grid duration is not a positive integer",

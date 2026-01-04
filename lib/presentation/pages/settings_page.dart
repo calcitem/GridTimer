@@ -208,9 +208,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
                   // Show MIUI-specific hint
                   if (_isMiuiDevice)
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
@@ -1532,13 +1530,17 @@ class _BatteryOptimizationTile extends StatelessWidget {
         final bool isUnknown = status == null;
         final bool isDisabled = status == true;
         // Determine hint text based on manufacturer (only for newer Android)
+        // Show hints when battery optimization is NOT disabled (needs user action)
         String? specificHint;
-        if (!useLegacyDesc) {
+        if (!useLegacyDesc && !isDisabled) {
           if (manufacturerType == 'miui') {
             specificHint = l10n.batteryOptimizationMiuiHint;
           } else if (manufacturerType == 'honor_huawei') {
             specificHint = l10n.batteryOptimizationHuaweiHint;
-          } else if (manufacturerType != 'standard') {
+          } else if (manufacturerType == 'standard') {
+            // Standard Android (e.g., Pixel): hint about tapping text vs toggle
+            specificHint = l10n.batteryOptimizationStandardHint;
+          } else {
             specificHint = l10n.batteryOptimizationOemHint;
           }
         }
