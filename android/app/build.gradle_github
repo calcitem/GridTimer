@@ -121,7 +121,7 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            // 开源应用通常不需要混淆/压缩；关闭以避免资源被裁剪导致的运行时问题（如通知图标/声音）。
+            // Open source apps usually don't need obfuscation/shrinking; explicitly disable to avoid runtime issues caused by resource stripping (e.g. notification icons/sounds).
             minifyEnabled false
             shrinkResources false
         }
@@ -136,4 +136,3 @@ dependencies {
     // Required for flutter_local_notifications with compileSdk 36
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
 }
-

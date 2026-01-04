@@ -30,11 +30,6 @@ class DurationFormatter {
       return '秒';
     }
     // Add more languages here as needed
-    // else if (_locale.startsWith('ja')) {
-    //   return '秒';
-    // } else if (_locale.startsWith('ko')) {
-    //   return '초';
-    // }
     return 's'; // Default to English
   }
 
@@ -43,11 +38,6 @@ class DurationFormatter {
       return '分钟';
     }
     // Add more languages here as needed
-    // else if (_locale.startsWith('ja')) {
-    //   return '分';
-    // } else if (_locale.startsWith('ko')) {
-    //   return '분';
-    // }
     return 'min'; // Default to English
   }
 
@@ -56,11 +46,6 @@ class DurationFormatter {
       return '小时';
     }
     // Add more languages here as needed
-    // else if (_locale.startsWith('ja')) {
-    //   return '時間';
-    // } else if (_locale.startsWith('ko')) {
-    //   return '시간';
-    // }
     return 'h'; // Default to English
   }
 }
