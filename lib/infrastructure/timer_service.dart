@@ -52,6 +52,11 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
   /// Timer for repeating vibration pattern during alarm.
   Timer? _vibrationTimer;
 
+  /// Tracks whether the "app running" status bar indicator is currently shown.
+  ///
+  /// This is used to avoid spamming show/cancel calls on periodic UI refresh.
+  bool _runningIndicatorVisible = false;
+
   /// Tracks current app lifecycle state to decide foreground/background behaviours.
   AppLifecycleState _lifecycleState = AppLifecycleState.resumed;
 
@@ -921,6 +926,26 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     final sessions = List<TimerSession>.from(_sessions.values);
     sessions.sort((a, b) => a.slotIndex.compareTo(b.slotIndex));
     _stateController.add((_currentGrid!, sessions));
+
+    // Keep an ongoing status bar indicator only while timers are active.
+    // This gives users confidence that running timers are still being tracked.
+    unawaited(_syncRunningIndicator());
+  }
+
+  Future<void> _syncRunningIndicator() async {
+    final shouldShow = hasActiveTimers();
+    if (shouldShow == _runningIndicatorVisible) return;
+    _runningIndicatorVisible = shouldShow;
+
+    try {
+      if (shouldShow) {
+        await _notification.showAppRunningIndicator();
+      } else {
+        await _notification.hideAppRunningIndicator();
+      }
+    } catch (e) {
+      debugPrint('TimerService: Failed to update running indicator: $e');
+    }
   }
 
   /// Get the effective locale for TTS and localization, considering user's app
@@ -1041,5 +1066,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     _stateController.close();
     _gestureSubscription?.cancel();
     _gesture.dispose();
+
+    // Best-effort cleanup; ignore failures during app shutdown.
+    unawaited(_notification.hideAppRunningIndicator());
   }
 }
