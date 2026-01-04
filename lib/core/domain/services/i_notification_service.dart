@@ -96,6 +96,18 @@ abstract interface class INotificationService {
   /// Gets notification channel information (Android only).
   /// Returns null on non-Android platforms or if channel doesn't exist.
   Future<Map<dynamic, dynamic>?> getChannelInfo({required String channelId});
+
+  /// Shows an ongoing "app is running" indicator in the status bar (Android).
+  ///
+  /// This is implemented as a low-importance, silent, ongoing notification so
+  /// users can quickly confirm the app is still alive, especially in the
+  /// background. On non-Android platforms, this should be a no-op.
+  Future<void> showAppRunningIndicator();
+
+  /// Hides the ongoing "app is running" indicator (Android).
+  ///
+  /// On non-Android platforms, this should be a no-op.
+  Future<void> hideAppRunningIndicator();
 }
 
 /// Notification event from user interaction.

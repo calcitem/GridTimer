@@ -27,6 +27,8 @@ class NotificationService implements INotificationService {
   static const String _channelGroupId = 'gt.group.timers';
   static const String _actionIdStop = 'gt.action.stop';
   static const String _silentTimeUpChannelId = 'gt.alarm.timeup.silent.v1';
+  static const String _runningIndicatorChannelId = 'gt.status.running.v1';
+  static const int _runningIndicatorNotificationId = 42;
 
   Future<Map<dynamic, dynamic>?> _getAndroidNotificationChannelInfo({
     required String channelId,
@@ -318,6 +320,40 @@ class NotificationService implements INotificationService {
           enableVibration: false,
         );
         await androidPlugin.createNotificationChannel(generalChannelNoGroup);
+      } else {
+        rethrow;
+      }
+    }
+
+    // Create an ongoing "app is running" indicator channel.
+    //
+    // Keep it low importance and silent, but not MIN; MIN notifications may not
+    // show a status bar icon consistently across OEM ROMs.
+    final runningIndicatorChannel = AndroidNotificationChannel(
+      _runningIndicatorChannelId,
+      'App status',
+      description: 'Ongoing app running indicator',
+      importance: Importance.low,
+      playSound: false,
+      enableVibration: false,
+      groupId: groupCreated ? _channelGroupId : null,
+    );
+
+    try {
+      await androidPlugin.createNotificationChannel(runningIndicatorChannel);
+    } catch (e) {
+      if (groupCreated) {
+        const runningIndicatorChannelNoGroup = AndroidNotificationChannel(
+          _runningIndicatorChannelId,
+          'App status',
+          description: 'Ongoing app running indicator',
+          importance: Importance.low,
+          playSound: false,
+          enableVibration: false,
+        );
+        await androidPlugin.createNotificationChannel(
+          runningIndicatorChannelNoGroup,
+        );
       } else {
         rethrow;
       }
@@ -654,6 +690,58 @@ class NotificationService implements INotificationService {
   @override
   Future<Map<dynamic, dynamic>?> getChannelInfo({required String channelId}) async {
     return _getAndroidNotificationChannelInfo(channelId: channelId);
+  }
+
+  @override
+  Future<void> showAppRunningIndicator() async {
+    if (!Platform.isAndroid) return;
+
+    final bool useChineseText;
+    String effectiveLocale = Platform.localeName;
+    try {
+      if (Hive.isBoxOpen('settings')) {
+        final box = Hive.box('settings');
+        final savedLocale = box.get('app_locale') as String?;
+        if (savedLocale != null && savedLocale.isNotEmpty) {
+          effectiveLocale = savedLocale;
+        }
+      }
+    } catch (_) {
+      // Ignore errors, use system default
+    }
+    useChineseText = effectiveLocale.startsWith('zh');
+
+    final title = useChineseText ? '九宫计时' : 'Grid Timer';
+    final body = useChineseText ? '运行中' : 'Running';
+
+    final androidDetails = AndroidNotificationDetails(
+      _runningIndicatorChannelId,
+      'App status',
+      channelDescription: 'Ongoing app running indicator',
+      importance: Importance.low,
+      priority: Priority.low,
+      category: AndroidNotificationCategory.service,
+      visibility: NotificationVisibility.private,
+      ongoing: true,
+      autoCancel: false,
+      playSound: false,
+      enableVibration: false,
+      showWhen: false,
+      icon: '@mipmap/launcher_icon',
+    );
+
+    await _plugin.show(
+      _runningIndicatorNotificationId,
+      title,
+      body,
+      NotificationDetails(android: androidDetails),
+    );
+  }
+
+  @override
+  Future<void> hideAppRunningIndicator() async {
+    if (!Platform.isAndroid) return;
+    await _plugin.cancel(_runningIndicatorNotificationId);
   }
 
   void _onNotificationResponse(NotificationResponse response) {
