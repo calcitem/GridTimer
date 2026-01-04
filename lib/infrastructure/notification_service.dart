@@ -103,7 +103,7 @@ class NotificationService implements INotificationService {
     // in the Manifest may be stripped. This project uses @mipmap/launcher_icon in the
     // Manifest, so the notification default icon should remain consistent to avoid
     // "invalid_icon / no valid small icon" crashes.
-    const androidInit = AndroidInitializationSettings('@mipmap/launcher_icon');
+    const androidInit = AndroidInitializationSettings('ic_stat_timer');
     const iosInit = DarwinInitializationSettings();
     const initSettings = InitializationSettings(
       android: androidInit,
@@ -714,7 +714,7 @@ class NotificationService implements INotificationService {
     final title = useChineseText ? '九宫计时' : 'Grid Timer';
     final body = useChineseText ? '运行中' : 'Running';
 
-    final androidDetails = AndroidNotificationDetails(
+    final androidDetails = const AndroidNotificationDetails(
       _runningIndicatorChannelId,
       'App status',
       channelDescription: 'Ongoing app running indicator',
@@ -727,7 +727,7 @@ class NotificationService implements INotificationService {
       playSound: false,
       enableVibration: false,
       showWhen: false,
-      icon: '@mipmap/launcher_icon',
+      icon: 'ic_stat_timer',
     );
 
     await _plugin.show(
