@@ -162,10 +162,12 @@ Edit `android/app/src/main/kotlin/com/calcitem/gridtimer/MainActivity.kt` and ad
 
 **Known OEM Activity Names:**
 
-| OEM | Package | Activity | Notes |
-|-----|---------|----------|-------|
-| MIUI/HyperOS | `com.miui.securitycenter` | `com.miui.powercenter.legacypowerrank.PowerDetailActivity` | Per-app battery details |
-| Huawei/Honor | `com.huawei.systemmanager` | `com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity` | App launch management |
+| OEM | Package | Activity | Setting | Notes |
+|-----|---------|----------|---------|-------|
+| Stock Android 15 | `com.android.settings` | `.SubSettings` | Battery optimization | **Not directly accessible** (exported=false); falls back to app info page |
+| Stock Android 15 | `com.android.settings` | `.spa.SpaActivity` | Alarms & reminders | "Allow setting alarms and reminders" (often disabled by default) |
+| MIUI/HyperOS | `com.miui.securitycenter` | `com.miui.powercenter.legacypowerrank.PowerDetailActivity` | Battery optimization | Per-app battery details with "省电策略" option |
+| Huawei/Honor | `com.huawei.systemmanager` | `com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity` | App launch | App launch management |
 
 ### Permissions
 

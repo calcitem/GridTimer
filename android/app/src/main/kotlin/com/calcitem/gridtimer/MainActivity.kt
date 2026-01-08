@@ -729,21 +729,14 @@ class MainActivity: FlutterActivity() {
                         }
                     }
 
-                    // Priority 2: App details settings (universal fallback).
-                    // This is safer than ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS on MIUI,
-                    // which might redirect to the wrong "Battery Saver" toggle page.
+                    // Priority 2: App details settings.
+                    // Note: On stock Android, SubSettings is not exported (Permission Denial),
+                    // so we cannot directly open the per-app battery details page.
+                    // Best we can do is open app info page where user can tap "App battery usage".
                     intentsToTry.add(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                         data = Uri.parse("package:$packageName")
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     })
-
-                    // Priority 3: Standard Android battery optimization list.
-                    // On non-MIUI devices, this opens the list where user can select "All apps".
-                    if (manufacturerType != "miui") {
-                        intentsToTry.add(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        })
-                    }
 
                     // Priority 4: General settings as last resort
 
