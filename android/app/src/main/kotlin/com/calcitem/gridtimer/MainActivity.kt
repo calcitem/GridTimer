@@ -29,7 +29,9 @@ class MainActivity: FlutterActivity() {
      * Only outputs in debug builds (BuildConfig.DEBUG).
      */
     private fun debugLog(tag: String, message: String, data: Map<String, Any?> = emptyMap()) {
-        if (!com.calcitem.gridtimer.BuildConfig.DEBUG) return
+        // Only log in debug builds
+        val isDebug = (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
+        if (!isDebug) return
         val dataStr = if (data.isNotEmpty()) {
             " | " + data.entries.joinToString(", ") { "${it.key}=${it.value}" }
         } else ""
