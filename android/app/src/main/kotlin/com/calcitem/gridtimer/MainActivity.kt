@@ -29,7 +29,7 @@ class MainActivity: FlutterActivity() {
      * Only outputs in debug builds (BuildConfig.DEBUG).
      */
     private fun debugLog(tag: String, message: String, data: Map<String, Any?> = emptyMap()) {
-        if (!BuildConfig.DEBUG) return
+        if (!com.calcitem.gridtimer.BuildConfig.DEBUG) return
         val dataStr = if (data.isNotEmpty()) {
             " | " + data.entries.joinToString(", ") { "${it.key}=${it.value}" }
         } else ""
