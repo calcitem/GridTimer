@@ -26,8 +26,10 @@ class MainActivity: FlutterActivity() {
      * Use `adb logcat -s GridTimerDebug:D` to view logs.
      *
      * This helps debug which Intent works on different OEM ROMs (MIUI, EMUI, etc.).
+     * Only outputs in debug builds (BuildConfig.DEBUG).
      */
     private fun debugLog(tag: String, message: String, data: Map<String, Any?> = emptyMap()) {
+        if (!BuildConfig.DEBUG) return
         val dataStr = if (data.isNotEmpty()) {
             " | " + data.entries.joinToString(", ") { "${it.key}=${it.value}" }
         } else ""
