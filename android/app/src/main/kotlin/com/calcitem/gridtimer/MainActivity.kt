@@ -21,6 +21,18 @@ import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity: FlutterActivity() {
+    /**
+     * Debug logging for battery optimization settings intent resolution.
+     * Use `adb logcat -s GridTimerDebug:D` to view logs.
+     *
+     * This helps debug which Intent works on different OEM ROMs (MIUI, EMUI, etc.).
+     */
+    private fun debugLog(tag: String, message: String, data: Map<String, Any?> = emptyMap()) {
+        val dataStr = if (data.isNotEmpty()) {
+            " | " + data.entries.joinToString(", ") { "${it.key}=${it.value}" }
+        } else ""
+        android.util.Log.d("GridTimerDebug", "[$tag] $message$dataStr")
+    }
     private val systemSettingsChannelName = "com.calcitem.gridtimer/system_settings"
     private val volumeKeyEventChannelName = "com.calcitem.gridtimer/volume_key_events"
     private var testRingtone: Ringtone? = null
@@ -589,27 +601,82 @@ class MainActivity: FlutterActivity() {
                     // leads to Google Play rejection for non-core apps.
                     when (manufacturerType) {
                         "miui" -> {
-                            // MIUI-specific battery saver settings
-                            intentsToTry.add(Intent().apply {
-                                setClassName(
+                            // MIUI-specific battery saver / background restriction settings.
+                            // On some MIUI/HyperOS versions, these activities live in different
+                            // packages (e.g. SecurityCenter) even if the class name stays the same.
+                            val appLabel = applicationInfo.loadLabel(packageManager)?.toString() ?: packageName
+                            val appUid = applicationInfo.uid
+
+                            fun miuiAppBatteryIntent(targetPackage: String, targetActivity: String): Intent {
+                                return Intent().apply {
+                                    setClassName(targetPackage, targetActivity)
+                                    putExtra("package_name", packageName)
+                                    putExtra("package_label", appLabel)
+                                    // Some MIUI builds require UID to open the per-app page.
+                                    putExtra("package_uid", appUid)
+                                    putExtra("app_uid", appUid)
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }
+                            }
+
+                            // Method 1: PowerDetailActivity - per-app "Power Detail" page (HyperOS/MIUI 14+).
+                            // This directly opens the battery detail page.
+                            intentsToTry.add(
+                                miuiAppBatteryIntent(
+                                    "com.miui.securitycenter",
+                                    "com.miui.powercenter.legacypowerrank.PowerDetailActivity"
+                                )
+                            )
+
+                            // Method 2: AppEnergySettings - per-app "App Energy Settings" page (older MIUI).
+                            intentsToTry.add(
+                                miuiAppBatteryIntent(
+                                    "com.miui.securitycenter",
+                                    "com.miui.permcenter.energy.AppEnergySettings"
+                                )
+                            )
+                            intentsToTry.add(
+                                miuiAppBatteryIntent(
+                                    "com.miui.powerkeeper",
+                                    "com.miui.permcenter.energy.AppEnergySettings"
+                                )
+                            )
+
+                            // Method 2: HiddenAppsConfigActivity - per-app "No restrictions" page.
+                            intentsToTry.add(
+                                miuiAppBatteryIntent(
                                     "com.miui.powerkeeper",
                                     "com.miui.powerkeeper.ui.HiddenAppsConfigActivity"
                                 )
-                                putExtra("package_name", packageName)
-                                putExtra("package_label", applicationInfo.loadLabel(packageManager))
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            })
+                            )
+                            intentsToTry.add(
+                                miuiAppBatteryIntent(
+                                    "com.miui.securitycenter",
+                                    "com.miui.powerkeeper.ui.HiddenAppsConfigActivity"
+                                )
+                            )
 
-                            intentsToTry.add(Intent().apply {
-                                action = "miui.intent.action.POWER_SAVE_MODE_SETTING"
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            })
-
-                            intentsToTry.add(Intent().apply {
-                                setClassName(
+                            // Method 3: Container management list (some MIUI versions).
+                            intentsToTry.add(
+                                miuiAppBatteryIntent(
                                     "com.miui.powerkeeper",
                                     "com.miui.powerkeeper.ui.HiddenAppsContainerManagementActivity"
                                 )
+                            )
+                            intentsToTry.add(
+                                miuiAppBatteryIntent(
+                                    "com.miui.securitycenter",
+                                    "com.miui.powerkeeper.ui.HiddenAppsContainerManagementActivity"
+                                )
+                            )
+
+                            // Method 4: Try to open app details with battery section hint.
+                            // On newer MIUI/HyperOS, per-app battery settings are only accessible
+                            // from app details page -> "Power Save Strategy" entry.
+                            // We prioritize app details over global battery settings because
+                            // global pages (PowerSettings) don't show per-app options.
+                            intentsToTry.add(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.parse("package:$packageName")
                                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             })
                         }
@@ -662,35 +729,81 @@ class MainActivity: FlutterActivity() {
                         }
                     }
 
-                    // Priority 3: App details settings (universal fallback, better UX than list)
+                    // Priority 2: App details settings (universal fallback).
+                    // This is safer than ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS on MIUI,
+                    // which might redirect to the wrong "Battery Saver" toggle page.
                     intentsToTry.add(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                         data = Uri.parse("package:$packageName")
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     })
 
-                    // Priority 4: Standard Android battery optimization list (last resort specific setting)
-                    intentsToTry.add(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    })
+                    // Priority 3: Standard Android battery optimization list.
+                    // On non-MIUI devices, this opens the list where user can select "All apps".
+                    if (manufacturerType != "miui") {
+                        intentsToTry.add(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        })
+                    }
 
-                    // Priority 5: General settings as last resort
+                    // Priority 4: General settings as last resort
+
                     intentsToTry.add(Intent(Settings.ACTION_SETTINGS).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     })
 
                     var success = false
                     var lastError: Exception? = null
+                    var successIndex = -1
 
-                    for (intent in intentsToTry) {
+                    // #region agent log
+                    debugLog("A", "Starting battery settings intent loop", mapOf(
+                        "manufacturerType" to manufacturerType,
+                        "totalIntents" to intentsToTry.size
+                    ))
+                    // #endregion
+
+                    for ((index, intent) in intentsToTry.withIndex()) {
+                        val intentDesc = intent.component?.className ?: intent.action ?: "unknown"
+                        val intentPkg = intent.component?.packageName ?: "no-package"
                         try {
+                            // #region agent log
+                            debugLog("B", "Trying intent $index", mapOf(
+                                "index" to index,
+                                "package" to intentPkg,
+                                "activity" to intentDesc
+                            ))
+                            // #endregion
                             startActivity(intent)
                             success = true
+                            successIndex = index
+                            // #region agent log
+                            debugLog("C", "SUCCESS: Intent $index started", mapOf(
+                                "index" to index,
+                                "package" to intentPkg,
+                                "activity" to intentDesc
+                            ))
+                            // #endregion
                             break
                         } catch (e: Exception) {
                             lastError = e
-                            // Try next intent
+                            // #region agent log
+                            debugLog("D", "FAILED: Intent $index", mapOf(
+                                "index" to index,
+                                "package" to intentPkg,
+                                "activity" to intentDesc,
+                                "error" to (e.message ?: "unknown error")
+                            ))
+                            // #endregion
                         }
                     }
+
+                    // #region agent log
+                    debugLog("E", "Intent loop finished", mapOf(
+                        "success" to success,
+                        "successIndex" to successIndex,
+                        "lastError" to (lastError?.message ?: "none")
+                    ))
+                    // #endregion
 
                     if (success) {
                         result.success(null)

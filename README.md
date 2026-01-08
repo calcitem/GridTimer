@@ -129,6 +129,44 @@ adb install build/app/outputs/flutter-apk/app-release.apk
 - These restrictions prevent monkey tests from leaving the app or opening external activities
 - Monkey test parameters focus on touch and motion events with 500ms throttle
 
+### Debugging OEM Battery Settings Intent
+
+Different Android OEM ROMs (MIUI, EMUI, ColorOS, etc.) use different Activities for battery optimization settings. When the "Open Battery Optimization Settings" button opens the wrong page on a specific device, use this method to find the correct Activity:
+
+**Step 1: Enable debug logging**
+
+The app includes built-in debug logging for battery settings intent resolution. View logs with:
+
+```bash
+adb logcat -s GridTimerDebug:D
+```
+
+**Step 2: Find the correct Activity name**
+
+1. Manually navigate to the desired battery settings page on the device
+2. While on that page, run:
+
+```bash
+adb shell "dumpsys activity activities | grep -i resumed"
+```
+
+3. The output shows the current Activity, e.g.:
+
+```
+topResumedActivity=ActivityRecord{...com.miui.securitycenter/com.miui.powercenter.legacypowerrank.PowerDetailActivity...}
+```
+
+**Step 3: Add the Activity to the Intent list**
+
+Edit `android/app/src/main/kotlin/com/calcitem/gridtimer/MainActivity.kt` and add the discovered Activity to the appropriate manufacturer's Intent list in the `openBatteryOptimizationSettings` handler.
+
+**Known OEM Activity Names:**
+
+| OEM | Package | Activity | Notes |
+|-----|---------|----------|-------|
+| MIUI/HyperOS | `com.miui.securitycenter` | `com.miui.powercenter.legacypowerrank.PowerDetailActivity` | Per-app battery details |
+| Huawei/Honor | `com.huawei.systemmanager` | `com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity` | App launch management |
+
 ### Permissions
 
 The app requires the following permissions for reliable operation:
