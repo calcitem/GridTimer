@@ -1,0 +1,42 @@
+# Build configuration for optimized code generation
+# This limits build_runner to only scan directories that need code generation,
+# significantly improving build speed by excluding UI/presentation layers.
+
+targets:
+  $default:
+    builders:
+      # Freezed builder - only scan domain entities
+      freezed|freezed:
+        generate_for:
+          include:
+            - lib/core/domain/entities/**
+
+      # JSON serializable builder - only scan domain entities
+      json_serializable|json_serializable:
+        generate_for:
+          include:
+            - lib/core/domain/entities/**
+
+      # Hive type adapter builder - only scan data models
+      hive_ce_generator|hive_type_adapter_generator:
+        generate_for:
+          include:
+            - lib/data/models/**
+
+      # Hive adapters generator
+      hive_ce_generator|hive_adapters_generator:
+        generate_for:
+          include:
+            - lib/data/models/**
+
+      # Hive registrar intermediate generator - needs to see all Hive types
+      hive_ce_generator|hive_registrar_intermediate_generator:
+        generate_for:
+          include:
+            - lib/data/models/**
+
+      # Source gen combining builder optimization
+      source_gen|combining_builder:
+        options:
+          ignore_for_file:
+            - type=lint
