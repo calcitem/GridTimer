@@ -1,16 +1,14 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive",
-    "task.allowAutomaticTasks": "on",
-    // Ensure exactly one trailing newline (no more, no less)
-    "files.trimFinalNewlines": true,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true,
-    // Git commit messages should trim trailing whitespace
-    "[git-commit]": {
-        "files.trimTrailingWhitespace": true
-    },
-    // Markdown files may need trailing whitespace for line breaks
-    "[markdown]": {
-        "files.trimTrailingWhitespace": false
-    }
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "task.allowAutomaticTasks": "on",
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "[git-commit]": {
+    "files.trimTrailingWhitespace": true
+  },
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  },
+  "dart.flutterSdkPath": ".fvm/versions/3.38.5"
 }

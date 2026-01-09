@@ -52,12 +52,16 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-android/.gradle
+android/.gradle/
+android/.kotlin/
 android/captures/
-android/.externalNativeBuild
+android/.externalNativeBuild/
 android/.cxx/
 android/local.properties
 android/key.properties
+
+# Gradle build cache (configured in settings.gradle)
+android/build-cache/
 
 # Generated files
 *.g.dart

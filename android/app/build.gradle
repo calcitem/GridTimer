@@ -41,6 +41,10 @@ android {
         jvmTarget = '17'
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
