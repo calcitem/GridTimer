@@ -13,6 +13,7 @@ REM Parse arguments
 set "BUILD_MODE=debug"
 set "CLEAN_BUILD=0"
 set "USE_NINJA=0"
+set "OFFLINE_BUILD=0"
 
 :parse_args
 if "%~1"=="" goto :end_parse
@@ -20,6 +21,7 @@ if /i "%~1"=="--release" set "BUILD_MODE=release"
 if /i "%~1"=="--profile" set "BUILD_MODE=profile"
 if /i "%~1"=="--clean" set "CLEAN_BUILD=1"
 if /i "%~1"=="--ninja" set "USE_NINJA=1"
+if /i "%~1"=="--offline" set "OFFLINE_BUILD=1"
 if /i "%~1"=="--help" goto :show_help
 shift
 goto :parse_args
@@ -31,6 +33,7 @@ echo   Grid Timer Fast Build
 echo   Mode: %BUILD_MODE%
 echo   Clean: %CLEAN_BUILD%
 echo   Ninja: %USE_NINJA%
+echo   Offline: %OFFLINE_BUILD%
 echo ========================================
 echo.
 
@@ -56,6 +59,15 @@ REM Run flutter build with optimizations
 echo [3/4] Running Flutter build...
 echo.
 
+REM Configure build args
+set "BUILD_ARGS=--%BUILD_MODE%"
+
+if "%OFFLINE_BUILD%"=="1" (
+    echo [2a/4] Resolving dependencies offline...
+    call flutter pub get --offline
+    set "BUILD_ARGS=%BUILD_ARGS% --no-pub"
+)
+
 if "%USE_NINJA%"=="1" (
     REM Using Ninja generator (requires Ninja to be installed)
     REM Install via: winget install Ninja-build.Ninja
@@ -63,12 +75,12 @@ if "%USE_NINJA%"=="1" (
 
     REM Configure with Ninja
     set "CMAKE_GENERATOR=Ninja"
-    flutter build windows --%BUILD_MODE%
+    flutter build windows %BUILD_ARGS%
 ) else (
     REM Standard MSBuild with parallel compilation
     REM /m enables parallel project builds, /p:CL_MPCount sets compiler parallelism
     set "MSBUILD_ARGS=/m /p:CL_MPCount=%NUMBER_OF_PROCESSORS%"
-    flutter build windows --%BUILD_MODE%
+    flutter build windows %BUILD_ARGS%
 )
 
 if %ERRORLEVEL% neq 0 (
@@ -92,10 +104,12 @@ echo   --release  Build in release mode
 echo   --profile  Build in profile mode
 echo   --clean    Clean build (removes build cache)
 echo   --ninja    Use Ninja build system (faster, requires Ninja installed)
+echo   --offline  Build offline (skips dependency updates, faster)
 echo   --help     Show this help message
 echo.
 echo Examples:
 echo   fast-build.bat                    # Debug incremental build
+echo   fast-build.bat --offline          # Offline debug build (fastest)
 echo   fast-build.bat --release          # Release incremental build
 echo   fast-build.bat --clean --debug    # Clean debug build
 echo   fast-build.bat --ninja --release  # Release build with Ninja
