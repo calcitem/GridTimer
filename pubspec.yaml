@@ -22,7 +22,7 @@ dependencies:
 
   # Audio + TTS
   audioplayers: 6.5.1
-  flutter_tts: ^4.0.2
+  flutter_tts: ^4.2.5
 
   # Permissions & Settings
   permission_handler: 12.0.1
