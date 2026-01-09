@@ -6,6 +6,23 @@ project(grid_timer LANGUAGES CXX)
 # the on-disk name of your application.
 set(BINARY_NAME "grid_timer")
 
+# === Build Performance Optimizations ===
+# Enable parallel compilation for MSVC
+if(MSVC)
+  # /MP enables parallel compilation across multiple source files
+  add_compile_options(/MP)
+  # Reduce debug info size for faster linking
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_options(/Zi)  # Use /Zi instead of /ZI for faster incremental builds
+    add_link_options(/DEBUG:FASTLINK)  # Faster debug linking
+  endif()
+endif()
+
+# Set output directories to reduce I/O overhead
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.
 cmake_policy(VERSION 3.14...3.25)
