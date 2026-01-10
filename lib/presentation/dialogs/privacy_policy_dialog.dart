@@ -1,28 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/config/environment_config.dart';
+import '../../core/config/supported_locales.dart';
 import '../../l10n/app_localizations.dart';
 
-/// Privacy policy dialog shown on first app launch for Chinese locale users.
+/// Privacy policy dialog shown on first app launch for locales that require it.
 ///
 /// This dialog displays a privacy policy notice and allows the user to view
 /// the full privacy policy on the website before agreeing to continue.
+///
+/// Which locales require this dialog is configured in [SupportedLocales].
 class PrivacyPolicyDialog extends StatelessWidget {
-  const PrivacyPolicyDialog({super.key});
+  const PrivacyPolicyDialog({super.key, required this.privacyPolicyUrl});
 
-  /// Chinese privacy policy URL.
-  static const String _privacyPolicyUrlZh =
-      'https://calcitem.github.io/GridTimer/privacy-policy_zh';
+  /// Privacy policy URL to display.
+  final String privacyPolicyUrl;
 
   /// Show the privacy policy dialog.
   ///
+  /// [privacyPolicyUrl] - The URL to the privacy policy page. If not provided,
+  /// falls back to the default URL from [SupportedLocales].
+  ///
   /// Returns true if user clicks "I Agree", false otherwise.
   /// The dialog cannot be dismissed by tapping outside (barrierDismissible: false).
-  static Future<bool> show(BuildContext context) async {
+  static Future<bool> show(
+    BuildContext context, {
+    String? privacyPolicyUrl,
+  }) async {
+    final url = privacyPolicyUrl ?? SupportedLocales.defaultPrivacyPolicyUrl;
     final result = await showDialog<bool>(
       context: context,
       barrierDismissible: false, // User must explicitly click a button
-      builder: (context) => const PrivacyPolicyDialog(),
+      builder: (context) => PrivacyPolicyDialog(privacyPolicyUrl: url),
     );
     return result ?? false;
   }
@@ -31,13 +40,11 @@ class PrivacyPolicyDialog extends StatelessWidget {
   Future<void> _launchPrivacyPolicy() async {
     // Block URL launching in test environment to prevent interference with Monkey testing
     if (EnvironmentConfig.test) {
-      debugPrint(
-        'URL launch blocked in test environment: $_privacyPolicyUrlZh',
-      );
+      debugPrint('URL launch blocked in test environment: $privacyPolicyUrl');
       return;
     }
 
-    final uri = Uri.parse(_privacyPolicyUrlZh);
+    final uri = Uri.parse(privacyPolicyUrl);
     // Try to launch URL directly without canLaunchUrl check
     // canLaunchUrl can return false on some devices even when URL can be launched
     try {

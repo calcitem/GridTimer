@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../core/config/environment_config.dart';
+import '../../core/config/supported_locales.dart';
 import '../../core/domain/entities/timer_grid_set.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
@@ -34,24 +35,6 @@ class _GridPageState extends ConsumerState<GridPage> {
     }
   }
 
-  /// Check if the effective locale is Chinese.
-  ///
-  /// Returns true if:
-  /// - User explicitly selected Chinese, OR
-  /// - User is following system and system locale is Chinese
-  bool _isChineseLocale(BuildContext context) {
-    final userLocale = ref.read(localeProvider);
-
-    // If user has explicitly set a locale, use that
-    if (userLocale != null) {
-      return userLocale.languageCode == 'zh';
-    }
-
-    // Otherwise, check the system locale via Localizations
-    final systemLocale = Localizations.localeOf(context);
-    return systemLocale.languageCode == 'zh';
-  }
-
   /// Check if disclaimers need to be shown and display them if necessary.
   ///
   /// NOTE: For new users, privacy policy is shown in OnboardingPage before
@@ -59,11 +42,11 @@ class _GridPageState extends ConsumerState<GridPage> {
   /// - Users who completed onboarding before privacy policy was added
   /// - Direct navigation to GridPage (error recovery scenarios)
   ///
-  /// For Chinese locale users:
+  /// For locales that require privacy policy (configured in SupportedLocales):
   /// 1. Show privacy policy dialog first (if not yet accepted)
   /// 2. Then show safety disclaimer (if not yet accepted)
   ///
-  /// For non-Chinese users:
+  /// For other locales:
   /// - Only show safety disclaimer (if not yet accepted)
   Future<void> _checkAndShowDisclaimers() async {
     // Wait for settings to be loaded asynchronously
@@ -92,17 +75,29 @@ class _GridPageState extends ConsumerState<GridPage> {
         return;
       }
 
-      // Check if Chinese locale and privacy policy not yet accepted
-      final isChinese = _isChineseLocale(context);
-      debugPrint('GridPage: Is Chinese locale = $isChinese');
+      // Check if locale requires privacy policy and not yet accepted
+      final userLocale = ref.read(localeProvider);
+      final systemLocale = Localizations.localeOf(context);
+      final requiresPrivacyPolicy = SupportedLocales.requiresPrivacyPolicy(
+        userLocale,
+        systemLocale,
+      );
+      debugPrint('GridPage: Requires privacy policy = $requiresPrivacyPolicy');
       debugPrint(
         'GridPage: Privacy policy accepted = ${settings.privacyPolicyAccepted}',
       );
 
-      if (isChinese && !settings.privacyPolicyAccepted) {
+      if (requiresPrivacyPolicy && !settings.privacyPolicyAccepted) {
         debugPrint('GridPage: Showing privacy policy dialog');
 
-        final accepted = await PrivacyPolicyDialog.show(context);
+        final privacyPolicyUrl = SupportedLocales.getPrivacyPolicyUrl(
+          userLocale,
+          systemLocale,
+        );
+        final accepted = await PrivacyPolicyDialog.show(
+          context,
+          privacyPolicyUrl: privacyPolicyUrl,
+        );
 
         debugPrint(
           'GridPage: User ${accepted ? "accepted" : "dismissed"} privacy policy',

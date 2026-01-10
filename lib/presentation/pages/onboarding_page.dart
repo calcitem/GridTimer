@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../core/config/environment_config.dart';
+import '../../core/config/supported_locales.dart';
 import '../../l10n/app_localizations.dart';
 import '../dialogs/privacy_policy_dialog.dart';
 import 'grid_page.dart';
@@ -142,27 +143,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     _checkPermissions();
   }
 
-  /// Check if the effective locale is Chinese.
-  ///
-  /// Returns true if:
-  /// - User explicitly selected Chinese, OR
-  /// - User is following system and system locale is Chinese
-  bool _isChineseLocale(BuildContext context) {
-    final userLocale = ref.read(localeProvider);
-
-    // If user has explicitly set a locale, use that
-    if (userLocale != null) {
-      return userLocale.languageCode == 'zh';
-    }
-
-    // Otherwise, check the system locale via Localizations
-    final systemLocale = Localizations.localeOf(context);
-    return systemLocale.languageCode == 'zh';
-  }
-
   /// Check if privacy policy needs to be shown and display it if necessary.
   ///
-  /// For Chinese locale users:
+  /// For locales that require privacy policy (configured in SupportedLocales):
   /// - Show privacy policy dialog first (if not yet accepted)
   ///
   /// This runs BEFORE the onboarding wizard starts, ensuring users see
@@ -196,17 +179,31 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         return;
       }
 
-      // Check if Chinese locale and privacy policy not yet accepted
-      final isChinese = _isChineseLocale(context);
-      debugPrint('OnboardingPage: Is Chinese locale = $isChinese');
+      // Check if locale requires privacy policy and not yet accepted
+      final userLocale = ref.read(localeProvider);
+      final systemLocale = Localizations.localeOf(context);
+      final requiresPrivacyPolicy = SupportedLocales.requiresPrivacyPolicy(
+        userLocale,
+        systemLocale,
+      );
+      debugPrint(
+        'OnboardingPage: Requires privacy policy = $requiresPrivacyPolicy',
+      );
       debugPrint(
         'OnboardingPage: Privacy policy accepted = ${settings.privacyPolicyAccepted}',
       );
 
-      if (isChinese && !settings.privacyPolicyAccepted) {
+      if (requiresPrivacyPolicy && !settings.privacyPolicyAccepted) {
         debugPrint('OnboardingPage: Showing privacy policy dialog');
 
-        final accepted = await PrivacyPolicyDialog.show(context);
+        final privacyPolicyUrl = SupportedLocales.getPrivacyPolicyUrl(
+          userLocale,
+          systemLocale,
+        );
+        final accepted = await PrivacyPolicyDialog.show(
+          context,
+          privacyPolicyUrl: privacyPolicyUrl,
+        );
 
         debugPrint(
           'OnboardingPage: User ${accepted ? "accepted" : "dismissed"} privacy policy',

@@ -851,8 +851,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
 
   /// Open privacy policy URL based on locale.
   ///
-  /// Chinese locale: https://calcitem.github.io/GridTimer/privacy-policy_zh
-  /// Non-Chinese: https://calcitem.github.io/GridTimer/privacy-policy
+  /// Uses [SupportedLocales] to get the appropriate URL for the current locale.
   Future<void> _openPrivacyPolicy(Locale? locale) async {
     // Block URL launching in test environment to prevent interference with Monkey testing
     if (EnvironmentConfig.test) {
@@ -860,10 +859,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
       return;
     }
 
-    final isChinese = _isChineseLocale(locale);
-    final url = isChinese
-        ? 'https://calcitem.github.io/GridTimer/privacy-policy_zh'
-        : 'https://calcitem.github.io/GridTimer/privacy-policy';
+    final systemLocale = WidgetsBinding.instance.platformDispatcher.locale;
+    final url = SupportedLocales.getPrivacyPolicyUrl(locale, systemLocale);
 
     final uri = Uri.parse(url);
     // Try to launch URL directly without canLaunchUrl check
@@ -873,20 +870,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
     } catch (e) {
       debugPrint('Failed to launch URL: $e');
     }
-  }
-
-  /// Check if the effective locale is Chinese.
-  bool _isChineseLocale(Locale? userLocale) {
-    // If user has explicitly set a locale, use that
-    if (userLocale != null) {
-      return userLocale.languageCode == 'zh';
-    }
-
-    // Otherwise, check the system locale
-    // On Web, accessing Platform.localeName can fail or give different results.
-    // However, platformDispatcher.locale is generally safe.
-    final systemLocale = WidgetsBinding.instance.platformDispatcher.locale;
-    return systemLocale.languageCode == 'zh';
   }
 
   /// Show vibration warning dialog.
