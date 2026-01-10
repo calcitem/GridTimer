@@ -254,6 +254,7 @@
   "onboardingFullScreenIntentTitle": "全屏提醒权限",
   "onboardingFullScreenIntentDesc": "Android 14+ 需要允许「全屏提醒」才能在锁屏弹出全屏提醒。\n\n请在设置中为九宫计时开启此权限。",
   "onboardingGrantFullScreenIntent": "打开设置",
+  "onboardingOpenFullScreenIntentSettings": "打开全屏提醒设置",
   "onboardingBatteryTitle": "电池优化",
   "onboardingBatteryDesc": "为防止系统在后台关闭计时器，建议将九宫计时设置为“不优化电池使用”。\n\n这可确保长时间计时器不会被中断。\n\n提示：部分设备点击“打开电池优化设置”可能无法跳转，或跳转后看不到对应选项。请在系统设置中手动搜索「电池优化」「省电」「自启动」「后台运行」等，并将九宫计时设为“不优化 / 无限制”。",
   "onboardingOpenBatterySettings": "打开电池优化设置",
