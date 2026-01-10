@@ -429,6 +429,23 @@
     "description": "Test TTS button"
   },
 
+  "ttsTestMessage": "Timer 1 time is up",
+  "@ttsTestMessage": {
+    "description": "Localized test message for TTS"
+  },
+
+  "unitSecondsShort": "s",
+  "@unitSecondsShort": {
+    "description": "Short unit for seconds"
+  },
+  "unitMinutesShort": "min",
+  "@unitMinutesShort": {
+    "description": "Short unit for minutes"
+  },
+  "unitHoursShort": "h",
+  "@unitHoursShort": {
+    "description": "Short unit for hours"
+  },
   "gridDurationsSettings": "Grid Settings",
   "@gridDurationsSettings": {
     "description": "Grid durations settings option"

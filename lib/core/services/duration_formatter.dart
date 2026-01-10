@@ -1,3 +1,7 @@
+import 'dart:ui';
+
+import '../../l10n/app_localizations.dart';
+
 /// Duration name formatter with localization support.
 ///
 /// This utility formats duration values with localized units.
@@ -5,78 +9,31 @@
 /// making it suitable for use in service layers.
 ///
 /// To add a new language:
-/// 1. Add unit translations to the _timeUnits map below
-/// 2. Update lib/core/config/supported_locales.dart
-/// 3. Update lib/core/services/service_localizations.dart
-/// 4. Create corresponding ARB file
+/// 1. Create corresponding ARB file
+/// 2. Run ./tool/gen.sh to regenerate localization files
+/// 3. Update lib/core/config/supported_locales.dart
 class DurationFormatter {
-  final String _locale;
+  final AppLocalizations _l10n;
 
-  DurationFormatter(this._locale);
+  DurationFormatter(String localeName)
+      : _l10n = lookupAppLocalizations(_parseLocale(localeName));
 
-  /// Get language code from locale string.
-  String get _languageCode {
-    if (_locale.contains('_') || _locale.contains('-')) {
-      return _locale.split(RegExp('[_-]')).first;
+  /// Parse locale string to Locale object.
+  static Locale _parseLocale(String localeName) {
+    String languageCode = localeName;
+    String? countryCode;
+
+    if (localeName.contains('_')) {
+      final parts = localeName.split('_');
+      languageCode = parts[0];
+      if (parts.length > 1) countryCode = parts[1];
+    } else if (localeName.contains('-')) {
+      final parts = localeName.split('-');
+      languageCode = parts[0];
+      if (parts.length > 1) countryCode = parts[1];
     }
-    return _locale;
-  }
 
-  /// Centralized time unit translations.
-  ///
-  /// Add new language translations here when extending language support.
-  static const Map<String, Map<String, String>> _timeUnits = {
-    'en': {
-      'seconds': 's',
-      'minutes': 'min',
-      'hours': 'h',
-    },
-    'zh': {
-      'seconds': '秒',
-      'minutes': '分钟',
-      'hours': '小时',
-    },
-    // Add more languages here:
-    // 'ja': {
-    //   'seconds': '秒',
-    //   'minutes': '分',
-    //   'hours': '時間',
-    // },
-    // 'ko': {
-    //   'seconds': '초',
-    //   'minutes': '분',
-    //   'hours': '시간',
-    // },
-    // 'es': {
-    //   'seconds': 's',
-    //   'minutes': 'min',
-    //   'hours': 'h',
-    // },
-    // 'fr': {
-    //   'seconds': 's',
-    //   'minutes': 'min',
-    //   'hours': 'h',
-    // },
-    // 'de': {
-    //   'seconds': 's',
-    //   'minutes': 'Min',
-    //   'hours': 'Std',
-    // },
-    // 'ru': {
-    //   'seconds': 'с',
-    //   'minutes': 'мин',
-    //   'hours': 'ч',
-    // },
-  };
-
-  /// Get unit translation, falling back to English if not found.
-  String _getUnit(String unitKey) {
-    final langUnits = _timeUnits[_languageCode];
-    if (langUnits != null && langUnits.containsKey(unitKey)) {
-      return langUnits[unitKey]!;
-    }
-    // Fallback to English
-    return _timeUnits['en']![unitKey] ?? unitKey;
+    return Locale(languageCode, countryCode);
   }
 
   /// Format duration in seconds to a human-readable string with localized units.
@@ -86,13 +43,13 @@ class DurationFormatter {
   /// - English: "12 s", "2 min", "1 h"
   String format(int seconds) {
     if (seconds < 60) {
-      return '$seconds ${_getUnit('seconds')}';
+      return '$seconds ${_l10n.unitSecondsShort}';
     } else if (seconds < 3600) {
       final minutes = seconds ~/ 60;
-      return '$minutes ${_getUnit('minutes')}';
+      return '$minutes ${_l10n.unitMinutesShort}';
     } else {
       final hours = seconds ~/ 3600;
-      return '$hours ${_getUnit('hours')}';
+      return '$hours ${_l10n.unitHoursShort}';
     }
   }
 }

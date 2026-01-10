@@ -15,8 +15,6 @@ import 'app/providers.dart';
 import 'core/config/constants.dart';
 import 'core/config/environment_config.dart';
 import 'l10n/app_localizations.dart';
-import 'l10n/app_localizations_en.dart';
-import 'l10n/app_localizations_zh.dart';
 import 'presentation/pages/grid_page.dart';
 import 'presentation/pages/onboarding_page.dart';
 
@@ -179,14 +177,11 @@ Future<bool> _tryAcquireHiveLock() async {
 AppLocalizations _getLocalizationsForSystemLocale() {
   final systemLocale = PlatformDispatcher.instance.locale;
 
-  // Match language code to supported localizations
-  switch (systemLocale.languageCode) {
-    case 'zh':
-      return AppLocalizationsZh();
-    case 'en':
-    default:
-      // Default to English for unsupported languages
-      return AppLocalizationsEn();
+  try {
+    return lookupAppLocalizations(systemLocale);
+  } catch (_) {
+    // Fallback to English for unsupported languages
+    return lookupAppLocalizations(const Locale('en'));
   }
 }
 

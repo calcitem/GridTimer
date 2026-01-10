@@ -95,6 +95,10 @@
   "playing": "播放中...",
   "testTts": "测试语音",
 
+  "ttsTestMessage": "计时器 1 时间到了",
+  "unitSecondsShort": "秒",
+  "unitMinutesShort": "分钟",
+  "unitHoursShort": "小时",
   "gridDurationsSettings": "九宫格设置",
   "gridDurationsSettingsDesc": "自定义每个宫格的名称和时长",
   "gridSlot": "宫格 {index}",

@@ -1,127 +1,74 @@
+import 'dart:ui';
+
+import '../../l10n/app_localizations.dart';
+
 /// Localization helper for service layer (domain-independent).
 ///
 /// This class provides localized strings for infrastructure services
 /// that cannot access Flutter's BuildContext or AppLocalizations.
-/// It supports multiple languages and can be easily extended.
+/// It uses the generated AppLocalizations directly to ensure consistency
+/// with the UI.
 ///
 /// To add a new language:
-/// 1. Add entries to the _translations map below
-/// 2. Update lib/core/config/supported_locales.dart
-/// 3. Create corresponding ARB file (lib/l10n/arb/app_<code>.arb)
+/// 1. Create corresponding ARB file (lib/l10n/arb/app_<code>.arb)
+/// 2. Run ./tool/gen.sh to regenerate localization files
+/// 3. Update lib/core/config/supported_locales.dart (for language selection UI)
 class ServiceLocalizations {
-  final String _locale;
+  final AppLocalizations _l10n;
 
-  ServiceLocalizations(this._locale);
+  ServiceLocalizations(String localeName)
+    : _l10n = lookupAppLocalizations(_parseLocale(localeName));
 
-  /// Get language code from locale string.
-  String get _languageCode {
-    if (_locale.contains('_') || _locale.contains('-')) {
-      return _locale.split(RegExp('[_-]')).first;
+  /// Parse locale string to Locale object.
+  static Locale _parseLocale(String localeName) {
+    String languageCode = localeName;
+    String? countryCode;
+
+    if (localeName.contains('_')) {
+      final parts = localeName.split('_');
+      languageCode = parts[0];
+      if (parts.length > 1) countryCode = parts[1];
+    } else if (localeName.contains('-')) {
+      final parts = localeName.split('-');
+      languageCode = parts[0];
+      if (parts.length > 1) countryCode = parts[1];
     }
-    return _locale;
-  }
 
-  /// Centralized translation map.
-  ///
-  /// Add new language translations here when extending language support.
-  static const Map<String, Map<String, String>> _translations = {
-    'en': {
-      'timeIsUp': 'Time is up!',
-      'stop': 'Stop',
-      'appTitle': 'Grid Timer',
-      'running': 'Running',
-      'tapToOpen': 'Tap to open app',
-      'ttsTestMessage': 'Timer 1 time is up',
-      'timerRinging': 'timer ringing',
-      'timersRinging': 'timers ringing',
-      'timerActive': 'timer active',
-      'timersActive': 'timers active',
-      'timeIsUpTemplate': '{name} time is up',
-    },
-    'zh': {
-      'timeIsUp': '时间到!',
-      'stop': '停止',
-      'appTitle': '九宫计时',
-      'running': '运行中',
-      'tapToOpen': '点击打开应用',
-      'ttsTestMessage': '计时器 1 时间到了',
-      'timerRinging': '个计时器响铃',
-      'timersRinging': '个计时器响铃',
-      'timerActive': '个计时器运行中',
-      'timersActive': '个计时器运行中',
-      'timeIsUpTemplate': '{name} 时间到',
-    },
-    // Add more languages here:
-    // 'ja': {
-    //   'timeIsUp': '時間です!',
-    //   'stop': '停止',
-    //   'appTitle': 'グリッドタイマー',
-    //   'running': '実行中',
-    //   'tapToOpen': 'タップして開く',
-    //   'ttsTestMessage': 'タイマー 1 時間です',
-    //   'timerRinging': 'タイマーが鳴っています',
-    //   'timersRinging': 'タイマーが鳴っています',
-    //   'timerActive': 'タイマーが実行中',
-    //   'timersActive': 'タイマーが実行中',
-    //   'timeIsUpTemplate': '{name} 時間です',
-    // },
-  };
-
-  /// Get translation for a key, falling back to English if not found.
-  String _translate(String key) {
-    final langTranslations = _translations[_languageCode];
-    if (langTranslations != null && langTranslations.containsKey(key)) {
-      return langTranslations[key]!;
-    }
-    // Fallback to English
-    return _translations['en']![key] ?? key;
+    return Locale(languageCode, countryCode);
   }
 
   /// Get localized "Time is up!" notification body text.
-  String get timeIsUp => _translate('timeIsUp');
+  String get timeIsUp => _l10n.timeIsUp;
 
   /// Get localized "Stop" button text.
-  String get stop => _translate('stop');
+  String get stop => _l10n.actionStop;
 
   /// Get localized app title.
-  String get appTitle => _translate('appTitle');
+  String get appTitle => _l10n.appTitle;
 
   /// Get localized "Running" status text.
-  String get running => _translate('running');
+  String get running => _l10n.timerRunning;
 
   /// Get localized "tap to open" text for widgets.
-  String get tapToOpen => _translate('tapToOpen');
+  String get tapToOpen => _l10n.widgetTapToOpen;
 
   /// Get localized test message for TTS.
-  String get ttsTestMessage => _translate('ttsTestMessage');
+  String get ttsTestMessage => _l10n.ttsTestMessage;
 
   /// Get localized "time is up" suffix for TTS.
   ///
   /// Example: "Timer 1 time is up" or "计时器 1 时间到"
   String timeIsUpSuffix(String timerName) {
-    final template = _translate('timeIsUpTemplate');
-    return template.replaceAll('{name}', timerName);
+    return _l10n.timeUpTts(timerName);
   }
 
   /// Get localized "timer ringing" count text for widgets.
   String timersRinging(int count) {
-    if (_languageCode == 'zh') {
-      // Chinese uses the same form for singular and plural
-      return '$count ${_translate('timersRinging')}';
-    }
-    // English and most other languages
-    final key = count == 1 ? 'timerRinging' : 'timersRinging';
-    return count == 1 ? '1 ${_translate(key)}' : '$count ${_translate(key)}';
+    return _l10n.widgetTimersRinging(count);
   }
 
   /// Get localized "timer active" count text for widgets.
   String timersActive(int count) {
-    if (_languageCode == 'zh') {
-      // Chinese uses the same form for singular and plural
-      return '$count ${_translate('timersActive')}';
-    }
-    // English and most other languages
-    final key = count == 1 ? 'timerActive' : 'timersActive';
-    return count == 1 ? '1 ${_translate(key)}' : '$count ${_translate(key)}';
+    return _l10n.widgetTimersActive(count);
   }
 }

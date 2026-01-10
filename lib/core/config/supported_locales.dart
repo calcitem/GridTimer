@@ -51,11 +51,9 @@ class SupportedLocales {
   /// List of all supported languages.
   ///
   /// To add a new language:
-  /// 1. Add an entry here
+  /// 1. Add an entry here (for native name and TTS locale)
   /// 2. Create corresponding ARB file (lib/l10n/arb/app_<code>.arb)
-  /// 3. Update ServiceLocalizations (lib/core/services/service_localizations.dart)
-  /// 4. Update DurationFormatter (lib/core/services/duration_formatter.dart)
-  /// 5. Run ./tool/gen.sh to regenerate localization files
+  /// 3. Run ./tool/gen.sh to regenerate localization files
   static const List<SupportedLanguage> languages = [
     SupportedLanguage(
       code: 'en',
