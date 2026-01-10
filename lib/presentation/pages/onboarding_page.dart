@@ -27,6 +27,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   // Permission statuses
   bool _notificationGranted = false;
   bool _exactAlarmGranted = false;
+  bool _fullScreenIntentGranted = false;
   bool _batteryOptimizationIgnored = false;
 
   // Android SDK version (0 = non-Android or unknown)
@@ -96,11 +97,13 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
     bool notification = false;
     bool exactAlarm = false;
+    bool fullScreenIntent = false;
     bool batteryIgnored = false;
 
     if (!kIsWeb) {
       notification = await permissionService.canPostNotifications();
       exactAlarm = await permissionService.canScheduleExactAlarms();
+      fullScreenIntent = await permissionService.canUseFullScreenIntent();
 
       // Battery optimization: checking if *ignoring* optimizations is enabled.
       // Only applicable on Android (and potentially iOS in future, but mainly Android)
@@ -121,18 +124,15 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       // Web platform defaults
       notification = true;
       exactAlarm = true;
+      fullScreenIntent = true;
       batteryIgnored = true;
     }
-
-    // Full screen intent (Android 14+)
-    // Permission.scheduleExactAlarm covers exact alarms.
-    // Full screen intent is special.
-    // We'll trust the service or basic checks.
 
     if (mounted) {
       setState(() {
         _notificationGranted = notification;
         _exactAlarmGranted = exactAlarm;
+        _fullScreenIntentGranted = fullScreenIntent;
         _batteryOptimizationIgnored = batteryIgnored;
       });
     }
@@ -280,6 +280,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       if (isAndroid || isIOS) _buildNotificationStep(isAndroid),
       // Exact alarm: Android 12+ only
       if (isAndroid) _buildExactAlarmStep(),
+      // Full-screen intent: Android 14+ only
+      if (isAndroid && _androidSdkVersion >= 34) _buildFullScreenIntentStep(),
       // Battery optimization: Android only
       if (isAndroid) _buildBatteryStep(),
       // Alarm sound: Android 8.0+ (API 26+) where notification channels exist
@@ -515,6 +517,28 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       description: description,
       icon: Icons.access_alarm,
       action: action,
+    );
+  }
+
+  Widget _buildFullScreenIntentStep() {
+    final l10n = AppLocalizations.of(context)!;
+
+    // Android 14+ full-screen intent permission step
+    return _buildStepContainer(
+      title: l10n.onboardingFullScreenIntentTitle,
+      description: l10n.onboardingFullScreenIntentDesc,
+      icon: Icons.fullscreen,
+      action: _fullScreenIntentGranted
+          ? const _GrantedLabel()
+          : ElevatedButton.icon(
+              onPressed: () async {
+                final service = ref.read(permissionServiceProvider);
+                await service.openFullScreenIntentSettings();
+                // Status will be refreshed when app resumes via lifecycle observer
+              },
+              icon: const Icon(Icons.settings),
+              label: Text(l10n.onboardingGrantFullScreenIntent),
+            ),
     );
   }
 

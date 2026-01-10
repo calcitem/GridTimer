@@ -749,6 +749,26 @@
     "description": "Description for exact alarm permission on Android 13"
   },
 
+  "fullScreenIntentPermission": "Full-screen intent permission",
+  "@fullScreenIntentPermission": {
+    "description": "Full-screen intent special access option (Android 14+)"
+  },
+
+  "fullScreenIntentPermissionDesc": "Allow full-screen alerts when a timer rings on the lock screen (Android 14+)",
+  "@fullScreenIntentPermissionDesc": {
+    "description": "Description for full-screen intent permission"
+  },
+
+  "fullScreenIntentStatusGranted": "Allowed",
+  "@fullScreenIntentStatusGranted": {
+    "description": "Full-screen intent permission status: allowed"
+  },
+
+  "fullScreenIntentStatusDenied": "Not allowed (May not show full-screen alert)",
+  "@fullScreenIntentStatusDenied": {
+    "description": "Full-screen intent permission status: not allowed"
+  },
+
   "batteryOptimizationSettings": "Battery Optimization Settings",
   "@batteryOptimizationSettings": {
     "description": "Battery optimization settings option"
@@ -799,7 +819,7 @@
     "description": "Intro text for the alarm troubleshooting dialog"
   },
 
-  "alarmTroubleshootingSteps": "1. Turn off Do Not Disturb and raise Alarm volume\n2. Enable notifications for Grid Timer\n3. In the \"Timer Alarm (default)\" channel, make sure sound is not Silent\n4. Disable battery optimizations for Grid Timer (allow background running)\n5. Android 14+: allow \"Alarms & reminders\" (exact alarms)",
+  "alarmTroubleshootingSteps": "1. Turn off Do Not Disturb and raise Alarm volume\n2. Enable notifications for Grid Timer\n3. In the \"Timer Alarm (default)\" channel, make sure sound is not Silent\n4. Disable battery optimizations for Grid Timer (allow background running)\n5. Android 14+: allow \"Alarms & reminders\" (exact alarms)\n6. Android 14+: allow \"Full-screen intents\"",
   "@alarmTroubleshootingSteps": {
     "description": "Step-by-step checklist for alarm troubleshooting"
   },
@@ -827,6 +847,11 @@
   "alarmTroubleshootingOpenExactAlarm": "Enable exact alarms",
   "@alarmTroubleshootingOpenExactAlarm": {
     "description": "Button label to open exact alarm permission/settings page"
+  },
+
+  "alarmTroubleshootingOpenFullScreenIntent": "Enable full-screen alerts",
+  "@alarmTroubleshootingOpenFullScreenIntent": {
+    "description": "Button label to open full-screen intent special access page (Android 14+)"
   },
 
   "alarmTroubleshootingOpenBattery": "Disable battery optimization",
@@ -1159,6 +1184,26 @@
   "onboardingGrantExactAlarm": "Grant Exact Alarm Permission",
   "@onboardingGrantExactAlarm": {
     "description": "Grant exact alarm permission button"
+  },
+
+  "onboardingFullScreenIntentTitle": "Full-screen alerts",
+  "@onboardingFullScreenIntentTitle": {
+    "description": "Onboarding full-screen intent step title (Android 14+)"
+  },
+
+  "onboardingFullScreenIntentDesc": "Android 14+ may require a special app access to show full-screen alerts on the lock screen.\n\nPlease allow \"Full-screen intents\" for Grid Timer to improve alarm reliability.",
+
+  "onboardingGrantFullScreenIntent": "Open Settings",
+  "@onboardingGrantFullScreenIntent": {
+    "description": "Button to open full-screen intent settings"
+  },
+  "@onboardingFullScreenIntentDesc": {
+    "description": "Onboarding full-screen intent step description (Android 14+)"
+  },
+
+  "onboardingOpenFullScreenIntentSettings": "Open full-screen intent settings",
+  "@onboardingOpenFullScreenIntentSettings": {
+    "description": "Button label to open full-screen intent settings (Android 14+)"
   },
 
   "onboardingBatteryTitle": "Battery Optimization",

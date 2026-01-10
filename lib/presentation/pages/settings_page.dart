@@ -480,6 +480,29 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
               },
             ),
 
+            // Full-Screen Intent Permission with status (Android 14+ only)
+            _PermissionStatusTile(
+              key: ValueKey('fullscreen_$_permissionRefreshKey'),
+              icon: Icons.fullscreen,
+              title: l10n.fullScreenIntentPermission,
+              description: l10n.fullScreenIntentPermissionDesc,
+              statusFuture: ref
+                  .read(permissionServiceProvider)
+                  .canUseFullScreenIntent(),
+              grantedText: l10n.fullScreenIntentStatusGranted,
+              deniedText: l10n.fullScreenIntentStatusDenied,
+              notRequiredText: l10n.permissionNotRequiredStatus,
+              buttonText: l10n.settingsButton,
+              androidSdkVersion: _androidSdkVersion,
+              // Android 14 (API 34)+ restricts full-screen intents
+              minSdkVersionRequired: 34,
+              onButtonPressed: () async {
+                final permissionService = ref.read(permissionServiceProvider);
+                await permissionService.openFullScreenIntentSettings();
+                // Status will be refreshed when app resumes via lifecycle observer
+              },
+            ),
+
             // Battery Optimization with status
             _BatteryOptimizationTile(
               key: ValueKey('battery_$_permissionRefreshKey'),

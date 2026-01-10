@@ -169,6 +169,27 @@ class _AlarmTroubleshootingDialogState
                   label: Text(l10n.alarmTroubleshootingOpenExactAlarm),
                 ),
                 const SizedBox(height: 12),
+                // Full-screen intent settings (Android 14+ only)
+                if (_androidSdkVersion >= 34) ...[
+                  FilledButton.icon(
+                    onPressed: () async {
+                      try {
+                        await permissionService.openFullScreenIntentSettings();
+                      } catch (e) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(l10n.errorText(e.toString())),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    icon: const Icon(Icons.fullscreen),
+                    label: Text(l10n.alarmTroubleshootingOpenFullScreenIntent),
+                  ),
+                  const SizedBox(height: 12),
+                ],
                 FilledButton.icon(
                   onPressed: () async {
                     try {
