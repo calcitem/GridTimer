@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 import '../core/domain/enums.dart';
 import '../core/domain/services/i_audio_service.dart';
 import '../core/domain/types.dart';
+import 'wav_duration.dart';
 import 'windows_wav_player.dart';
 
 /// Windows-specific audio service implementation using winmm PlaySound API via FFI.
@@ -42,12 +44,19 @@ import 'windows_wav_player.dart';
 /// - `windows_wav_player_ffi.dart` for the native PlaySound implementation
 class WindowsAudioService implements IAudioService {
   static const String _alarmAssetKey = 'assets/sounds/sound.wav';
+  static const Duration _playOnceFallbackDuration = Duration(seconds: 2);
+  static const Duration _playOnceTimerSafetyPadding = Duration(
+    milliseconds: 100,
+  );
 
   final WindowsWavPlayer _wavPlayer = createWindowsWavPlayer();
 
   double _currentVolume = 1.0;
   bool _isInitialized = false;
   bool _isPlaying = false;
+
+  int _playbackSessionId = 0;
+  Duration _playOnceDuration = _playOnceFallbackDuration;
 
   Timer? _autoStopTimer;
   Timer? _intervalTimer;
@@ -57,6 +66,27 @@ class WindowsAudioService implements IAudioService {
     if (_isInitialized) return;
     try {
       await _wavPlayer.init(assetKey: _alarmAssetKey);
+
+      // Parse the WAV duration so we can track playOnce completion more accurately
+      // than using a hard-coded delay.
+      try {
+        final data = await rootBundle.load(_alarmAssetKey);
+        final bytes = data.buffer.asUint8List(
+          data.offsetInBytes,
+          data.lengthInBytes,
+        );
+        final parsed = tryParsePcmWavDuration(bytes);
+        if (parsed != null) {
+          _playOnceDuration = parsed;
+        } else {
+          assert(false, 'Failed to parse WAV duration for $_alarmAssetKey');
+          _playOnceDuration = _playOnceFallbackDuration;
+        }
+      } catch (e) {
+        assert(false, 'Failed to load WAV asset for duration parsing: $e');
+        _playOnceDuration = _playOnceFallbackDuration;
+      }
+
       _isInitialized = true;
     } catch (e) {
       // Fail fast in debug; in release, keep running without audio.
@@ -110,19 +140,31 @@ class WindowsAudioService implements IAudioService {
 
     switch (mode) {
       case AudioPlaybackMode.playOnce:
+        final sessionId = ++_playbackSessionId;
         _isPlaying = true;
         await _wavPlayer.playOnce();
-        // No reliable completion callback; mark as not playing shortly after.
-        Timer(const Duration(seconds: 2), () => _isPlaying = false);
+        // There is no native completion callback for PlaySoundW async playback.
+        // Track completion using the actual WAV duration (with a small padding),
+        // and guard against stale timers with a session id.
+        _autoStopTimer?.cancel();
+        _autoStopTimer = Timer(
+          _playOnceDuration + _playOnceTimerSafetyPadding,
+          () {
+            if (_playbackSessionId != sessionId) return;
+            _isPlaying = false;
+          },
+        );
         return;
 
       case AudioPlaybackMode.loopIndefinitely:
+        ++_playbackSessionId;
         _isPlaying = true;
         await _wavPlayer.playLoop();
         return;
 
       case AudioPlaybackMode.loopForDuration:
         assert(loopDurationMinutes > 0, 'loopDurationMinutes must be > 0');
+        ++_playbackSessionId;
         _isPlaying = true;
         await _wavPlayer.playLoop();
         _autoStopTimer = Timer(Duration(minutes: loopDurationMinutes), () {
@@ -131,6 +173,7 @@ class WindowsAudioService implements IAudioService {
         return;
 
       case AudioPlaybackMode.loopWithInterval:
+        ++_playbackSessionId;
         _startIntervalMode(
           loopDurationMinutes: loopDurationMinutes,
           intervalPauseMinutes: intervalPauseMinutes,
@@ -139,6 +182,7 @@ class WindowsAudioService implements IAudioService {
         return;
 
       case AudioPlaybackMode.loopWithIntervalRepeating:
+        ++_playbackSessionId;
         _startIntervalMode(
           loopDurationMinutes: loopDurationMinutes,
           intervalPauseMinutes: intervalPauseMinutes,
@@ -199,6 +243,7 @@ class WindowsAudioService implements IAudioService {
 
   @override
   Future<void> stop() async {
+    ++_playbackSessionId;
     _autoStopTimer?.cancel();
     _intervalTimer?.cancel();
     _autoStopTimer = null;
