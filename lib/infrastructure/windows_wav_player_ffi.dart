@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
@@ -6,7 +7,46 @@ import 'package:flutter/services.dart';
 
 import 'windows_wav_player_interface.dart';
 
-WindowsWavPlayer createWindowsWavPlayerImpl() => _WinmmWavPlayer();
+/// Creates the platform-specific WAV player implementation.
+///
+/// This factory function is conditionally imported based on FFI availability.
+/// However, the FFI implementation (using winmm.dll) only works on Windows.
+/// For defensive programming, we check the platform at runtime and return
+/// a stub implementation on non-Windows platforms.
+///
+/// Note: In normal usage, WindowsAudioService is only instantiated on Windows
+/// (see audioServiceProvider in lib/app/providers.dart), so the stub should
+/// never be used. This check is an additional safety measure.
+WindowsWavPlayer createWindowsWavPlayerImpl() {
+  if (!Platform.isWindows) {
+    assert(
+      false,
+      'WindowsWavPlayer FFI implementation should only be used on Windows. '
+      'Check audioServiceProvider platform logic.',
+    );
+    // Return stub as fallback to prevent crashes
+    return _FallbackStubWavPlayer();
+  }
+  return _WinmmWavPlayer();
+}
+
+/// Fallback stub implementation for non-Windows platforms.
+///
+/// This should never be instantiated in production due to platform checks
+/// in audioServiceProvider, but provides a safety net.
+class _FallbackStubWavPlayer implements WindowsWavPlayer {
+  @override
+  Future<void> init({required String assetKey}) async {}
+
+  @override
+  Future<void> playLoop() async {}
+
+  @override
+  Future<void> playOnce() async {}
+
+  @override
+  Future<void> stop() async {}
+}
 
 typedef _PlaySoundNative =
     Int32 Function(Pointer<Void> pszSound, Pointer<Void> hmod, Uint32 fdwSound);
