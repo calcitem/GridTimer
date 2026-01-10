@@ -545,6 +545,16 @@
     "description": "Minutes unit label"
   },
 
+  "audioPlaybackWhenEffectiveTitle": "Important Notice",
+  "@audioPlaybackWhenEffectiveTitle": {
+    "description": "Title for when audio playback settings are effective"
+  },
+
+  "audioPlaybackWhenEffectiveDesc": "These settings only apply to the default alarm sound.\n\nIf you customized the notification sound in system settings, the alarm will loop continuously until stopped (these playback settings will not apply).",
+  "@audioPlaybackWhenEffectiveDesc": {
+    "description": "Description explaining when audio playback settings are effective"
+  },
+
   "safetyDisclaimerTitle": "Safety Notice",
   "@safetyDisclaimerTitle": {
     "description": "Safety disclaimer dialog title"

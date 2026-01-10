@@ -47,6 +47,55 @@ class AudioPlaybackSettingsPage extends ConsumerWidget {
       body: settingsAsync.when(
         data: (settings) => ListView(
           children: [
+            // Important Notice Card
+            Container(
+              margin: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade900.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(8.0),
+                border: Border.all(
+                  color: Colors.blue.shade700,
+                  width: 1,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        color: Colors.blue.shade300,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          l10n.audioPlaybackWhenEffectiveTitle,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue.shade300,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.audioPlaybackWhenEffectiveDesc,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.white70,
+                      height: 1.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             // Playback Mode Section
             Padding(
               padding: const EdgeInsets.all(16.0),

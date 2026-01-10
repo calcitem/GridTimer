@@ -119,6 +119,9 @@
   "intervalPause": "间隔暂停时长",
   "minutesUnit": "分钟",
 
+  "audioPlaybackWhenEffectiveTitle": "重要提示",
+  "audioPlaybackWhenEffectiveDesc": "这些设置仅对默认闹铃声音有效。\n\n如果您在系统通知设置中自定义了声音，闹铃将持续循环播放直到停止（不受此处播放设置控制）。",
+
   "safetyDisclaimerTitle": "安全使用提示",
   "safetyDisclaimerMessage": "为了您的安全，请了解以下重要信息：",
   "safetyRecommendedUses": "✅ 适用场景",
