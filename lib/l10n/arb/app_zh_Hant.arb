@@ -1,0 +1,432 @@
+{
+  "@@locale": "zh_Hant",
+
+  "appTitle": "九宮計時",
+  "timerIdle": "就緒",
+  "timerRunning": "運行中",
+  "timerPaused": "已暫停",
+  "timerRinging": "響鈴中",
+
+  "confirmStartTitle": "確認啟動？",
+  "confirmStartBody": "目前已有計時器在運行。要繼續啟動 {name} 嗎？",
+
+  "actionStart": "啟動",
+  "actionPause": "暫停",
+  "actionResume": "繼續",
+  "actionReset": "重置",
+  "actionStop": "停止",
+  "actionCancel": "取消",
+
+  "timerActions": "計時器操作",
+  "stopAlarm": "停止提醒",
+
+  "timeUpTts": "{name} 時間到了",
+
+  "timerIdleActions": "選擇操作",
+  "actionAdjustTime": "調整時間",
+  "adjustTimeTitle": "調整時間 - {slotName}",
+  "currentDuration": "目前: {minutes} 分 {seconds} 秒",
+  "durationUpdatedSuccessfully": "時長已更新",
+  "durationMustBePositive": "時長必須大於 0",
+
+  "idleGridClickBehaviorTitle": "點擊閒置格子行為",
+  "idleGridClickBehaviorDesc": "選擇點擊閒置格子時的行為",
+  "showDialogOption": "顯示操作對話框（推薦，防誤觸）",
+  "directStartOption": "直接啟動計時器（快捷模式）",
+
+  "permissionNotificationTitle": "開啟通知",
+  "permissionNotificationBody": "為了接收計時器提醒，請開啟通知權限。",
+
+  "permissionExactAlarmTitle": "開啟精確提醒",
+  "permissionExactAlarmBody": "為確保準時提醒，請開啟「鬧鐘和提醒」權限。",
+
+  "openSettings": "開啟設定",
+  "later": "稍後",
+
+  "minutes": "分鐘",
+  "remainingSeconds": "剩餘時間",
+  "pausing": "暫停中",
+  "timeUp": "時間到",
+  "clickToStop": "點擊停止",
+
+  "settings": "設定",
+  "appInformation": "應用資訊",
+  "version": "版本",
+  "versionInfo": "版本資訊",
+  "gitBranch": "Git 分支",
+  "gitRevision": "Git 提交雜湊",
+
+  "timerSettings": "計時器設定",
+  "soundSettings": "音量設定",
+  "soundSettingsDesc": "設定音量",
+  "ttsSettings": "語音播報設定",
+  "ttsSettingsDesc": "設定語音播報",
+  "languageSettings": "語言",
+  "languageSettingsDesc": "選擇應用語言",
+  "permissions": "權限",
+  "notificationPermission": "通知權限",
+  "notificationPermissionDesc": "允許計時器通知",
+  "about": "關於",
+  "license": "軟體授權",
+  "licenseDesc": "查看本應用授權",
+  "comingSoon": "即將推出",
+  "selectLanguage": "選擇語言",
+  "languageEnglish": "English",
+  "languageChineseSimplified": "簡體中文",
+
+  "errorText": "錯誤：{error}",
+  "confirmStart": "目前已有計時器在運行。要繼續啟動此計時器嗎？",
+
+  "flashAnimation": "閃爍動畫",
+  "flashAnimationDesc": "響鈴時紅色閃爍",
+  "vibration": "震動",
+  "vibrationDesc": "響鈴時震動",
+  "keepScreenOn": "保持螢幕常亮",
+  "keepScreenOnDesc": "計時器運行時防止螢幕休眠",
+  "showMinutesSecondsFormat": "顯示分秒格式",
+  "showMinutesSecondsFormatDesc": "倒數顯示為分:秒格式（關閉則顯示總秒數）",
+  "ttsEnabled": "語音播報",
+  "ttsEnabledDesc": "計時結束時語音播報",
+
+  "alarmSound": "提醒聲音",
+  "alarmSoundDesc": "選擇計時器提醒聲音",
+  "volume": "音量",
+  "volumeDesc": "調整提醒音量",
+  "systemVolumeHint": "如果音量不夠大，可在系統設定中調整鬧鐘音量。Android 裝置可按實體音量鍵後點擊選單（三個點）來單獨設定鬧鐘音量。",
+
+  "autoRaiseAlarmVolumeTitle": "自動提升鬧鐘音量",
+  "autoRaiseAlarmVolumeDesc": "計時結束響鈴時暫時提高系統「鬧鐘」音量，停止後恢復原來的音量。",
+  "alarmVolumeBoostLevelTitle": "提升到",
+  "alarmVolumeBoostLevelMinAudible": "最低可聽（推薦）",
+  "alarmVolumeBoostLevelMax": "最大",
+  "autoRaiseAlarmVolumeNote": "提示：此功能會修改系統「鬧鐘」音量。停止響鈴後會恢復原來的音量（或在 {minutes} 分鐘後自動恢復）。",
+
+  "vibrationSystemWarning": "已為您切換應用內的震動設定。但請注意，手機系統的震動設定（如勿擾模式、系統震動開關等）也可能影響實際是否震動。如需確保震動生效，請同時檢查系統設定。",
+  "openSystemVibrationSettings": "開啟系統震動設定",
+  "volumeButtonLockScreenHint": "某些系統僅在非鎖定螢幕狀態下按音量鍵才能生效",
+
+  "ttsLanguage": "語音播報語言",
+  "ttsLanguageDesc": "選擇語音播報語言",
+
+  "testSound": "測試聲音",
+  "playing": "播放中...",
+  "testTts": "測試語音",
+  "ttsTestMessage": "計時器 1 時間到了",
+
+  "unitSecondsShort": "秒",
+  "unitMinutesShort": "分鐘",
+  "unitHoursShort": "小時",
+
+  "gridDurationsSettings": "九宮格設定",
+  "gridDurationsSettingsDesc": "自訂每個宮格的名稱和時長",
+  "gridSlot": "宮格 {index}",
+
+  "seconds": "秒",
+  "hours": "小時",
+
+  "save": "儲存",
+  "reset": "重置",
+  "resetToDefault": "恢復預設",
+  "gridDurationsResetConfirm": "確定要將九宮格時長恢復為預設值嗎？",
+
+  "name": "名稱",
+  "optional": "可選",
+
+  "audioPlaybackSettings": "音訊播放設定",
+  "audioPlaybackSettingsDesc": "設定鬧鈴音訊播放模式",
+  "audioPlaybackMode": "播放模式",
+  "audioPlaybackModeLoopIndefinitely": "一直循環直到手動停止",
+  "audioPlaybackModeLoopForDuration": "循環播放 N 分鐘後自動停止",
+  "audioPlaybackModeLoopWithInterval": "循環 N 分鐘，間隔 M 分鐘，再循環 N 分鐘（共一次）",
+  "audioPlaybackModeLoopWithIntervalRepeating": "循環 N 分鐘，間隔 M 分鐘，重複直到停止",
+  "audioPlaybackModePlayOnce": "只播放一次",
+
+  "loopDuration": "循環時長",
+  "intervalPause": "間隔暫停時長",
+  "minutesUnit": "分鐘",
+
+  "audioPlaybackWhenEffectiveTitle": "重要提示",
+  "audioPlaybackWhenEffectiveDesc": "這些設定僅對預設鬧鈴聲音有效。\n\n如果您在系統通知設定中自訂了聲音，鬧鈴將持續循環播放直到停止（不受此處播放設定控制）。",
+
+  "safetyDisclaimerTitle": "安全使用提示",
+  "safetyDisclaimerMessage": "為了您的安全，請了解以下重要資訊：",
+  "safetyRecommendedUses": "✅ 適用情境",
+  "safetyRecommendedUsesList": "• 日常烹飪計時\n• 一般生活提醒\n• 非關鍵場合\n• 測試後使用",
+  "safetyNotRecommendedUses": "❌ 不適用情境",
+  "safetyNotRecommendedUsesList": "• 重要藥物提醒（請使用醫療級應用）\n• 生命攸關的提醒\n• 緊急醫療情境\n• 未經測試就依賴",
+  "safetyBestPractices": "💡 最佳實務：",
+  "safetyBestPracticesList": "• 使用前先測試鬧鐘是否正常\n• 關鍵任務請準備備用提醒方式\n• 檢查裝置的勿擾模式和通知權限\n• 了解應用的限制",
+  "safetyViewFullDisclaimer": "查看免責聲明",
+  "safetyAcceptAndContinue": "我理解，繼續使用",
+
+  "fullDisclaimerTitle": "免責聲明",
+  "fullDisclaimerText": "本軟體按「原樣」提供，不提供任何明示或暗示的擔保。\n\n開發者不對因使用本軟體而產生的任何後果負責，包括但不限於：錯過的提醒、不準確的計時、應用故障等。\n\n使用者應自行評估使用風險，並對關鍵任務準備備用方案。",
+
+  "close": "關閉",
+  "aboutDisclaimer": "安全提示與免責聲明",
+
+  "gestureSettings": "手勢控制設定",
+  "gestureSettingsDesc": "設定鬧鈴響起時的手勢操作",
+  "gestureActions": "手勢動作",
+
+  "gestureTypeScreenTap": "觸摸螢幕",
+  "gestureTypeVolumeUp": "音量+ 鍵",
+  "gestureTypeVolumeDown": "音量- 鍵",
+  "gestureTypeShake": "搖晃手機",
+  "gestureTypeFlip": "翻轉手機（螢幕朝下）",
+
+  "gestureActionStopAndReset": "停止並重置",
+  "gestureActionNone": "無動作",
+
+  "shakeSensitivity": "搖晃靈敏度",
+  "shakeSensitivityLow": "低（需要用力搖）",
+  "shakeSensitivityHigh": "高（輕輕搖即可）",
+  "shakeSensitivityDesc": "調整搖晃手機的靈敏度",
+
+  "gestureHint": "長輩友善：建議開啟觸摸螢幕、音量鍵和翻轉手機",
+  "gestureLimitationsHint": "提示：不同品牌 / 系統在鎖定螢幕狀態下可能會限制按鍵與感測器。若鎖定螢幕時手勢無回應，請先解鎖，再嘗試翻轉手機或按音量鍵。",
+
+  "onboardingCheckSoundTitle": "重要：檢查聲音",
+  "onboardingCheckSoundDesc": "請點擊下方按鈕，確保 \"Timer Alarm (default)\" 的聲音**不是**「無」或「靜音」。\n\n如果設為靜音，倒數結束時您將只收到通知而聽不到鈴聲。",
+  "onboardingCheckSoundBtn": "去檢查聲音設定",
+  "onboardingCheckSoundMiuiHint": "MIUI 使用者提示：如果無法在通知渠道中選擇聲音，這是正常的（MIUI 系統限制）。應用已自動啟用音訊播放功能，鬧鈴會正常響起。注意：響鈴時請盡量避免接收大量訊息通知，以免音訊被打斷。",
+
+  "grantPermission": "授予權限",
+  "notificationPermissionGranted": "通知權限已授予",
+  "notificationPermissionDenied": "通知權限被拒絕，請在系統設定中手動授予",
+
+  "exactAlarmPermission": "精確鬧鐘權限",
+  "exactAlarmPermissionDesc": "確保計時器準時通知（Android 12、14+ 必需）",
+  "exactAlarmPermissionDescApi33": "Android 13 預設預授予，可在系統設定中撤銷",
+
+  "fullScreenIntentPermission": "全螢幕提醒權限",
+  "fullScreenIntentPermissionDesc": "允許計時結束時在鎖定螢幕顯示全螢幕提醒（Android 14+）",
+  "fullScreenIntentStatusGranted": "已允許",
+  "fullScreenIntentStatusDenied": "未允許（可能無法全螢幕彈出）",
+
+  "batteryOptimizationSettings": "電池最佳化設定",
+  "batteryOptimizationDesc": "停用電池最佳化以確保背景鬧鐘可靠運行",
+
+  "alarmSoundSettings": "鬧鈴聲音設定",
+  "alarmSoundSettingsDesc": "如果 \"Timer Alarm (default)\" 聲音設為「無」，計時器將只顯示通知而無聲音",
+  "alarmSoundSettingsMiuiHint": "MIUI 使用者提示：由於 MIUI 系統限制，部分裝置可能無法修改通知渠道聲音。應用已自動啟用音訊播放功能確保鬧鈴正常響起。注意：應用內音訊可能會被其他訊息通知音打斷或音量降低，建議響鈴時避免接收大量訊息。",
+
+  "appKilledWarning": "重要提示：如果本應用被系統或使用者強制關閉，計時器將無法響鈴。請保持應用在背景運行，並關閉電池最佳化。",
+
+  "alarmTroubleshooting": "鬧鈴不響 / 延遲？",
+  "alarmTroubleshootingDesc": "不同 Android 版本 / 廠商 ROM 可能會限制背景提醒。點這裡查看解決方法。",
+  "alarmTroubleshootingDialogTitle": "提醒可靠性指南",
+  "alarmTroubleshootingDialogIntro": "不同 Android 版本與廠商 ROM（例如部分客製系統）對背景與通知的限制不同，這可能導致提醒無聲或延遲。我們會持續最佳化相容性，但仍建議按以下順序檢查：",
+  "alarmTroubleshootingSteps": "1. 關閉勿擾模式，並把「鬧鐘」音量調高\n2. 開啟本應用的通知權限\n3. 在「Timer Alarm (default)」通知渠道中，確認聲音不是「無 / 靜音」\n4. 關閉對本應用的電池最佳化 / 省電限制（允許背景運行）\n5. Android 12+：在「鬧鐘和提醒」裡允許「精確鬧鐘」\n6. Android 14+：在「全螢幕提醒」裡允許「全螢幕通知」",
+  "alarmTroubleshootingMiui": "部分客製系統：請在系統的應用管理 / 省電策略裡允許自啟動、允許背景彈出 / 背景運行，並避免激進省電；必要時可在最近任務中鎖定本應用。",
+
+  "alarmTroubleshootingQuickActions": "快捷入口",
+  "alarmTroubleshootingOpenChannel": "去檢查通知渠道聲音",
+  "alarmTroubleshootingOpenNotifications": "去檢查通知設定",
+  "alarmTroubleshootingOpenExactAlarm": "去開啟精確鬧鐘",
+  "alarmTroubleshootingOpenFullScreenIntent": "去開啟全螢幕提醒",
+  "alarmTroubleshootingOpenBattery": "去關閉電池最佳化",
+
+  "alarmReliabilityMode": "鬧鈴可靠性模式",
+  "alarmReliabilityModeDesc": "選擇鬧鈴的調度方式（影響 App 被殺後是否能響）",
+  "alarmReliabilityModeAppOnly": "僅 App 內",
+  "alarmReliabilityModeAppOnlyDesc": "最省電，但 App 被殺後不會響",
+  "alarmReliabilityModeNotification": "通知提醒",
+  "alarmReliabilityModeNotificationDesc": "使用系統定時通知，背景可靠性較好（推薦）",
+  "alarmReliabilityModeAlarmClock": "鬧鐘增強",
+  "alarmReliabilityModeAlarmClockDesc": "鬧鐘級可靠性，App 被殺也能響（更耗電）",
+
+  "alarmTroubleshootingViewSafetyNotice": "查看安全提示",
+
+  "goToSettings": "前往設定",
+  "settingsButton": "設定",
+
+  "failedToOpenChannelSettings": "開啟通知渠道設定失敗：{error}",
+
+  "developerModeEnabled": "開發者模式已啟用",
+  "developerModeDisabled": "開發者模式已停用",
+
+  "speaking": "播報中...",
+  "ttsTestFailed": "語音測試失敗，請檢查裝置的 TTS 設定",
+  "ttsTestTimeout": "語音測試逾時，請檢查裝置的 TTS 引擎是否正常",
+
+  "ttsTestFailedTitle": "語音測試未成功",
+  "ttsTestFailedMessage": "未能聽到語音播報。可能的原因：\n\n• TTS 引擎未正確設定\n• 中文語音包未安裝\n• 系統音量為靜音\n• 媒體音量過低\n\n請檢查系統設定或查看診斷資訊。",
+
+  "viewDiagnostics": "查看診斷",
+  "ttsDiagnostics": "TTS 診斷資訊",
+  "ttsEngine": "目前引擎",
+  "availableEngines": "可用引擎",
+  "availableLanguages": "可用語言",
+  "andMore": "還有 {count} 個...",
+
+  "ttsNoEngineTitle": "未偵測到語音引擎",
+  "ttsNoEngineMessage": "您的裝置上沒有可用的 TTS（文字轉語音）引擎。這在部分客製系統的裝置上較常見。",
+  "ttsNoEngineSteps": "請依下列步驟解決：\n\n1. 開啟「應用商店」\n2. 搜尋「Google 文字轉語音」或「訊飛語音引擎」\n3. 安裝語音引擎\n4. 安裝後開啟「設定 → 更多設定 → 無障礙 → 文字轉語音」\n5. 選擇剛安裝的引擎並下載中文語音包",
+
+  "ttsUnavailableTitle": "語音功能不可用",
+  "ttsUnavailableMessage": "您的裝置可能未安裝中文語音包。\n\n請依下列步驟操作：\n1. 開啟系統設定\n2. 搜尋「文字轉語音」或「TTS」\n3. 確保已安裝中文語音引擎\n4. 設定中文為預設語言",
+  "ttsUnavailableHint": "提示：部分裝置請檢查系統語音引擎設定，或安裝 Google TTS 語音引擎。",
+
+  "openTtsSettings": "開啟語音設定",
+  "ok": "確定",
+
+  "ttsSpeechRate": "語速",
+  "ttsPitch": "音調",
+  "ttsVolumeDesc": "調整語音播報音量",
+  "ttsSpeechRateDesc": "調整語音播報速度（0.5 為正常速度）",
+  "ttsPitchDesc": "調整語音播報音調（1.0 為正常音調）",
+
+  "ttsLanguageNote": "提示：如果自動偵測不準確，可以手動選擇語言。",
+  "ttsLanguageAutoDesc": "依應用語言自動選擇",
+
+  "followSystem": "跟隨系統",
+  "simplifiedChinese": "簡體中文",
+  "english": "English",
+
+  "speedVerySlow": "很慢",
+  "speedSlow": "慢",
+  "speedNormal": "正常",
+  "speedFast": "快",
+  "speedVeryFast": "很快",
+
+  "pitchVeryLow": "很低",
+  "pitchLow": "低",
+  "pitchNormal": "正常",
+  "pitchHigh": "高",
+  "pitchVeryHigh": "很高",
+
+  "onboardingNext": "下一步",
+  "onboardingStartUsing": "開始使用",
+
+  "onboardingWelcomeTitle": "歡迎使用九宮計時",
+  "onboardingWelcomeDesc": "為確保計時器準確運行，我們需要設定一些簡單的選項。\n\n這只需要一分鐘。",
+
+  "onboardingNotificationTitle": "通知權限",
+  "onboardingNotificationDesc": "本應用需要通知權限來在倒數結束時提醒您。\n\n沒有此權限，您可能會錯過計時完成提醒。",
+  "onboardingGrantNotification": "授予通知權限",
+
+  "onboardingExactAlarmTitle": "精確鬧鐘權限",
+  "onboardingExactAlarmDesc": "為確保計時器精確到秒，本應用需要「精確鬧鐘」權限。\n\n請在即將出現的對話框或設定中允許。",
+  "onboardingGrantExactAlarm": "授予精確鬧鐘權限",
+
+  "onboardingFullScreenIntentTitle": "全螢幕提醒權限",
+  "onboardingFullScreenIntentDesc": "Android 14+ 需要允許「全螢幕提醒」才能在鎖定螢幕彈出全螢幕提醒。\n\n請在設定中為本應用開啟此權限。",
+  "onboardingGrantFullScreenIntent": "開啟設定",
+  "onboardingOpenFullScreenIntentSettings": "開啟全螢幕提醒設定",
+
+  "onboardingBatteryTitle": "電池最佳化",
+  "onboardingBatteryDesc": "為防止系統在背景關閉計時器，建議將本應用設定為「不最佳化電池使用」。\n\n這可確保長時間計時器不會被中斷。\n\n提示：部分裝置點擊「開啟電池最佳化設定」可能無法跳轉，或跳轉後看不到對應選項。請在系統設定中手動搜尋「電池最佳化」「省電」「自啟動」「背景運行」等，並將本應用設為「不最佳化 / 無限制」。",
+  "onboardingOpenBatterySettings": "開啟電池最佳化設定",
+
+  "onboardingCompletionTitle": "準備就緒",
+  "onboardingCompletionDesc": "所有設定已完成！\n\n提示：不同裝置和系統版本的表現可能不同。建議先在鎖定螢幕 / 背景測試一次，再用於較長計時。\n\n您可以隨時在設定頁面重新設定這些選項。",
+
+  "onboardingGranted": "已授予",
+  "onboardingNotRequired": "無需手動設定",
+
+  "onboardingNotRequiredNotificationDesc": "您的 Android 版本（低於 13）預設允許通知，無需手動授權。",
+  "onboardingNotRequiredExactAlarmDesc": "您的 Android 版本（低於 12）預設支援精確鬧鐘，無需手動授權。",
+
+  "onboardingPreGrantedExactAlarmDesc": "Android 13 會自動向新安裝的應用預授予精確鬧鐘權限。\n\n如果您撤銷了此權限，可在「設定 → 應用 → {appName} → 鬧鐘和提醒」中重新開啟。",
+  "onboardingPreGranted": "已預授予",
+
+  "onboardingBatteryLegacyDesc": "為防止系統在背景關閉計時器，建議在省電設定中允許 {appName} 在省電模式下運行。\n\n路徑參考：設定 → 電池 / 電源管理 → 省電模式 → 省電模式下仍啟用的應用 → 勾選 {appName}\n\n提示：不同品牌和系統版本的路徑可能略有不同，請依實際情況查找相關選項。",
+
+  "permissionNotRequiredStatus": "無需手動設定（您的系統版本預設支援）",
+  "batteryOptimizationLegacyDesc": "請在省電設定中允許九宮計時在省電模式下運行。\n路徑參考：設定 → 電池 → 省電模式 → 省電模式下仍啟用的應用",
+
+  "privacyPolicy": "隱私政策",
+  "privacyPolicyTitle": "隱私政策",
+  "privacyPolicyMessage": "在使用本應用前，請閱讀並同意我們的隱私政策。",
+  "privacyPolicyAgree": "我同意",
+  "privacyPolicyViewDetails": "查看隱私政策",
+
+  "ossLicenses": "第三方授權",
+  "ossLicensesDesc": "查看第三方函式庫授權",
+
+  "resetAllSettings": "恢復預設設定",
+  "resetAllSettingsDesc": "將所有設定恢復為預設值",
+  "resetAllSettingsConfirmTitle": "恢復預設設定？",
+  "resetAllSettingsConfirmMessage": "這將把所有設定恢復為預設值。此操作不可撤銷。",
+  "resetAllSettingsExitMessage": "應用將在 {seconds} 秒後退出以完成重置...",
+  "resetAllSettingsSuccess": "設定重置成功",
+
+  "displaySettings": "顯示與無障礙",
+  "themeMode": "主題模式",
+  "themeModeDesc": "選擇視覺主題",
+  "themeSoftDark": "護眼深色",
+  "themeHighContrast": "高對比度",
+  "themeLightHighContrast": "日間高亮",
+  "themeTraditional": "傳統暖色",
+  "themePastelGarden": "柔彩花園",
+  "themeInkVermilion": "水墨丹青",
+  "themeGlacialBlue": "極地冰藍",
+  "themeClassicNavy": "經典深藍",
+
+  "permissionStatusGranted": "已授予",
+  "permissionStatusDenied": "未授予",
+  "batteryOptimizationStatusDisabled": "已關閉（推薦）",
+  "batteryOptimizationStatusEnabled": "已開啟（可能影響鬧鐘）",
+  "exactAlarmStatusGranted": "已允許",
+  "exactAlarmStatusDenied": "未允許（鬧鐘可能延遲）",
+  "batteryOptimizationStatusUnknown": "請手動檢查",
+
+  "batteryOptimizationMiuiHint": "MIUI 裝置：請在「省電策略」中設定為「無限制」",
+  "batteryOptimizationHuaweiHint": "華為/榮耀裝置：請在「應用啟動管理」中改為「手動管理」，並允許「背景運行」",
+  "batteryOptimizationOppoHint": "OPPO 裝置：在「應用詳情」中進入「耗電管理」，開啟「耗電行為控制」，選擇「完全允許背景行為」",
+  "batteryOptimizationVivoHint": "vivo 裝置：在「應用程式資訊」中進入「電量」，在「應用耗電詳情」中開啟「背景耗電管理」，選擇「允許背景高耗電」",
+  "batteryOptimizationOemHint": "提示：部分客製系統（MIUI / EMUI / HarmonyOS）可能需要手動在設定中搜尋「電池最佳化」、「自啟動」或「受保護應用」",
+  "batteryOptimizationStandardHint": "提示：如果找不到「無限制」選項，請嘗試點擊「允許背景使用」文字（而非開關）進入更多設定",
+
+  "gridDurationMustBePositive": "宮格 {index} 的時長必須是正整數",
+  "savedSuccessfullyGridUpdated": "儲存成功，九宮格已更新",
+  "activeTimersRunningConfigWillApplyOnRestart": "有計時器正在運行，設定將在下次啟動時生效",
+  "configurationSavedButErrorDuringUpdate": "設定已儲存，但應用更新時出錯：{error}",
+
+  "debugTools": "除錯工具",
+  "testTimer10s": "10 秒測試計時器（除錯）",
+  "testTimer10sDesc": "啟動一個真實的 10 秒計時器",
+  "start": "開始",
+
+  "audioTestDebug": "音訊測試（除錯）",
+  "audioTestDebugDesc": "診斷聲音問題",
+  "errorTestDebug": "錯誤測試（除錯）",
+  "errorTestDebugDesc": "測試錯誤回報系統",
+
+  "exitDeveloperMode": "退出開發者模式",
+  "exitDeveloperModeDesc": "點擊隱藏除錯工具",
+
+  "failedToStartTestTimer": "啟動測試計時器失敗：{error}",
+
+  "audioTest": "音訊測試",
+  "audioTestInstructions": "請依順序測試以下功能，並觀察是否有聲音輸出。\n如果某個測試失敗，則對應的功能存在問題。",
+  "clearLog": "清空日誌",
+  "startTest": "開始測試",
+  "testLog": "測試日誌：",
+  "waitingForTest": "等待測試...",
+  "testTimerStarted": "10 秒測試計時器已啟動！第一個宮格現已設為 10 秒。",
+  "stopActiveTimersBeforeTest": "啟動測試計時器前，請先停止所有運行中的計時器",
+
+  "timeIsUp": "時間到!",
+
+  "widgetTimersRinging": "{count, plural, other{{count} 個計時器響鈴}}",
+  "widgetTimersActive": "{count, plural, other{{count} 個計時器運行中}}",
+  "widgetTapToOpen": "點擊開啟應用",
+  "widgetTimerRemaining": "{name}: {remaining}",
+  "widgetDescription": "顯示九宮計時狀態",
+
+  "deviceType": "裝置/平台",
+  "deviceTypeMiui": "小米（MIUI）",
+  "deviceTypeHuawei": "華為/榮耀（EMUI/HarmonyOS）",
+  "deviceTypeOppo": "OPPO/Realme/OnePlus（ColorOS）",
+  "deviceTypeVivo": "vivo/iQOO（FuntouchOS/OriginOS）",
+  "deviceTypeStandard": "通用 Android",
+  "deviceTypeIos": "iOS",
+  "deviceTypeMacos": "macOS",
+  "deviceTypeWindows": "Windows",
+  "deviceTypeLinux": "Linux",
+  "deviceTypeWeb": "Web 瀏覽器",
+
+  "singleInstanceWarningMessage": "本程式已在運行中。\n\n同一時間只能運行一個實例。\n\n請使用已開啟的視窗，或先關閉它再啟動新的實例。"
+}

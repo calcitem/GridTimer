@@ -1,0 +1,1819 @@
+{
+  "@@locale": "de",
+
+  "appTitle": "Grid Timer",
+  "@appTitle": {
+    "description": "Application title"
+  },
+
+  "timerIdle": "Bereit",
+  "@timerIdle": {
+    "description": "Timer status: idle"
+  },
+
+  "timerRunning": "Läuft",
+  "@timerRunning": {
+    "description": "Timer status: running"
+  },
+
+  "timerPaused": "Pausiert",
+  "@timerPaused": {
+    "description": "Timer status: paused"
+  },
+
+  "timerRinging": "ALARM",
+  "@timerRinging": {
+    "description": "Timer status: ringing"
+  },
+
+  "confirmStartTitle": "Start bestätigen?",
+  "@confirmStartTitle": {
+    "description": "Dialog title when starting a new timer"
+  },
+
+  "confirmStartBody": "Andere Timer laufen bereits. Trotzdem {name} starten?",
+  "@confirmStartBody": {
+    "description": "Dialog body when starting a new timer",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Timer 1"
+      }
+    }
+  },
+
+  "actionStart": "Start",
+  "@actionStart": {
+    "description": "Action: start timer"
+  },
+
+  "actionPause": "Pause",
+  "@actionPause": {
+    "description": "Action: pause timer"
+  },
+
+  "actionResume": "Fortsetzen",
+  "@actionResume": {
+    "description": "Action: resume timer"
+  },
+
+  "actionReset": "Zurücksetzen",
+  "@actionReset": {
+    "description": "Action: reset timer"
+  },
+
+  "actionStop": "Stoppen",
+  "@actionStop": {
+    "description": "Action: stop alarm"
+  },
+
+  "actionCancel": "Abbrechen",
+  "@actionCancel": {
+    "description": "Action: cancel"
+  },
+
+  "timerActions": "Timer-Aktionen",
+  "@timerActions": {
+    "description": "Timer actions dialog title"
+  },
+
+  "stopAlarm": "Alarm stoppen",
+  "@stopAlarm": {
+    "description": "Button to stop ringing alarm"
+  },
+
+  "timeUpTts": "{name} ist abgelaufen",
+  "@timeUpTts": {
+    "description": "TTS announcement when timer completes",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Timer 1"
+      }
+    }
+  },
+
+  "timerIdleActions": "Aktion auswählen",
+  "@timerIdleActions": {
+    "description": "Dialog title for idle timer actions"
+  },
+
+  "actionAdjustTime": "Zeit anpassen",
+  "@actionAdjustTime": {
+    "description": "Action: adjust timer duration"
+  },
+
+  "adjustTimeTitle": "Zeit anpassen – {slotName}",
+  "@adjustTimeTitle": {
+    "description": "Title for time adjustment dialog",
+    "placeholders": {
+      "slotName": {
+        "type": "String",
+        "example": "Timer 1"
+      }
+    }
+  },
+
+  "currentDuration": "Aktuell: {minutes} Min {seconds} Sek",
+  "@currentDuration": {
+    "description": "Current duration preview",
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "5"
+      },
+      "seconds": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+
+  "durationUpdatedSuccessfully": "Dauer erfolgreich aktualisiert",
+  "@durationUpdatedSuccessfully": {
+    "description": "Success message when duration is updated"
+  },
+
+  "durationMustBePositive": "Dauer muss größer als 0 sein",
+  "@durationMustBePositive": {
+    "description": "Error message when duration is 0"
+  },
+
+  "idleGridClickBehaviorTitle": "Klickverhalten bei inaktivem Feld",
+  "@idleGridClickBehaviorTitle": {
+    "description": "Setting title for idle grid click behavior"
+  },
+
+  "idleGridClickBehaviorDesc": "Aktion beim Tippen auf ein inaktives Rasterfeld auswählen",
+  "@idleGridClickBehaviorDesc": {
+    "description": "Setting description for idle grid click behavior"
+  },
+
+  "showDialogOption": "Aktionsdialog anzeigen (empfohlen, verhindert versehentliches Tippen)",
+  "@showDialogOption": {
+    "description": "Option to show dialog when clicking idle grid"
+  },
+
+  "directStartOption": "Timer direkt starten (Schnellmodus)",
+  "@directStartOption": {
+    "description": "Option to start timer directly when clicking idle grid"
+  },
+
+  "permissionNotificationTitle": "Benachrichtigungen aktivieren",
+  "@permissionNotificationTitle": {
+    "description": "Permission guide: notification title"
+  },
+
+  "permissionNotificationBody": "Um Timer-Warnungen zu erhalten, bitte Benachrichtigungen aktivieren.",
+  "@permissionNotificationBody": {
+    "description": "Permission guide: notification body"
+  },
+
+  "permissionExactAlarmTitle": "Exakte Alarme aktivieren",
+  "@permissionExactAlarmTitle": {
+    "description": "Permission guide: exact alarm title"
+  },
+
+  "permissionExactAlarmBody": "Für präzise Timer-Warnungen bitte die Berechtigung „Alarme & Erinnerungen“ aktivieren.",
+  "@permissionExactAlarmBody": {
+    "description": "Permission guide: exact alarm body"
+  },
+
+  "openSettings": "Einstellungen öffnen",
+  "@openSettings": {
+    "description": "Button to open system settings"
+  },
+
+  "later": "Später",
+  "@later": {
+    "description": "Button to postpone action"
+  },
+
+  "minutes": "Minuten",
+  "@minutes": {
+    "description": "Label for minutes"
+  },
+
+  "remainingSeconds": "Restzeit",
+  "@remainingSeconds": {
+    "description": "Label for remaining time"
+  },
+
+  "pausing": "Pausiert",
+  "@pausing": {
+    "description": "Label when timer is paused"
+  },
+
+  "timeUp": "Zeit abgelaufen",
+  "@timeUp": {
+    "description": "Label when timer rings"
+  },
+
+  "clickToStop": "Tippen zum Stoppen",
+  "@clickToStop": {
+    "description": "Instruction to stop alarm"
+  },
+
+  "settings": "Einstellungen",
+  "@settings": {
+    "description": "Settings page title"
+  },
+
+  "appInformation": "App-Informationen",
+  "@appInformation": {
+    "description": "Section: App Information"
+  },
+
+  "version": "Version",
+  "@version": {
+    "description": "Label for app version"
+  },
+
+  "versionInfo": "Versionsinformationen",
+  "@versionInfo": {
+    "description": "Title for version information dialog"
+  },
+
+  "gitBranch": "Git-Branch",
+  "@gitBranch": {
+    "description": "Label for Git branch"
+  },
+
+  "gitRevision": "Git-Revision",
+  "@gitRevision": {
+    "description": "Label for Git commit revision (SHA-1 hash)"
+  },
+
+  "timerSettings": "Timer-Einstellungen",
+  "@timerSettings": {
+    "description": "Section: Timer Settings"
+  },
+
+  "soundSettings": "Lautstärkeeinstellungen",
+  "@soundSettings": {
+    "description": "Volume settings option"
+  },
+
+  "soundSettingsDesc": "Lautstärke konfigurieren",
+  "@soundSettingsDesc": {
+    "description": "Description for volume settings"
+  },
+
+  "ttsSettings": "TTS-Einstellungen",
+  "@ttsSettings": {
+    "description": "TTS settings option"
+  },
+
+  "ttsSettingsDesc": "Sprachausgaben konfigurieren",
+  "@ttsSettingsDesc": {
+    "description": "Description for TTS settings"
+  },
+
+  "languageSettings": "Sprache",
+  "@languageSettings": {
+    "description": "Language settings option"
+  },
+
+  "languageSettingsDesc": "App-Sprache auswählen",
+  "@languageSettingsDesc": {
+    "description": "Description for language settings"
+  },
+
+  "permissions": "Berechtigungen",
+  "@permissions": {
+    "description": "Section: Permissions"
+  },
+
+  "notificationPermission": "Benachrichtigungsberechtigung",
+  "@notificationPermission": {
+    "description": "Notification permission option"
+  },
+
+  "notificationPermissionDesc": "Timer-Benachrichtigungen erlauben",
+  "@notificationPermissionDesc": {
+    "description": "Description for notification permission"
+  },
+
+  "about": "Über",
+  "@about": {
+    "description": "Section: About"
+  },
+
+  "license": "Lizenz",
+  "@license": {
+    "description": "License option"
+  },
+
+  "licenseDesc": "Drittlizenzen anzeigen",
+  "@licenseDesc": {
+    "description": "Description for license"
+  },
+
+  "comingSoon": "Demnächst verfügbar",
+  "@comingSoon": {
+    "description": "Message for unimplemented features"
+  },
+
+  "selectLanguage": "Sprache auswählen",
+  "@selectLanguage": {
+    "description": "Dialog title for language selection"
+  },
+
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "English language name"
+  },
+
+  "languageChineseSimplified": "简体中文",
+  "@languageChineseSimplified": {
+    "description": "Simplified Chinese language name"
+  },
+
+  "errorText": "Fehler: {error}",
+  "@errorText": {
+    "description": "Error message template",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection failed"
+      }
+    }
+  },
+
+  "confirmStart": "Andere Timer laufen bereits. Trotzdem diesen Timer starten?",
+  "@confirmStart": {
+    "description": "Confirmation message when starting timer with others running"
+  },
+
+  "flashAnimation": "Blink-Animation",
+  "@flashAnimation": {
+    "description": "Flash animation setting"
+  },
+
+  "flashAnimationDesc": "Rot blinken, wenn der Timer klingelt",
+  "@flashAnimationDesc": {
+    "description": "Description for flash animation"
+  },
+
+  "vibration": "Vibration",
+  "@vibration": {
+    "description": "Vibration setting"
+  },
+
+  "vibrationDesc": "Vibrieren, wenn der Timer klingelt",
+  "@vibrationDesc": {
+    "description": "Description for vibration"
+  },
+
+  "keepScreenOn": "Bildschirm eingeschaltet lassen",
+  "@keepScreenOn": {
+    "description": "Keep screen on setting"
+  },
+
+  "keepScreenOnDesc": "Verhindert, dass der Bildschirm während des Timers in den Ruhezustand geht",
+  "@keepScreenOnDesc": {
+    "description": "Description for keep screen on"
+  },
+
+  "showMinutesSecondsFormat": "Minuten:Sekunden-Format anzeigen",
+  "@showMinutesSecondsFormat": {
+    "description": "Display countdown in minutes:seconds format setting"
+  },
+
+  "showMinutesSecondsFormatDesc": "Countdown als MM:SS anzeigen (aus: Gesamtsekunden)",
+  "@showMinutesSecondsFormatDesc": {
+    "description": "Description for minutes:seconds format display"
+  },
+
+  "ttsEnabled": "Sprachausgaben",
+  "@ttsEnabled": {
+    "description": "TTS enabled setting"
+  },
+
+  "ttsEnabledDesc": "Timer-Ende per Stimme ansagen",
+  "@ttsEnabledDesc": {
+    "description": "Description for TTS enabled"
+  },
+
+  "alarmSound": "Alarmton",
+  "@alarmSound": {
+    "description": "Alarm sound setting"
+  },
+
+  "alarmSoundDesc": "Ton für Timer-Warnungen auswählen",
+  "@alarmSoundDesc": {
+    "description": "Description for alarm sound"
+  },
+
+  "volume": "Lautstärke",
+  "@volume": {
+    "description": "Volume setting"
+  },
+
+  "volumeDesc": "Alarm-Lautstärke anpassen",
+  "@volumeDesc": {
+    "description": "Description for volume"
+  },
+
+  "systemVolumeHint": "Wenn die Lautstärke zu niedrig ist, können Sie die Alarm-Lautstärke in den Systemeinstellungen anpassen. Auf Android: physische Lautstärketaste drücken und dann das Menü (drei Punkte) antippen, um die Alarm-Lautstärke separat einzustellen.",
+  "@systemVolumeHint": {
+    "description": "Hint about adjusting system alarm volume"
+  },
+
+  "autoRaiseAlarmVolumeTitle": "System-Alarmlautstärke automatisch erhöhen",
+  "@autoRaiseAlarmVolumeTitle": {
+    "description": "Setting title for automatically boosting system alarm volume when ringing"
+  },
+
+  "autoRaiseAlarmVolumeDesc": "Erhöht vorübergehend die System-Alarmlautstärke, wenn ein Timer klingelt, und stellt sie nach dem Stoppen wieder her.",
+  "@autoRaiseAlarmVolumeDesc": {
+    "description": "Setting description for automatically boosting Android system alarm volume"
+  },
+
+  "alarmVolumeBoostLevelTitle": "Erhöhungsstufe",
+  "@alarmVolumeBoostLevelTitle": {
+    "description": "Title for selecting alarm volume boost level"
+  },
+
+  "alarmVolumeBoostLevelMinAudible": "Minimal hörbar (empfohlen)",
+  "@alarmVolumeBoostLevelMinAudible": {
+    "description": "Option label for minimum audible alarm volume boost"
+  },
+
+  "alarmVolumeBoostLevelMax": "Maximum",
+  "@alarmVolumeBoostLevelMax": {
+    "description": "Option label for maximum alarm volume boost"
+  },
+
+  "autoRaiseAlarmVolumeNote": "Hinweis: Diese Funktion ändert die System-Alarmlautstärke. Sie stellt Ihre vorherige Lautstärke wieder her, wenn Sie den Alarm stoppen (oder nach {minutes} Minuten).",
+  "@autoRaiseAlarmVolumeNote": {
+    "description": "Disclaimer for alarm volume boost feature",
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+
+  "vibrationSystemWarning": "Die In-App-Vibrationseinstellung wurde geändert. Bitte beachten Sie: Systemeinstellungen (z. B. „Nicht stören“, System-Vibrationsschalter usw.) können ebenfalls beeinflussen, ob Vibration tatsächlich funktioniert. Prüfen Sie zur Sicherheit auch die Systemeinstellungen.",
+  "@vibrationSystemWarning": {
+    "description": "Warning about system vibration settings when toggling vibration"
+  },
+
+  "openSystemVibrationSettings": "Systemeinstellungen für Vibration öffnen",
+  "@openSystemVibrationSettings": {
+    "description": "Button to open system sound and vibration settings"
+  },
+
+  "volumeButtonLockScreenHint": "Auf manchen Systemen funktionieren Lautstärketasten nur, wenn das Gerät entsperrt ist",
+  "@volumeButtonLockScreenHint": {
+    "description": "Hint about volume button limitation on lock screen"
+  },
+
+  "ttsLanguage": "TTS-Sprache",
+  "@ttsLanguage": {
+    "description": "TTS language setting"
+  },
+
+  "ttsLanguageDesc": "Sprache für Sprachausgaben auswählen",
+  "@ttsLanguageDesc": {
+    "description": "Description for TTS language"
+  },
+
+  "testSound": "Ton testen",
+  "@testSound": {
+    "description": "Test sound button"
+  },
+
+  "playing": "Wird abgespielt...",
+  "@playing": {
+    "description": "Text shown when sound is playing"
+  },
+
+  "testTts": "Stimme testen",
+  "@testTts": {
+    "description": "Test TTS button"
+  },
+
+  "ttsTestMessage": "Timer 1 ist abgelaufen",
+  "@ttsTestMessage": {
+    "description": "Localized test message for TTS"
+  },
+
+  "unitSecondsShort": "s",
+  "@unitSecondsShort": {
+    "description": "Short unit for seconds"
+  },
+
+  "unitMinutesShort": "min",
+  "@unitMinutesShort": {
+    "description": "Short unit for minutes"
+  },
+
+  "unitHoursShort": "h",
+  "@unitHoursShort": {
+    "description": "Short unit for hours"
+  },
+
+  "gridDurationsSettings": "Raster-Einstellungen",
+  "@gridDurationsSettings": {
+    "description": "Grid durations settings option"
+  },
+
+  "gridDurationsSettingsDesc": "Name und Dauer für jedes Rasterfeld anpassen",
+  "@gridDurationsSettingsDesc": {
+    "description": "Description for grid durations settings"
+  },
+
+  "gridSlot": "Raster {index}",
+  "@gridSlot": {
+    "description": "Grid slot label",
+    "placeholders": {
+      "index": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+
+  "seconds": "Sekunden",
+  "@seconds": {
+    "description": "Seconds unit"
+  },
+
+  "hours": "Stunden",
+  "@hours": {
+    "description": "Hours unit"
+  },
+
+  "save": "Speichern",
+  "@save": {
+    "description": "Save button"
+  },
+
+  "reset": "Zurücksetzen",
+  "@reset": {
+    "description": "Reset button"
+  },
+
+  "resetToDefault": "Auf Standard zurücksetzen",
+  "@resetToDefault": {
+    "description": "Reset to default button"
+  },
+
+  "gridDurationsResetConfirm": "Möchten Sie die Rasterzeiten wirklich auf die Standardwerte zurücksetzen?",
+  "@gridDurationsResetConfirm": {
+    "description": "Reset to default confirmation"
+  },
+
+  "name": "Name",
+  "@name": {
+    "description": "Label for name field"
+  },
+
+  "optional": "Optional",
+  "@optional": {
+    "description": "Label for optional field"
+  },
+
+  "audioPlaybackSettings": "Audio-Wiedergabeeinstellungen",
+  "@audioPlaybackSettings": {
+    "description": "Audio playback settings title"
+  },
+
+  "audioPlaybackSettingsDesc": "Wiedergabemodus für Alarm-Audio konfigurieren",
+  "@audioPlaybackSettingsDesc": {
+    "description": "Audio playback settings description"
+  },
+
+  "audioPlaybackMode": "Wiedergabemodus",
+  "@audioPlaybackMode": {
+    "description": "Audio playback mode label"
+  },
+
+  "audioPlaybackModeLoopIndefinitely": "Endlos wiederholen, bis manuell gestoppt",
+  "@audioPlaybackModeLoopIndefinitely": {
+    "description": "Loop indefinitely mode description"
+  },
+
+  "audioPlaybackModeLoopForDuration": "Für N Minuten wiederholen, dann automatisch stoppen",
+  "@audioPlaybackModeLoopForDuration": {
+    "description": "Loop for duration mode description"
+  },
+
+  "audioPlaybackModeLoopWithInterval": "N Min wiederholen, M Min pausieren, N Min wiederholen (einmal)",
+  "@audioPlaybackModeLoopWithInterval": {
+    "description": "Loop with interval mode description"
+  },
+
+  "audioPlaybackModeLoopWithIntervalRepeating": "N Min wiederholen, M Min pausieren, wiederholen bis gestoppt",
+  "@audioPlaybackModeLoopWithIntervalRepeating": {
+    "description": "Loop with interval repeating mode description"
+  },
+
+  "audioPlaybackModePlayOnce": "Nur einmal abspielen",
+  "@audioPlaybackModePlayOnce": {
+    "description": "Play once mode description"
+  },
+
+  "loopDuration": "Wiederholungsdauer",
+  "@loopDuration": {
+    "description": "Loop duration label"
+  },
+
+  "intervalPause": "Pausendauer im Intervall",
+  "@intervalPause": {
+    "description": "Interval pause duration label"
+  },
+
+  "minutesUnit": "Minuten",
+  "@minutesUnit": {
+    "description": "Minutes unit label"
+  },
+
+  "audioPlaybackWhenEffectiveTitle": "Wichtiger Hinweis",
+  "@audioPlaybackWhenEffectiveTitle": {
+    "description": "Title for when audio playback settings are effective"
+  },
+
+  "audioPlaybackWhenEffectiveDesc": "Diese Einstellungen gelten nur für den Standard-Alarmton.\n\nWenn Sie den Benachrichtigungston in den Systemeinstellungen angepasst haben, wird der Alarm kontinuierlich wiederholt, bis er gestoppt wird (diese Wiedergabeeinstellungen gelten dann nicht).",
+  "@audioPlaybackWhenEffectiveDesc": {
+    "description": "Description explaining when audio playback settings are effective"
+  },
+
+  "safetyDisclaimerTitle": "Sicherheitshinweis",
+  "@safetyDisclaimerTitle": {
+    "description": "Safety disclaimer dialog title"
+  },
+
+  "safetyDisclaimerMessage": "Zu Ihrer Sicherheit beachten Sie bitte Folgendes:",
+  "@safetyDisclaimerMessage": {
+    "description": "Safety disclaimer message"
+  },
+
+  "safetyRecommendedUses": "✅ Empfohlene Verwendung",
+  "@safetyRecommendedUses": {
+    "description": "Recommended uses section title"
+  },
+
+  "safetyRecommendedUsesList": "• Tägliche Küchentimer\n• Allgemeine Erinnerungen\n• Unkritische Anlässe\n• Nach vorherigem Test",
+  "@safetyRecommendedUsesList": {
+    "description": "List of recommended uses"
+  },
+
+  "safetyNotRecommendedUses": "❌ NICHT empfohlen",
+  "@safetyNotRecommendedUses": {
+    "description": "Not recommended uses section title"
+  },
+
+  "safetyNotRecommendedUsesList": "• Kritische Medikamentenerinnerungen (medizinische Apps verwenden)\n• Lebenswichtige Erinnerungen\n• Medizinische Notfälle\n• Ohne vorherigen Test",
+  "@safetyNotRecommendedUsesList": {
+    "description": "List of not recommended uses"
+  },
+
+  "safetyBestPractices": "💡 Best Practices:",
+  "@safetyBestPractices": {
+    "description": "Best practices section title"
+  },
+
+  "safetyBestPracticesList": "• Alarm vor der Nutzung testen\n• Für kritische Aufgaben Backup-Erinnerungen verwenden\n• „Nicht stören“ und Benachrichtigungsberechtigungen prüfen\n• App-Einschränkungen verstehen",
+  "@safetyBestPracticesList": {
+    "description": "List of best practices"
+  },
+
+  "safetyViewFullDisclaimer": "Haftungsausschluss ansehen",
+  "@safetyViewFullDisclaimer": {
+    "description": "Button to view legal disclaimer"
+  },
+
+  "safetyAcceptAndContinue": "Verstanden, fortfahren",
+  "@safetyAcceptAndContinue": {
+    "description": "Button to accept disclaimer and continue"
+  },
+
+  "fullDisclaimerTitle": "Haftungsausschluss",
+  "@fullDisclaimerTitle": {
+    "description": "Disclaimer dialog title"
+  },
+
+  "fullDisclaimerText": "Diese Software wird „WIE BESEHEN“ bereitgestellt, ohne jegliche Gewährleistung, ausdrücklich oder stillschweigend.\n\nDie Entwickler haften nicht für Konsequenzen aus der Nutzung dieser Software, einschließlich (aber nicht beschränkt auf): verpasste Erinnerungen, ungenaue Zeitmessung, App-Ausfälle usw.\n\nNutzer sollten Risiken selbst beurteilen und für kritische Aufgaben Backup-Lösungen vorbereiten.",
+  "@fullDisclaimerText": {
+    "description": "Legal disclaimer text"
+  },
+
+  "close": "Schließen",
+  "@close": {
+    "description": "Close button"
+  },
+
+  "aboutDisclaimer": "Sicherheitshinweis & Haftungsausschluss",
+  "@aboutDisclaimer": {
+    "description": "Menu item for viewing disclaimer"
+  },
+
+  "gestureSettings": "Gestensteuerung",
+  "@gestureSettings": {
+    "description": "Gesture settings title"
+  },
+
+  "gestureSettingsDesc": "Gestenaktionen konfigurieren, wenn der Alarm klingelt",
+  "@gestureSettingsDesc": {
+    "description": "Gesture settings description"
+  },
+
+  "gestureActions": "Gestenaktionen",
+  "@gestureActions": {
+    "description": "Gesture actions section title"
+  },
+
+  "gestureTypeScreenTap": "Bildschirm tippen",
+  "@gestureTypeScreenTap": {
+    "description": "Screen tap gesture"
+  },
+
+  "gestureTypeVolumeUp": "Lauter-Taste",
+  "@gestureTypeVolumeUp": {
+    "description": "Volume up button gesture"
+  },
+
+  "gestureTypeVolumeDown": "Leiser-Taste",
+  "@gestureTypeVolumeDown": {
+    "description": "Volume down button gesture"
+  },
+
+  "gestureTypeShake": "Telefon schütteln",
+  "@gestureTypeShake": {
+    "description": "Shake phone gesture"
+  },
+
+  "gestureTypeFlip": "Telefon umdrehen (Display nach unten)",
+  "@gestureTypeFlip": {
+    "description": "Flip phone gesture"
+  },
+
+  "gestureActionStopAndReset": "Stoppen & zurücksetzen",
+  "@gestureActionStopAndReset": {
+    "description": "Stop and reset action"
+  },
+
+  "gestureActionNone": "Keine Aktion",
+  "@gestureActionNone": {
+    "description": "No action"
+  },
+
+  "shakeSensitivity": "Schüttel-Empfindlichkeit",
+  "@shakeSensitivity": {
+    "description": "Shake sensitivity label"
+  },
+
+  "shakeSensitivityLow": "Niedrig (stark schütteln)",
+  "@shakeSensitivityLow": {
+    "description": "Low sensitivity description"
+  },
+
+  "shakeSensitivityHigh": "Hoch (leicht schütteln)",
+  "@shakeSensitivityHigh": {
+    "description": "High sensitivity description"
+  },
+
+  "shakeSensitivityDesc": "Empfindlichkeit der Schüttelerkennung anpassen",
+  "@shakeSensitivityDesc": {
+    "description": "Shake sensitivity description"
+  },
+
+  "gestureHint": "Seniorenfreundlich: Bildschirmtippen, Lautstärketasten und Umdrehen aktivieren",
+  "@gestureHint": {
+    "description": "Gesture hint for seniors"
+  },
+
+  "gestureLimitationsHint": "Hinweis: Manche Geräte/Systeme schränken Tasten oder Sensoren auf dem Sperrbildschirm ein. Wenn Gesten im gesperrten Zustand nicht reagieren, zuerst entsperren und dann Umdrehen oder Lautstärketasten versuchen.",
+  "@gestureLimitationsHint": {
+    "description": "Unified hint about lock screen restrictions for gesture controls"
+  },
+
+  "onboardingCheckSoundTitle": "Wichtig: Ton prüfen",
+  "@onboardingCheckSoundTitle": {
+    "description": "Onboarding check sound step title"
+  },
+
+  "onboardingCheckSoundDesc": "Bitte prüfen Sie, ob der Ton „Timer Alarm (default)“ NICHT auf „Keine“ oder „Stumm“ steht.\n\nWenn stumm, erhalten Sie bei Ablauf nur eine Benachrichtigung ohne Ton.",
+  "@onboardingCheckSoundDesc": {
+    "description": "Onboarding check sound step description"
+  },
+
+  "onboardingCheckSoundBtn": "Ton-Einstellungen prüfen",
+  "@onboardingCheckSoundBtn": {
+    "description": "Onboarding check sound button label"
+  },
+
+  "onboardingCheckSoundMiuiHint": "MIUI-Hinweis: Wenn Sie im Benachrichtigungskanal keinen Ton auswählen können, ist das normal (MIUI-Systemlimit). Die App hat die Audio-Wiedergabe in der App automatisch aktiviert, und der Alarm funktioniert. Hinweis: Während Alarme möglichst starke Benachrichtigungsflut vermeiden, um Audio-Unterbrechungen zu verhindern.",
+  "@onboardingCheckSoundMiuiHint": {
+    "description": "MIUI-specific hint for sound settings on onboarding page"
+  },
+
+  "grantPermission": "Berechtigung erteilen",
+  "@grantPermission": {
+    "description": "Grant permission button"
+  },
+
+  "notificationPermissionGranted": "Benachrichtigungsberechtigung erteilt",
+  "@notificationPermissionGranted": {
+    "description": "Notification permission granted message"
+  },
+
+  "notificationPermissionDenied": "Benachrichtigungsberechtigung abgelehnt, bitte manuell in den Systemeinstellungen erteilen",
+  "@notificationPermissionDenied": {
+    "description": "Notification permission denied message"
+  },
+
+  "exactAlarmPermission": "Exakte-Alarme-Berechtigung",
+  "@exactAlarmPermission": {
+    "description": "Exact alarm permission option"
+  },
+
+  "exactAlarmPermissionDesc": "Sorgt dafür, dass Timer pünktlich benachrichtigen (erforderlich auf Android 12, 14+)",
+  "@exactAlarmPermissionDesc": {
+    "description": "Description for exact alarm permission"
+  },
+
+  "exactAlarmPermissionDescApi33": "Auf Android 13 vorab erteilt, kann in den Systemeinstellungen widerrufen werden",
+  "@exactAlarmPermissionDescApi33": {
+    "description": "Description for exact alarm permission on Android 13"
+  },
+
+  "fullScreenIntentPermission": "Berechtigung für Vollbild-Intent",
+  "@fullScreenIntentPermission": {
+    "description": "Full-screen intent special access option (Android 14+)"
+  },
+
+  "fullScreenIntentPermissionDesc": "Vollbildwarnungen auf dem Sperrbildschirm erlauben, wenn ein Timer klingelt (Android 14+)",
+  "@fullScreenIntentPermissionDesc": {
+    "description": "Description for full-screen intent permission"
+  },
+
+  "fullScreenIntentStatusGranted": "Erlaubt",
+  "@fullScreenIntentStatusGranted": {
+    "description": "Full-screen intent permission status: allowed"
+  },
+
+  "fullScreenIntentStatusDenied": "Nicht erlaubt (Vollbildwarnung wird ggf. nicht angezeigt)",
+  "@fullScreenIntentStatusDenied": {
+    "description": "Full-screen intent permission status: not allowed"
+  },
+
+  "batteryOptimizationSettings": "Akku-Optimierung",
+  "@batteryOptimizationSettings": {
+    "description": "Battery optimization settings option"
+  },
+
+  "batteryOptimizationDesc": "Akku-Optimierung deaktivieren, um zuverlässige Alarme im Hintergrund sicherzustellen",
+  "@batteryOptimizationDesc": {
+    "description": "Description for battery optimization"
+  },
+
+  "alarmSoundSettings": "Alarmton-Einstellungen",
+  "@alarmSoundSettings": {
+    "description": "Alarm sound settings option"
+  },
+
+  "alarmSoundSettingsDesc": "Wenn der Ton „Timer Alarm (default)“ auf „Keine“ steht, wird nur eine Benachrichtigung ohne Ton angezeigt",
+  "@alarmSoundSettingsDesc": {
+    "description": "Description for alarm sound settings"
+  },
+
+  "alarmSoundSettingsMiuiHint": "MIUI-Hinweis: Aufgrund von MIUI-Einschränkungen können manche Geräte die Töne des Benachrichtigungskanals nicht ändern. Die App hat die Audio-Wiedergabe in der App automatisch aktiviert. Hinweis: In-App-Audio kann durch andere Benachrichtigungstöne unterbrochen oder leiser werden. Während Alarme möglichst starke Nachrichtenflut vermeiden.",
+  "@alarmSoundSettingsMiuiHint": {
+    "description": "MIUI-specific hint for alarm sound settings"
+  },
+
+  "appKilledWarning": "Wichtig: Wenn diese App vom System oder Nutzer zwangsweise beendet wird, klingeln Timer nicht. Bitte im Hintergrund laufen lassen und Akku-Optimierung deaktivieren.",
+  "@appKilledWarning": {
+    "description": "Warning message about app being killed preventing alarms"
+  },
+
+  "alarmTroubleshooting": "Alarm klingelt nicht / verspätet?",
+  "@alarmTroubleshooting": {
+    "description": "Settings entry title for alarm troubleshooting and compatibility guidance"
+  },
+
+  "alarmTroubleshootingDesc": "Android-Versionen und OEM-ROMs können Alarme im Hintergrund einschränken. Tippen für schnelle Lösungen.",
+  "@alarmTroubleshootingDesc": {
+    "description": "Settings entry description for alarm troubleshooting and compatibility guidance"
+  },
+
+  "alarmTroubleshootingDialogTitle": "Leitfaden zur Alarmzuverlässigkeit",
+  "@alarmTroubleshootingDialogTitle": {
+    "description": "Dialog title for alarm troubleshooting and reliability guidance"
+  },
+
+  "alarmTroubleshootingDialogIntro": "Verschiedene Android-Versionen und OEM-ROMs (z. B. angepasste Oberflächen) haben unterschiedliche Hintergrund-/Benachrichtigungseinschränkungen. Das kann Alarme stummschalten oder verzögern. Wir verbessern die Kompatibilität weiter, aber bitte Folgendes prüfen:",
+  "@alarmTroubleshootingDialogIntro": {
+    "description": "Intro text for the alarm troubleshooting dialog"
+  },
+
+  "alarmTroubleshootingSteps": "1. „Nicht stören“ ausschalten und Alarm-Lautstärke erhöhen\n2. Benachrichtigungen für diese App aktivieren\n3. Im Kanal „Timer Alarm (default)“ sicherstellen, dass der Ton nicht Stumm ist\n4. Akku-Optimierung für diese App deaktivieren (Hintergrundausführung erlauben)\n5. Android 14+: „Alarme & Erinnerungen“ (exakte Alarme) erlauben\n6. Android 14+: „Vollbild-Intents“ erlauben",
+  "@alarmTroubleshootingSteps": {
+    "description": "Step-by-step checklist for alarm troubleshooting"
+  },
+
+  "alarmTroubleshootingMiui": "Angepasste Android-Oberflächen: Autostart und Hintergrundaktivität erlauben, aggressive Energiesparoptionen vermeiden. Falls nötig, diese App in den letzten Apps fixieren.",
+  "@alarmTroubleshootingMiui": {
+    "description": "Additional Xiaomi/MIUI-specific tips for alarm troubleshooting"
+  },
+
+  "alarmTroubleshootingQuickActions": "Schnellzugriffe",
+  "@alarmTroubleshootingQuickActions": {
+    "description": "Section title for quick actions in the alarm troubleshooting dialog"
+  },
+
+  "alarmTroubleshootingOpenChannel": "Kanalton prüfen",
+  "@alarmTroubleshootingOpenChannel": {
+    "description": "Button label to open notification channel settings for alarm sound"
+  },
+
+  "alarmTroubleshootingOpenNotifications": "Benachrichtigungseinstellungen öffnen",
+  "@alarmTroubleshootingOpenNotifications": {
+    "description": "Button label to open app notification settings"
+  },
+
+  "alarmTroubleshootingOpenExactAlarm": "Exakte Alarme aktivieren",
+  "@alarmTroubleshootingOpenExactAlarm": {
+    "description": "Button label to open exact alarm permission/settings page"
+  },
+
+  "alarmTroubleshootingOpenFullScreenIntent": "Vollbildwarnungen aktivieren",
+  "@alarmTroubleshootingOpenFullScreenIntent": {
+    "description": "Button label to open full-screen intent special access page (Android 14+)"
+  },
+
+  "alarmTroubleshootingOpenBattery": "Akku-Optimierung deaktivieren",
+  "@alarmTroubleshootingOpenBattery": {
+    "description": "Button label to open battery optimization settings"
+  },
+
+  "alarmReliabilityMode": "Alarm-Zuverlässigkeitsmodus",
+  "@alarmReliabilityMode": {
+    "description": "Alarm reliability mode setting title"
+  },
+
+  "alarmReliabilityModeDesc": "Auswählen, wie Alarme geplant werden (beeinflusst, ob Alarme nach App-Kill auslösen)",
+  "@alarmReliabilityModeDesc": {
+    "description": "Alarm reliability mode setting description"
+  },
+
+  "alarmReliabilityModeAppOnly": "Nur App",
+  "@alarmReliabilityModeAppOnly": {
+    "description": "App-only reliability mode name"
+  },
+
+  "alarmReliabilityModeAppOnlyDesc": "Am energiesparendsten, aber Alarme lösen nicht aus, wenn die App beendet wird",
+  "@alarmReliabilityModeAppOnlyDesc": {
+    "description": "App-only reliability mode description"
+  },
+
+  "alarmReliabilityModeNotification": "Benachrichtigung",
+  "@alarmReliabilityModeNotification": {
+    "description": "Notification reliability mode name"
+  },
+
+  "alarmReliabilityModeNotificationDesc": "Systemgeplante Benachrichtigungen, bessere Zuverlässigkeit im Hintergrund (empfohlen)",
+  "@alarmReliabilityModeNotificationDesc": {
+    "description": "Notification reliability mode description"
+  },
+
+  "alarmReliabilityModeAlarmClock": "Wecker",
+  "@alarmReliabilityModeAlarmClock": {
+    "description": "Alarm clock reliability mode name"
+  },
+
+  "alarmReliabilityModeAlarmClockDesc": "Maximale Zuverlässigkeit, löst auch nach App-Kill aus (mehr Akkuverbrauch)",
+  "@alarmReliabilityModeAlarmClockDesc": {
+    "description": "Alarm clock reliability mode description"
+  },
+
+  "alarmTroubleshootingViewSafetyNotice": "Sicherheitshinweis ansehen",
+  "@alarmTroubleshootingViewSafetyNotice": {
+    "description": "Button label to view safety notice and disclaimer"
+  },
+
+  "goToSettings": "Zu den Einstellungen",
+  "@goToSettings": {
+    "description": "Go to settings button"
+  },
+
+  "settingsButton": "Einstellungen",
+  "@settingsButton": {
+    "description": "Settings button label"
+  },
+
+  "failedToOpenChannelSettings": "Benachrichtigungskanal-Einstellungen konnten nicht geöffnet werden: {error}",
+  "@failedToOpenChannelSettings": {
+    "description": "Error message when opening channel settings fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permission denied"
+      }
+    }
+  },
+
+  "developerModeEnabled": "Entwicklermodus aktiviert",
+  "@developerModeEnabled": {
+    "description": "Developer mode enabled message"
+  },
+
+  "developerModeDisabled": "Entwicklermodus deaktiviert",
+  "@developerModeDisabled": {
+    "description": "Developer mode disabled message"
+  },
+
+  "speaking": "Spricht...",
+  "@speaking": {
+    "description": "TTS speaking indicator"
+  },
+
+  "ttsTestFailed": "Sprachtest fehlgeschlagen. Bitte Geräte-TTS-Einstellungen prüfen.",
+  "@ttsTestFailed": {
+    "description": "TTS test failed message"
+  },
+
+  "ttsTestTimeout": "Sprachtest hat zu lange gedauert. Bitte prüfen, ob die TTS-Engine funktioniert.",
+  "@ttsTestTimeout": {
+    "description": "TTS test timeout message"
+  },
+
+  "ttsTestFailedTitle": "Sprachtest nicht erfolgreich",
+  "@ttsTestFailedTitle": {
+    "description": "TTS test failed dialog title"
+  },
+
+  "ttsTestFailedMessage": "Keine Sprachausgabe hörbar. Mögliche Gründe:\n\n• TTS-Engine nicht richtig konfiguriert\n• Sprachpaket nicht installiert\n• Systemlautstärke stumm\n• Medienlautstärke zu niedrig\n\nBitte Systemeinstellungen prüfen oder Diagnosen ansehen.",
+  "@ttsTestFailedMessage": {
+    "description": "TTS test failed dialog message"
+  },
+
+  "viewDiagnostics": "Diagnose ansehen",
+  "@viewDiagnostics": {
+    "description": "Button to view TTS diagnostics"
+  },
+
+  "ttsDiagnostics": "TTS-Diagnose",
+  "@ttsDiagnostics": {
+    "description": "TTS diagnostics dialog title"
+  },
+
+  "ttsEngine": "Aktuelle Engine",
+  "@ttsEngine": {
+    "description": "Current TTS engine label"
+  },
+
+  "availableEngines": "Verfügbare Engines",
+  "@availableEngines": {
+    "description": "Available TTS engines label"
+  },
+
+  "availableLanguages": "Verfügbare Sprachen",
+  "@availableLanguages": {
+    "description": "Available TTS languages label"
+  },
+
+  "andMore": "und {count} weitere...",
+  "@andMore": {
+    "description": "And more items",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+
+  "ttsNoEngineTitle": "Keine Sprach-Engine erkannt",
+  "@ttsNoEngineTitle": {
+    "description": "No TTS engine dialog title"
+  },
+
+  "ttsNoEngineMessage": "Auf Ihrem Gerät ist keine TTS-Engine (Text-to-Speech) verfügbar. Das ist bei manchen Geräten mit angepassten Android-Oberflächen üblich.",
+  "@ttsNoEngineMessage": {
+    "description": "No TTS engine dialog message"
+  },
+
+  "ttsNoEngineSteps": "Bitte folgen Sie diesen Schritten:\n\n1. „App Store“ öffnen\n2. Nach „Google Text-to-Speech“ suchen\n3. Sprach-Engine installieren\n4. Danach „Einstellungen → Bedienungshilfen → Text-to-Speech“ öffnen\n5. Engine auswählen und Sprachpaket herunterladen",
+  "@ttsNoEngineSteps": {
+    "description": "Steps to install TTS engine"
+  },
+
+  "ttsUnavailableTitle": "Sprachfunktion nicht verfügbar",
+  "@ttsUnavailableTitle": {
+    "description": "TTS unavailable dialog title"
+  },
+
+  "ttsUnavailableMessage": "Auf Ihrem Gerät ist möglicherweise kein Sprachpaket installiert.\n\nBitte folgen Sie diesen Schritten:\n1. Systemeinstellungen öffnen\n2. Nach „Text-to-Speech“ oder „TTS“ suchen\n3. Sicherstellen, dass eine Sprach-Engine installiert ist\n4. Sprache als Standard setzen",
+  "@ttsUnavailableMessage": {
+    "description": "TTS unavailable dialog message"
+  },
+
+  "ttsUnavailableHint": "Tipp: Auf manchen Geräten die System-Sprachengine prüfen oder Google TTS installieren.",
+  "@ttsUnavailableHint": {
+    "description": "TTS unavailable hint for Xiaomi devices"
+  },
+
+  "openTtsSettings": "TTS-Einstellungen öffnen",
+  "@openTtsSettings": {
+    "description": "Button to open system TTS settings"
+  },
+
+  "ok": "OK",
+  "@ok": {
+    "description": "OK button"
+  },
+
+  "ttsSpeechRate": "Sprechgeschwindigkeit",
+  "@ttsSpeechRate": {
+    "description": "TTS speech rate label"
+  },
+
+  "ttsPitch": "Tonhöhe",
+  "@ttsPitch": {
+    "description": "TTS pitch label"
+  },
+
+  "ttsVolumeDesc": "Lautstärke der Sprachausgabe anpassen",
+  "@ttsVolumeDesc": {
+    "description": "TTS volume description"
+  },
+
+  "ttsSpeechRateDesc": "Geschwindigkeit der Sprachausgabe anpassen (0,5 ist normal)",
+  "@ttsSpeechRateDesc": {
+    "description": "TTS speech rate description"
+  },
+
+  "ttsPitchDesc": "Tonhöhe der Sprachausgabe anpassen (1,0 ist normal)",
+  "@ttsPitchDesc": {
+    "description": "TTS pitch description"
+  },
+
+  "ttsLanguageNote": "Tipp: Sprache kann manuell gewählt werden, wenn die automatische Erkennung ungenau ist.",
+  "@ttsLanguageNote": {
+    "description": "TTS language note"
+  },
+
+  "ttsLanguageAutoDesc": "Automatisch anhand der App-Sprache auswählen",
+  "@ttsLanguageAutoDesc": {
+    "description": "TTS auto language description"
+  },
+
+  "followSystem": "System folgen",
+  "@followSystem": {
+    "description": "Follow system setting"
+  },
+
+  "simplifiedChinese": "Vereinfachtes Chinesisch",
+  "@simplifiedChinese": {
+    "description": "Simplified Chinese language name"
+  },
+
+  "english": "Englisch",
+  "@english": {
+    "description": "English language name"
+  },
+
+  "speedVerySlow": "Sehr langsam",
+  "@speedVerySlow": {
+    "description": "Very slow speed label"
+  },
+
+  "speedSlow": "Langsam",
+  "@speedSlow": {
+    "description": "Slow speed label"
+  },
+
+  "speedNormal": "Normal",
+  "@speedNormal": {
+    "description": "Normal speed label"
+  },
+
+  "speedFast": "Schnell",
+  "@speedFast": {
+    "description": "Fast speed label"
+  },
+
+  "speedVeryFast": "Sehr schnell",
+  "@speedVeryFast": {
+    "description": "Very fast speed label"
+  },
+
+  "pitchVeryLow": "Sehr tief",
+  "@pitchVeryLow": {
+    "description": "Very low pitch label"
+  },
+
+  "pitchLow": "Tief",
+  "@pitchLow": {
+    "description": "Low pitch label"
+  },
+
+  "pitchNormal": "Normal",
+  "@pitchNormal": {
+    "description": "Normal pitch label"
+  },
+
+  "pitchHigh": "Hoch",
+  "@pitchHigh": {
+    "description": "High pitch label"
+  },
+
+  "pitchVeryHigh": "Sehr hoch",
+  "@pitchVeryHigh": {
+    "description": "Very high pitch label"
+  },
+
+  "onboardingNext": "Weiter",
+  "@onboardingNext": {
+    "description": "Onboarding next button"
+  },
+
+  "onboardingStartUsing": "Loslegen",
+  "@onboardingStartUsing": {
+    "description": "Onboarding start using button"
+  },
+
+  "onboardingWelcomeTitle": "Willkommen bei Grid Timer",
+  "@onboardingWelcomeTitle": {
+    "description": "Onboarding welcome step title"
+  },
+
+  "onboardingWelcomeDesc": "Damit der Timer genau läuft, müssen wir ein paar einfache Einstellungen konfigurieren.\n\nDas dauert nur eine Minute.",
+  "@onboardingWelcomeDesc": {
+    "description": "Onboarding welcome step description"
+  },
+
+  "onboardingNotificationTitle": "Benachrichtigungsberechtigung",
+  "@onboardingNotificationTitle": {
+    "description": "Onboarding notification step title"
+  },
+
+  "onboardingNotificationDesc": "Diese App benötigt Benachrichtigungsberechtigung, um Sie am Ende des Countdowns zu erinnern.\n\nOhne diese Berechtigung könnten Sie Timer-Ende-Warnungen verpassen.",
+  "@onboardingNotificationDesc": {
+    "description": "Onboarding notification step description"
+  },
+
+  "onboardingGrantNotification": "Benachrichtigungsberechtigung erteilen",
+  "@onboardingGrantNotification": {
+    "description": "Grant notification permission button"
+  },
+
+  "onboardingExactAlarmTitle": "Berechtigung für exakte Alarme",
+  "@onboardingExactAlarmTitle": {
+    "description": "Onboarding exact alarm step title"
+  },
+
+  "onboardingExactAlarmDesc": "Damit der Timer sekundengenau ist, benötigt diese App die Berechtigung „exakter Alarm“.\n\nBitte im nächsten Dialog oder in den Einstellungen erlauben.",
+  "@onboardingExactAlarmDesc": {
+    "description": "Onboarding exact alarm step description"
+  },
+
+  "onboardingGrantExactAlarm": "Berechtigung für exakte Alarme erteilen",
+  "@onboardingGrantExactAlarm": {
+    "description": "Grant exact alarm permission button"
+  },
+
+  "onboardingFullScreenIntentTitle": "Vollbildwarnungen",
+  "@onboardingFullScreenIntentTitle": {
+    "description": "Onboarding full-screen intent step title (Android 14+)"
+  },
+
+  "onboardingFullScreenIntentDesc": "Android 14+ kann einen speziellen App-Zugriff benötigen, um Vollbildwarnungen auf dem Sperrbildschirm anzuzeigen.\n\nBitte „Vollbild-Intents“ für diese App erlauben, um die Alarmzuverlässigkeit zu verbessern.",
+  "@onboardingFullScreenIntentDesc": {
+    "description": "Onboarding full-screen intent step description (Android 14+)"
+  },
+
+  "onboardingGrantFullScreenIntent": "Einstellungen öffnen",
+  "@onboardingGrantFullScreenIntent": {
+    "description": "Button to open full-screen intent settings"
+  },
+
+  "onboardingOpenFullScreenIntentSettings": "Vollbild-Intent-Einstellungen öffnen",
+  "@onboardingOpenFullScreenIntentSettings": {
+    "description": "Button label to open full-screen intent settings (Android 14+)"
+  },
+
+  "onboardingBatteryTitle": "Akku-Optimierung",
+  "@onboardingBatteryTitle": {
+    "description": "Onboarding battery optimization step title"
+  },
+
+  "onboardingBatteryDesc": "Damit das System Timer im Hintergrund nicht beendet, empfehlen wir, diese App auf „Akku nicht optimieren“ zu setzen.\n\nSo werden lange Timer nicht unterbrochen.\n\nTipp: Auf manchen Geräten kann die Schaltfläche „Akku-Optimierungseinstellungen öffnen“ blockiert sein oder die genaue Option wird nicht angezeigt. Bitte in den Systemeinstellungen nach „Akku-Optimierung“, „Energiesparen“, „Autostart“ oder „Hintergrundaktivität“ suchen und diese App auf „Nicht optimieren“ / „Keine Einschränkungen“ setzen.",
+  "@onboardingBatteryDesc": {
+    "description": "Onboarding battery optimization step description"
+  },
+
+  "onboardingOpenBatterySettings": "Akku-Optimierungseinstellungen öffnen",
+  "@onboardingOpenBatterySettings": {
+    "description": "Open battery optimization settings button"
+  },
+
+  "onboardingCompletionTitle": "Bereit",
+  "@onboardingCompletionTitle": {
+    "description": "Onboarding completion step title"
+  },
+
+  "onboardingCompletionDesc": "Alle Einstellungen sind abgeschlossen!\n\nTipp: Geräte und OS-Versionen können sich unterschiedlich verhalten. Bitte machen Sie einen kurzen Test mit Sperrbildschirm/Hintergrund, bevor Sie sich auf lange Timer verlassen.\n\nSie können diese Optionen jederzeit in den Einstellungen anpassen.",
+  "@onboardingCompletionDesc": {
+    "description": "Onboarding completion step description"
+  },
+
+  "onboardingGranted": "Erteilt",
+  "@onboardingGranted": {
+    "description": "Permission granted label"
+  },
+
+  "onboardingNotRequired": "Nicht erforderlich",
+  "@onboardingNotRequired": {
+    "description": "Label shown when permission is not required on this Android version"
+  },
+
+  "onboardingNotRequiredNotificationDesc": "Ihre Android-Version (unter 13) erlaubt Benachrichtigungen standardmäßig. Keine manuelle Autorisierung erforderlich.",
+  "@onboardingNotRequiredNotificationDesc": {
+    "description": "Description for notification permission on older Android versions"
+  },
+
+  "onboardingNotRequiredExactAlarmDesc": "Ihre Android-Version (unter 12) unterstützt exakte Alarme standardmäßig. Keine manuelle Autorisierung erforderlich.",
+  "@onboardingNotRequiredExactAlarmDesc": {
+    "description": "Description for exact alarm permission on older Android versions"
+  },
+
+  "onboardingPreGrantedExactAlarmDesc": "Android 13 erteilt neu installierten Apps automatisch vorab die Berechtigung für exakte Alarme.\n\nWenn Sie diese Berechtigung widerrufen, können Sie sie in Einstellungen > Apps > {appName} > Alarme & Erinnerungen wieder aktivieren.",
+  "@onboardingPreGrantedExactAlarmDesc": {
+    "description": "Description for exact alarm permission on Android 13 where it is pre-granted",
+    "placeholders": {
+      "appName": {
+        "type": "String",
+        "example": "Grid Timer"
+      }
+    }
+  },
+
+  "onboardingPreGranted": "Vorab erteilt",
+  "@onboardingPreGranted": {
+    "description": "Label shown when permission is automatically pre-granted by the system"
+  },
+
+  "onboardingBatteryLegacyDesc": "Damit das System Timer im Hintergrund nicht beendet, empfehlen wir, {appName} in Energiesparmodus laufen zu lassen.\n\nPfad (Beispiel): Einstellungen → Akku / Energieverwaltung → Energiesparen → Apps im Energiesparen zulassen → {appName} aktivieren\n\nTipp: Der genaue Pfad kann je nach Gerät/OS variieren. Bitte in Ihren Einstellungen nach der passenden Option suchen.",
+  "@onboardingBatteryLegacyDesc": {
+    "description": "Battery optimization guidance for older Android versions",
+    "placeholders": {
+      "appName": {
+        "type": "String",
+        "example": "Grid Timer"
+      }
+    }
+  },
+
+  "permissionNotRequiredStatus": "Nicht erforderlich (standardmäßig von Ihrem System unterstützt)",
+  "@permissionNotRequiredStatus": {
+    "description": "Status text shown when a permission is not required on older Android versions"
+  },
+
+  "batteryOptimizationLegacyDesc": "Bitte erlauben Sie, dass diese App im Energiesparmodus ausgeführt wird.\nPfad: Einstellungen → Akku → Energiesparen → Apps im Energiesparen zulassen",
+  "@batteryOptimizationLegacyDesc": {
+    "description": "Battery optimization description for older Android in settings page"
+  },
+
+  "privacyPolicy": "Datenschutzrichtlinie",
+  "@privacyPolicy": {
+    "description": "Privacy policy menu item"
+  },
+
+  "privacyPolicyTitle": "Datenschutzrichtlinie",
+  "@privacyPolicyTitle": {
+    "description": "Privacy policy dialog title"
+  },
+
+  "privacyPolicyMessage": "Bitte lesen und akzeptieren Sie unsere Datenschutzrichtlinie, bevor Sie diese App verwenden.",
+  "@privacyPolicyMessage": {
+    "description": "Privacy policy dialog message"
+  },
+
+  "privacyPolicyAgree": "Ich stimme zu",
+  "@privacyPolicyAgree": {
+    "description": "Privacy policy agree button"
+  },
+
+  "privacyPolicyViewDetails": "Datenschutzrichtlinie ansehen",
+  "@privacyPolicyViewDetails": {
+    "description": "View privacy policy details button"
+  },
+
+  "ossLicenses": "Drittanbieter-Lizenzen",
+  "@ossLicenses": {
+    "description": "Open source licenses menu item"
+  },
+
+  "ossLicensesDesc": "Lizenzen von Drittanbieter-Bibliotheken ansehen",
+  "@ossLicensesDesc": {
+    "description": "Open source licenses description"
+  },
+
+  "resetAllSettings": "Alle Einstellungen zurücksetzen",
+  "@resetAllSettings": {
+    "description": "Reset all settings button"
+  },
+
+  "resetAllSettingsDesc": "Alle Einstellungen auf Standardwerte zurücksetzen",
+  "@resetAllSettingsDesc": {
+    "description": "Reset all settings description"
+  },
+
+  "resetAllSettingsConfirmTitle": "Alle Einstellungen zurücksetzen?",
+  "@resetAllSettingsConfirmTitle": {
+    "description": "Reset all settings confirmation dialog title"
+  },
+
+  "resetAllSettingsConfirmMessage": "Dadurch werden alle Einstellungen auf die Standardwerte zurückgesetzt. Diese Aktion kann nicht rückgängig gemacht werden.",
+  "@resetAllSettingsConfirmMessage": {
+    "description": "Reset all settings confirmation dialog message"
+  },
+
+  "resetAllSettingsExitMessage": "Die App wird in {seconds} Sekunden beendet, um das Zurücksetzen abzuschließen...",
+  "@resetAllSettingsExitMessage": {
+    "description": "Reset all settings exit countdown message",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+
+  "resetAllSettingsSuccess": "Einstellungen erfolgreich zurückgesetzt",
+  "@resetAllSettingsSuccess": {
+    "description": "Reset all settings success message"
+  },
+
+  "displaySettings": "Anzeige & Barrierefreiheit",
+  "@displaySettings": {
+    "description": "Section: Display and Accessibility"
+  },
+
+  "themeMode": "Designmodus",
+  "@themeMode": {
+    "description": "Theme mode setting"
+  },
+
+  "themeModeDesc": "Visuelles Design auswählen",
+  "@themeModeDesc": {
+    "description": "Description for theme mode"
+  },
+
+  "themeSoftDark": "Sanft dunkel",
+  "@themeSoftDark": {
+    "description": "Soft dark theme name"
+  },
+
+  "themeHighContrast": "Hoher Kontrast",
+  "@themeHighContrast": {
+    "description": "High contrast theme name"
+  },
+
+  "themeLightHighContrast": "Tageslicht-Hervorhebung",
+  "@themeLightHighContrast": {
+    "description": "Light high contrast theme name"
+  },
+
+  "themeTraditional": "Traditionell",
+  "@themeTraditional": {
+    "description": "Traditional theme name"
+  },
+
+  "themePastelGarden": "Pastellgarten",
+  "@themePastelGarden": {
+    "description": "Pastel garden theme name"
+  },
+
+  "themeInkVermilion": "Tinte & Zinnober",
+  "@themeInkVermilion": {
+    "description": "Ink and vermilion theme name"
+  },
+
+  "themeGlacialBlue": "Gletscherblau",
+  "@themeGlacialBlue": {
+    "description": "Glacial blue theme name"
+  },
+
+  "themeClassicNavy": "Klassisches Navy",
+  "@themeClassicNavy": {
+    "description": "Classic navy theme name"
+  },
+
+  "permissionStatusGranted": "Erteilt",
+  "@permissionStatusGranted": {
+    "description": "Permission status: granted"
+  },
+
+  "permissionStatusDenied": "Nicht erteilt",
+  "@permissionStatusDenied": {
+    "description": "Permission status: denied/not granted"
+  },
+
+  "batteryOptimizationStatusDisabled": "Deaktiviert (empfohlen)",
+  "@batteryOptimizationStatusDisabled": {
+    "description": "Battery optimization status: disabled (good for alarms)"
+  },
+
+  "batteryOptimizationStatusEnabled": "Aktiviert (kann Alarme beeinträchtigen)",
+  "@batteryOptimizationStatusEnabled": {
+    "description": "Battery optimization status: enabled (may restrict background)"
+  },
+
+  "exactAlarmStatusGranted": "Erlaubt",
+  "@exactAlarmStatusGranted": {
+    "description": "Exact alarm permission status: allowed"
+  },
+
+  "exactAlarmStatusDenied": "Nicht erlaubt (kann Alarme verzögern)",
+  "@exactAlarmStatusDenied": {
+    "description": "Exact alarm permission status: not allowed"
+  },
+
+  "batteryOptimizationStatusUnknown": "Bitte manuell prüfen",
+  "@batteryOptimizationStatusUnknown": {
+    "description": "Battery optimization status: cannot be determined automatically"
+  },
+
+  "batteryOptimizationMiuiHint": "MIUI: „Akku-Sparen“ auf „Keine Einschränkungen“ setzen",
+  "@batteryOptimizationMiuiHint": {
+    "description": "Hint for MIUI users about battery optimization settings"
+  },
+
+  "batteryOptimizationHuaweiHint": "Huawei/Honor: „App-Start“ auf „Manuell verwalten“ setzen und „Im Hintergrund ausführen“ erlauben",
+  "@batteryOptimizationHuaweiHint": {
+    "description": "Hint for Huawei/Honor users about battery optimization settings"
+  },
+
+  "batteryOptimizationOppoHint": "OPPO: In „App-Info“ → „Akkuverbrauch“ → „Stromverbrauchskontrollen“ → „Hintergrundaktivität erlauben“",
+  "@batteryOptimizationOppoHint": {
+    "description": "Hint for OPPO/ColorOS users about battery optimization settings"
+  },
+
+  "batteryOptimizationVivoHint": "vivo: In „App-Info“ → „Akkuverbrauch“ → „Details“ → „Hintergrund-Stromkontrolle“ → „Hoher Hintergrundverbrauch“",
+  "@batteryOptimizationVivoHint": {
+    "description": "Hint for vivo/FuntouchOS users about battery optimization settings"
+  },
+
+  "batteryOptimizationOemHint": "Tipp: Auf manchen angepassten Systemen (MIUI/EMUI/HarmonyOS) müssen Sie in den Einstellungen nach „Akku-Optimierung“, „Autostart“ oder „Geschützte Apps“ suchen",
+  "@batteryOptimizationOemHint": {
+    "description": "Hint for OEM device users (MIUI/Honor/Huawei) about battery optimization settings"
+  },
+
+  "batteryOptimizationStandardHint": "Tipp: Wenn Sie „Uneingeschränkt“ nicht finden, tippen Sie ggf. auf den Text „Hintergrundnutzung erlauben“ (nicht den Schalter), um weitere Optionen zu sehen",
+  "@batteryOptimizationStandardHint": {
+    "description": "Hint for standard Android users about finding battery optimization settings"
+  },
+
+  "gridDurationMustBePositive": "Dauer für Raster {index} muss eine positive ganze Zahl sein",
+  "@gridDurationMustBePositive": {
+    "description": "Error message when grid duration is not a positive integer",
+    "placeholders": {
+      "index": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+
+  "savedSuccessfullyGridUpdated": "Erfolgreich gespeichert, Raster aktualisiert",
+  "@savedSuccessfullyGridUpdated": {
+    "description": "Success message when grid settings are saved and applied"
+  },
+
+  "activeTimersRunningConfigWillApplyOnRestart": "Aktive Timer laufen – Konfiguration wird beim nächsten App-Start wirksam",
+  "@activeTimersRunningConfigWillApplyOnRestart": {
+    "description": "Warning when grid settings are saved but cannot be applied immediately"
+  },
+
+  "configurationSavedButErrorDuringUpdate": "Konfiguration gespeichert, aber Fehler beim App-Update: {error}",
+  "@configurationSavedButErrorDuringUpdate": {
+    "description": "Warning when settings are saved but there was an error applying them",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection timeout"
+      }
+    }
+  },
+
+  "debugTools": "Debug-Tools",
+  "@debugTools": {
+    "description": "Debug tools section header"
+  },
+
+  "testTimer10s": "10s-Testtimer (Debug)",
+  "@testTimer10s": {
+    "description": "Debug tool: 10 second test timer"
+  },
+
+  "testTimer10sDesc": "Einen echten 10-Sekunden-Timer starten",
+  "@testTimer10sDesc": {
+    "description": "Description for 10 second test timer"
+  },
+
+  "start": "Start",
+  "@start": {
+    "description": "Start button"
+  },
+
+  "audioTestDebug": "Audio-Test (Debug)",
+  "@audioTestDebug": {
+    "description": "Debug tool: audio test"
+  },
+
+  "audioTestDebugDesc": "Soundprobleme diagnostizieren",
+  "@audioTestDebugDesc": {
+    "description": "Description for audio test debug tool"
+  },
+
+  "errorTestDebug": "Fehler-Test (Debug)",
+  "@errorTestDebug": {
+    "description": "Debug tool: error test"
+  },
+
+  "errorTestDebugDesc": "Fehlerberichtssystem testen",
+  "@errorTestDebugDesc": {
+    "description": "Description for error test debug tool"
+  },
+
+  "exitDeveloperMode": "Entwicklermodus verlassen",
+  "@exitDeveloperMode": {
+    "description": "Exit developer mode option"
+  },
+
+  "exitDeveloperModeDesc": "Tippen, um Debug-Tools auszublenden",
+  "@exitDeveloperModeDesc": {
+    "description": "Description for exit developer mode"
+  },
+
+  "failedToStartTestTimer": "Testtimer konnte nicht gestartet werden: {error}",
+  "@failedToStartTestTimer": {
+    "description": "Error message when test timer fails to start",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permission denied"
+      }
+    }
+  },
+
+  "audioTest": "Audio-Test",
+  "@audioTest": {
+    "description": "Audio test page title"
+  },
+
+  "audioTestInstructions": "Bitte testen Sie die folgenden Funktionen der Reihe nach und beobachten Sie, ob Ton ausgegeben wird.\nWenn ein Test fehlschlägt, hat die entsprechende Funktion ein Problem.",
+  "@audioTestInstructions": {
+    "description": "Instructions for audio test page"
+  },
+
+  "clearLog": "Protokoll löschen",
+  "@clearLog": {
+    "description": "Clear log button"
+  },
+
+  "startTest": "Test starten",
+  "@startTest": {
+    "description": "Start test button"
+  },
+
+  "testLog": "Testprotokoll:",
+  "@testLog": {
+    "description": "Test log label"
+  },
+
+  "waitingForTest": "Warten auf Test...",
+  "@waitingForTest": {
+    "description": "Message shown when test log is empty"
+  },
+
+  "testTimerStarted": "10-Sekunden-Testtimer gestartet! Erstes Feld ist jetzt auf 10s gesetzt.",
+  "@testTimerStarted": {
+    "description": "Message shown when test timer starts"
+  },
+
+  "stopActiveTimersBeforeTest": "Bitte stoppen Sie alle aktiven Timer, bevor Sie den Testtimer starten",
+  "@stopActiveTimersBeforeTest": {
+    "description": "Warning message when trying to start test timer while other timers are running"
+  },
+
+  "timeIsUp": "Zeit abgelaufen!",
+  "@timeIsUp": {
+    "description": "Notification body when timer completes"
+  },
+
+  "widgetTimersRinging": "{count, plural, =1{1 Timer klingelt} other{{count} Timer klingeln}}",
+  "@widgetTimersRinging": {
+    "description": "Widget status text when timers are ringing",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+
+  "widgetTimersActive": "{count, plural, =1{1 Timer aktiv} other{{count} Timer aktiv}}",
+  "@widgetTimersActive": {
+    "description": "Widget status text when timers are running",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+
+  "widgetTapToOpen": "Tippen, um die App zu öffnen",
+  "@widgetTapToOpen": {
+    "description": "Widget status text when no timers are active"
+  },
+
+  "widgetTimerRemaining": "{name}: {remaining}",
+  "@widgetTimerRemaining": {
+    "description": "Widget nearest timer display format",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Timer 1"
+      },
+      "remaining": {
+        "type": "String",
+        "example": "5:30"
+      }
+    }
+  },
+
+  "widgetDescription": "Grid-Timer-Status anzeigen",
+  "@widgetDescription": {
+    "description": "Widget description for Android widget settings"
+  },
+
+  "deviceType": "Gerät/Plattform",
+  "@deviceType": {
+    "description": "Label for device type in version info dialog"
+  },
+
+  "deviceTypeMiui": "Xiaomi (MIUI)",
+  "@deviceTypeMiui": {
+    "description": "Device type name for MIUI devices"
+  },
+
+  "deviceTypeHuawei": "Huawei/Honor (EMUI/HarmonyOS)",
+  "@deviceTypeHuawei": {
+    "description": "Device type name for Huawei/Honor devices"
+  },
+
+  "deviceTypeOppo": "OPPO/Realme/OnePlus (ColorOS)",
+  "@deviceTypeOppo": {
+    "description": "Device type name for OPPO/ColorOS devices"
+  },
+
+  "deviceTypeVivo": "vivo/iQOO (FuntouchOS/OriginOS)",
+  "@deviceTypeVivo": {
+    "description": "Device type name for vivo/FuntouchOS devices"
+  },
+
+  "deviceTypeStandard": "Standard Android",
+  "@deviceTypeStandard": {
+    "description": "Device type name for standard Android devices"
+  },
+
+  "deviceTypeIos": "iOS",
+  "@deviceTypeIos": {
+    "description": "Device type name for iOS devices"
+  },
+
+  "deviceTypeMacos": "macOS",
+  "@deviceTypeMacos": {
+    "description": "Device type name for macOS"
+  },
+
+  "deviceTypeWindows": "Windows",
+  "@deviceTypeWindows": {
+    "description": "Device type name for Windows"
+  },
+
+  "deviceTypeLinux": "Linux",
+  "@deviceTypeLinux": {
+    "description": "Device type name for Linux"
+  },
+
+  "deviceTypeWeb": "Webbrowser",
+  "@deviceTypeWeb": {
+    "description": "Device type name for Web platform"
+  },
+
+  "singleInstanceWarningMessage": "Diese Anwendung läuft bereits.\n\nEs kann nur eine Instanz gleichzeitig ausgeführt werden.\n\nBitte verwenden Sie das vorhandene Fenster oder schließen Sie es, bevor Sie eine neue Instanz starten.",
+  "@singleInstanceWarningMessage": {
+    "description": "Message shown when trying to launch multiple instances"
+  }
+}
