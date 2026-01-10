@@ -1,0 +1,32 @@
+/* Localized versions of MainMenu.xib keys */
+
+/* Window Title */
+"QvC-M9-y7g.title" = "九宫计时";
+
+/* Application Menu */
+"1Xt-HY-uBw.title" = "九宫计时";
+"uQy-DD-JDr.title" = "九宫计时";
+"5kV-Vb-QxS.title" = "关于九宫计时";
+"BOF-NM-1cW.title" = "偏好设置…";
+"NMo-om-nkz.title" = "服务";
+"hz9-B4-Xy5.title" = "服务";
+"Olw-nP-bQN.title" = "隐藏九宫计时";
+"Vdr-fp-XzO.title" = "隐藏其他";
+"Kd2-mp-pUS.title" = "显示全部";
+"4sb-4s-VLi.title" = "退出九宫计时";
+
+/* Edit Menu */
+"5QF-Oa-p0T.title" = "编辑";
+"W48-6f-4Dl.title" = "编辑";
+
+/* View Menu */
+"H8h-7b-M4v.title" = "查看";
+"HyV-fh-RgO.title" = "查看";
+"4J7-dP-txa.title" = "进入全屏";
+
+/* Window Menu */
+"aUF-d1-5bR.title" = "窗口";
+"Td7-aD-5lo.title" = "窗口";
+"OY7-WF-poV.title" = "最小化";
+"R4o-n2-Eq4.title" = "缩放";
+"LE2-aR-0XJ.title" = "全部置于前端";
