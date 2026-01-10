@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:numberpicker/numberpicker.dart';
 import '../../core/theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
 
 /// A dialog that allows users to quickly adjust the duration of a timer slot.
+/// Designed for senior-friendly interaction with large buttons.
 class QuickDurationEditorDialog extends StatefulWidget {
   final int initialDurationSeconds;
   final String slotName;
@@ -25,12 +25,11 @@ class QuickDurationEditorDialog extends StatefulWidget {
     return showDialog<int>(
       context: context,
       barrierDismissible: false,
-      builder:
-          (context) => QuickDurationEditorDialog(
-            initialDurationSeconds: initialDurationSeconds,
-            slotName: slotName,
-            tokens: tokens,
-          ),
+      builder: (context) => QuickDurationEditorDialog(
+        initialDurationSeconds: initialDurationSeconds,
+        slotName: slotName,
+        tokens: tokens,
+      ),
     );
   }
 
@@ -39,21 +38,33 @@ class QuickDurationEditorDialog extends StatefulWidget {
       _QuickDurationEditorDialogState();
 }
 
-class _QuickDurationEditorDialogState extends State<QuickDurationEditorDialog> {
-  late int _minutes;
-  late int _seconds;
+class _QuickDurationEditorDialogState
+    extends State<QuickDurationEditorDialog> {
+  late int _totalSeconds;
 
   @override
   void initState() {
     super.initState();
-    _minutes = widget.initialDurationSeconds ~/ 60;
-    _seconds = widget.initialDurationSeconds % 60;
+    _totalSeconds = widget.initialDurationSeconds;
   }
 
-  int get _totalSeconds => _minutes * 60 + _seconds;
+  int get _minutes => _totalSeconds ~/ 60;
+  int get _seconds => _totalSeconds % 60;
 
-  void _updateDuration() {
-    setState(() {});
+  void _addMinutes(int minutes) {
+    setState(() {
+      _totalSeconds += minutes * 60;
+      if (_totalSeconds < 0) _totalSeconds = 0;
+      if (_totalSeconds > 59940) _totalSeconds = 59940; // 999 minutes max
+    });
+  }
+
+  void _addSeconds(int seconds) {
+    setState(() {
+      _totalSeconds += seconds;
+      if (_totalSeconds < 0) _totalSeconds = 0;
+      if (_totalSeconds > 59940) _totalSeconds = 59940;
+    });
   }
 
   @override
@@ -63,174 +74,236 @@ class _QuickDurationEditorDialogState extends State<QuickDurationEditorDialog> {
     return AlertDialog(
       title: Text(
         l10n.adjustTimeTitle(widget.slotName),
-        style: TextStyle(color: widget.tokens.textPrimary),
-      ),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Number pickers row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildPickerColumn(
-                  label: l10n.minutes,
-                  value: _minutes,
-                  maxValue: 999,
-                  onChanged: (val) {
-                    setState(() => _minutes = val);
-                    _updateDuration();
-                  },
-                ),
-                const SizedBox(width: 24),
-                _buildPickerColumn(
-                  label: l10n.seconds,
-                  value: _seconds,
-                  maxValue: 59,
-                  onChanged: (val) {
-                    setState(() => _seconds = val);
-                    _updateDuration();
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            // Current value preview
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: widget.tokens.surface.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: widget.tokens.border.withValues(alpha: 0.3),
-                ),
-              ),
-              child: Text(
-                l10n.currentDuration(_minutes, _seconds),
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: widget.tokens.textPrimary,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
+        style: TextStyle(
+          fontSize: 26,
+          fontWeight: FontWeight.bold,
+          color: widget.tokens.textPrimary,
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          style: TextButton.styleFrom(
-            foregroundColor: widget.tokens.textSecondary,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          ),
-          child: Text(
-            l10n.actionCancel,
-            style: const TextStyle(fontSize: 18),
-          ),
-        ),
-        TextButton(
-          onPressed: () {
-            if (_totalSeconds <= 0) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(l10n.durationMustBePositive),
-                  backgroundColor: widget.tokens.danger,
-                ),
-              );
-              return;
-            }
-            Navigator.of(context).pop(_totalSeconds);
-          },
-          style: TextButton.styleFrom(
-            foregroundColor: widget.tokens.accent,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          ),
-          child: Text(l10n.ok, style: const TextStyle(fontSize: 18)),
-        ),
-      ],
-      actionsAlignment: MainAxisAlignment.spaceBetween,
-    );
-  }
-
-  Widget _buildPickerColumn({
-    required String label,
-    required int value,
-    required int maxValue,
-    required ValueChanged<int> onChanged,
-  }) {
-    return Column(
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: widget.tokens.textSecondary,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-            color: widget.tokens.surface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: widget.tokens.border),
-          ),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 500),
+        child: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              IconButton(
-                icon: const Icon(Icons.keyboard_arrow_up),
-                onPressed: () {
-                  if (value < maxValue) {
-                    onChanged(value + 1);
-                  } else {
-                    // Loop around or max out
-                    onChanged(0);
-                  }
-                },
-                color: widget.tokens.textPrimary,
-              ),
-              NumberPicker(
-                value: value,
-                minValue: 0,
-                maxValue: maxValue,
-                step: 1,
-                itemHeight: 50,
-                axis: Axis.vertical,
-                onChanged: onChanged,
-                textStyle: TextStyle(
-                  fontSize: 18,
-                  color: widget.tokens.textSecondary,
-                ),
-                selectedTextStyle: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: widget.tokens.textPrimary,
-                ),
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(color: widget.tokens.border),
-                    bottom: BorderSide(color: widget.tokens.border),
+            // Large Time Display
+            Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 280),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1565C0).withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: const Color(0xFF1976D2),
+                      width: 3,
+                    ),
+                  ),
+                  child: Text(
+                    '${_minutes.toString().padLeft(2, '0')}:${_seconds.toString().padLeft(2, '0')}',
+                    style: TextStyle(
+                      fontSize: 64,
+                      fontWeight: FontWeight.w900,
+                      fontFamily: 'monospace',
+                      color: widget.tokens.textPrimary,
+                      fontFeatures: const [FontFeature.tabularFigures()],
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.keyboard_arrow_down),
-                onPressed: () {
-                  if (value > 0) {
-                    onChanged(value - 1);
-                  } else {
-                    // Loop around
-                    onChanged(maxValue);
-                  }
-                },
-                color: widget.tokens.textPrimary,
+            ),
+              const SizedBox(height: 20),
+              // Minutes adjustment buttons
+              _buildAdjustmentSection(
+                label: l10n.minutes,
+                buttons: [
+                  _buildAdjustButton(
+                    label: '-5',
+                    icon: Icons.fast_rewind,
+                    onPressed: () => _addMinutes(-5),
+                  ),
+                  _buildAdjustButton(
+                    label: '-1',
+                    icon: Icons.remove,
+                    onPressed: () => _addMinutes(-1),
+                  ),
+                  _buildAdjustButton(
+                    label: '+1',
+                    icon: Icons.add,
+                    onPressed: () => _addMinutes(1),
+                  ),
+                  _buildAdjustButton(
+                    label: '+5',
+                    icon: Icons.fast_forward,
+                    onPressed: () => _addMinutes(5),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              // Seconds adjustment buttons
+              _buildAdjustmentSection(
+                label: l10n.seconds,
+                buttons: [
+                  _buildAdjustButton(
+                    label: '-10',
+                    icon: Icons.fast_rewind,
+                    onPressed: () => _addSeconds(-10),
+                  ),
+                  _buildAdjustButton(
+                    label: '-1',
+                    icon: Icons.remove,
+                    onPressed: () => _addSeconds(-1),
+                  ),
+                  _buildAdjustButton(
+                    label: '+1',
+                    icon: Icons.add,
+                    onPressed: () => _addSeconds(1),
+                  ),
+                  _buildAdjustButton(
+                    label: '+10',
+                    icon: Icons.fast_forward,
+                    onPressed: () => _addSeconds(10),
+                  ),
+                ],
               ),
             ],
           ),
         ),
+      ),
+      actions: [
+        Row(
+          children: [
+            Expanded(
+              child: TextButton(
+                onPressed: () {
+                  if (_totalSeconds <= 0) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(l10n.durationMustBePositive),
+                        backgroundColor: widget.tokens.danger,
+                      ),
+                    );
+                    return;
+                  }
+                  Navigator.of(context).pop(_totalSeconds);
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: const Color(0xFF1976D2), // Material Blue 700 for high contrast
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                ),
+                child: Text(
+                  l10n.ok,
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: TextButton.styleFrom(
+                  foregroundColor: widget.tokens.textPrimary,
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  backgroundColor: widget.tokens.surfacePressed,
+                ),
+                child: Text(
+                  l10n.actionCancel,
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
+      actionsAlignment: MainAxisAlignment.center,
+      actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+    );
+  }
+
+  Widget _buildAdjustmentSection({
+    required String label,
+    required List<Widget> buttons,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 12),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: widget.tokens.textPrimary,
+            ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: buttons,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAdjustButton({
+    required String label,
+    required IconData icon,
+    required VoidCallback onPressed,
+  }) {
+    final isNegative = label.startsWith('-');
+
+    // Use high-contrast colors for better visibility
+    final Color backgroundColor;
+    final Color textColor;
+
+    if (isNegative) {
+      // Negative buttons: Red background with white text
+      backgroundColor = const Color(0xFFD32F2F); // Material Red 700 (high contrast)
+      textColor = Colors.white;
+    } else {
+      // Positive buttons: Green background with white text for better contrast
+      backgroundColor = const Color(0xFF388E3C); // Material Green 700 (high contrast)
+      textColor = Colors.white;
+    }
+
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: Material(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(12),
+          child: InkWell(
+            onTap: onPressed,
+            borderRadius: BorderRadius.circular(12),
+              child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    icon,
+                    size: 36,
+                    color: textColor,
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
