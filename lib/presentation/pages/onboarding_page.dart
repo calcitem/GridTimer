@@ -36,6 +36,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   // Whether this is a MIUI device
   bool _isMiuiDevice = false;
 
+  // Whether auto-skip has been triggered (for Web/Desktop)
+  bool _autoSkipTriggered = false;
+
   @override
   void initState() {
     super.initState();
@@ -263,22 +266,41 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Only Android needs complex permissions for this app usually.
-    // iOS handles notifications, but exact alarm/battery/overlay are Android specific concepts.
-    final isAndroid = !kIsWeb && Platform.isAndroid;
     final l10n = AppLocalizations.of(context)!;
 
+    // Platform detection for conditional step display
+    final isAndroid = !kIsWeb && Platform.isAndroid;
+    final isIOS = !kIsWeb && Platform.isIOS;
+    final isDesktop =
+        !kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux);
+
+    // Build steps based on platform:
+    // - Web: Welcome + Completion only (no permissions needed)
+    // - Desktop (macOS/Windows/Linux): Welcome + Completion only
+    // - iOS: Welcome + Notification + Completion
+    // - Android: Full permission flow
     final steps = <Widget>[
       _buildWelcomeStep(),
-      _buildNotificationStep(isAndroid),
+      // Notification step: Android 13+ and iOS need runtime permission
+      if (isAndroid || isIOS) _buildNotificationStep(isAndroid),
+      // Exact alarm: Android 12+ only
       if (isAndroid) _buildExactAlarmStep(),
+      // Battery optimization: Android only
       if (isAndroid) _buildBatteryStep(),
-      // Alarm sound step only for Android 8.0+ (API 26+) where notification channels exist
+      // Alarm sound: Android 8.0+ (API 26+) where notification channels exist
       if (isAndroid && _androidSdkVersion >= 26) _buildAlarmSoundStep(l10n),
-      // Full screen intent is implicitly handled or less critical to nag about upfront if exact alarm works
-      // but let's include it if we want to be "comprehensive"
       _buildCompletionStep(),
     ];
+
+    // For Web and Desktop, skip onboarding (no permissions to configure)
+    if ((kIsWeb || isDesktop) && !_autoSkipTriggered) {
+      _autoSkipTriggered = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _completeOnboarding();
+        }
+      });
+    }
 
     return Scaffold(
       body: SafeArea(
