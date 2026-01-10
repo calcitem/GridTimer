@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
@@ -37,7 +38,7 @@ class _AlarmTroubleshootingDialogState
   }
 
   Future<void> _loadAndroidSdkVersion() async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
 
     final permissionService = ref.read(permissionServiceProvider);
     final sdkVersion = await permissionService.getAndroidSdkVersion();

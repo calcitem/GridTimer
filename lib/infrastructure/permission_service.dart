@@ -1,9 +1,10 @@
 import 'dart:io';
+
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:app_settings/app_settings.dart';
+
 import '../core/config/environment_config.dart';
 import '../core/domain/services/i_permission_service.dart';
 
@@ -222,7 +223,8 @@ class PermissionService implements IPermissionService {
   }
 
   @override
-  bool get canOpenTtsSettings => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+  bool get canOpenTtsSettings =>
+      !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 
   @override
   Future<void> openSystemSoundSettings() async {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
@@ -34,7 +35,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
     try {
       // Boost alarm volume if the setting is enabled (Android only)
       final shouldBoostVolume =
-          Platform.isAndroid && (settings?.autoRaiseAlarmVolumeEnabled ?? false);
+          !kIsWeb && Platform.isAndroid && (settings?.autoRaiseAlarmVolumeEnabled ?? false);
       if (shouldBoostVolume) {
         await alarmVolumeService.boostNow(
           level:
@@ -217,7 +218,7 @@ class _SoundSettingsPageState extends ConsumerState<SoundSettingsPage> {
             ),
 
             // Android system alarm volume boost (only show on Android)
-            if (Platform.isAndroid) ...[
+            if (!kIsWeb && Platform.isAndroid) ...[
               const Divider(),
 
               SwitchListTile(
