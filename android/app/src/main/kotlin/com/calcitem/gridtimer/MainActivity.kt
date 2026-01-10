@@ -272,31 +272,41 @@ class MainActivity: FlutterActivity() {
 
                     try {
                         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                        val channel = notificationManager.getNotificationChannel(channelId)
-
                         val info = HashMap<String, Any?>()
-                        info["areNotificationsEnabled"] = notificationManager.areNotificationsEnabled()
-                        info["interruptionFilter"] = notificationManager.currentInterruptionFilter
-                        info["notificationPolicyAccessGranted"] = notificationManager.isNotificationPolicyAccessGranted
 
-                        if (channel != null) {
-                            info["exists"] = true
-                            info["id"] = channel.id
-                            info["name"] = channel.name?.toString()
-                            info["importance"] = channel.importance
-                            info["sound"] = channel.sound?.toString()
-                            info["vibrationEnabled"] = channel.shouldVibrate()
-                            info["soundEnabled"] = channel.importance >= NotificationManager.IMPORTANCE_DEFAULT
-                            info["description"] = channel.description
-                            info["canBypassDnd"] = channel.canBypassDnd()
-                            info["lockscreenVisibility"] = channel.lockscreenVisibility
-                            info["audioAttributesUsage"] = channel.audioAttributes?.usage
-                            info["audioAttributesContentType"] = channel.audioAttributes?.contentType
+                        // NotificationChannel API is only available on Android 8.0 (API 26) and above
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            val channel = notificationManager.getNotificationChannel(channelId)
+
+                            info["areNotificationsEnabled"] = notificationManager.areNotificationsEnabled()
+                            info["interruptionFilter"] = notificationManager.currentInterruptionFilter
+                            info["notificationPolicyAccessGranted"] = notificationManager.isNotificationPolicyAccessGranted
+
+                            if (channel != null) {
+                                info["exists"] = true
+                                info["id"] = channel.id
+                                info["name"] = channel.name?.toString()
+                                info["importance"] = channel.importance
+                                info["sound"] = channel.sound?.toString()
+                                info["vibrationEnabled"] = channel.shouldVibrate()
+                                info["soundEnabled"] = channel.importance >= NotificationManager.IMPORTANCE_DEFAULT
+                                info["description"] = channel.description
+                                info["canBypassDnd"] = channel.canBypassDnd()
+                                info["lockscreenVisibility"] = channel.lockscreenVisibility
+                                info["audioAttributesUsage"] = channel.audioAttributes?.usage
+                                info["audioAttributesContentType"] = channel.audioAttributes?.contentType
+                            } else {
+                                info["exists"] = false
+                            }
                         } else {
+                            // On Android 7.x and below, notification channels don't exist
                             info["exists"] = false
+                            info["areNotificationsEnabled"] = true // Assume enabled on older Android
+                            info["interruptionFilter"] = 0
+                            info["notificationPolicyAccessGranted"] = false
                         }
 
-                        // Also get audio volume info
+                        // Also get audio volume info (available on all Android versions)
                         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
                         info["alarmVolume"] = audioManager.getStreamVolume(AudioManager.STREAM_ALARM)
                         info["alarmVolumeMax"] = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM)
@@ -435,23 +445,38 @@ class MainActivity: FlutterActivity() {
                     }
 
                     try {
-                        val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
-                            putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
-                            putExtra(Settings.EXTRA_CHANNEL_ID, channelId)
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        // ACTION_CHANNEL_NOTIFICATION_SETTINGS requires Android 8.0+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+                                putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                                putExtra(Settings.EXTRA_CHANNEL_ID, channelId)
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                            startActivity(intent)
+                            result.success(null)
+                        } else {
+                            // On Android 7.x and below, open app details settings instead
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.parse("package:$packageName")
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                            startActivity(intent)
+                            result.success(null)
                         }
-                        startActivity(intent)
-                        // Dart side uses invokeMethod<void>(), so we must return null here.
-                        // Otherwise it will trigger a type conversion exception, causing the
-                        // appearance of "navigating and immediately returning".
-                        result.success(null)
                     } catch (e: Exception) {
                         // Fallback: open the app notification settings page (some OEM ROMs/versions
                         // may not support the channel settings intent).
                         try {
-                            val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                                putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                                    putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }
+                            } else {
+                                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                    data = Uri.parse("package:$packageName")
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }
                             }
                             startActivity(intent)
                             // Same as above: maintain compatibility with invokeMethod<void>()
