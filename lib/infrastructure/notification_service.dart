@@ -33,6 +33,9 @@ class NotificationService implements INotificationService {
   static const String _runningIndicatorChannelId = 'gt.status.running.v1';
   static const int _runningIndicatorNotificationId = 42;
 
+  // iOS notification category for timer alarms
+  static const String _iosCategoryTimerAlarm = 'TIMER_ALARM_CATEGORY';
+
   Future<Map<dynamic, dynamic>?> _getAndroidNotificationChannelInfo({
     required String channelId,
   }) async {
@@ -109,8 +112,31 @@ class NotificationService implements INotificationService {
     // Manifest, so the notification default icon should remain consistent to avoid
     // "invalid_icon / no valid small icon" crashes.
     const androidInit = AndroidInitializationSettings('ic_stat_timer');
-    const iosInit = DarwinInitializationSettings();
-    const initSettings = InitializationSettings(
+
+    // iOS initialization with notification categories
+    final List<DarwinNotificationCategory> iosCategories = [
+      DarwinNotificationCategory(
+        _iosCategoryTimerAlarm,
+        actions: <DarwinNotificationAction>[
+          DarwinNotificationAction.plain(
+            _actionIdStop,
+            'Stop',
+            options: <DarwinNotificationActionOption>{
+              DarwinNotificationActionOption.foreground,
+            },
+          ),
+        ],
+      ),
+    ];
+
+    final iosInit = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      notificationCategories: iosCategories,
+    );
+
+    final initSettings = InitializationSettings(
       android: androidInit,
       iOS: iosInit,
     );
@@ -367,16 +393,35 @@ class NotificationService implements INotificationService {
 
   @override
   Future<bool> requestPostNotificationsPermission() async {
-    if (kIsWeb || !Platform.isAndroid) return true;
+    if (kIsWeb) return true;
 
-    final androidPlugin = _plugin
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >();
-    if (androidPlugin == null) return false;
+    if (Platform.isAndroid) {
+      final androidPlugin = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
+      if (androidPlugin == null) return false;
 
-    final result = await androidPlugin.requestNotificationsPermission();
-    return result ?? false;
+      final result = await androidPlugin.requestNotificationsPermission();
+      return result ?? false;
+    } else if (Platform.isIOS) {
+      // iOS permissions are requested during initialization
+      // Check if permissions were granted
+      final iosPlugin = _plugin
+          .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin
+          >();
+      if (iosPlugin == null) return false;
+
+      final result = await iosPlugin.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      return result ?? false;
+    }
+
+    return true;
   }
 
   @override
@@ -446,7 +491,7 @@ class NotificationService implements INotificationService {
 
     // Cancel existing notifications with the same ID. Otherwise Android may treat this as an
     // update and suppress alerting behaviour (sound/vibration).
-    if (Platform.isAndroid) {
+    if (Platform.isAndroid || Platform.isIOS) {
       await _plugin.cancel(notificationId);
     }
 
@@ -528,7 +573,30 @@ class NotificationService implements INotificationService {
       audioAttributesUsage: AudioAttributesUsage.alarm,
     );
 
-    final details = NotificationDetails(android: androidDetails);
+    // iOS notification details
+    final iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: playNotificationSound,
+      // Note: For custom sounds on iOS, the sound file must be < 30 seconds
+      // and in aiff, wav, or caf format. Flutter assets are automatically included
+      // in the app bundle, but notification sounds need to be referenced by filename only.
+      // Using default sound for now to ensure reliability across all iOS versions.
+      sound: playNotificationSound
+          ? null
+          : null, // null = use default iOS notification sound
+      badgeNumber: 1,
+      categoryIdentifier: _iosCategoryTimerAlarm,
+      // iOS 15+ interruption level - timeSensitive ensures notification shows even in Focus mode
+      interruptionLevel: InterruptionLevel.timeSensitive,
+      presentBanner: true,
+      presentList: true,
+    );
+
+    final details = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
 
     // MIUI/Android 15 can delay or silence scheduled notifications unless they are scheduled
     // as alarm clocks. Try alarmClock first for best lockscreen reliability.
@@ -612,7 +680,7 @@ class NotificationService implements INotificationService {
     final channelId = _silentTimeUpChannelId;
 
     // Cancel any pending notifications with the same ID to avoid update-suppressed alerting.
-    if (Platform.isAndroid) {
+    if (Platform.isAndroid || Platform.isIOS) {
       await _plugin.cancel(notificationId);
     }
 
@@ -687,7 +755,23 @@ class NotificationService implements INotificationService {
       audioAttributesUsage: AudioAttributesUsage.alarm,
     );
 
-    final details = NotificationDetails(android: androidDetails);
+    // iOS notification details
+    final iosDetailsNow = const DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: false, // Sound is managed by in-app audio service
+      badgeNumber: 1,
+      categoryIdentifier: _iosCategoryTimerAlarm,
+      // iOS 15+ interruption level - timeSensitive ensures notification shows even in Focus mode
+      interruptionLevel: InterruptionLevel.timeSensitive,
+      presentBanner: true,
+      presentList: true,
+    );
+
+    final details = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetailsNow,
+    );
 
     // Show notification immediately
     await _plugin.show(
