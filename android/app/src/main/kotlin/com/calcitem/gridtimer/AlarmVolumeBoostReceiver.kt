@@ -89,12 +89,25 @@ class AlarmVolumeBoostReceiver : BroadcastReceiver() {
             pendingIntentFlags(updateCurrent = true),
         )
 
-        // Best-effort: schedule an exact restore to avoid leaving alarm volume boosted.
+        // Best-effort: schedule a restore to avoid leaving alarm volume boosted.
+        // Prefer exact, but fall back to inexact if exact alarms are restricted.
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMs, pendingIntent)
+                try {
+                    alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        triggerAtMs,
+                        pendingIntent
+                    )
+                } catch (_: SecurityException) {
+                    alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMs, pendingIntent)
+                }
             } else {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMs, pendingIntent)
+                try {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMs, pendingIntent)
+                } catch (_: SecurityException) {
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMs, pendingIntent)
+                }
             }
         } catch (_: Exception) {
             // Ignore: restore is best-effort and can also be done from Flutter when user stops.
@@ -133,5 +146,3 @@ class AlarmVolumeBoostReceiver : BroadcastReceiver() {
         private const val RESTORE_REQUEST_CODE = 29999
     }
 }
-
-

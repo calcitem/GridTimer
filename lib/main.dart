@@ -78,7 +78,8 @@ class _GridTimerAppState extends ConsumerState<GridTimerApp> {
 
   Future<void> _initializeServices() async {
     try {
-      // First request notification permission (Android 13+)
+      // Initialize notification service (permission prompts are triggered explicitly
+      // from onboarding or settings).
       final notification = ref.read(notificationServiceProvider);
       await notification.init();
 

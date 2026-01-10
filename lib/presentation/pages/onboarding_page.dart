@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../core/config/environment_config.dart';
@@ -106,15 +105,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       // Battery optimization: checking if *ignoring* optimizations is enabled.
       // Only applicable on Android (and potentially iOS in future, but mainly Android)
       if (Platform.isAndroid) {
-        // The service doesn't expose a direct check for "isIgnoringBatteryOptimizations",
-        // but typically we can check permission_handler's ignoreBatteryOptimizations status.
-        // Since the service wrapper might not expose it, we'll check directly via permission_handler for now
-        // or assume we need to ask if we can't check.
-        // Let's check using Permission.ignoreBatteryOptimizations.status
         try {
-          final batteryStatus =
-              await Permission.ignoreBatteryOptimizations.status;
-          batteryIgnored = batteryStatus.isGranted;
+          final disabled = await permissionService
+              .isBatteryOptimizationDisabled();
+          // Treat unknown as "not disabled" so onboarding still prompts users on OEM ROMs.
+          batteryIgnored = disabled ?? false;
         } catch (e) {
           debugPrint('Error checking battery optimization status: $e');
         }
@@ -486,10 +481,19 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       // Android < 31: Not required
       action = const _NotRequiredLabel();
     } else if (isApi33) {
-      // Android 13: Pre-granted by system, show special label
+      // Android 13: Often pre-granted by system on install, but users can still
+      // revoke it. If it is not granted, provide a button to re-enable it.
       action = _exactAlarmGranted
           ? const _PreGrantedLabel()
-          : const _GrantedLabel();
+          : ElevatedButton.icon(
+              onPressed: () async {
+                final service = ref.read(notificationServiceProvider);
+                await service.requestExactAlarmPermission();
+                await _checkPermissions();
+              },
+              icon: const Icon(Icons.settings),
+              label: Text(l10n.onboardingGrantExactAlarm),
+            );
     } else {
       // Android 12, 14+: Requires manual grant
       action = _exactAlarmGranted

@@ -16,28 +16,56 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<bool> canPostNotifications() async {
-    if (kIsWeb || !Platform.isAndroid) return true;
+    if (kIsWeb) return true;
+    if (!Platform.isAndroid && !Platform.isIOS) return true;
 
-    final status = await Permission.notification.status;
-    return status.isGranted;
+    try {
+      final status = await Permission.notification.status;
+      return status.isGranted;
+    } catch (_) {
+      // Best-effort: if we cannot determine, return false to prompt user action.
+      return false;
+    }
   }
 
   @override
   Future<bool> canScheduleExactAlarms() async {
     if (kIsWeb || !Platform.isAndroid) return true;
 
-    // Note: permission_handler may not expose this API.
-    // This is a best-effort implementation.
-    // For Android 14+, this requires platform channel to check canScheduleExactAlarms().
-    final status = await Permission.scheduleExactAlarm.status;
-    return status.isGranted;
+    // Prefer native AlarmManager.canScheduleExactAlarms() for correctness.
+    try {
+      final result = await _systemSettingsChannel.invokeMethod<bool>(
+        'canScheduleExactAlarms',
+      );
+      if (result != null) return result;
+    } catch (_) {
+      // Fall back to permission_handler as a best-effort check.
+    }
+
+    try {
+      final status = await Permission.scheduleExactAlarm.status;
+      return status.isGranted;
+    } catch (_) {
+      // Best-effort: if we cannot determine, return false to prompt user action.
+      return false;
+    }
   }
 
   @override
   Future<bool> canUseFullScreenIntent() async {
-    // Full-screen intent permission check requires platform channel.
-    // Placeholder implementation.
-    return true;
+    if (kIsWeb || !Platform.isAndroid) return true;
+
+    // Android 14+ full-screen intent requires a special app access toggle.
+    // Prefer native NotificationManager.canUseFullScreenIntent() for correctness.
+    try {
+      final result = await _systemSettingsChannel.invokeMethod<bool>(
+        'canUseFullScreenIntent',
+      );
+      return result ?? true;
+    } catch (_) {
+      // Best-effort: if we cannot determine, assume permitted on older devices.
+      return true;
+    }
   }
 
   @override
@@ -83,9 +111,23 @@ class PermissionService implements IPermissionService {
       return;
     }
 
-    // app_settings is only available on Android and iOS
-    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+    if (kIsWeb) return;
+
+    if (Platform.isAndroid) {
+      // Prefer native special access page (Android 12+).
+      try {
+        await _systemSettingsChannel.invokeMethod<void>('openExactAlarmSettings');
+        return;
+      } catch (e) {
+        debugPrint('Native openExactAlarmSettings failed, using fallback: $e');
+      }
       await AppSettings.openAppSettings(type: AppSettingsType.alarm);
+      return;
+    }
+
+    if (Platform.isIOS) {
+      // iOS doesn't have exact alarm special access. Open app settings as a best-effort fallback.
+      await AppSettings.openAppSettings();
     }
   }
 
@@ -99,8 +141,26 @@ class PermissionService implements IPermissionService {
       return;
     }
 
-    // app_settings is only available on Android and iOS
-    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+    if (kIsWeb) return;
+
+    if (Platform.isAndroid) {
+      // Prefer native special access page (Android 14+).
+      try {
+        await _systemSettingsChannel.invokeMethod<void>(
+          'openFullScreenIntentSettings',
+        );
+        return;
+      } catch (e) {
+        debugPrint(
+          'Native openFullScreenIntentSettings failed, using fallback: $e',
+        );
+      }
+      await AppSettings.openAppSettings();
+      return;
+    }
+
+    if (Platform.isIOS) {
+      // iOS doesn't have Android-style full-screen intent special access.
       await AppSettings.openAppSettings();
     }
   }

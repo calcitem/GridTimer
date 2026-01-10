@@ -171,6 +171,98 @@ class MainActivity: FlutterActivity() {
             systemSettingsChannelName
         ).setMethodCallHandler { call, result ->
             when (call.method) {
+                "canScheduleExactAlarms" -> {
+                    try {
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                            result.success(true)
+                        } else {
+                            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                            result.success(alarmManager.canScheduleExactAlarms())
+                        }
+                    } catch (_: Exception) {
+                        // Best-effort: if we cannot determine, return false to prompt user action.
+                        result.success(false)
+                    }
+                }
+
+                "openExactAlarmSettings" -> {
+                    // Open the per-app "Alarms & reminders" special access page (Android 12+).
+                    try {
+                        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
+                                data = Uri.parse("package:$packageName")
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                        } else {
+                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.parse("package:$packageName")
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                        }
+                        startActivity(intent)
+                        result.success(null)
+                    } catch (e: Exception) {
+                        // Fallback: open app details settings.
+                        try {
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.parse("package:$packageName")
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                            startActivity(intent)
+                            result.success(null)
+                        } catch (e2: Exception) {
+                            result.error("open_failed", e2.toString(), null)
+                        }
+                    }
+                }
+
+                "canUseFullScreenIntent" -> {
+                    try {
+                        if (Build.VERSION.SDK_INT < 34) {
+                            result.success(true)
+                        } else {
+                            val notificationManager =
+                                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                            result.success(notificationManager.canUseFullScreenIntent())
+                        }
+                    } catch (_: Exception) {
+                        // Best-effort: if we cannot determine, return false to prompt user action.
+                        result.success(false)
+                    }
+                }
+
+                "openFullScreenIntentSettings" -> {
+                    // Android 14+ has a dedicated per-app "Full screen intents" special access page.
+                    try {
+                        val intent = if (Build.VERSION.SDK_INT >= 34) {
+                            Intent(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT).apply {
+                                data = Uri.parse("package:$packageName")
+                                putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                        } else {
+                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.parse("package:$packageName")
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                        }
+                        startActivity(intent)
+                        result.success(null)
+                    } catch (e: Exception) {
+                        // Fallback: open app details settings.
+                        try {
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.parse("package:$packageName")
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                            startActivity(intent)
+                            result.success(null)
+                        } catch (e2: Exception) {
+                            result.error("open_failed", e2.toString(), null)
+                        }
+                    }
+                }
+
                 "getNotificationChannelInfo" -> {
                     val channelId = call.argument<String>("channelId")
                     if (channelId.isNullOrBlank()) {
@@ -403,18 +495,36 @@ class MainActivity: FlutterActivity() {
                             pendingIntentFlags(updateCurrent = true),
                         )
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            alarmManager.setExactAndAllowWhileIdle(
-                                AlarmManager.RTC_WAKEUP,
-                                triggerAtEpochMs,
-                                pendingIntent,
-                            )
-                        } else {
-                            alarmManager.setExact(
-                                AlarmManager.RTC_WAKEUP,
-                                triggerAtEpochMs,
-                                pendingIntent,
-                            )
+                        // Prefer exact alarm (best reliability), but fall back to inexact alarm
+                        // when exact alarms are restricted by the OS.
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                alarmManager.setExactAndAllowWhileIdle(
+                                    AlarmManager.RTC_WAKEUP,
+                                    triggerAtEpochMs,
+                                    pendingIntent,
+                                )
+                            } else {
+                                alarmManager.setExact(
+                                    AlarmManager.RTC_WAKEUP,
+                                    triggerAtEpochMs,
+                                    pendingIntent,
+                                )
+                            }
+                        } catch (_: SecurityException) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                alarmManager.setAndAllowWhileIdle(
+                                    AlarmManager.RTC_WAKEUP,
+                                    triggerAtEpochMs,
+                                    pendingIntent,
+                                )
+                            } else {
+                                alarmManager.set(
+                                    AlarmManager.RTC_WAKEUP,
+                                    triggerAtEpochMs,
+                                    pendingIntent,
+                                )
+                            }
                         }
                         result.success(null)
                     } catch (e: Exception) {

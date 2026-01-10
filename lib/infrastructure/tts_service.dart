@@ -204,7 +204,9 @@ class TtsService implements ITtsService {
   void _scheduleDesktopCompletionFallback(String text) {
     // Estimate duration: ~100ms per character at normal speed, minimum 2s
     final estimatedDurationMs = (text.length * 100).clamp(2000, 10000);
-    final adjustedDuration = (estimatedDurationMs / _currentSpeechRate).round();
+    final safeSpeechRate = _currentSpeechRate <= 0.0 ? 0.1 : _currentSpeechRate;
+    assert(safeSpeechRate > 0.0, 'Speech rate must be > 0.0');
+    final adjustedDuration = (estimatedDurationMs / safeSpeechRate).round();
 
     debugPrint(
       'TTS: Desktop fallback scheduled for ${adjustedDuration}ms '

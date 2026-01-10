@@ -130,9 +130,12 @@ class NotificationService implements INotificationService {
     ];
 
     final iosInit = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
+      // Do not request permissions during app startup. Permission prompts should
+      // be triggered explicitly from onboarding or settings (e.g. after showing
+      // privacy policy).
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
       notificationCategories: iosCategories,
     );
 
@@ -405,8 +408,7 @@ class NotificationService implements INotificationService {
       final result = await androidPlugin.requestNotificationsPermission();
       return result ?? false;
     } else if (Platform.isIOS) {
-      // iOS permissions are requested during initialization
-      // Check if permissions were granted
+      // iOS permissions should be requested explicitly (e.g. from onboarding).
       final iosPlugin = _plugin
           .resolvePlatformSpecificImplementation<
             IOSFlutterLocalNotificationsPlugin
@@ -440,12 +442,20 @@ class NotificationService implements INotificationService {
 
   @override
   Future<bool> requestFullScreenIntentPermission() async {
-    // Note: flutter_local_notifications may not expose this API directly.
-    // This is a placeholder; actual implementation may require platform channels.
-    return true;
+    if (kIsWeb || !Platform.isAndroid) return true;
+
+    // Android 14+ requires a special app access toggle for full-screen intents.
+    // There's no runtime prompt; best-effort is to navigate users to the settings page.
+    try {
+      await _systemSettingsChannel.invokeMethod<void>(
+        'openFullScreenIntentSettings',
+      );
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
-  @override
   @override
   Future<void> scheduleTimeUp({
     required TimerSession session,

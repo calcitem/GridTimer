@@ -15,7 +15,7 @@ const wchar_t* GetLocalizedWindowTitle() {
   WORD primaryLangId = PRIMARYLANGID(langId);
 
   if (primaryLangId == LANG_CHINESE) {
-    // Simplified Chinese: 九宫计时
+    // Simplified Chinese title.
     return L"\x4E5D\x5BAB\x683C\x8BA1\x65F6\x5668";
   }
   // Add more languages here as needed:
