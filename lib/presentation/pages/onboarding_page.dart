@@ -469,7 +469,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     if (isPreApi31) {
       description = l10n.onboardingNotRequiredExactAlarmDesc;
     } else if (isApi33) {
-      description = l10n.onboardingPreGrantedExactAlarmDesc;
+      description = l10n.onboardingPreGrantedExactAlarmDesc(l10n.appTitle);
     } else {
       description = l10n.onboardingExactAlarmDesc;
     }
@@ -552,7 +552,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         final useLegacyDesc = _androidSdkVersion > 0 && _androidSdkVersion < 26;
 
         String description = useLegacyDesc
-            ? l10n.onboardingBatteryLegacyDesc
+            ? l10n.onboardingBatteryLegacyDesc(l10n.appTitle)
             : l10n.onboardingBatteryDesc;
 
         // Append manufacturer specific hint (only for newer Android versions)
