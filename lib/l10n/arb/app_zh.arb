@@ -333,10 +333,15 @@
   "widgetTimerRemaining": "{name}: {remaining}",
   "widgetDescription": "显示九宫计时状态",
 
-  "deviceType": "设备类型",
+  "deviceType": "设备/平台",
   "deviceTypeMiui": "小米（MIUI）",
   "deviceTypeHuawei": "华为/荣耀（EMUI/HarmonyOS）",
   "deviceTypeOppo": "OPPO/Realme/OnePlus（ColorOS）",
   "deviceTypeVivo": "vivo/iQOO（FuntouchOS/OriginOS）",
-  "deviceTypeStandard": "通用 Android"
+  "deviceTypeStandard": "通用 Android",
+  "deviceTypeIos": "iOS",
+  "deviceTypeMacos": "macOS",
+  "deviceTypeWindows": "Windows",
+  "deviceTypeLinux": "Linux",
+  "deviceTypeWeb": "Web 浏览器"
 }

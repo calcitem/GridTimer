@@ -66,21 +66,88 @@ class _VersionInfoDialogState extends ConsumerState<VersionInfoDialog> {
     }
   }
 
-  /// Get localized device type name from manufacturer type string.
-  String _getDeviceTypeName(String manufacturerType, AppLocalizations l10n) {
-    switch (manufacturerType) {
-      case 'miui':
-        return l10n.deviceTypeMiui;
-      case 'honor_huawei':
-        return l10n.deviceTypeHuawei;
-      case 'coloros':
-        return l10n.deviceTypeOppo;
-      case 'funtouchos':
-        return l10n.deviceTypeVivo;
-      case 'standard':
-      default:
-        return l10n.deviceTypeStandard;
+  /// Get localized device/platform type name.
+  ///
+  /// For Android, uses the manufacturer type string from native code.
+  /// For other platforms, returns the platform name directly.
+  String _getDeviceTypeName(String? manufacturerType, AppLocalizations l10n) {
+    // Handle Android manufacturer types
+    if (manufacturerType != null) {
+      switch (manufacturerType) {
+        case 'miui':
+          return l10n.deviceTypeMiui;
+        case 'honor_huawei':
+          return l10n.deviceTypeHuawei;
+        case 'coloros':
+          return l10n.deviceTypeOppo;
+        case 'funtouchos':
+          return l10n.deviceTypeVivo;
+        case 'standard':
+          return l10n.deviceTypeStandard;
+      }
     }
+
+    // Handle non-Android platforms
+    if (kIsWeb) {
+      return l10n.deviceTypeWeb;
+    }
+    if (Platform.isIOS) {
+      return l10n.deviceTypeIos;
+    }
+    if (Platform.isMacOS) {
+      return l10n.deviceTypeMacos;
+    }
+    if (Platform.isWindows) {
+      return l10n.deviceTypeWindows;
+    }
+    if (Platform.isLinux) {
+      return l10n.deviceTypeLinux;
+    }
+
+    // Fallback for Android without specific manufacturer info
+    return l10n.deviceTypeStandard;
+  }
+
+  /// Build the device/platform type section.
+  ///
+  /// For Android, fetches manufacturer type asynchronously.
+  /// For other platforms, displays immediately.
+  Widget _buildDeviceTypeSection(BuildContext context, AppLocalizations l10n) {
+    // For Android, fetch manufacturer type from native code
+    if (!kIsWeb && Platform.isAndroid) {
+      return FutureBuilder<String>(
+        future: ref.read(permissionServiceProvider).getDeviceManufacturerType(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const SizedBox.shrink();
+          }
+          final manufacturerType = snapshot.data!;
+          final deviceTypeName = _getDeviceTypeName(manufacturerType, l10n);
+          return _buildDeviceTypeContent(context, l10n, deviceTypeName);
+        },
+      );
+    }
+
+    // For non-Android platforms, display immediately
+    final deviceTypeName = _getDeviceTypeName(null, l10n);
+    return _buildDeviceTypeContent(context, l10n, deviceTypeName);
+  }
+
+  /// Build the device type content widget.
+  Widget _buildDeviceTypeContent(
+    BuildContext context,
+    AppLocalizations l10n,
+    String deviceTypeName,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 16),
+        Text(l10n.deviceType, style: Theme.of(context).textTheme.titleSmall),
+        const SizedBox(height: 4),
+        Text(deviceTypeName, style: const TextStyle(fontSize: 15)),
+      ],
+    );
   }
 
   @override
@@ -176,35 +243,8 @@ class _VersionInfoDialogState extends ConsumerState<VersionInfoDialog> {
                 );
               },
             ),
-            // Device type (Android only)
-            if (!kIsWeb && Platform.isAndroid)
-              FutureBuilder<String>(
-                future: ref
-                    .read(permissionServiceProvider)
-                    .getDeviceManufacturerType(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const SizedBox.shrink();
-                  }
-                  final manufacturerType = snapshot.data!;
-                  final deviceTypeName = _getDeviceTypeName(manufacturerType, l10n);
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 16),
-                      Text(
-                        l10n.deviceType,
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        deviceTypeName,
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                    ],
-                  );
-                },
-              ),
+            // Device/Platform type
+            _buildDeviceTypeSection(context, l10n),
           ],
         ),
       ),

@@ -109,7 +109,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         // or assume we need to ask if we can't check.
         // Let's check using Permission.ignoreBatteryOptimizations.status
         try {
-          final batteryStatus = await Permission.ignoreBatteryOptimizations.status;
+          final batteryStatus =
+              await Permission.ignoreBatteryOptimizations.status;
           batteryIgnored = batteryStatus.isGranted;
         } catch (e) {
           debugPrint('Error checking battery optimization status: $e');
@@ -119,10 +120,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         batteryIgnored = true;
       }
     } else {
-       // Web platform defaults
-       notification = true;
-       exactAlarm = true;
-       batteryIgnored = true;
+      // Web platform defaults
+      notification = true;
+      exactAlarm = true;
+      batteryIgnored = true;
     }
 
     // Full screen intent (Android 14+)

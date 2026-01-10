@@ -1607,7 +1607,7 @@
     "description": "Widget description for Android widget settings"
   },
 
-  "deviceType": "Device Type",
+  "deviceType": "Device/Platform",
   "@deviceType": {
     "description": "Label for device type in version info dialog"
   },
@@ -1635,5 +1635,30 @@
   "deviceTypeStandard": "Standard Android",
   "@deviceTypeStandard": {
     "description": "Device type name for standard Android devices"
+  },
+
+  "deviceTypeIos": "iOS",
+  "@deviceTypeIos": {
+    "description": "Device type name for iOS devices"
+  },
+
+  "deviceTypeMacos": "macOS",
+  "@deviceTypeMacos": {
+    "description": "Device type name for macOS"
+  },
+
+  "deviceTypeWindows": "Windows",
+  "@deviceTypeWindows": {
+    "description": "Device type name for Windows"
+  },
+
+  "deviceTypeLinux": "Linux",
+  "@deviceTypeLinux": {
+    "description": "Device type name for Linux"
+  },
+
+  "deviceTypeWeb": "Web Browser",
+  "@deviceTypeWeb": {
+    "description": "Device type name for Web platform"
   }
 }
