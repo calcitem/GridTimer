@@ -263,8 +263,8 @@ class _GridPageState extends ConsumerState<GridPage> {
                     }
                     return Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(
-                          right: colIndex < crossAxisCount - 1 ? 12 : 0,
+                        padding: EdgeInsetsDirectional.only(
+                          end: colIndex < crossAxisCount - 1 ? 12 : 0,
                           bottom: rowIndex < rowCount - 1 ? 12 : 0,
                         ),
                         child: _buildCell(index, grid, sessions),

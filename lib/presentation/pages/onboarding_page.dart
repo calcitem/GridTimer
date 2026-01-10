@@ -333,7 +333,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               children: List.generate(
                 totalPages,
                 (index) => Container(
-                  margin: const EdgeInsets.only(right: 8),
+                  margin: const EdgeInsetsDirectional.only(end: 8),
                   width: 8,
                   height: 8,
                   decoration: BoxDecoration(
