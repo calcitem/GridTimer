@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_single_instance/flutter_single_instance.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -14,6 +15,8 @@ import 'app/providers.dart';
 import 'core/config/constants.dart';
 import 'core/config/environment_config.dart';
 import 'l10n/app_localizations.dart';
+import 'l10n/app_localizations_en.dart';
+import 'l10n/app_localizations_zh.dart';
 import 'presentation/pages/grid_page.dart';
 import 'presentation/pages/onboarding_page.dart';
 
@@ -21,6 +24,64 @@ part 'core/services/catcher_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // IMPORTANT: Check for single instance BEFORE initializing Hive
+  // to avoid file lock conflicts
+  if (!kIsWeb && _isDesktopPlatform()) {
+    debugPrint('Grid Timer: Checking single instance...');
+
+    // Check if this is the first instance (with timeout to avoid hanging)
+    // Note: In debug mode, flutter_single_instance always returns true,
+    // so we also check for Hive lock file as a backup mechanism
+    bool isFirstInstance = true;
+    try {
+      isFirstInstance = await FlutterSingleInstance().isFirstInstance().timeout(
+        const Duration(seconds: 3),
+      );
+      debugPrint('Grid Timer: isFirstInstance = $isFirstInstance');
+    } catch (e) {
+      // Timeout or error - assume first instance to avoid blocking
+      debugPrint('Grid Timer: isFirstInstance check failed: $e');
+      isFirstInstance = true;
+    }
+
+    // Additional check: try to acquire Hive lock file
+    // This works even in debug mode where flutter_single_instance always returns true
+    if (isFirstInstance) {
+      final canAcquireLock = await _tryAcquireHiveLock();
+      if (!canAcquireLock) {
+        debugPrint('Grid Timer: Hive lock file is held by another instance.');
+        isFirstInstance = false;
+      }
+    }
+
+    if (!isFirstInstance) {
+      // Another instance is already running
+      debugPrint('Grid Timer: Another instance is already running.');
+
+      // Try to focus the existing instance (with timeout to avoid hanging)
+      try {
+        final focusError = await FlutterSingleInstance().focus().timeout(
+          const Duration(seconds: 2),
+        );
+        if (focusError != null) {
+          debugPrint(
+            'Grid Timer: Failed to focus existing instance: $focusError',
+          );
+        } else {
+          debugPrint('Grid Timer: Successfully focused existing instance.');
+        }
+      } catch (e) {
+        debugPrint('Grid Timer: Focus timeout or error: $e');
+      }
+
+      // Show brief warning and exit immediately
+      _showSingleInstanceWarningAndExit();
+      return; // Prevent further execution
+    }
+
+    debugPrint('Grid Timer: This is the first instance.');
+  }
 
   // Explicitly show status bar and navigation bar
   await SystemChrome.setEnabledSystemUIMode(
@@ -32,7 +93,7 @@ Future<void> main() async {
   debugPrint('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
   debugPrint('Environment [test]: ${EnvironmentConfig.test}');
 
-  // Initialize Hive before anything else
+  // Initialize Hive (only reached by the first instance)
   await Hive.initFlutter('Grid Timer');
 
   if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
@@ -52,6 +113,112 @@ Future<void> main() async {
   } else {
     runApp(const ProviderScope(child: GridTimerApp()));
   }
+}
+
+/// Check if the current platform is desktop (Windows/Linux/macOS).
+bool _isDesktopPlatform() {
+  return Platform.isWindows || Platform.isLinux || Platform.isMacOS;
+}
+
+/// Global lock file handle to keep the lock alive during app lifecycle.
+RandomAccessFile? _hiveLockFile;
+
+/// Try to acquire Hive lock file to detect if another instance is running.
+///
+/// This is a backup mechanism for debug mode where flutter_single_instance
+/// always returns true.
+Future<bool> _tryAcquireHiveLock() async {
+  try {
+    final appDir = await getApplicationSupportDirectory();
+    final lockFilePath = '${appDir.path}/Grid Timer/grid_timer.lock';
+
+    // Create directory if it doesn't exist
+    final lockFile = File(lockFilePath);
+    if (!await lockFile.parent.exists()) {
+      await lockFile.parent.create(recursive: true);
+    }
+
+    // Create lock file if it doesn't exist
+    if (!await lockFile.exists()) {
+      await lockFile.create();
+    }
+
+    // Try to open and lock the file exclusively
+    _hiveLockFile = await lockFile.open(mode: FileMode.write);
+
+    try {
+      // Try to acquire exclusive lock (non-blocking)
+      await _hiveLockFile!.lock(FileLock.exclusive);
+
+      // Write PID to lock file
+      await _hiveLockFile!.writeString(
+        '${Platform.resolvedExecutable}\n$pid\n',
+      );
+      await _hiveLockFile!.flush();
+
+      debugPrint('Grid Timer: Acquired Hive lock file successfully.');
+      return true;
+    } on FileSystemException catch (e) {
+      // Lock failed - another instance has the lock
+      debugPrint('Grid Timer: Failed to acquire lock: $e');
+      await _hiveLockFile?.close();
+      _hiveLockFile = null;
+      return false;
+    }
+  } catch (e) {
+    // Any other error - assume we can proceed
+    debugPrint('Grid Timer: Lock check error (proceeding anyway): $e');
+    return true;
+  }
+}
+
+/// Get AppLocalizations instance based on system locale.
+///
+/// This helper is used when we need localized strings before the app is fully
+/// initialized (e.g., in main() before runApp).
+AppLocalizations _getLocalizationsForSystemLocale() {
+  final systemLocale = PlatformDispatcher.instance.locale;
+
+  // Match language code to supported localizations
+  switch (systemLocale.languageCode) {
+    case 'zh':
+      return AppLocalizationsZh();
+    case 'en':
+    default:
+      // Default to English for unsupported languages
+      return AppLocalizationsEn();
+  }
+}
+
+/// Show a brief warning and exit immediately (non-blocking).
+/// This is used when focus() fails to avoid hanging on Hive initialization.
+void _showSingleInstanceWarningAndExit() {
+  // Get localized strings for system locale
+  final l10n = _getLocalizationsForSystemLocale();
+
+  // Run a minimal app to show the warning without blocking
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Center(
+          child: AlertDialog(
+            title: Text(l10n.appTitle),
+            content: Text(l10n.singleInstanceWarningMessage),
+            actions: [
+              TextButton(
+                onPressed: () => exit(0),
+                child: Text(l10n.actionCancel),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+
+  // Auto-exit after 3 seconds in case user doesn't click
+  Future<void>.delayed(const Duration(seconds: 3), () => exit(0));
 }
 
 class GridTimerApp extends ConsumerStatefulWidget {

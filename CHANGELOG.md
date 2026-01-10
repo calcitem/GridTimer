@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bilingual support (English + Chinese)
 - Clean Architecture implementation
 - Comprehensive PRD documentation
+- Single instance enforcement on desktop platforms (Windows/Linux/macOS)
 
 ### Technical
 - targetSdk 35 (Android 15) for Play Store compliance

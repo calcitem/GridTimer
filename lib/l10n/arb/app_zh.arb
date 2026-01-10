@@ -354,5 +354,7 @@
   "deviceTypeMacos": "macOS",
   "deviceTypeWindows": "Windows",
   "deviceTypeLinux": "Linux",
-  "deviceTypeWeb": "Web 浏览器"
+  "deviceTypeWeb": "Web 浏览器",
+
+  "singleInstanceWarningMessage": "本程序已在运行中。\n\n同一时间只能运行一个实例。\n\n请使用已打开的窗口，或先关闭它再启动新的实例。"
 }

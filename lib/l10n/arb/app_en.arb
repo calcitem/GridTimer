@@ -1710,5 +1710,10 @@
   "deviceTypeWeb": "Web Browser",
   "@deviceTypeWeb": {
     "description": "Device type name for Web platform"
+  },
+
+  "singleInstanceWarningMessage": "This application is already running.\n\nOnly one instance can run at a time.\n\nPlease use the existing window or close it before starting a new one.",
+  "@singleInstanceWarningMessage": {
+    "description": "Message shown when trying to launch multiple instances"
   }
 }
