@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
+import '../../core/config/platform_capabilities.dart';
 import '../../core/domain/enums.dart';
 import '../../l10n/app_localizations.dart';
 
 /// Gesture settings page for configuring alarm control gestures.
 class GestureSettingsPage extends ConsumerWidget {
   const GestureSettingsPage({super.key});
+
+  /// Check if a gesture type is supported on the current platform.
+  bool _isGestureSupported(AlarmGestureType type) {
+    switch (type) {
+      case AlarmGestureType.volumeUp:
+      case AlarmGestureType.volumeDown:
+        return PlatformCapabilities.supportsVolumeButtonGesture;
+      case AlarmGestureType.shake:
+        return PlatformCapabilities.supportsShakeGesture;
+      case AlarmGestureType.flip:
+        return PlatformCapabilities.supportsFlipGesture;
+    }
+  }
 
   String _getGestureTypeName(AlarmGestureType type, AppLocalizations l10n) {
     switch (type) {
@@ -103,8 +117,10 @@ class GestureSettingsPage extends ConsumerWidget {
               ),
             ),
 
-            // Gesture Type Cards
-            ...AlarmGestureType.values.map((gestureType) {
+            // Gesture Type Cards (only show supported gestures on current platform)
+            ...AlarmGestureType.values
+                .where((gestureType) => _isGestureSupported(gestureType))
+                .map((gestureType) {
               final currentAction =
                   settings.gestureActions[gestureType] ??
                   AlarmGestureAction.none;

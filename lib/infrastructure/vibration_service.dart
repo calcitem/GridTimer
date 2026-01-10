@@ -18,7 +18,8 @@ class VibrationService implements IVibrationService {
     _initialized = true;
 
     if (!_isPlatformSupported) {
-      debugPrint('VibrationService: Platform not supported');
+      // Platform not supported is an expected state on Desktop/Web
+      // Log as info/debug instead of warning
       return;
     }
 

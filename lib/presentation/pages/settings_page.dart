@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../core/config/environment_config.dart';
+import '../../core/config/platform_capabilities.dart';
 import '../../core/domain/entities/app_settings.dart';
 import '../../core/domain/enums.dart';
 import '../../l10n/app_localizations.dart';
@@ -196,8 +197,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
 
             // Alarm Channel Sound (Android 8.0+ only, API 26+)
             // Notification channels were introduced in Android 8.0 (Oreo).
-            // On older versions, this setting is not applicable.
-            if (_androidSdkVersion >= 26)
+            // On older versions or non-Android platforms, this setting is not applicable.
+            if (PlatformCapabilities.supportsNotificationChannels &&
+                _androidSdkVersion >= 26)
               Column(
                 children: [
                   ListTile(
@@ -304,17 +306,18 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
               },
             ),
 
-            // Vibration
-            SwitchListTile(
-              secondary: const Icon(Icons.vibration),
-              title: Text(l10n.vibration),
-              subtitle: Text(l10n.vibrationDesc),
-              value: settings.vibrationEnabled,
-              onChanged: (value) {
-                // Show dialog to warn about system vibration settings
-                _showVibrationWarningDialog(context, ref, l10n, value);
-              },
-            ),
+            // Vibration (mobile platforms only)
+            if (PlatformCapabilities.supportsVibration)
+              SwitchListTile(
+                secondary: const Icon(Icons.vibration),
+                title: Text(l10n.vibration),
+                subtitle: Text(l10n.vibrationDesc),
+                value: settings.vibrationEnabled,
+                onChanged: (value) {
+                  // Show dialog to warn about system vibration settings
+                  _showVibrationWarningDialog(context, ref, l10n, value);
+                },
+              ),
 
             // Flash Animation
             SwitchListTile(
@@ -351,182 +354,198 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
               },
             ),
 
-            // Gesture Settings
-            ListTile(
-              leading: const Icon(Icons.touch_app),
-              title: Text(l10n.gestureSettings),
-              subtitle: Text(l10n.gestureSettingsDesc),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const GestureSettingsPage(),
-                  ),
-                );
-              },
-            ),
-
-            const Divider(),
-
-            // App Killed Warning
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.orange.withAlpha(25),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.orange, width: 1),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(Icons.warning_amber, color: Colors.orange),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        l10n.appKilledWarning,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Alarm Troubleshooting / Compatibility Guide
-            ListTile(
-              leading: const Icon(Icons.help_outline),
-              title: Text(l10n.alarmTroubleshooting),
-              subtitle: Text(l10n.alarmTroubleshootingDesc),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () => AlarmTroubleshootingDialog.show(context),
-            ),
-
-            const Divider(),
-
-            // Permissions Section
-            _buildSectionHeader(l10n.permissions),
-
-            // Notification Permission with status
-            // Use key to force rebuild when returning from system settings
-            _PermissionStatusTile(
-              key: ValueKey('notification_$_permissionRefreshKey'),
-              icon: Icons.notifications_active,
-              title: l10n.notificationPermission,
-              description: l10n.notificationPermissionDesc,
-              statusFuture: ref
-                  .read(permissionServiceProvider)
-                  .canPostNotifications(),
-              grantedText: l10n.permissionStatusGranted,
-              deniedText: l10n.permissionStatusDenied,
-              notRequiredText: l10n.permissionNotRequiredStatus,
-              buttonText: l10n.grantPermission,
-              androidSdkVersion: _androidSdkVersion,
-              // Android 13 (API 33)+ requires runtime notification permission
-              minSdkVersionRequired: 33,
-              onButtonPressed: () async {
-                final notification = ref.read(notificationServiceProvider);
-                final granted = await notification
-                    .requestPostNotificationsPermission();
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        granted
-                            ? l10n.notificationPermissionGranted
-                            : l10n.notificationPermissionDenied,
-                      ),
-                      duration: const Duration(seconds: 2),
+            // Gesture Settings (mobile platforms only - requires sensors)
+            if (PlatformCapabilities.supportsGestureControls)
+              ListTile(
+                leading: const Icon(Icons.touch_app),
+                title: Text(l10n.gestureSettings),
+                subtitle: Text(l10n.gestureSettingsDesc),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const GestureSettingsPage(),
                     ),
                   );
-                  _refreshPermissionStatus();
-                }
-              },
-            ),
+                },
+              ),
 
-            // Exact Alarm Permission with status
+            const Divider(),
+
+            // App Killed Warning (Android only - iOS handles background differently)
+            if (PlatformCapabilities.canBeKilledBySystem)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.withAlpha(25),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.orange, width: 1),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.warning_amber, color: Colors.orange),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          l10n.appKilledWarning,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+            // Alarm Troubleshooting / Compatibility Guide (Android only)
+            if (PlatformCapabilities.needsAlarmTroubleshooting)
+              ListTile(
+                leading: const Icon(Icons.help_outline),
+                title: Text(l10n.alarmTroubleshooting),
+                subtitle: Text(l10n.alarmTroubleshootingDesc),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: () => AlarmTroubleshootingDialog.show(context),
+              ),
+
+            // Only show permissions section if any permissions are relevant
+            if (PlatformCapabilities.requiresNotificationPermission ||
+                PlatformCapabilities.hasExactAlarmPermission ||
+                PlatformCapabilities.hasFullScreenIntentPermission ||
+                PlatformCapabilities.hasBatteryOptimization)
+              const Divider(),
+
+            // Permissions Section (mobile platforms only)
+            if (PlatformCapabilities.requiresNotificationPermission ||
+                PlatformCapabilities.hasExactAlarmPermission ||
+                PlatformCapabilities.hasFullScreenIntentPermission ||
+                PlatformCapabilities.hasBatteryOptimization)
+              _buildSectionHeader(l10n.permissions),
+
+            // Notification Permission with status (mobile platforms only)
+            // Use key to force rebuild when returning from system settings
+            if (PlatformCapabilities.requiresNotificationPermission)
+              _PermissionStatusTile(
+                key: ValueKey('notification_$_permissionRefreshKey'),
+                icon: Icons.notifications_active,
+                title: l10n.notificationPermission,
+                description: l10n.notificationPermissionDesc,
+                statusFuture: ref
+                    .read(permissionServiceProvider)
+                    .canPostNotifications(),
+                grantedText: l10n.permissionStatusGranted,
+                deniedText: l10n.permissionStatusDenied,
+                notRequiredText: l10n.permissionNotRequiredStatus,
+                buttonText: l10n.grantPermission,
+                androidSdkVersion: _androidSdkVersion,
+                // Android 13 (API 33)+ requires runtime notification permission
+                minSdkVersionRequired: 33,
+                onButtonPressed: () async {
+                  final notification = ref.read(notificationServiceProvider);
+                  final granted = await notification
+                      .requestPostNotificationsPermission();
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          granted
+                              ? l10n.notificationPermissionGranted
+                              : l10n.notificationPermissionDenied,
+                        ),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                    _refreshPermissionStatus();
+                  }
+                },
+              ),
+
+            // Exact Alarm Permission with status (Android 12+ only)
             // Description varies by Android version:
             // - Android < 31: Not required
             // - Android 31-32: Required, user must manually grant
             // - Android 33: Pre-granted by system
             // - Android 34+: Required, user must manually grant
-            _PermissionStatusTile(
-              key: ValueKey('exact_alarm_$_permissionRefreshKey'),
-              icon: Icons.alarm,
-              title: l10n.exactAlarmPermission,
-              description: _androidSdkVersion == 33
-                  ? l10n.exactAlarmPermissionDescApi33
-                  : l10n.exactAlarmPermissionDesc,
-              statusFuture: ref
-                  .read(permissionServiceProvider)
-                  .canScheduleExactAlarms(),
-              grantedText: l10n.exactAlarmStatusGranted,
-              deniedText: l10n.exactAlarmStatusDenied,
-              notRequiredText: l10n.permissionNotRequiredStatus,
-              buttonText: l10n.settingsButton,
-              androidSdkVersion: _androidSdkVersion,
-              // Android 12 (API 31)+ restricts exact alarms
-              minSdkVersionRequired: 31,
-              onButtonPressed: () async {
-                final permissionService = ref.read(permissionServiceProvider);
-                await permissionService.openExactAlarmSettings();
-                // Status will be refreshed when app resumes via lifecycle observer
-              },
-            ),
+            if (PlatformCapabilities.hasExactAlarmPermission)
+              _PermissionStatusTile(
+                key: ValueKey('exact_alarm_$_permissionRefreshKey'),
+                icon: Icons.alarm,
+                title: l10n.exactAlarmPermission,
+                description: _androidSdkVersion == 33
+                    ? l10n.exactAlarmPermissionDescApi33
+                    : l10n.exactAlarmPermissionDesc,
+                statusFuture: ref
+                    .read(permissionServiceProvider)
+                    .canScheduleExactAlarms(),
+                grantedText: l10n.exactAlarmStatusGranted,
+                deniedText: l10n.exactAlarmStatusDenied,
+                notRequiredText: l10n.permissionNotRequiredStatus,
+                buttonText: l10n.settingsButton,
+                androidSdkVersion: _androidSdkVersion,
+                // Android 12 (API 31)+ restricts exact alarms
+                minSdkVersionRequired: 31,
+                onButtonPressed: () async {
+                  final permissionService = ref.read(permissionServiceProvider);
+                  await permissionService.openExactAlarmSettings();
+                  // Status will be refreshed when app resumes via lifecycle observer
+                },
+              ),
 
             // Full-Screen Intent Permission with status (Android 14+ only)
-            _PermissionStatusTile(
-              key: ValueKey('fullscreen_$_permissionRefreshKey'),
-              icon: Icons.fullscreen,
-              title: l10n.fullScreenIntentPermission,
-              description: l10n.fullScreenIntentPermissionDesc,
-              statusFuture: ref
-                  .read(permissionServiceProvider)
-                  .canUseFullScreenIntent(),
-              grantedText: l10n.fullScreenIntentStatusGranted,
-              deniedText: l10n.fullScreenIntentStatusDenied,
-              notRequiredText: l10n.permissionNotRequiredStatus,
-              buttonText: l10n.settingsButton,
-              androidSdkVersion: _androidSdkVersion,
-              // Android 14 (API 34)+ restricts full-screen intents
-              minSdkVersionRequired: 34,
-              onButtonPressed: () async {
-                final permissionService = ref.read(permissionServiceProvider);
-                await permissionService.openFullScreenIntentSettings();
-                // Status will be refreshed when app resumes via lifecycle observer
-              },
-            ),
+            if (PlatformCapabilities.hasFullScreenIntentPermission)
+              _PermissionStatusTile(
+                key: ValueKey('fullscreen_$_permissionRefreshKey'),
+                icon: Icons.fullscreen,
+                title: l10n.fullScreenIntentPermission,
+                description: l10n.fullScreenIntentPermissionDesc,
+                statusFuture: ref
+                    .read(permissionServiceProvider)
+                    .canUseFullScreenIntent(),
+                grantedText: l10n.fullScreenIntentStatusGranted,
+                deniedText: l10n.fullScreenIntentStatusDenied,
+                notRequiredText: l10n.permissionNotRequiredStatus,
+                buttonText: l10n.settingsButton,
+                androidSdkVersion: _androidSdkVersion,
+                // Android 14 (API 34)+ restricts full-screen intents
+                minSdkVersionRequired: 34,
+                onButtonPressed: () async {
+                  final permissionService = ref.read(permissionServiceProvider);
+                  await permissionService.openFullScreenIntentSettings();
+                  // Status will be refreshed when app resumes via lifecycle observer
+                },
+              ),
 
-            // Battery Optimization with status
-            _BatteryOptimizationTile(
-              key: ValueKey('battery_$_permissionRefreshKey'),
-              title: l10n.batteryOptimizationSettings,
-              description: l10n.batteryOptimizationDesc,
-              legacyDescription: l10n.batteryOptimizationLegacyDesc,
-              statusFuture: ref
-                  .read(permissionServiceProvider)
-                  .isBatteryOptimizationDisabled(),
-              manufacturerTypeFuture: ref
-                  .read(permissionServiceProvider)
-                  .getDeviceManufacturerType(),
-              disabledText: l10n.batteryOptimizationStatusDisabled,
-              enabledText: l10n.batteryOptimizationStatusEnabled,
-              unknownText: l10n.batteryOptimizationStatusUnknown,
-              l10n: l10n,
-              buttonText: l10n.settingsButton,
-              androidSdkVersion: _androidSdkVersion,
-              onButtonPressed: () async {
-                final permissionService = ref.read(permissionServiceProvider);
-                await permissionService.openBatteryOptimizationSettings();
-                // Status will be refreshed when app resumes via lifecycle observer
-              },
-            ),
+            // Battery Optimization with status (Android only)
+            if (PlatformCapabilities.hasBatteryOptimization)
+              _BatteryOptimizationTile(
+                key: ValueKey('battery_$_permissionRefreshKey'),
+                title: l10n.batteryOptimizationSettings,
+                description: l10n.batteryOptimizationDesc,
+                legacyDescription: l10n.batteryOptimizationLegacyDesc,
+                statusFuture: ref
+                    .read(permissionServiceProvider)
+                    .isBatteryOptimizationDisabled(),
+                manufacturerTypeFuture: ref
+                    .read(permissionServiceProvider)
+                    .getDeviceManufacturerType(),
+                disabledText: l10n.batteryOptimizationStatusDisabled,
+                enabledText: l10n.batteryOptimizationStatusEnabled,
+                unknownText: l10n.batteryOptimizationStatusUnknown,
+                l10n: l10n,
+                buttonText: l10n.settingsButton,
+                androidSdkVersion: _androidSdkVersion,
+                onButtonPressed: () async {
+                  final permissionService = ref.read(permissionServiceProvider);
+                  await permissionService.openBatteryOptimizationSettings();
+                  // Status will be refreshed when app resumes via lifecycle observer
+                },
+              ),
 
             const Divider(),
 
