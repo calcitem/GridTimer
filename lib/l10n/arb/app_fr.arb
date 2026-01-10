@@ -1,0 +1,432 @@
+{
+  "@@locale": "fr",
+
+  "appTitle": "Minuteur Grille",
+  "timerIdle": "Prêt",
+  "timerRunning": "En cours",
+  "timerPaused": "En pause",
+  "timerRinging": "Sonnerie",
+
+  "confirmStartTitle": "Confirmer le démarrage ?",
+  "confirmStartBody": "D’autres minuteurs sont en cours. Voulez-vous continuer et démarrer {name} ?",
+
+  "actionStart": "Démarrer",
+  "actionPause": "Pause",
+  "actionResume": "Reprendre",
+  "actionReset": "Réinitialiser",
+  "actionStop": "Arrêter",
+  "actionCancel": "Annuler",
+
+  "timerActions": "Actions du minuteur",
+  "stopAlarm": "Arrêter l’alarme",
+
+  "timeUpTts": "{name} : temps écoulé",
+
+  "timerIdleActions": "Choisir une action",
+  "actionAdjustTime": "Ajuster le temps",
+  "adjustTimeTitle": "Ajuster le temps - {slotName}",
+  "currentDuration": "Actuel : {minutes} min {seconds} s",
+  "durationUpdatedSuccessfully": "Durée mise à jour",
+  "durationMustBePositive": "La durée doit être supérieure à 0",
+
+  "idleGridClickBehaviorTitle": "Comportement au clic (case inactive)",
+  "idleGridClickBehaviorDesc": "Choisissez l’action lors d’un clic sur une case inactive",
+  "showDialogOption": "Afficher la boîte d’actions (recommandé, évite les touches accidentelles)",
+  "directStartOption": "Démarrer directement (mode rapide)",
+
+  "permissionNotificationTitle": "Activer les notifications",
+  "permissionNotificationBody": "Pour recevoir les alertes, veuillez activer les notifications.",
+
+  "permissionExactAlarmTitle": "Activer les alarmes exactes",
+  "permissionExactAlarmBody": "Pour des alertes précises, veuillez activer l’autorisation « Alarmes et rappels ».",
+
+  "openSettings": "Ouvrir les réglages",
+  "later": "Plus tard",
+
+  "minutes": "minutes",
+  "remainingSeconds": "temps restant",
+  "pausing": "En pause",
+  "timeUp": "Temps écoulé",
+  "clickToStop": "Appuyez pour arrêter",
+
+  "settings": "Réglages",
+  "appInformation": "Informations sur l’application",
+  "version": "Version",
+  "versionInfo": "Informations de version",
+  "gitBranch": "Branche Git",
+  "gitRevision": "Révision Git",
+
+  "timerSettings": "Réglages du minuteur",
+  "soundSettings": "Réglages du volume",
+  "soundSettingsDesc": "Configurer le volume",
+  "ttsSettings": "Réglages TTS",
+  "ttsSettingsDesc": "Configurer les annonces vocales",
+  "languageSettings": "Langue",
+  "languageSettingsDesc": "Choisir la langue de l’application",
+  "permissions": "Autorisations",
+  "notificationPermission": "Autorisation de notifications",
+  "notificationPermissionDesc": "Autoriser les notifications du minuteur",
+  "about": "À propos",
+  "license": "Licence",
+  "licenseDesc": "Voir la licence de l’application",
+  "comingSoon": "Bientôt disponible",
+  "selectLanguage": "Choisir une langue",
+  "languageEnglish": "English",
+  "languageChineseSimplified": "简体中文",
+
+  "errorText": "Erreur : {error}",
+  "confirmStart": "D’autres minuteurs sont en cours. Continuer et démarrer ce minuteur ?",
+
+  "flashAnimation": "Animation de flash",
+  "flashAnimationDesc": "Flash rouge lorsque le minuteur sonne",
+  "vibration": "Vibration",
+  "vibrationDesc": "Vibrer lorsque le minuteur sonne",
+  "keepScreenOn": "Garder l’écran allumé",
+  "keepScreenOnDesc": "Empêcher l’écran de se mettre en veille pendant le minuteur",
+  "showMinutesSecondsFormat": "Afficher le format minutes:secondes",
+  "showMinutesSecondsFormatDesc": "Afficher le compte à rebours en MM:SS (désactivé = total de secondes)",
+  "ttsEnabled": "Annonces vocales",
+  "ttsEnabledDesc": "Annoncer la fin du minuteur avec la voix",
+
+  "alarmSound": "Son d’alarme",
+  "alarmSoundDesc": "Choisir le son des alertes",
+  "volume": "Volume",
+  "volumeDesc": "Ajuster le volume de l’alarme",
+  "systemVolumeHint": "Si le volume est trop bas, vous pouvez ajuster le volume d’alarme dans les réglages système. Sur Android, appuyez sur le bouton de volume puis sur le menu (trois points) pour régler séparément le volume des alarmes.",
+
+  "autoRaiseAlarmVolumeTitle": "Augmenter automatiquement le volume d’alarme",
+  "autoRaiseAlarmVolumeDesc": "Augmenter temporairement le volume système « Alarme » quand un minuteur sonne, puis le restaurer après l’arrêt.",
+  "alarmVolumeBoostLevelTitle": "Niveau d’augmentation",
+  "alarmVolumeBoostLevelMinAudible": "Minimum audible (recommandé)",
+  "alarmVolumeBoostLevelMax": "Maximum",
+  "autoRaiseAlarmVolumeNote": "Remarque : cette fonction modifie le volume système « Alarme ». Le volume précédent est restauré après l’arrêt (ou après {minutes} minutes).",
+
+  "vibrationSystemWarning": "Le réglage de vibration dans l’application a été modifié. Notez que les réglages système (mode Ne pas déranger, interrupteur de vibration, etc.) peuvent aussi affecter la vibration. Pour garantir la vibration, vérifiez également les réglages système.",
+  "openSystemVibrationSettings": "Ouvrir les réglages système de vibration",
+  "volumeButtonLockScreenHint": "Sur certains systèmes, les boutons de volume ne fonctionnent que lorsque l’appareil est déverrouillé",
+
+  "ttsLanguage": "Langue TTS",
+  "ttsLanguageDesc": "Choisir la langue des annonces vocales",
+
+  "testSound": "Tester le son",
+  "playing": "Lecture...",
+  "testTts": "Tester la voix",
+  "ttsTestMessage": "Minuteur 1 : temps écoulé",
+
+  "unitSecondsShort": "s",
+  "unitMinutesShort": "min",
+  "unitHoursShort": "h",
+
+  "gridDurationsSettings": "Réglages de la grille",
+  "gridDurationsSettingsDesc": "Personnaliser le nom et la durée de chaque case",
+  "gridSlot": "Grille {index}",
+
+  "seconds": "secondes",
+  "hours": "heures",
+
+  "save": "Enregistrer",
+  "reset": "Réinitialiser",
+  "resetToDefault": "Rétablir par défaut",
+  "gridDurationsResetConfirm": "Voulez-vous vraiment rétablir les durées de la grille par défaut ?",
+
+  "name": "Nom",
+  "optional": "Optionnel",
+
+  "audioPlaybackSettings": "Réglages de lecture audio",
+  "audioPlaybackSettingsDesc": "Configurer le mode de lecture audio de l’alarme",
+  "audioPlaybackMode": "Mode de lecture",
+  "audioPlaybackModeLoopIndefinitely": "Boucler indéfiniment jusqu’à l’arrêt manuel",
+  "audioPlaybackModeLoopForDuration": "Boucler pendant N minutes puis s’arrêter automatiquement",
+  "audioPlaybackModeLoopWithInterval": "Boucler N min, pause M min, boucler N min (une fois)",
+  "audioPlaybackModeLoopWithIntervalRepeating": "Boucler N min, pause M min, répéter jusqu’à l’arrêt",
+  "audioPlaybackModePlayOnce": "Lecture unique",
+
+  "loopDuration": "Durée de boucle",
+  "intervalPause": "Durée de pause",
+  "minutesUnit": "minutes",
+
+  "audioPlaybackWhenEffectiveTitle": "Information importante",
+  "audioPlaybackWhenEffectiveDesc": "Ces réglages s’appliquent uniquement au son d’alarme par défaut.\n\nSi vous avez personnalisé le son de notification dans les réglages système, l’alarme bouclera en continu jusqu’à l’arrêt (ces réglages ne s’appliqueront pas).",
+
+  "safetyDisclaimerTitle": "Conseils de sécurité",
+  "safetyDisclaimerMessage": "Pour votre sécurité, veuillez prendre connaissance des informations suivantes :",
+  "safetyRecommendedUses": "✅ Utilisations recommandées",
+  "safetyRecommendedUsesList": "• Minuteurs de cuisine au quotidien\n• Rappels généraux\n• Situations non critiques\n• Après test",
+  "safetyNotRecommendedUses": "❌ NON recommandé",
+  "safetyNotRecommendedUsesList": "• Rappels de médicaments critiques (utilisez des apps médicales)\n• Rappels vitaux\n• Situations médicales d’urgence\n• Sans test préalable",
+  "safetyBestPractices": "💡 Bonnes pratiques :",
+  "safetyBestPracticesList": "• Testez l’alarme avant de vous y fier\n• Prévoyez un rappel de secours pour les tâches critiques\n• Vérifiez le mode Ne pas déranger et les autorisations de notifications\n• Comprenez les limites de l’application",
+  "safetyViewFullDisclaimer": "Voir l’avertissement",
+  "safetyAcceptAndContinue": "J’ai compris, continuer",
+
+  "fullDisclaimerTitle": "Clause de non-responsabilité",
+  "fullDisclaimerText": "Ce logiciel est fourni « TEL QUEL » sans aucune garantie, expresse ou implicite.\n\nLes développeurs ne sont pas responsables des conséquences liées à l’utilisation de ce logiciel, y compris, sans s’y limiter : rappels manqués, minutage inexact, pannes de l’application, etc.\n\nLes utilisateurs doivent évaluer eux-mêmes les risques et prévoir des solutions de secours pour les tâches critiques.",
+
+  "close": "Fermer",
+  "aboutDisclaimer": "Conseils de sécurité & avertissement",
+
+  "gestureSettings": "Réglages de contrôle gestuel",
+  "gestureSettingsDesc": "Configurer les gestes lorsque l’alarme sonne",
+  "gestureActions": "Actions gestuelles",
+
+  "gestureTypeScreenTap": "Tap sur l’écran",
+  "gestureTypeVolumeUp": "Bouton Volume +",
+  "gestureTypeVolumeDown": "Bouton Volume -",
+  "gestureTypeShake": "Secouer le téléphone",
+  "gestureTypeFlip": "Retourner le téléphone (face vers le bas)",
+
+  "gestureActionStopAndReset": "Arrêter et réinitialiser",
+  "gestureActionNone": "Aucune action",
+
+  "shakeSensitivity": "Sensibilité de secousse",
+  "shakeSensitivityLow": "Faible (secouer fort)",
+  "shakeSensitivityHigh": "Élevée (secouer doucement)",
+  "shakeSensitivityDesc": "Ajuster la sensibilité de détection des secousses",
+
+  "gestureHint": "Adapté aux seniors : activer le tap écran, les boutons de volume et le retournement du téléphone",
+  "gestureLimitationsHint": "Remarque : certains appareils/systèmes limitent les boutons ou capteurs sur l’écran verrouillé. Si les gestes ne répondent pas verrouillé, déverrouillez puis essayez de retourner le téléphone ou d’appuyer sur les boutons de volume.",
+
+  "onboardingCheckSoundTitle": "Important : vérifier le son",
+  "onboardingCheckSoundDesc": "Veuillez cliquer sur le bouton ci-dessous et vérifier que le son de « Timer Alarm (default) » n’est PAS réglé sur « Aucun » ou « Silencieux ».\n\nSinon, vous ne recevrez qu’une notification sans son lorsque le temps est écoulé.",
+  "onboardingCheckSoundBtn": "Vérifier les réglages du son",
+  "onboardingCheckSoundMiuiHint": "Utilisateurs MIUI : si vous ne pouvez pas sélectionner un son dans le canal de notification, c’est normal (limitation MIUI). L’application a automatiquement activé la lecture audio intégrée et l’alarme fonctionnera correctement. Remarque : évitez si possible les messages abondants pendant l’alarme pour éviter une interruption audio.",
+
+  "grantPermission": "Accorder l’autorisation",
+  "notificationPermissionGranted": "Autorisation de notifications accordée",
+  "notificationPermissionDenied": "Autorisation de notifications refusée, veuillez l’accorder manuellement dans les réglages système",
+
+  "exactAlarmPermission": "Autorisation d’alarme exacte",
+  "exactAlarmPermissionDesc": "Assure des notifications à l’heure (requis sur Android 12, 14+)",
+  "exactAlarmPermissionDescApi33": "Pré-accordée sur Android 13, peut être révoquée dans les réglages système",
+
+  "fullScreenIntentPermission": "Autorisation d’intentions plein écran",
+  "fullScreenIntentPermissionDesc": "Autoriser les alertes plein écran sur l’écran verrouillé lorsque le minuteur sonne (Android 14+)",
+  "fullScreenIntentStatusGranted": "Autorisé",
+  "fullScreenIntentStatusDenied": "Non autorisé (peut ne pas afficher l’alerte plein écran)",
+
+  "batteryOptimizationSettings": "Réglages d’optimisation de la batterie",
+  "batteryOptimizationDesc": "Désactiver l’optimisation de la batterie pour des alarmes fiables en arrière-plan",
+
+  "alarmSoundSettings": "Réglages du son d’alarme",
+  "alarmSoundSettingsDesc": "Si le son de « Timer Alarm (default) » est réglé sur « Aucun », le minuteur n’affichera qu’une notification sans son",
+  "alarmSoundSettingsMiuiHint": "Utilisateurs MIUI : en raison de limitations MIUI, certains appareils ne permettent pas de modifier le son du canal de notification. L’application a automatiquement activé la lecture audio intégrée pour garantir l’alarme. Remarque : l’audio intégré peut être interrompu ou atténué par d’autres sons de notifications ; évitez si possible les messages abondants pendant l’alarme.",
+
+  "appKilledWarning": "Important : si l’application est forcée à s’arrêter par le système ou l’utilisateur, les minuteurs ne sonneront pas. Gardez-la en arrière-plan et désactivez l’optimisation de la batterie.",
+
+  "alarmTroubleshooting": "Alarme muette / en retard ?",
+  "alarmTroubleshootingDesc": "Les versions Android et les surcouches constructeur peuvent limiter les alarmes en arrière-plan. Appuyez pour des solutions rapides.",
+  "alarmTroubleshootingDialogTitle": "Guide de fiabilité des alarmes",
+  "alarmTroubleshootingDialogIntro": "Selon la version d’Android et la surcouche constructeur, des restrictions de fond/notifications peuvent rendre les alarmes muettes ou retardées. Nous améliorons la compatibilité, mais essayez ceci :",
+  "alarmTroubleshootingSteps": "1. Désactiver Ne pas déranger et augmenter le volume Alarme\n2. Activer les notifications pour cette application\n3. Dans le canal « Timer Alarm (default) », vérifier que le son n’est pas Silencieux\n4. Désactiver l’optimisation de la batterie pour cette application (autoriser l’exécution en arrière-plan)\n5. Android 12+ : autoriser « Alarmes et rappels » (alarmes exactes)\n6. Android 14+ : autoriser les « Intentions plein écran »",
+  "alarmTroubleshootingMiui": "Surcouches personnalisées : autorisez aussi le démarrage automatique et l’activité en arrière-plan, évitez l’économie d’énergie agressive. Si besoin, verrouillez l’application dans les Apps récentes.",
+
+  "alarmTroubleshootingQuickActions": "Accès rapides",
+  "alarmTroubleshootingOpenChannel": "Vérifier le son du canal",
+  "alarmTroubleshootingOpenNotifications": "Ouvrir les réglages de notifications",
+  "alarmTroubleshootingOpenExactAlarm": "Activer les alarmes exactes",
+  "alarmTroubleshootingOpenFullScreenIntent": "Activer les alertes plein écran",
+  "alarmTroubleshootingOpenBattery": "Désactiver l’optimisation de la batterie",
+
+  "alarmReliabilityMode": "Mode de fiabilité de l’alarme",
+  "alarmReliabilityModeDesc": "Choisir la planification des alarmes (impacte le déclenchement si l’app est tuée)",
+  "alarmReliabilityModeAppOnly": "Application uniquement",
+  "alarmReliabilityModeAppOnlyDesc": "Le plus économe en batterie, mais l’alarme ne sonne pas si l’app est tuée",
+  "alarmReliabilityModeNotification": "Notification",
+  "alarmReliabilityModeNotificationDesc": "Utilise des notifications planifiées par le système, plus fiable en arrière-plan (recommandé)",
+  "alarmReliabilityModeAlarmClock": "Réveil",
+  "alarmReliabilityModeAlarmClockDesc": "Fiabilité maximale, sonne même si l’app est tuée (consomme plus de batterie)",
+
+  "alarmTroubleshootingViewSafetyNotice": "Voir les conseils de sécurité",
+
+  "goToSettings": "Aller aux réglages",
+  "settingsButton": "Réglages",
+
+  "failedToOpenChannelSettings": "Impossible d’ouvrir les réglages du canal de notification : {error}",
+
+  "developerModeEnabled": "Mode développeur activé",
+  "developerModeDisabled": "Mode développeur désactivé",
+
+  "speaking": "Annonce en cours...",
+  "ttsTestFailed": "Test vocal échoué. Veuillez vérifier les réglages TTS de l’appareil.",
+  "ttsTestTimeout": "Test vocal expiré. Veuillez vérifier que le moteur TTS fonctionne correctement.",
+
+  "ttsTestFailedTitle": "Test vocal non réussi",
+  "ttsTestFailedMessage": "Impossible d’entendre l’annonce vocale. Raisons possibles :\n\n• Moteur TTS mal configuré\n• Pack de langue non installé\n• Volume système coupé\n• Volume média trop faible\n\nVeuillez vérifier les réglages système ou consulter les diagnostics.",
+
+  "viewDiagnostics": "Voir les diagnostics",
+  "ttsDiagnostics": "Diagnostics TTS",
+  "ttsEngine": "Moteur actuel",
+  "availableEngines": "Moteurs disponibles",
+  "availableLanguages": "Langues disponibles",
+  "andMore": "et {count} de plus...",
+
+  "ttsNoEngineTitle": "Aucun moteur vocal détecté",
+  "ttsNoEngineMessage": "Aucun moteur TTS (synthèse vocale) n’est disponible sur votre appareil. C’est fréquent sur certains appareils avec une surcouche Android.",
+  "ttsNoEngineSteps": "Veuillez suivre ces étapes :\n\n1. Ouvrir « App Store »\n2. Rechercher « Google Text-to-Speech »\n3. Installer le moteur vocal\n4. Après installation, aller dans « Réglages → Accessibilité → Synthèse vocale »\n5. Sélectionner le moteur installé et télécharger le pack de langue",
+
+  "ttsUnavailableTitle": "Fonction vocale indisponible",
+  "ttsUnavailableMessage": "Votre appareil n’a peut-être pas de pack vocal installé.\n\nVeuillez suivre ces étapes :\n1. Ouvrir les réglages système\n2. Rechercher « Text-to-Speech » ou « TTS »\n3. Vérifier qu’un moteur vocal est installé\n4. Définir la langue par défaut",
+  "ttsUnavailableHint": "Astuce : sur certains appareils, vérifiez les réglages du moteur vocal, ou installez le moteur Google TTS.",
+
+  "openTtsSettings": "Ouvrir les réglages TTS",
+  "ok": "OK",
+
+  "ttsSpeechRate": "Vitesse de parole",
+  "ttsPitch": "Hauteur",
+  "ttsVolumeDesc": "Ajuster le volume des annonces vocales",
+  "ttsSpeechRateDesc": "Ajuster la vitesse des annonces vocales (0,5 = vitesse normale)",
+  "ttsPitchDesc": "Ajuster la hauteur des annonces vocales (1,0 = hauteur normale)",
+
+  "ttsLanguageNote": "Astuce : vous pouvez choisir la langue manuellement si la détection automatique est inexacte.",
+  "ttsLanguageAutoDesc": "Sélection automatique selon la langue de l’application",
+
+  "followSystem": "Suivre le système",
+  "simplifiedChinese": "Chinois simplifié",
+  "english": "Anglais",
+
+  "speedVerySlow": "Très lent",
+  "speedSlow": "Lent",
+  "speedNormal": "Normal",
+  "speedFast": "Rapide",
+  "speedVeryFast": "Très rapide",
+
+  "pitchVeryLow": "Très bas",
+  "pitchLow": "Bas",
+  "pitchNormal": "Normal",
+  "pitchHigh": "Élevé",
+  "pitchVeryHigh": "Très élevé",
+
+  "onboardingNext": "Suivant",
+  "onboardingStartUsing": "Commencer",
+
+  "onboardingWelcomeTitle": "Bienvenue dans Minuteur Grille",
+  "onboardingWelcomeDesc": "Pour garantir un fonctionnement précis, nous devons configurer quelques réglages simples.\n\nCela ne prendra qu’une minute.",
+
+  "onboardingNotificationTitle": "Autorisation de notifications",
+  "onboardingNotificationDesc": "Cette application a besoin de l’autorisation de notifications pour vous prévenir à la fin du compte à rebours.\n\nSans cette autorisation, vous risquez de manquer l’alerte de fin.",
+  "onboardingGrantNotification": "Accorder l’autorisation de notifications",
+
+  "onboardingExactAlarmTitle": "Autorisation d’alarme exacte",
+  "onboardingExactAlarmDesc": "Pour garantir une précision à la seconde, cette application a besoin de l’autorisation « alarme exacte ».\n\nVeuillez l’autoriser dans le dialogue ou les réglages à venir.",
+  "onboardingGrantExactAlarm": "Accorder l’autorisation d’alarme exacte",
+
+  "onboardingFullScreenIntentTitle": "Alertes plein écran",
+  "onboardingFullScreenIntentDesc": "Android 14+ peut exiger un accès spécial pour afficher des alertes plein écran sur l’écran verrouillé.\n\nVeuillez autoriser les « Intentions plein écran » pour cette application afin d’améliorer la fiabilité.",
+  "onboardingGrantFullScreenIntent": "Ouvrir les réglages",
+  "onboardingOpenFullScreenIntentSettings": "Ouvrir les réglages des intentions plein écran",
+
+  "onboardingBatteryTitle": "Optimisation de la batterie",
+  "onboardingBatteryDesc": "Pour éviter que le système ne ferme le minuteur en arrière-plan, il est recommandé de régler cette application sur « Ne pas optimiser l’utilisation de la batterie ».\n\nCela garantit que les minuteurs longue durée ne seront pas interrompus.\n\nAstuce : sur certains appareils, le bouton « Ouvrir les réglages d’optimisation de la batterie » peut être bloqué ou l’option exacte peut ne pas apparaître. Recherchez dans les réglages système « Optimisation de la batterie », « Économie d’énergie », « Démarrage automatique » ou « Activité en arrière-plan » et réglez cette application sur « Ne pas optimiser » / « Aucune restriction ».",
+  "onboardingOpenBatterySettings": "Ouvrir les réglages d’optimisation de la batterie",
+
+  "onboardingCompletionTitle": "Prêt",
+  "onboardingCompletionDesc": "Tous les réglages sont terminés !\n\nAstuce : le comportement peut varier selon l’appareil et la version d’OS. Faites un test rapide écran verrouillé / arrière-plan avant de vous appuyer sur de longs minuteurs.\n\nVous pouvez reconfigurer ces options à tout moment dans les réglages.",
+
+  "onboardingGranted": "Accordé",
+  "onboardingNotRequired": "Non requis",
+
+  "onboardingNotRequiredNotificationDesc": "Votre version Android (inférieure à 13) autorise les notifications par défaut. Aucune autorisation manuelle n’est nécessaire.",
+  "onboardingNotRequiredExactAlarmDesc": "Votre version Android (inférieure à 12) prend en charge les alarmes exactes par défaut. Aucune autorisation manuelle n’est nécessaire.",
+
+  "onboardingPreGrantedExactAlarmDesc": "Android 13 pré-accorde automatiquement l’autorisation d’alarme exacte aux applications nouvellement installées.\n\nSi vous révoquez cette autorisation, vous pouvez la réactiver dans Réglages > Applications > {appName} > Alarmes et rappels.",
+  "onboardingPreGranted": "Pré-accordé",
+
+  "onboardingBatteryLegacyDesc": "Pour éviter que le système ne ferme le minuteur en arrière-plan, il est recommandé d’autoriser {appName} à fonctionner en mode économie d’énergie.\n\nChemin indicatif : Réglages → Batterie / Gestion de l’alimentation → Économie d’énergie → Applications autorisées en économie d’énergie → Activer {appName}\n\nAstuce : le chemin exact peut varier selon la marque et la version d’OS. Recherchez l’option correspondante dans vos réglages.",
+
+  "permissionNotRequiredStatus": "Non requis (pris en charge par défaut sur votre système)",
+  "batteryOptimizationLegacyDesc": "Veuillez autoriser cette application à fonctionner en mode économie d’énergie.\nChemin : Réglages → Batterie → Économie d’énergie → Applications autorisées en économie d’énergie",
+
+  "privacyPolicy": "Politique de confidentialité",
+  "privacyPolicyTitle": "Politique de confidentialité",
+  "privacyPolicyMessage": "Avant d’utiliser cette application, veuillez lire et accepter notre politique de confidentialité.",
+  "privacyPolicyAgree": "J’accepte",
+  "privacyPolicyViewDetails": "Voir la politique de confidentialité",
+
+  "ossLicenses": "Licences tierces",
+  "ossLicensesDesc": "Voir les licences des bibliothèques tierces",
+
+  "resetAllSettings": "Réinitialiser tous les réglages",
+  "resetAllSettingsDesc": "Restaurer tous les réglages par défaut",
+  "resetAllSettingsConfirmTitle": "Réinitialiser tous les réglages ?",
+  "resetAllSettingsConfirmMessage": "Cela réinitialisera tous les réglages à leurs valeurs par défaut. Cette action est irréversible.",
+  "resetAllSettingsExitMessage": "L’application va se fermer dans {seconds} secondes pour terminer la réinitialisation...",
+  "resetAllSettingsSuccess": "Réglages réinitialisés avec succès",
+
+  "displaySettings": "Affichage & accessibilité",
+  "themeMode": "Mode de thème",
+  "themeModeDesc": "Choisir le thème visuel",
+  "themeSoftDark": "Sombre doux",
+  "themeHighContrast": "Contraste élevé",
+  "themeLightHighContrast": "Lumière contrastée",
+  "themeTraditional": "Traditionnel",
+  "themePastelGarden": "Jardin pastel",
+  "themeInkVermilion": "Encre & vermillon",
+  "themeGlacialBlue": "Bleu glacial",
+  "themeClassicNavy": "Bleu marine classique",
+
+  "permissionStatusGranted": "Accordé",
+  "permissionStatusDenied": "Non accordé",
+  "batteryOptimizationStatusDisabled": "Désactivée (recommandé)",
+  "batteryOptimizationStatusEnabled": "Activée (peut affecter les alarmes)",
+  "exactAlarmStatusGranted": "Autorisé",
+  "exactAlarmStatusDenied": "Non autorisé (peut retarder l’alarme)",
+  "batteryOptimizationStatusUnknown": "Veuillez vérifier manuellement",
+
+  "batteryOptimizationMiuiHint": "MIUI : réglez « Économie de batterie » sur « Aucune restriction »",
+  "batteryOptimizationHuaweiHint": "Huawei/Honor : réglez « Lancement d’applis » sur « Gestion manuelle » et activez « Exécuter en arrière-plan »",
+  "batteryOptimizationOppoHint": "OPPO : dans « Infos appli », allez à « Utilisation de la batterie », ouvrez « Contrôles de consommation », choisissez « Autoriser l’activité en arrière-plan »",
+  "batteryOptimizationVivoHint": "vivo : dans « Infos appli », allez à « Batterie », dans « Détails d’utilisation », ouvrez « Contrôle d’énergie en arrière-plan », choisissez « Forte utilisation en arrière-plan »",
+  "batteryOptimizationOemHint": "Astuce : sur certaines surcouches (MIUI/EMUI/HarmonyOS), recherchez manuellement « Optimisation de la batterie », « Démarrage auto » ou « Applications protégées »",
+  "batteryOptimizationStandardHint": "Astuce : si vous ne trouvez pas « Sans restriction », essayez d’appuyer sur le texte « Autoriser l’utilisation en arrière-plan » (pas l’interrupteur) pour accéder à plus d’options",
+
+  "gridDurationMustBePositive": "La durée de la grille {index} doit être un entier positif",
+  "savedSuccessfullyGridUpdated": "Enregistré avec succès, grille mise à jour",
+  "activeTimersRunningConfigWillApplyOnRestart": "Des minuteurs sont actifs, la configuration prendra effet au prochain lancement",
+  "configurationSavedButErrorDuringUpdate": "Configuration enregistrée, mais erreur lors de la mise à jour : {error}",
+
+  "debugTools": "Outils de débogage",
+  "testTimer10s": "Minuteur test 10 s (Debug)",
+  "testTimer10sDesc": "Démarrer un vrai minuteur de 10 secondes",
+  "start": "Démarrer",
+
+  "audioTestDebug": "Test audio (Debug)",
+  "audioTestDebugDesc": "Diagnostiquer les problèmes de son",
+  "errorTestDebug": "Test d’erreur (Debug)",
+  "errorTestDebugDesc": "Tester le système de rapport d’erreurs",
+
+  "exitDeveloperMode": "Quitter le mode développeur",
+  "exitDeveloperModeDesc": "Appuyez pour masquer les outils de débogage",
+
+  "failedToStartTestTimer": "Impossible de démarrer le minuteur test : {error}",
+
+  "audioTest": "Test audio",
+  "audioTestInstructions": "Veuillez tester les fonctions suivantes dans l’ordre et vérifier si du son est émis.\nSi un test échoue, la fonctionnalité correspondante a un problème.",
+  "clearLog": "Effacer le journal",
+  "startTest": "Démarrer le test",
+  "testLog": "Journal de test :",
+  "waitingForTest": "En attente de test...",
+  "testTimerStarted": "Minuteur test 10 s démarré ! La première case est maintenant réglée sur 10 s.",
+  "stopActiveTimersBeforeTest": "Veuillez arrêter tous les minuteurs actifs avant de lancer le minuteur test",
+
+  "timeIsUp": "Temps écoulé !",
+
+  "widgetTimersRinging": "{count, plural, =1{1 minuteur sonne} other{{count} minuteurs sonnent}}",
+  "widgetTimersActive": "{count, plural, =1{1 minuteur actif} other{{count} minuteurs actifs}}",
+  "widgetTapToOpen": "Appuyez pour ouvrir l’application",
+  "widgetTimerRemaining": "{name} : {remaining}",
+  "widgetDescription": "Afficher l’état de Minuteur Grille",
+
+  "deviceType": "Appareil/plateforme",
+  "deviceTypeMiui": "Xiaomi (MIUI)",
+  "deviceTypeHuawei": "Huawei/Honor (EMUI/HarmonyOS)",
+  "deviceTypeOppo": "OPPO/Realme/OnePlus (ColorOS)",
+  "deviceTypeVivo": "vivo/iQOO (FuntouchOS/OriginOS)",
+  "deviceTypeStandard": "Android standard",
+  "deviceTypeIos": "iOS",
+  "deviceTypeMacos": "macOS",
+  "deviceTypeWindows": "Windows",
+  "deviceTypeLinux": "Linux",
+  "deviceTypeWeb": "Navigateur Web",
+
+  "singleInstanceWarningMessage": "Cette application est déjà en cours d’exécution.\n\nUne seule instance peut fonctionner à la fois.\n\nVeuillez utiliser la fenêtre existante ou la fermer avant d’en ouvrir une nouvelle."
+}

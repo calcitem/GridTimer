@@ -1,0 +1,432 @@
+{
+  "@@locale": "tr",
+
+  "appTitle": "9’lu Zamanlayıcı",
+  "timerIdle": "Hazır",
+  "timerRunning": "Çalışıyor",
+  "timerPaused": "Duraklatıldı",
+  "timerRinging": "Çalıyor",
+
+  "confirmStartTitle": "Başlatılsın mı?",
+  "confirmStartBody": "Şu anda çalışan başka zamanlayıcılar var. {name} başlatılsın mı?",
+
+  "actionStart": "Başlat",
+  "actionPause": "Duraklat",
+  "actionResume": "Devam",
+  "actionReset": "Sıfırla",
+  "actionStop": "Durdur",
+  "actionCancel": "İptal",
+
+  "timerActions": "Zamanlayıcı İşlemleri",
+  "stopAlarm": "Alarmı Durdur",
+
+  "timeUpTts": "{name} süresi doldu",
+
+  "timerIdleActions": "İşlem Seç",
+  "actionAdjustTime": "Süreyi Ayarla",
+  "adjustTimeTitle": "Süreyi Ayarla - {slotName}",
+  "currentDuration": "Mevcut: {minutes} dk {seconds} sn",
+  "durationUpdatedSuccessfully": "Süre güncellendi",
+  "durationMustBePositive": "Süre 0'dan büyük olmalı",
+
+  "idleGridClickBehaviorTitle": "Boş Kare Tıklama Davranışı",
+  "idleGridClickBehaviorDesc": "Boş bir kareye tıklayınca yapılacak işlemi seçin",
+  "showDialogOption": "İşlem penceresini göster (önerilir, yanlış dokunmayı önler)",
+  "directStartOption": "Zamanlayıcıyı doğrudan başlat (hızlı mod)",
+
+  "permissionNotificationTitle": "Bildirimleri Aç",
+  "permissionNotificationBody": "Zamanlayıcı uyarılarını almak için lütfen bildirimleri etkinleştirin.",
+
+  "permissionExactAlarmTitle": "Kesin Alarmları Aç",
+  "permissionExactAlarmBody": "Kesin zamanlı uyarılar için lütfen “Alarmlar ve hatırlatıcılar” iznini etkinleştirin.",
+
+  "openSettings": "Ayarları Aç",
+  "later": "Daha Sonra",
+
+  "minutes": "dakika",
+  "remainingSeconds": "kalan süre",
+  "pausing": "Duraklatıldı",
+  "timeUp": "Süre Doldu",
+  "clickToStop": "Durdurmak için tıklayın",
+
+  "settings": "Ayarlar",
+  "appInformation": "Uygulama Bilgileri",
+  "version": "Sürüm",
+  "versionInfo": "Sürüm Bilgileri",
+  "gitBranch": "Git Dalı",
+  "gitRevision": "Git Commit Hash",
+
+  "timerSettings": "Zamanlayıcı Ayarları",
+  "soundSettings": "Ses Ayarları",
+  "soundSettingsDesc": "Ses seviyesini yapılandırın",
+  "ttsSettings": "TTS Ayarları",
+  "ttsSettingsDesc": "Sesli duyuruları yapılandırın",
+  "languageSettings": "Dil",
+  "languageSettingsDesc": "Uygulama dilini seçin",
+  "permissions": "İzinler",
+  "notificationPermission": "Bildirim İzni",
+  "notificationPermissionDesc": "Zamanlayıcı bildirimlerine izin ver",
+  "about": "Hakkında",
+  "license": "Lisans",
+  "licenseDesc": "Uygulama lisansını görüntüleyin",
+  "comingSoon": "Yakında",
+  "selectLanguage": "Dil Seç",
+  "languageEnglish": "English",
+  "languageChineseSimplified": "简体中文",
+
+  "errorText": "Hata: {error}",
+  "confirmStart": "Çalışan başka zamanlayıcılar var. Bu zamanlayıcı başlatılsın mı?",
+
+  "flashAnimation": "Yanıp Sönme Animasyonu",
+  "flashAnimationDesc": "Zamanlayıcı çalınca kırmızı yanıp sönsün",
+  "vibration": "Titreşim",
+  "vibrationDesc": "Zamanlayıcı çalınca titre",
+  "keepScreenOn": "Ekranı Açık Tut",
+  "keepScreenOnDesc": "Zamanlayıcı çalışırken ekranın uykuya geçmesini engelle",
+  "showMinutesSecondsFormat": "Dakika:Saniye Formatını Göster",
+  "showMinutesSecondsFormatDesc": "Geri sayımı DD:SS olarak göster (kapalıysa toplam saniye gösterilir)",
+  "ttsEnabled": "Sesli Duyurular",
+  "ttsEnabledDesc": "Zamanlayıcı bitince sesli anons yap",
+
+  "alarmSound": "Alarm Sesi",
+  "alarmSoundDesc": "Zamanlayıcı uyarıları için ses seçin",
+  "volume": "Ses Seviyesi",
+  "volumeDesc": "Alarm sesini ayarlayın",
+  "systemVolumeHint": "Ses çok düşükse, sistem ayarlarından alarm sesini artırabilirsiniz. Android'de fiziksel ses tuşuna basıp menüye (üç nokta) dokunarak alarm sesini ayrı ayarlayabilirsiniz.",
+
+  "autoRaiseAlarmVolumeTitle": "Sistem alarm sesini otomatik yükselt",
+  "autoRaiseAlarmVolumeDesc": "Bir zamanlayıcı çalınca sistem Alarm sesini geçici olarak yükseltir, alarmı durdurduktan sonra eski seviyeye geri getirir.",
+  "alarmVolumeBoostLevelTitle": "Yükseltme seviyesi",
+  "alarmVolumeBoostLevelMinAudible": "Duyulabilir minimum (önerilir)",
+  "alarmVolumeBoostLevelMax": "Maksimum",
+  "autoRaiseAlarmVolumeNote": "Not: Bu özellik sistem Alarm sesini değiştirir. Alarmı durdurduğunuzda (veya {minutes} dakika sonra) önceki ses seviyenize geri döner.",
+
+  "vibrationSystemWarning": "Uygulama içi titreşim ayarı değiştirildi. Ancak Rahatsız Etmeyin modu, sistem titreşim anahtarı vb. gibi sistem ayarları da titreşimin gerçekten çalışıp çalışmamasını etkileyebilir. Titreşimin çalıştığından emin olmak için lütfen sistem ayarlarını da kontrol edin.",
+  "openSystemVibrationSettings": "Sistem titreşim ayarlarını aç",
+  "volumeButtonLockScreenHint": "Bazı sistemlerde ses tuşları yalnızca cihaz kilidi açıkken çalışır",
+
+  "ttsLanguage": "TTS Dili",
+  "ttsLanguageDesc": "Sesli duyuru dilini seçin",
+
+  "testSound": "Sesi Test Et",
+  "playing": "Çalıyor...",
+  "testTts": "Sesi Test Et",
+  "ttsTestMessage": "Zamanlayıcı 1 süresi doldu",
+
+  "unitSecondsShort": "sn",
+  "unitMinutesShort": "dk",
+  "unitHoursShort": "sa",
+
+  "gridDurationsSettings": "Izgara Ayarları",
+  "gridDurationsSettingsDesc": "Her kare için adı ve süreyi özelleştirin",
+  "gridSlot": "Kare {index}",
+
+  "seconds": "saniye",
+  "hours": "saat",
+
+  "save": "Kaydet",
+  "reset": "Sıfırla",
+  "resetToDefault": "Varsayılanlara Sıfırla",
+  "gridDurationsResetConfirm": "Izgara sürelerini varsayılan değerlere sıfırlamak istediğinizden emin misiniz?",
+
+  "name": "Ad",
+  "optional": "İsteğe bağlı",
+
+  "audioPlaybackSettings": "Ses Çalma Ayarları",
+  "audioPlaybackSettingsDesc": "Alarm sesinin çalma modunu yapılandırın",
+  "audioPlaybackMode": "Çalma Modu",
+  "audioPlaybackModeLoopIndefinitely": "Elle durdurulana kadar sürekli döngü",
+  "audioPlaybackModeLoopForDuration": "N dakika döngü, sonra otomatik durdur",
+  "audioPlaybackModeLoopWithInterval": "N dk döngü, M dk durakla, N dk döngü (bir kez)",
+  "audioPlaybackModeLoopWithIntervalRepeating": "N dk döngü, M dk durakla, durdurulana kadar tekrar et",
+  "audioPlaybackModePlayOnce": "Sadece bir kez çal",
+
+  "loopDuration": "Döngü Süresi",
+  "intervalPause": "Aralık Duraklama Süresi",
+  "minutesUnit": "dakika",
+
+  "audioPlaybackWhenEffectiveTitle": "Önemli Uyarı",
+  "audioPlaybackWhenEffectiveDesc": "Bu ayarlar yalnızca varsayılan alarm sesi için geçerlidir.\n\nSistem ayarlarında bildirim sesini özelleştirdiyseniz, alarm durdurulana kadar sürekli döngüde çalar (bu çalma ayarları uygulanmaz).",
+
+  "safetyDisclaimerTitle": "Güvenlik Uyarısı",
+  "safetyDisclaimerMessage": "Güvenliğiniz için lütfen aşağıdakileri anlayın:",
+  "safetyRecommendedUses": "✅ Önerilen Kullanımlar",
+  "safetyRecommendedUsesList": "• Günlük mutfak zamanlayıcıları\n• Genel yaşam hatırlatıcıları\n• Kritik olmayan durumlar\n• Test ettikten sonra kullanım",
+  "safetyNotRecommendedUses": "❌ Önerilmez",
+  "safetyNotRecommendedUsesList": "• Kritik ilaç hatırlatmaları (tıbbi uygulamalar kullanın)\n• Hayati önem taşıyan hatırlatmalar\n• Acil tıbbi durumlar\n• Önceden test etmeden güvenmek",
+  "safetyBestPractices": "💡 En İyi Uygulamalar:",
+  "safetyBestPracticesList": "• Güvenmeden önce alarmı test edin\n• Kritik işler için yedek hatırlatmalar kullanın\n• Rahatsız Etmeyin modunu ve bildirim izinlerini kontrol edin\n• Uygulama sınırlamalarını anlayın",
+  "safetyViewFullDisclaimer": "Feragatnameyi Görüntüle",
+  "safetyAcceptAndContinue": "Anladım, Devam Et",
+
+  "fullDisclaimerTitle": "Yasal Feragatname",
+  "fullDisclaimerText": "Bu yazılım, açık ya da zımni hiçbir garanti olmaksızın \"OLDUĞU GİBİ\" sağlanır.\n\nGeliştiriciler; kaçırılan hatırlatmalar, hatalı zamanlama, uygulama arızaları vb. dahil olmak üzere bu yazılımın kullanımından doğan hiçbir sonuçtan sorumlu değildir.\n\nKullanıcılar riskleri kendileri değerlendirmeli ve kritik işler için yedek çözümler hazırlamalıdır.",
+
+  "close": "Kapat",
+  "aboutDisclaimer": "Güvenlik Uyarısı ve Feragatname",
+
+  "gestureSettings": "Hareket Kontrol Ayarları",
+  "gestureSettingsDesc": "Alarm çalarken hareket eylemlerini yapılandırın",
+  "gestureActions": "Hareket Eylemleri",
+
+  "gestureTypeScreenTap": "Ekrana Dokun",
+  "gestureTypeVolumeUp": "Ses+ Tuşu",
+  "gestureTypeVolumeDown": "Ses- Tuşu",
+  "gestureTypeShake": "Telefonu Salla",
+  "gestureTypeFlip": "Telefonu Ters Çevir (Ekran Aşağı)",
+
+  "gestureActionStopAndReset": "Durdur ve Sıfırla",
+  "gestureActionNone": "Eylem Yok",
+
+  "shakeSensitivity": "Sallama Hassasiyeti",
+  "shakeSensitivityLow": "Düşük (sert sallayın)",
+  "shakeSensitivityHigh": "Yüksek (hafif sallayın)",
+  "shakeSensitivityDesc": "Sallama algılama hassasiyetini ayarlayın",
+
+  "gestureHint": "Yaşlı dostu: Ekrana dokunma, ses tuşları ve telefonu ters çevirme önerilir",
+  "gestureLimitationsHint": "Not: Bazı cihazlar/sistemler kilit ekranında tuşları veya sensörleri kısıtlar. Kilitliyken hareketler yanıt vermiyorsa, önce kilidi açın; sonra telefonu ters çevirin veya ses tuşlarına basın.",
+
+  "onboardingCheckSoundTitle": "Önemli: Sesi Kontrol Edin",
+  "onboardingCheckSoundDesc": "Lütfen aşağıdaki düğmeye dokunup \"Timer Alarm (default)\" sesinin **\"Yok\"** veya **\"Sessiz\"** olmadığından emin olun.\n\nSessizse, süre dolduğunda yalnızca ses olmadan bir bildirim alırsınız.",
+  "onboardingCheckSoundBtn": "Ses Ayarlarını Kontrol Et",
+  "onboardingCheckSoundMiuiHint": "MIUI Kullanıcıları: Bildirim kanalında ses seçemiyorsanız bu normaldir (MIUI sistem kısıtı). Uygulama, uygulama içi ses çalmayı otomatik etkinleştirdi; alarm düzgün çalışır. Not: Alarm sırasında yoğun mesajlaşmadan kaçının; ses kesilebilir.",
+
+  "grantPermission": "İzin Ver",
+  "notificationPermissionGranted": "Bildirim izni verildi",
+  "notificationPermissionDenied": "Bildirim izni reddedildi, lütfen sistem ayarlarından elle verin",
+
+  "exactAlarmPermission": "Kesin Alarm İzni",
+  "exactAlarmPermissionDesc": "Zamanlayıcıların zamanında bildirmesini sağlar (Android 12, 14+ için gerekli)",
+  "exactAlarmPermissionDescApi33": "Android 13'te önceden verilir, sistem ayarlarından geri alınabilir",
+
+  "fullScreenIntentPermission": "Tam ekran uyarı izni",
+  "fullScreenIntentPermissionDesc": "Zamanlayıcı çalınca kilit ekranda tam ekran uyarılara izin ver (Android 14+)",
+  "fullScreenIntentStatusGranted": "İzin verildi",
+  "fullScreenIntentStatusDenied": "İzin verilmedi (Tam ekran uyarı görünmeyebilir)",
+
+  "batteryOptimizationSettings": "Pil Optimizasyonu Ayarları",
+  "batteryOptimizationDesc": "Arka plan alarmlarının güvenilir olması için pil optimizasyonunu kapatın",
+
+  "alarmSoundSettings": "Alarm Sesi Ayarları",
+  "alarmSoundSettingsDesc": "\"Timer Alarm (default)\" sesi \"Yok\" olarak ayarlanırsa, zamanlayıcı yalnızca ses olmadan bildirim gösterir",
+  "alarmSoundSettingsMiuiHint": "MIUI Kullanıcıları: MIUI kısıtları nedeniyle bazı cihazlar bildirim kanalı sesini değiştiremeyebilir. Alarmın çalışması için uygulama, uygulama içi ses çalmayı otomatik etkinleştirdi. Not: Uygulama içi ses, diğer bildirim sesleriyle kesilebilir veya kısılabilir; alarm sırasında yoğun mesajlaşmadan kaçının.",
+
+  "appKilledWarning": "Önemli: Bu uygulama sistem veya kullanıcı tarafından zorla kapatılırsa zamanlayıcılar çalmaz. Lütfen arka planda çalışır tutun ve pil optimizasyonunu kapatın.",
+
+  "alarmTroubleshooting": "Alarm çalmıyor / gecikiyor mu?",
+  "alarmTroubleshootingDesc": "Android sürümleri ve üretici ROM'ları arka plan alarmlarını kısıtlayabilir. Hızlı çözümler için dokunun.",
+  "alarmTroubleshootingDialogTitle": "Alarm Güvenilirliği Rehberi",
+  "alarmTroubleshootingDialogIntro": "Farklı Android sürümleri ve üretici ROM'ları (ör. özel arayüzler) farklı arka plan/bildirim kısıtları uygular. Bu, alarmları susturabilir veya geciktirebilir. Uyumluluğu sürekli geliştiriyoruz; lütfen şunları deneyin:",
+  "alarmTroubleshootingSteps": "1. Rahatsız Etmeyin'i kapatın ve Alarm sesini yükseltin\n2. Bu uygulama için bildirimleri etkinleştirin\n3. \"Timer Alarm (default)\" kanalında sesin Sessiz olmadığından emin olun\n4. Bu uygulama için pil optimizasyonunu kapatın (arka planda çalışmasına izin verin)\n5. Android 14+: \"Alarmlar ve hatırlatıcılar\" (kesin alarmlar) iznine izin verin\n6. Android 14+: \"Tam ekran uyarılar\" iznine izin verin",
+  "alarmTroubleshootingMiui": "Özelleştirilmiş sistemler: Otomatik başlatma ve arka plan etkinliğine izin verin, agresif pil tasarrufundan kaçının. Gerekirse Son Uygulamalar'da bu uygulamayı kilitleyin.",
+
+  "alarmTroubleshootingQuickActions": "Hızlı işlemler",
+  "alarmTroubleshootingOpenChannel": "Kanal sesini kontrol et",
+  "alarmTroubleshootingOpenNotifications": "Bildirim ayarlarını aç",
+  "alarmTroubleshootingOpenExactAlarm": "Kesin alarmları etkinleştir",
+  "alarmTroubleshootingOpenFullScreenIntent": "Tam ekran uyarıları etkinleştir",
+  "alarmTroubleshootingOpenBattery": "Pil optimizasyonunu kapat",
+
+  "alarmReliabilityMode": "Alarm Güvenilirlik Modu",
+  "alarmReliabilityModeDesc": "Alarmların nasıl planlanacağını seçin (uygulama öldürüldüğünde alarmın çalıp çalmamasını etkiler)",
+  "alarmReliabilityModeAppOnly": "Yalnızca Uygulama",
+  "alarmReliabilityModeAppOnlyDesc": "En az pil tüketir, ancak uygulama kapanırsa alarmlar çalmaz",
+  "alarmReliabilityModeNotification": "Bildirim",
+  "alarmReliabilityModeNotificationDesc": "Sistem zamanlanmış bildirimlerini kullanır, arka planda daha güvenilir (önerilir)",
+  "alarmReliabilityModeAlarmClock": "Çalar Saat",
+  "alarmReliabilityModeAlarmClockDesc": "En yüksek güvenilirlik; uygulama kapalı olsa bile çalar (daha çok pil tüketir)",
+
+  "alarmTroubleshootingViewSafetyNotice": "Güvenlik uyarısını görüntüle",
+
+  "goToSettings": "Ayarlara Git",
+  "settingsButton": "Ayarlar",
+
+  "failedToOpenChannelSettings": "Bildirim kanal ayarları açılamadı: {error}",
+
+  "developerModeEnabled": "Geliştirici modu etkinleştirildi",
+  "developerModeDisabled": "Geliştirici modu devre dışı",
+
+  "speaking": "Konuşuyor...",
+  "ttsTestFailed": "Ses testi başarısız. Lütfen cihaz TTS ayarlarını kontrol edin.",
+  "ttsTestTimeout": "Ses testi zaman aşımına uğradı. Lütfen TTS motorunun çalıştığını kontrol edin.",
+
+  "ttsTestFailedTitle": "Ses Testi Başarısız",
+  "ttsTestFailedMessage": "Sesli duyuru duyulamadı. Olası nedenler:\n\n• TTS motoru doğru yapılandırılmamış\n• Dil paketi kurulmamış\n• Sistem sesi kapalı\n• Medya sesi çok düşük\n\nLütfen sistem ayarlarını kontrol edin veya tanılamayı görüntüleyin.",
+
+  "viewDiagnostics": "Tanılamayı Görüntüle",
+  "ttsDiagnostics": "TTS Tanılama",
+  "ttsEngine": "Geçerli Motor",
+  "availableEngines": "Mevcut Motorlar",
+  "availableLanguages": "Mevcut Diller",
+  "andMore": "ve {count} tane daha...",
+
+  "ttsNoEngineTitle": "Ses Motoru Algılanmadı",
+  "ttsNoEngineMessage": "Cihazınızda kullanılabilir bir TTS (Metinden Sese) motoru yok. Bu, bazı özelleştirilmiş Android arayüzlerinde yaygındır.",
+  "ttsNoEngineSteps": "Lütfen şu adımları izleyin:\n\n1. \"Uygulama Mağazası\"nı açın\n2. \"Google Metinden Sese\" aratın\n3. Ses motorunu yükleyin\n4. Yükledikten sonra \"Ayarlar → Erişilebilirlik → Metinden Sese\" bölümüne gidin\n5. Yüklenen motoru seçin ve dil paketini indirin",
+
+  "ttsUnavailableTitle": "Ses Özelliği Kullanılamıyor",
+  "ttsUnavailableMessage": "Cihazınızda bir ses paketi yüklü olmayabilir.\n\nLütfen şu adımları izleyin:\n1. Sistem Ayarlarını açın\n2. \"Metinden Sese\" veya \"TTS\" aratın\n3. Bir ses motorunun yüklü olduğundan emin olun\n4. Dilinizi varsayılan olarak ayarlayın",
+  "ttsUnavailableHint": "İpucu: Bazı cihazlarda sistem ses motoru ayarlarını kontrol edin veya Google TTS motorunu yükleyin.",
+
+  "openTtsSettings": "TTS Ayarlarını Aç",
+  "ok": "Tamam",
+
+  "ttsSpeechRate": "Konuşma Hızı",
+  "ttsPitch": "Ton",
+  "ttsVolumeDesc": "Sesli duyuru sesini ayarlayın",
+  "ttsSpeechRateDesc": "Sesli duyuru hızını ayarlayın (0.5 normal hızdır)",
+  "ttsPitchDesc": "Sesli duyuru tonunu ayarlayın (1.0 normal tondur)",
+
+  "ttsLanguageNote": "İpucu: Otomatik algılama doğru değilse dili elle seçebilirsiniz.",
+  "ttsLanguageAutoDesc": "Uygulama diline göre otomatik seç",
+
+  "followSystem": "Sistemi Takip Et",
+  "simplifiedChinese": "Basitleştirilmiş Çince",
+  "english": "English",
+
+  "speedVerySlow": "Çok Yavaş",
+  "speedSlow": "Yavaş",
+  "speedNormal": "Normal",
+  "speedFast": "Hızlı",
+  "speedVeryFast": "Çok Hızlı",
+
+  "pitchVeryLow": "Çok Düşük",
+  "pitchLow": "Düşük",
+  "pitchNormal": "Normal",
+  "pitchHigh": "Yüksek",
+  "pitchVeryHigh": "Çok Yüksek",
+
+  "onboardingNext": "İleri",
+  "onboardingStartUsing": "Başla",
+
+  "onboardingWelcomeTitle": "9’lu Zamanlayıcı’ya Hoş Geldiniz",
+  "onboardingWelcomeDesc": "Zamanlayıcının doğru çalışması için bazı basit ayarları yapmamız gerekiyor.\n\nBu yalnızca bir dakika sürer.",
+
+  "onboardingNotificationTitle": "Bildirim İzni",
+  "onboardingNotificationDesc": "Bu uygulama, geri sayım bittiğinde sizi bilgilendirmek için bildirim iznine ihtiyaç duyar.\n\nBu izin olmadan zamanlayıcı bitiş uyarılarını kaçırabilirsiniz.",
+  "onboardingGrantNotification": "Bildirim İzni Ver",
+
+  "onboardingExactAlarmTitle": "Kesin Alarm İzni",
+  "onboardingExactAlarmDesc": "Zamanlayıcı doğruluğunu saniye düzeyinde sağlamak için bu uygulamanın \"kesin alarm\" iznine ihtiyacı var.\n\nLütfen bir sonraki pencerede veya ayarlarda izin verin.",
+  "onboardingGrantExactAlarm": "Kesin Alarm İzni Ver",
+
+  "onboardingFullScreenIntentTitle": "Tam ekran uyarılar",
+  "onboardingFullScreenIntentDesc": "Android 14+ kilit ekranda tam ekran uyarı göstermek için özel bir uygulama erişimi gerektirebilir.\n\nAlarm güvenilirliğini artırmak için bu uygulamaya \"Tam ekran uyarılar\" izni verin.",
+  "onboardingGrantFullScreenIntent": "Ayarları Aç",
+  "onboardingOpenFullScreenIntentSettings": "Tam ekran uyarı ayarlarını aç",
+
+  "onboardingBatteryTitle": "Pil Optimizasyonu",
+  "onboardingBatteryDesc": "Sistemin arka planda zamanlayıcıyı kapatmasını önlemek için bu uygulamayı \"Pili optimize etme\" olarak ayarlamanız önerilir.\n\nBu, uzun süreli zamanlayıcıların kesintiye uğramamasını sağlar.\n\nİpucu: Bazı cihazlarda \"Pil Optimizasyonu Ayarlarını Aç\" düğmesi engellenebilir veya ilgili seçenek görünmeyebilir. Lütfen sistem ayarlarında \"Pil optimizasyonu\", \"Güç tasarrufu\", \"Otomatik başlatma\" veya \"Arka plan etkinliği\" aratın ve bu uygulamayı \"Optimize etme\" / \"Kısıtlama yok\" olarak ayarlayın.",
+  "onboardingOpenBatterySettings": "Pil Optimizasyonu Ayarlarını Aç",
+
+  "onboardingCompletionTitle": "Hazır",
+  "onboardingCompletionDesc": "Tüm ayarlar tamamlandı!\n\nİpucu: Cihaz ve işletim sistemi sürümüne göre davranış değişebilir. Uzun zamanlayıcılara güvenmeden önce kilit ekranı/arka plan testi yapın.\n\nBu seçenekleri dilediğiniz zaman Ayarlar sayfasından yeniden yapılandırabilirsiniz.",
+
+  "onboardingGranted": "Verildi",
+  "onboardingNotRequired": "Gerekli Değil",
+
+  "onboardingNotRequiredNotificationDesc": "Android sürümünüz (13'ten düşük) bildirimlere varsayılan olarak izin verir. Elle yetkilendirme gerekmez.",
+  "onboardingNotRequiredExactAlarmDesc": "Android sürümünüz (12'den düşük) kesin alarmları varsayılan olarak destekler. Elle yetkilendirme gerekmez.",
+
+  "onboardingPreGrantedExactAlarmDesc": "Android 13, yeni yüklenen uygulamalara kesin alarm iznini otomatik olarak önceden verir.\n\nBu izni geri aldıysanız, Ayarlar > Uygulamalar > {appName} > Alarmlar ve hatırlatıcılar bölümünden yeniden etkinleştirebilirsiniz.",
+  "onboardingPreGranted": "Önceden Verildi",
+
+  "onboardingBatteryLegacyDesc": "Sistemin arka planda zamanlayıcıyı kapatmasını önlemek için, güç tasarrufu modunda {appName} uygulamasının çalışmasına izin verin.\n\nYol örneği: Ayarlar → Pil / Güç yönetimi → Pil tasarrufu → Pil tasarrufunda izin verilen uygulamalar → {appName} etkinleştir\n\nİpucu: Yol cihaz markasına ve işletim sistemi sürümüne göre değişebilir. Lütfen ayarlarınızda ilgili seçeneği bulun.",
+
+  "permissionNotRequiredStatus": "Gerekli değil (sisteminiz varsayılan olarak destekliyor)",
+  "batteryOptimizationLegacyDesc": "Lütfen bu uygulamanın pil tasarrufu modunda çalışmasına izin verin.\nYol: Ayarlar → Pil → Pil tasarrufu → Pil tasarrufunda izin verilen uygulamalar",
+
+  "privacyPolicy": "Gizlilik Politikası",
+  "privacyPolicyTitle": "Gizlilik Politikası",
+  "privacyPolicyMessage": "Bu uygulamayı kullanmadan önce lütfen Gizlilik Politikamızı okuyup kabul edin.",
+  "privacyPolicyAgree": "Kabul Ediyorum",
+  "privacyPolicyViewDetails": "Gizlilik Politikasını Görüntüle",
+
+  "ossLicenses": "Üçüncü Taraf Lisansları",
+  "ossLicensesDesc": "Üçüncü taraf kütüphane lisanslarını görüntüleyin",
+
+  "resetAllSettings": "Tüm Ayarları Sıfırla",
+  "resetAllSettingsDesc": "Tüm ayarları varsayılan değerlere döndür",
+  "resetAllSettingsConfirmTitle": "Tüm Ayarlar Sıfırlansın mı?",
+  "resetAllSettingsConfirmMessage": "Bu işlem tüm ayarları varsayılanlara sıfırlar. Geri alınamaz.",
+  "resetAllSettingsExitMessage": "Sıfırlamayı tamamlamak için uygulama {seconds} saniye içinde kapanacak...",
+  "resetAllSettingsSuccess": "Ayarlar başarıyla sıfırlandı",
+
+  "displaySettings": "Görünüm ve Erişilebilirlik",
+  "themeMode": "Tema Modu",
+  "themeModeDesc": "Görsel temayı seçin",
+  "themeSoftDark": "Yumuşak Koyu",
+  "themeHighContrast": "Yüksek Kontrast",
+  "themeLightHighContrast": "Gün Işığı Vurgusu",
+  "themeTraditional": "Geleneksel",
+  "themePastelGarden": "Pastel Bahçe",
+  "themeInkVermilion": "Mürekkep ve Kırmızı",
+  "themeGlacialBlue": "Buzul Mavisi",
+  "themeClassicNavy": "Klasik Lacivert",
+
+  "permissionStatusGranted": "Verildi",
+  "permissionStatusDenied": "Verilmedi",
+  "batteryOptimizationStatusDisabled": "Kapalı (Önerilir)",
+  "batteryOptimizationStatusEnabled": "Açık (Alarmları etkileyebilir)",
+  "exactAlarmStatusGranted": "İzin verildi",
+  "exactAlarmStatusDenied": "İzin verilmedi (Alarmlar gecikebilir)",
+  "batteryOptimizationStatusUnknown": "Lütfen elle kontrol edin",
+
+  "batteryOptimizationMiuiHint": "MIUI: \"Pil tasarrufu\"nu \"Kısıtlama yok\" yapın",
+  "batteryOptimizationHuaweiHint": "Huawei/Honor: \"Uygulama başlatma\"yı \"Elle yönet\" yapın ve \"Arka planda çalış\"ı etkinleştirin",
+  "batteryOptimizationOppoHint": "OPPO: \"Uygulama bilgisi\" → \"Pil kullanımı\" → \"Güç tüketimi kontrolleri\" → \"Arka plan etkinliğine izin ver\"",
+  "batteryOptimizationVivoHint": "vivo: \"Uygulama bilgisi\" → \"Pil\" → \"Pil kullanım ayrıntıları\" → \"Arka plan güç kontrolü\" → \"Yüksek arka plan güç kullanımı\"",
+  "batteryOptimizationOemHint": "İpucu: Bazı özelleştirilmiş sistemlerde (MIUI/EMUI/HarmonyOS) Ayarlarda \"Pil Optimizasyonu\", \"Otomatik başlatma\" veya \"Korunan uygulamalar\" araması yapmanız gerekebilir",
+  "batteryOptimizationStandardHint": "İpucu: \"Kısıtlama yok\" seçeneğini bulamıyorsanız, anahtar yerine \"Arka planda kullanıma izin ver\" metnine dokunarak daha fazla seçeneğe ulaşmayı deneyin",
+
+  "gridDurationMustBePositive": "Kare {index} süresi pozitif bir tam sayı olmalı",
+  "savedSuccessfullyGridUpdated": "Başarıyla kaydedildi, ızgara güncellendi",
+  "activeTimersRunningConfigWillApplyOnRestart": "Etkin zamanlayıcılar çalışıyor; yapılandırma bir sonraki uygulama açılışında geçerli olacak",
+  "configurationSavedButErrorDuringUpdate": "Yapılandırma kaydedildi, ancak güncelleme sırasında hata oluştu: {error}",
+
+  "debugTools": "Hata Ayıklama Araçları",
+  "testTimer10s": "10 sn Test Zamanlayıcısı (Debug)",
+  "testTimer10sDesc": "Gerçek bir 10 saniyelik zamanlayıcı başlat",
+  "start": "Başlat",
+
+  "audioTestDebug": "Ses Testi (Debug)",
+  "audioTestDebugDesc": "Ses sorunlarını teşhis et",
+  "errorTestDebug": "Hata Testi (Debug)",
+  "errorTestDebugDesc": "Hata raporlama sistemini test et",
+
+  "exitDeveloperMode": "Geliştirici Modundan Çık",
+  "exitDeveloperModeDesc": "Hata ayıklama araçlarını gizlemek için dokunun",
+
+  "failedToStartTestTimer": "Test zamanlayıcısı başlatılamadı: {error}",
+
+  "audioTest": "Ses Testi",
+  "audioTestInstructions": "Lütfen aşağıdaki özellikleri sırayla test edin ve ses çıkıp çıkmadığını gözlemleyin.\nBir test başarısız olursa, ilgili özellikte sorun vardır.",
+  "clearLog": "Günlüğü Temizle",
+  "startTest": "Testi Başlat",
+  "testLog": "Test Günlüğü:",
+  "waitingForTest": "Test bekleniyor...",
+  "testTimerStarted": "10 saniyelik test zamanlayıcısı başladı! İlk kare artık 10 sn olarak ayarlandı.",
+  "stopActiveTimersBeforeTest": "Test zamanlayıcısını başlatmadan önce lütfen tüm etkin zamanlayıcıları durdurun",
+
+  "timeIsUp": "Süre doldu!",
+
+  "widgetTimersRinging": "{count, plural, =1{1 zamanlayıcı çalıyor} other{{count} zamanlayıcı çalıyor}}",
+  "widgetTimersActive": "{count, plural, =1{1 zamanlayıcı çalışıyor} other{{count} zamanlayıcı çalışıyor}}",
+  "widgetTapToOpen": "Uygulamayı açmak için dokunun",
+  "widgetTimerRemaining": "{name}: {remaining}",
+  "widgetDescription": "9’lu Zamanlayıcı durumunu göster",
+
+  "deviceType": "Cihaz/Platform",
+  "deviceTypeMiui": "Xiaomi (MIUI)",
+  "deviceTypeHuawei": "Huawei/Honor (EMUI/HarmonyOS)",
+  "deviceTypeOppo": "OPPO/Realme/OnePlus (ColorOS)",
+  "deviceTypeVivo": "vivo/iQOO (FuntouchOS/OriginOS)",
+  "deviceTypeStandard": "Standart Android",
+  "deviceTypeIos": "iOS",
+  "deviceTypeMacos": "macOS",
+  "deviceTypeWindows": "Windows",
+  "deviceTypeLinux": "Linux",
+  "deviceTypeWeb": "Web Tarayıcı",
+
+  "singleInstanceWarningMessage": "Bu uygulama zaten çalışıyor.\n\nAynı anda yalnızca bir örnek çalışabilir.\n\nLütfen mevcut pencereyi kullanın veya yenisini başlatmadan önce kapatın."
+}

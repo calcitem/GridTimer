@@ -1,0 +1,431 @@
+{
+  "@@locale": "id",
+
+  "appTitle": "Timer Grid",
+  "timerIdle": "Siap",
+  "timerRunning": "Berjalan",
+  "timerPaused": "Dijeda",
+  "timerRinging": "Berbunyi",
+
+  "confirmStartTitle": "Konfirmasi Mulai?",
+  "confirmStartBody": "Timer lain sedang berjalan. Lanjutkan untuk memulai {name}?",
+
+  "actionStart": "Mulai",
+  "actionPause": "Jeda",
+  "actionResume": "Lanjutkan",
+  "actionReset": "Atur Ulang",
+  "actionStop": "Hentikan",
+  "actionCancel": "Batal",
+
+  "timerActions": "Aksi Timer",
+  "stopAlarm": "Hentikan Alarm",
+
+  "timeUpTts": "Waktu {name} sudah habis",
+
+  "timerIdleActions": "Pilih Aksi",
+  "actionAdjustTime": "Atur Waktu",
+  "adjustTimeTitle": "Atur Waktu - {slotName}",
+  "currentDuration": "Saat ini: {minutes} mnt {seconds} dtk",
+  "durationUpdatedSuccessfully": "Durasi berhasil diperbarui",
+  "durationMustBePositive": "Durasi harus lebih dari 0",
+
+  "idleGridClickBehaviorTitle": "Perilaku Klik Grid Saat Siap",
+  "idleGridClickBehaviorDesc": "Pilih aksi saat mengetuk sel grid yang siap",
+  "showDialogOption": "Tampilkan dialog aksi (disarankan, mencegah sentuhan tak sengaja)",
+  "directStartOption": "Mulai timer langsung (mode cepat)",
+
+  "permissionNotificationTitle": "Aktifkan Notifikasi",
+  "permissionNotificationBody": "Untuk menerima pengingat timer, aktifkan notifikasi.",
+
+  "permissionExactAlarmTitle": "Aktifkan Alarm Presisi",
+  "permissionExactAlarmBody": "Agar pengingat timer tepat waktu, aktifkan izin \"Alarm & pengingat\".",
+
+  "openSettings": "Buka Pengaturan",
+  "later": "Nanti",
+
+  "minutes": "menit",
+  "remainingSeconds": "sisa waktu",
+  "pausing": "Dijeda",
+  "timeUp": "Waktu Habis",
+  "clickToStop": "Ketuk untuk berhenti",
+
+  "settings": "Pengaturan",
+  "appInformation": "Informasi Aplikasi",
+  "version": "Versi",
+  "versionInfo": "Informasi Versi",
+  "gitBranch": "Cabang Git",
+  "gitRevision": "Revisi Git",
+
+  "timerSettings": "Pengaturan Timer",
+  "soundSettings": "Pengaturan Volume",
+  "soundSettingsDesc": "Atur volume",
+  "ttsSettings": "Pengaturan TTS",
+  "ttsSettingsDesc": "Atur pengumuman suara",
+  "languageSettings": "Bahasa",
+  "languageSettingsDesc": "Pilih bahasa aplikasi",
+  "permissions": "Izin",
+  "notificationPermission": "Izin Notifikasi",
+  "notificationPermissionDesc": "Izinkan notifikasi timer",
+  "about": "Tentang",
+  "license": "Lisensi",
+  "licenseDesc": "Lihat lisensi aplikasi",
+  "comingSoon": "Segera hadir",
+  "selectLanguage": "Pilih Bahasa",
+  "languageEnglish": "English",
+  "languageChineseSimplified": "简体中文",
+
+  "errorText": "Kesalahan: {error}",
+  "confirmStart": "Timer lain sedang berjalan. Lanjutkan untuk memulai timer ini?",
+
+  "flashAnimation": "Animasi Kilat",
+  "flashAnimationDesc": "Kilat merah saat timer berbunyi",
+  "vibration": "Getaran",
+  "vibrationDesc": "Bergetar saat timer berbunyi",
+  "keepScreenOn": "Biarkan Layar Tetap Menyala",
+  "keepScreenOnDesc": "Cegah layar tidur saat timer berjalan",
+  "showMinutesSecondsFormat": "Tampilkan Format Menit:Detik",
+  "showMinutesSecondsFormatDesc": "Tampilkan hitung mundur sebagai MM:SS (mati menampilkan total detik)",
+  "ttsEnabled": "Pengumuman Suara",
+  "ttsEnabledDesc": "Umumkan selesai timer dengan suara",
+
+  "alarmSound": "Suara Alarm",
+  "alarmSoundDesc": "Pilih suara untuk pengingat timer",
+  "volume": "Volume",
+  "volumeDesc": "Atur volume alarm",
+  "systemVolumeHint": "Jika volume terlalu rendah, Anda bisa mengatur volume alarm di pengaturan sistem. Di Android, tekan tombol volume fisik lalu ketuk menu (tiga titik) untuk mengatur volume alarm secara terpisah.",
+
+  "autoRaiseAlarmVolumeTitle": "Tingkatkan volume alarm sistem otomatis",
+  "autoRaiseAlarmVolumeDesc": "Naikkan sementara volume Alarm sistem saat timer berbunyi, lalu kembalikan setelah Anda menghentikan alarm.",
+  "alarmVolumeBoostLevelTitle": "Tingkat peningkatan",
+  "alarmVolumeBoostLevelMinAudible": "Minimum terdengar (disarankan)",
+  "alarmVolumeBoostLevelMax": "Maksimum",
+  "autoRaiseAlarmVolumeNote": "Catatan: Fitur ini mengubah volume Alarm sistem. Volume akan dipulihkan saat Anda menghentikan alarm (atau setelah {minutes} menit).",
+
+  "vibrationSystemWarning": "Pengaturan getar dalam aplikasi telah diubah. Harap diperhatikan bahwa pengaturan getar sistem (mis. mode Jangan Ganggu, tombol getar sistem, dll.) juga dapat memengaruhi apakah getar benar-benar bekerja. Untuk memastikan getar berfungsi, periksa juga pengaturan sistem.",
+  "openSystemVibrationSettings": "Buka pengaturan getar sistem",
+  "volumeButtonLockScreenHint": "Pada beberapa sistem, tombol volume hanya berfungsi saat perangkat tidak terkunci",
+
+  "ttsLanguage": "Bahasa TTS",
+  "ttsLanguageDesc": "Pilih bahasa pengumuman suara",
+
+  "testSound": "Uji Suara",
+  "playing": "Memutar...",
+  "testTts": "Uji Suara",
+  "ttsTestMessage": "Waktu Timer 1 sudah habis",
+
+  "unitSecondsShort": "dtk",
+  "unitMinutesShort": "mnt",
+  "unitHoursShort": "j",
+  "gridDurationsSettings": "Pengaturan Grid",
+  "gridDurationsSettingsDesc": "Sesuaikan nama dan durasi untuk setiap sel grid",
+  "gridSlot": "Grid {index}",
+
+  "seconds": "detik",
+  "hours": "jam",
+
+  "save": "Simpan",
+  "reset": "Atur Ulang",
+  "resetToDefault": "Kembalikan ke Default",
+  "gridDurationsResetConfirm": "Yakin ingin mengembalikan durasi grid ke nilai default?",
+
+  "name": "Nama",
+  "optional": "Opsional",
+
+  "audioPlaybackSettings": "Pengaturan Pemutaran Audio",
+  "audioPlaybackSettingsDesc": "Atur mode pemutaran audio alarm",
+  "audioPlaybackMode": "Mode Pemutaran",
+  "audioPlaybackModeLoopIndefinitely": "Ulang terus sampai dihentikan manual",
+  "audioPlaybackModeLoopForDuration": "Ulang selama N menit lalu berhenti otomatis",
+  "audioPlaybackModeLoopWithInterval": "Ulang N menit, jeda M menit, ulang N menit (sekali)",
+  "audioPlaybackModeLoopWithIntervalRepeating": "Ulang N menit, jeda M menit, ulang sampai dihentikan",
+  "audioPlaybackModePlayOnce": "Putar sekali saja",
+
+  "loopDuration": "Durasi Pengulangan",
+  "intervalPause": "Durasi Jeda Interval",
+  "minutesUnit": "menit",
+
+  "audioPlaybackWhenEffectiveTitle": "Pemberitahuan Penting",
+  "audioPlaybackWhenEffectiveDesc": "Pengaturan ini hanya berlaku untuk suara alarm default.\n\nJika Anda menyesuaikan suara notifikasi di pengaturan sistem, alarm akan berulang terus sampai dihentikan (pengaturan pemutaran di sini tidak berlaku).",
+
+  "safetyDisclaimerTitle": "Pemberitahuan Keselamatan",
+  "safetyDisclaimerMessage": "Demi keselamatan Anda, mohon pahami hal berikut:",
+  "safetyRecommendedUses": "✅ Penggunaan yang Direkomendasikan",
+  "safetyRecommendedUsesList": "• Timer memasak harian\n• Pengingat umum\n• Keperluan non-kritis\n• Setelah pengujian",
+  "safetyNotRecommendedUses": "❌ TIDAK Direkomendasikan",
+  "safetyNotRecommendedUsesList": "• Pengingat obat penting (gunakan aplikasi tingkat medis)\n• Pengingat yang menyangkut keselamatan jiwa\n• Situasi medis darurat\n• Tanpa pengujian terlebih dahulu",
+  "safetyBestPractices": "💡 Praktik Terbaik:",
+  "safetyBestPracticesList": "• Uji alarm sebelum mengandalkannya\n• Siapkan pengingat cadangan untuk tugas penting\n• Periksa mode Jangan Ganggu dan izin notifikasi\n• Pahami keterbatasan aplikasi",
+  "safetyViewFullDisclaimer": "Lihat Penafian",
+  "safetyAcceptAndContinue": "Saya Paham, Lanjutkan",
+
+  "fullDisclaimerTitle": "Penafian Hukum",
+  "fullDisclaimerText": "Perangkat lunak ini disediakan \"APA ADANYA\" tanpa jaminan apa pun, baik tersurat maupun tersirat.\n\nPengembang tidak bertanggung jawab atas konsekuensi apa pun yang timbul dari penggunaan perangkat lunak ini, termasuk namun tidak terbatas pada: pengingat terlewat, pengaturan waktu tidak akurat, kegagalan aplikasi, dll.\n\nPengguna harus menilai risiko sendiri dan menyiapkan solusi cadangan untuk tugas-tugas penting.",
+
+  "close": "Tutup",
+  "aboutDisclaimer": "Pemberitahuan Keselamatan & Penafian",
+
+  "gestureSettings": "Pengaturan Kontrol Gestur",
+  "gestureSettingsDesc": "Atur aksi gestur saat alarm berbunyi",
+  "gestureActions": "Aksi Gestur",
+
+  "gestureTypeScreenTap": "Ketuk Layar",
+  "gestureTypeVolumeUp": "Tombol Volume+",
+  "gestureTypeVolumeDown": "Tombol Volume-",
+  "gestureTypeShake": "Goyangkan Ponsel",
+  "gestureTypeFlip": "Balikkan Ponsel (Tengkurap)",
+
+  "gestureActionStopAndReset": "Hentikan & Atur Ulang",
+  "gestureActionNone": "Tanpa Aksi",
+
+  "shakeSensitivity": "Sensitivitas Goyang",
+  "shakeSensitivityLow": "Rendah (goyang kuat)",
+  "shakeSensitivityHigh": "Tinggi (goyang ringan)",
+  "shakeSensitivityDesc": "Atur sensitivitas deteksi goyangan",
+
+  "gestureHint": "Ramah lansia: aktifkan ketuk layar, tombol volume, dan balikkan ponsel",
+  "gestureLimitationsHint": "Catatan: Beberapa perangkat/sistem membatasi tombol atau sensor saat layar terkunci. Jika gestur tidak merespons saat terkunci, buka kunci terlebih dahulu, lalu coba balikkan ponsel atau tekan tombol volume.",
+
+  "onboardingCheckSoundTitle": "Penting: Periksa Suara",
+  "onboardingCheckSoundDesc": "Silakan periksa apakah suara \"Timer Alarm (default)\" BUKAN \"Tidak ada\" atau \"Senyap\".\n\nJika senyap, Anda hanya akan menerima notifikasi tanpa suara saat waktu habis.",
+  "onboardingCheckSoundBtn": "Periksa Pengaturan Suara",
+  "onboardingCheckSoundMiuiHint": "Pengguna MIUI: Jika Anda tidak bisa memilih suara di kanal notifikasi, ini normal (batasan sistem MIUI). Aplikasi telah otomatis mengaktifkan pemutaran audio dalam aplikasi, dan alarm akan berfungsi dengan baik. Catatan: Hindari aktivitas pesan yang berat saat alarm untuk mencegah audio terputus.",
+
+  "grantPermission": "Berikan Izin",
+  "notificationPermissionGranted": "Izin notifikasi diberikan",
+  "notificationPermissionDenied": "Izin notifikasi ditolak, silakan berikan manual di pengaturan sistem",
+
+  "exactAlarmPermission": "Izin Alarm Presisi",
+  "exactAlarmPermissionDesc": "Pastikan timer memberi notifikasi tepat waktu (Wajib di Android 12, 14+)",
+  "exactAlarmPermissionDescApi33": "Di Android 13, izin ini dipra-berikan dan dapat dicabut di pengaturan sistem",
+
+  "fullScreenIntentPermission": "Izin intent layar penuh",
+  "fullScreenIntentPermissionDesc": "Izinkan peringatan layar penuh saat timer berbunyi di layar kunci (Android 14+)",
+  "fullScreenIntentStatusGranted": "Diizinkan",
+  "fullScreenIntentStatusDenied": "Tidak diizinkan (mungkin tidak menampilkan peringatan layar penuh)",
+
+  "batteryOptimizationSettings": "Pengaturan Optimasi Baterai",
+  "batteryOptimizationDesc": "Nonaktifkan optimasi baterai agar alarm latar belakang lebih andal",
+
+  "alarmSoundSettings": "Pengaturan Suara Alarm",
+  "alarmSoundSettingsDesc": "Jika suara \"Timer Alarm (default)\" disetel ke \"Tidak ada\", timer hanya akan menampilkan notifikasi tanpa suara",
+  "alarmSoundSettingsMiuiHint": "Pengguna MIUI: Karena batasan sistem MIUI, beberapa perangkat mungkin tidak mengizinkan perubahan suara kanal notifikasi. Aplikasi telah otomatis mengaktifkan pemutaran audio dalam aplikasi agar alarm tetap berfungsi. Catatan: Audio dalam aplikasi bisa terputus atau menurun karena suara notifikasi lain. Hindari aktivitas pesan yang berat saat alarm.",
+
+  "appKilledWarning": "Penting: Jika aplikasi ini ditutup paksa oleh sistem atau pengguna, timer tidak akan berbunyi. Biarkan aplikasi berjalan di latar belakang dan nonaktifkan optimasi baterai.",
+
+  "alarmTroubleshooting": "Alarm tidak berbunyi / terlambat?",
+  "alarmTroubleshootingDesc": "Versi Android dan ROM OEM dapat membatasi alarm latar belakang. Ketuk untuk perbaikan cepat.",
+  "alarmTroubleshootingDialogTitle": "Panduan Keandalan Alarm",
+  "alarmTroubleshootingDialogIntro": "Berbagai versi Android dan ROM OEM (mis. kustomisasi pabrikan) menerapkan pembatasan latar belakang/notifikasi yang berbeda. Ini dapat membisukan atau menunda alarm. Kami terus meningkatkan kompatibilitas, namun coba langkah berikut:",
+  "alarmTroubleshootingSteps": "1. Matikan Jangan Ganggu dan naikkan volume Alarm\n2. Aktifkan notifikasi untuk aplikasi ini\n3. Di kanal \"Timer Alarm (default)\", pastikan suara tidak Senyap\n4. Nonaktifkan optimasi baterai untuk aplikasi ini (izinkan berjalan di latar belakang)\n5. Android 14+: izinkan \"Alarm & pengingat\" (alarm presisi)\n6. Android 14+: izinkan \"Intent layar penuh\"",
+  "alarmTroubleshootingMiui": "Skin Android kustom: izinkan juga Auto-start dan Aktivitas latar belakang, serta hindari penghematan baterai agresif. Jika perlu, kunci aplikasi ini di Recent Apps.",
+
+  "alarmTroubleshootingQuickActions": "Aksi cepat",
+  "alarmTroubleshootingOpenChannel": "Periksa suara kanal",
+  "alarmTroubleshootingOpenNotifications": "Buka pengaturan notifikasi",
+  "alarmTroubleshootingOpenExactAlarm": "Aktifkan alarm presisi",
+  "alarmTroubleshootingOpenFullScreenIntent": "Aktifkan peringatan layar penuh",
+  "alarmTroubleshootingOpenBattery": "Nonaktifkan optimasi baterai",
+
+  "alarmReliabilityMode": "Mode Keandalan Alarm",
+  "alarmReliabilityModeDesc": "Pilih cara penjadwalan alarm (memengaruhi apakah alarm berbunyi setelah aplikasi dimatikan)",
+  "alarmReliabilityModeAppOnly": "Hanya Aplikasi",
+  "alarmReliabilityModeAppOnlyDesc": "Paling hemat baterai, tetapi alarm tidak berbunyi jika aplikasi dimatikan",
+  "alarmReliabilityModeNotification": "Notifikasi",
+  "alarmReliabilityModeNotificationDesc": "Gunakan notifikasi terjadwal sistem, lebih andal di latar belakang (disarankan)",
+  "alarmReliabilityModeAlarmClock": "Jam Alarm",
+  "alarmReliabilityModeAlarmClockDesc": "Paling andal, berbunyi meski aplikasi dimatikan (lebih boros baterai)",
+
+  "alarmTroubleshootingViewSafetyNotice": "Lihat pemberitahuan keselamatan",
+
+  "goToSettings": "Buka Pengaturan",
+  "settingsButton": "Pengaturan",
+
+  "failedToOpenChannelSettings": "Gagal membuka pengaturan kanal notifikasi: {error}",
+
+  "developerModeEnabled": "Mode pengembang diaktifkan",
+  "developerModeDisabled": "Mode pengembang dinonaktifkan",
+
+  "speaking": "Berbicara...",
+  "ttsTestFailed": "Uji suara gagal. Silakan periksa pengaturan TTS perangkat.",
+  "ttsTestTimeout": "Uji suara habis waktu. Silakan periksa apakah mesin TTS berfungsi.",
+
+  "ttsTestFailedTitle": "Uji Suara Tidak Berhasil",
+  "ttsTestFailedMessage": "Tidak dapat mendengar pengumuman suara. Kemungkinan penyebab:\n\n• Mesin TTS tidak dikonfigurasi dengan benar\n• Paket bahasa belum terpasang\n• Volume sistem dimatikan\n• Volume media terlalu rendah\n\nSilakan periksa pengaturan sistem atau lihat diagnostik.",
+  "viewDiagnostics": "Lihat Diagnostik",
+
+  "ttsDiagnostics": "Diagnostik TTS",
+  "ttsEngine": "Mesin Saat Ini",
+  "availableEngines": "Mesin Tersedia",
+  "availableLanguages": "Bahasa Tersedia",
+  "andMore": "dan {count} lainnya...",
+
+  "ttsNoEngineTitle": "Tidak Ada Mesin Suara Terdeteksi",
+  "ttsNoEngineMessage": "Tidak ada mesin TTS (Text-to-Speech) yang tersedia di perangkat Anda. Ini umum terjadi pada beberapa perangkat dengan skin Android kustom.",
+  "ttsNoEngineSteps": "Silakan ikuti langkah berikut:\n\n1. Buka \"App Store\"\n2. Cari \"Google Text-to-Speech\"\n3. Instal mesin suara\n4. Setelah instalasi, buka \"Pengaturan → Aksesibilitas → Text-to-Speech\"\n5. Pilih mesin yang terinstal dan unduh paket bahasa",
+
+  "ttsUnavailableTitle": "Fitur Suara Tidak Tersedia",
+  "ttsUnavailableMessage": "Perangkat Anda mungkin belum memasang paket suara.\n\nSilakan ikuti langkah berikut:\n1. Buka Pengaturan Sistem\n2. Cari \"Text-to-Speech\" atau \"TTS\"\n3. Pastikan mesin suara terpasang\n4. Atur bahasa Anda sebagai default",
+  "ttsUnavailableHint": "Tip: Pada beberapa perangkat, periksa pengaturan mesin suara sistem, atau instal mesin Google TTS.",
+
+  "openTtsSettings": "Buka Pengaturan TTS",
+  "ok": "OK",
+
+  "ttsSpeechRate": "Kecepatan Bicara",
+  "ttsPitch": "Nada",
+  "ttsVolumeDesc": "Atur volume pengumuman suara",
+  "ttsSpeechRateDesc": "Atur kecepatan pengumuman suara (0.5 adalah kecepatan normal)",
+  "ttsPitchDesc": "Atur nada pengumuman suara (1.0 adalah nada normal)",
+
+  "ttsLanguageNote": "Tip: Anda dapat memilih bahasa secara manual jika deteksi otomatis tidak akurat.",
+  "ttsLanguageAutoDesc": "Pilih otomatis berdasarkan bahasa aplikasi",
+
+  "followSystem": "Ikuti Sistem",
+  "simplifiedChinese": "Tionghoa Sederhana",
+  "english": "English",
+
+  "speedVerySlow": "Sangat Lambat",
+  "speedSlow": "Lambat",
+  "speedNormal": "Normal",
+  "speedFast": "Cepat",
+  "speedVeryFast": "Sangat Cepat",
+
+  "pitchVeryLow": "Sangat Rendah",
+  "pitchLow": "Rendah",
+  "pitchNormal": "Normal",
+  "pitchHigh": "Tinggi",
+  "pitchVeryHigh": "Sangat Tinggi",
+
+  "onboardingNext": "Berikutnya",
+  "onboardingStartUsing": "Mulai Gunakan",
+
+  "onboardingWelcomeTitle": "Selamat datang di Timer Grid",
+  "onboardingWelcomeDesc": "Agar timer berjalan akurat, kita perlu mengatur beberapa pengaturan sederhana.\n\nIni hanya butuh satu menit.",
+
+  "onboardingNotificationTitle": "Izin Notifikasi",
+  "onboardingNotificationDesc": "Aplikasi ini membutuhkan izin notifikasi untuk mengingatkan Anda saat hitung mundur selesai.\n\nTanpa izin ini, Anda mungkin melewatkan pemberitahuan selesai timer.",
+  "onboardingGrantNotification": "Berikan Izin Notifikasi",
+
+  "onboardingExactAlarmTitle": "Izin Alarm Presisi",
+  "onboardingExactAlarmDesc": "Agar timer akurat sampai detik, aplikasi ini membutuhkan izin \"alarm presisi\".\n\nSilakan izinkan di dialog atau pengaturan berikutnya.",
+  "onboardingGrantExactAlarm": "Berikan Izin Alarm Presisi",
+
+  "onboardingFullScreenIntentTitle": "Peringatan layar penuh",
+  "onboardingFullScreenIntentDesc": "Android 14+ mungkin memerlukan akses khusus untuk menampilkan peringatan layar penuh di layar kunci.\n\nSilakan izinkan \"Intent layar penuh\" untuk aplikasi ini agar alarm lebih andal.",
+  "onboardingGrantFullScreenIntent": "Buka Pengaturan",
+  "onboardingOpenFullScreenIntentSettings": "Buka pengaturan intent layar penuh",
+
+  "onboardingBatteryTitle": "Optimasi Baterai",
+  "onboardingBatteryDesc": "Agar sistem tidak menutup timer di latar belakang, disarankan mengatur aplikasi ini ke \"Jangan optimalkan penggunaan baterai\".\n\nIni memastikan timer berdurasi panjang tidak terputus.\n\nTip: Pada beberapa perangkat, tombol \"Buka Pengaturan Optimasi Baterai\" mungkin diblokir atau opsi yang tepat tidak ditampilkan. Silakan cari di pengaturan sistem \"Optimasi baterai\", \"Hemat daya\", \"Auto-start\", atau \"Aktivitas latar belakang\" dan atur aplikasi ini ke \"Jangan optimalkan\" / \"Tanpa batasan\".",
+  "onboardingOpenBatterySettings": "Buka Pengaturan Optimasi Baterai",
+
+  "onboardingCompletionTitle": "Siap Digunakan",
+  "onboardingCompletionDesc": "Semua pengaturan selesai!\n\nTip: Perilaku perangkat dan versi OS bisa berbeda. Lakukan tes cepat saat layar terkunci/di latar belakang sebelum mengandalkan timer panjang.\n\nAnda dapat mengatur ulang opsi ini kapan saja di halaman pengaturan.",
+
+  "onboardingGranted": "Diberikan",
+  "onboardingNotRequired": "Tidak Diperlukan",
+
+  "onboardingNotRequiredNotificationDesc": "Versi Android Anda (di bawah 13) mengizinkan notifikasi secara default. Tidak perlu otorisasi manual.",
+  "onboardingNotRequiredExactAlarmDesc": "Versi Android Anda (di bawah 12) mendukung alarm presisi secara default. Tidak perlu otorisasi manual.",
+
+  "onboardingPreGrantedExactAlarmDesc": "Android 13 otomatis mempra-berikan izin alarm presisi untuk aplikasi yang baru diinstal.\n\nJika Anda mencabut izin ini, Anda dapat mengaktifkannya kembali di Pengaturan > Aplikasi > {appName} > Alarm & pengingat.",
+  "onboardingPreGranted": "Pra-diberikan",
+
+  "onboardingBatteryLegacyDesc": "Agar sistem tidak menutup timer di latar belakang, disarankan mengizinkan {appName} berjalan pada mode hemat baterai.\n\nReferensi jalur: Pengaturan → Baterai / Manajemen daya → Penghemat baterai → Aplikasi yang diizinkan dalam penghemat baterai → Aktifkan {appName}\n\nTip: Jalur bisa berbeda tergantung merek perangkat dan versi OS. Silakan cari opsi yang sesuai di pengaturan Anda.",
+
+  "permissionNotRequiredStatus": "Tidak diperlukan (didukung secara default di sistem Anda)",
+  "batteryOptimizationLegacyDesc": "Silakan izinkan aplikasi ini berjalan pada mode hemat baterai.\nJalur: Pengaturan → Baterai → Penghemat baterai → Aplikasi yang diizinkan dalam penghemat baterai",
+
+  "privacyPolicy": "Kebijakan Privasi",
+  "privacyPolicyTitle": "Kebijakan Privasi",
+  "privacyPolicyMessage": "Sebelum menggunakan aplikasi ini, silakan baca dan setujui Kebijakan Privasi kami.",
+  "privacyPolicyAgree": "Saya Setuju",
+  "privacyPolicyViewDetails": "Lihat Kebijakan Privasi",
+
+  "ossLicenses": "Lisensi Pihak Ketiga",
+  "ossLicensesDesc": "Lihat lisensi pustaka pihak ketiga",
+
+  "resetAllSettings": "Atur Ulang Semua Pengaturan",
+  "resetAllSettingsDesc": "Kembalikan semua pengaturan ke nilai default",
+  "resetAllSettingsConfirmTitle": "Atur Ulang Semua Pengaturan?",
+  "resetAllSettingsConfirmMessage": "Ini akan mengatur ulang semua pengaturan ke nilai default. Tindakan ini tidak dapat dibatalkan.",
+  "resetAllSettingsExitMessage": "Aplikasi akan keluar dalam {seconds} detik untuk menyelesaikan pengaturan ulang...",
+  "resetAllSettingsSuccess": "Pengaturan berhasil diatur ulang",
+
+  "displaySettings": "Tampilan & Aksesibilitas",
+  "themeMode": "Mode Tema",
+  "themeModeDesc": "Pilih tema visual",
+  "themeSoftDark": "Gelap Lembut",
+  "themeHighContrast": "Kontras Tinggi",
+  "themeLightHighContrast": "Sorot Siang",
+  "themeTraditional": "Tradisional",
+  "themePastelGarden": "Taman Pastel",
+  "themeInkVermilion": "Tinta & Vermilion",
+  "themeGlacialBlue": "Biru Glasial",
+  "themeClassicNavy": "Navy Klasik",
+
+  "permissionStatusGranted": "Diberikan",
+  "permissionStatusDenied": "Tidak diberikan",
+  "batteryOptimizationStatusDisabled": "Dinonaktifkan (Disarankan)",
+  "batteryOptimizationStatusEnabled": "Diaktifkan (Dapat memengaruhi alarm)",
+  "exactAlarmStatusGranted": "Diizinkan",
+  "exactAlarmStatusDenied": "Tidak diizinkan (Dapat menunda alarm)",
+  "batteryOptimizationStatusUnknown": "Silakan periksa manual",
+
+  "batteryOptimizationMiuiHint": "MIUI: Atur \"Penghemat baterai\" ke \"Tanpa batasan\"",
+  "batteryOptimizationHuaweiHint": "Huawei/Honor: Atur \"Peluncuran aplikasi\" ke \"Kelola manual\" dan aktifkan \"Jalankan di latar belakang\"",
+  "batteryOptimizationOppoHint": "OPPO: Di \"Info aplikasi\", buka \"Penggunaan baterai\", masuk ke \"Kontrol konsumsi daya\", pilih \"Izinkan aktivitas latar belakang\"",
+  "batteryOptimizationVivoHint": "vivo: Di \"Info aplikasi\", buka \"Penggunaan baterai\", di \"Detail penggunaan baterai\" buka \"Kontrol daya latar belakang\", pilih \"Penggunaan daya latar belakang tinggi\"",
+  "batteryOptimizationOemHint": "Tip: Pada beberapa sistem kustom (MIUI/EMUI/HarmonyOS), Anda mungkin perlu mencari manual \"Optimasi Baterai\", \"Auto-start\", atau \"Aplikasi terlindungi\" di pengaturan",
+  "batteryOptimizationStandardHint": "Tip: Jika Anda tidak menemukan \"Tanpa batasan\", coba ketuk teks \"Izinkan penggunaan latar belakang\" (bukan tombol) untuk mengakses opsi lainnya",
+
+  "gridDurationMustBePositive": "Durasi Grid {index} harus bilangan bulat positif",
+  "savedSuccessfullyGridUpdated": "Berhasil disimpan, grid diperbarui",
+  "activeTimersRunningConfigWillApplyOnRestart": "Timer aktif sedang berjalan, konfigurasi akan berlaku saat aplikasi dibuka ulang",
+  "configurationSavedButErrorDuringUpdate": "Konfigurasi tersimpan, tetapi terjadi kesalahan saat pembaruan aplikasi: {error}",
+
+  "debugTools": "Alat Debug",
+  "testTimer10s": "Timer Uji 10 dtk (Debug)",
+  "testTimer10sDesc": "Mulai timer nyata 10 detik",
+  "start": "Mulai",
+
+  "audioTestDebug": "Uji Audio (Debug)",
+  "audioTestDebugDesc": "Diagnosa masalah suara",
+  "errorTestDebug": "Uji Error (Debug)",
+  "errorTestDebugDesc": "Uji sistem pelaporan kesalahan",
+
+  "exitDeveloperMode": "Keluar dari Mode Pengembang",
+  "exitDeveloperModeDesc": "Ketuk untuk menyembunyikan alat debug",
+
+  "failedToStartTestTimer": "Gagal memulai timer uji: {error}",
+
+  "audioTest": "Uji Audio",
+  "audioTestInstructions": "Silakan uji fitur berikut secara berurutan dan amati apakah ada keluaran suara.\nJika suatu uji gagal, berarti fitur terkait bermasalah.",
+  "clearLog": "Bersihkan Log",
+  "startTest": "Mulai Uji",
+  "testLog": "Log Uji:",
+  "waitingForTest": "Menunggu uji...",
+  "testTimerStarted": "Timer uji 10 detik dimulai! Slot pertama sekarang disetel ke 10 dtk.",
+  "stopActiveTimersBeforeTest": "Silakan hentikan semua timer aktif sebelum memulai timer uji",
+
+  "timeIsUp": "Waktu habis!",
+
+  "widgetTimersRinging": "{count, plural, other{{count} timer berbunyi}}",
+  "widgetTimersActive": "{count, plural, other{{count} timer aktif}}",
+  "widgetTapToOpen": "Ketuk untuk membuka aplikasi",
+  "widgetTimerRemaining": "{name}: {remaining}",
+  "widgetDescription": "Tampilkan status Timer Grid",
+
+  "deviceType": "Perangkat/Platform",
+  "deviceTypeMiui": "Xiaomi (MIUI)",
+  "deviceTypeHuawei": "Huawei/Honor (EMUI/HarmonyOS)",
+  "deviceTypeOppo": "OPPO/Realme/OnePlus (ColorOS)",
+  "deviceTypeVivo": "vivo/iQOO (FuntouchOS/OriginOS)",
+  "deviceTypeStandard": "Android Standar",
+  "deviceTypeIos": "iOS",
+  "deviceTypeMacos": "macOS",
+  "deviceTypeWindows": "Windows",
+  "deviceTypeLinux": "Linux",
+  "deviceTypeWeb": "Peramban Web",
+
+  "singleInstanceWarningMessage": "Aplikasi ini sudah berjalan.\n\nHanya satu instans dapat berjalan pada satu waktu.\n\nSilakan gunakan jendela yang sudah ada atau tutup terlebih dahulu sebelum membuka yang baru."
+}

@@ -1,0 +1,431 @@
+{
+  "@@locale": "vi",
+
+  "appTitle": "Bộ hẹn giờ lưới 3x3",
+  "timerIdle": "Sẵn sàng",
+  "timerRunning": "Đang chạy",
+  "timerPaused": "Đã tạm dừng",
+  "timerRinging": "Đang đổ chuông",
+
+  "confirmStartTitle": "Xác nhận bắt đầu?",
+  "confirmStartBody": "Hiện có bộ hẹn giờ đang chạy. Bạn có muốn tiếp tục bắt đầu {name} không?",
+
+  "actionStart": "Bắt đầu",
+  "actionPause": "Tạm dừng",
+  "actionResume": "Tiếp tục",
+  "actionReset": "Đặt lại",
+  "actionStop": "Dừng",
+  "actionCancel": "Hủy",
+
+  "timerActions": "Thao tác bộ hẹn giờ",
+  "stopAlarm": "Dừng báo thức",
+
+  "timeUpTts": "Đã hết giờ {name}",
+
+  "timerIdleActions": "Chọn thao tác",
+  "actionAdjustTime": "Điều chỉnh thời gian",
+  "adjustTimeTitle": "Điều chỉnh thời gian - {slotName}",
+  "currentDuration": "Hiện tại: {minutes} phút {seconds} giây",
+  "durationUpdatedSuccessfully": "Đã cập nhật thời lượng",
+  "durationMustBePositive": "Thời lượng phải lớn hơn 0",
+
+  "idleGridClickBehaviorTitle": "Hành vi khi chạm ô trống",
+  "idleGridClickBehaviorDesc": "Chọn hành vi khi chạm vào ô lưới đang rảnh",
+  "showDialogOption": "Hiện hộp thoại thao tác (khuyến nghị, tránh chạm nhầm)",
+  "directStartOption": "Bắt đầu hẹn giờ ngay (chế độ nhanh)",
+
+  "permissionNotificationTitle": "Bật thông báo",
+  "permissionNotificationBody": "Để nhận nhắc nhở hẹn giờ, vui lòng bật quyền thông báo.",
+
+  "permissionExactAlarmTitle": "Bật báo thức chính xác",
+  "permissionExactAlarmBody": "Để nhắc đúng giờ, vui lòng bật quyền \"Báo thức & nhắc nhở\".",
+
+  "openSettings": "Mở cài đặt",
+  "later": "Để sau",
+
+  "minutes": "phút",
+  "remainingSeconds": "thời gian còn lại",
+  "pausing": "Đang tạm dừng",
+  "timeUp": "Hết giờ",
+  "clickToStop": "Chạm để dừng",
+
+  "settings": "Cài đặt",
+  "appInformation": "Thông tin ứng dụng",
+  "version": "Phiên bản",
+  "versionInfo": "Thông tin phiên bản",
+  "gitBranch": "Nhánh Git",
+  "gitRevision": "Mã commit Git",
+
+  "timerSettings": "Cài đặt hẹn giờ",
+  "soundSettings": "Cài đặt âm lượng",
+  "soundSettingsDesc": "Cấu hình âm lượng",
+  "ttsSettings": "Cài đặt đọc giọng nói",
+  "ttsSettingsDesc": "Cấu hình thông báo bằng giọng nói",
+  "languageSettings": "Ngôn ngữ",
+  "languageSettingsDesc": "Chọn ngôn ngữ ứng dụng",
+  "permissions": "Quyền",
+  "notificationPermission": "Quyền thông báo",
+  "notificationPermissionDesc": "Cho phép thông báo hẹn giờ",
+  "about": "Giới thiệu",
+  "license": "Giấy phép phần mềm",
+  "licenseDesc": "Xem giấy phép của ứng dụng",
+  "comingSoon": "Sắp ra mắt",
+  "selectLanguage": "Chọn ngôn ngữ",
+  "languageEnglish": "English",
+  "languageChineseSimplified": "简体中文",
+
+  "errorText": "Lỗi: {error}",
+  "confirmStart": "Hiện có bộ hẹn giờ đang chạy. Bạn có muốn tiếp tục bắt đầu bộ hẹn giờ này không?",
+
+  "flashAnimation": "Hiệu ứng nhấp nháy",
+  "flashAnimationDesc": "Nhấp nháy đỏ khi hết giờ",
+  "vibration": "Rung",
+  "vibrationDesc": "Rung khi hết giờ",
+  "keepScreenOn": "Giữ màn hình sáng",
+  "keepScreenOnDesc": "Ngăn màn hình ngủ khi hẹn giờ đang chạy",
+  "showMinutesSecondsFormat": "Hiển thị định dạng phút:giây",
+  "showMinutesSecondsFormatDesc": "Hiển thị đếm ngược dạng MM:SS (tắt sẽ hiển thị tổng số giây)",
+  "ttsEnabled": "Thông báo bằng giọng nói",
+  "ttsEnabledDesc": "Đọc khi bộ hẹn giờ hoàn tất",
+
+  "alarmSound": "Âm báo thức",
+  "alarmSoundDesc": "Chọn âm báo cho hẹn giờ",
+  "volume": "Âm lượng",
+  "volumeDesc": "Điều chỉnh âm lượng báo thức",
+  "systemVolumeHint": "Nếu âm lượng quá nhỏ, bạn có thể tăng âm lượng báo thức trong cài đặt hệ thống. Trên Android, hãy nhấn nút âm lượng vật lý rồi chạm menu (ba chấm) để chỉnh riêng âm lượng báo thức.",
+
+  "autoRaiseAlarmVolumeTitle": "Tự động tăng âm lượng báo thức hệ thống",
+  "autoRaiseAlarmVolumeDesc": "Tạm thời tăng âm lượng \"Báo thức\" của hệ thống khi hết giờ, và khôi phục sau khi bạn dừng báo thức.",
+  "alarmVolumeBoostLevelTitle": "Mức tăng",
+  "alarmVolumeBoostLevelMinAudible": "Tối thiểu nghe được (khuyến nghị)",
+  "alarmVolumeBoostLevelMax": "Tối đa",
+  "autoRaiseAlarmVolumeNote": "Lưu ý: Tính năng này sẽ thay đổi âm lượng \"Báo thức\" của hệ thống. Âm lượng sẽ được khôi phục khi bạn dừng báo thức (hoặc tự khôi phục sau {minutes} phút).",
+
+  "vibrationSystemWarning": "Bạn đã thay đổi cài đặt rung trong ứng dụng. Lưu ý: cài đặt rung của hệ thống (như Không làm phiền, công tắc rung hệ thống, v.v.) cũng có thể ảnh hưởng việc rung có hoạt động hay không. Để đảm bảo rung hoạt động, vui lòng kiểm tra thêm cài đặt hệ thống.",
+  "openSystemVibrationSettings": "Mở cài đặt rung hệ thống",
+  "volumeButtonLockScreenHint": "Trên một số hệ thống, nút âm lượng chỉ hoạt động khi thiết bị đã mở khóa",
+
+  "ttsLanguage": "Ngôn ngữ TTS",
+  "ttsLanguageDesc": "Chọn ngôn ngữ đọc thông báo",
+
+  "testSound": "Thử âm",
+  "playing": "Đang phát...",
+  "testTts": "Thử giọng nói",
+  "ttsTestMessage": "Đã hết giờ Timer 1",
+
+  "unitSecondsShort": "s",
+  "unitMinutesShort": "phút",
+  "unitHoursShort": "giờ",
+
+  "gridDurationsSettings": "Cài đặt lưới",
+  "gridDurationsSettingsDesc": "Tùy chỉnh tên và thời lượng cho từng ô trong lưới",
+  "gridSlot": "Ô {index}",
+
+  "seconds": "giây",
+  "hours": "giờ",
+
+  "save": "Lưu",
+  "reset": "Đặt lại",
+  "resetToDefault": "Khôi phục mặc định",
+  "gridDurationsResetConfirm": "Bạn có chắc muốn khôi phục thời lượng lưới về giá trị mặc định không?",
+
+  "name": "Tên",
+  "optional": "Tùy chọn",
+
+  "audioPlaybackSettings": "Cài đặt phát âm thanh",
+  "audioPlaybackSettingsDesc": "Cấu hình chế độ phát âm thanh báo thức",
+  "audioPlaybackMode": "Chế độ phát",
+  "audioPlaybackModeLoopIndefinitely": "Lặp vô hạn cho đến khi dừng thủ công",
+  "audioPlaybackModeLoopForDuration": "Lặp trong N phút rồi tự dừng",
+  "audioPlaybackModeLoopWithInterval": "Lặp N phút, nghỉ M phút, lặp N phút (một lần)",
+  "audioPlaybackModeLoopWithIntervalRepeating": "Lặp N phút, nghỉ M phút, lặp lại cho đến khi dừng",
+  "audioPlaybackModePlayOnce": "Chỉ phát một lần",
+
+  "loopDuration": "Thời lượng lặp",
+  "intervalPause": "Thời lượng tạm dừng giữa các lần",
+  "minutesUnit": "phút",
+
+  "audioPlaybackWhenEffectiveTitle": "Lưu ý quan trọng",
+  "audioPlaybackWhenEffectiveDesc": "Các cài đặt này chỉ áp dụng cho âm báo mặc định.\n\nNếu bạn đã tùy chỉnh âm báo trong cài đặt thông báo của hệ thống, báo thức sẽ lặp liên tục cho đến khi dừng (các cài đặt phát ở đây sẽ không áp dụng).",
+
+  "safetyDisclaimerTitle": "Lưu ý an toàn",
+  "safetyDisclaimerMessage": "Vì sự an toàn của bạn, vui lòng hiểu các thông tin quan trọng sau:",
+  "safetyRecommendedUses": "✅ Trường hợp khuyến nghị",
+  "safetyRecommendedUsesList": "• Hẹn giờ nấu ăn hằng ngày\n• Nhắc nhở sinh hoạt chung\n• Trường hợp không quan trọng\n• Dùng sau khi đã thử nghiệm",
+  "safetyNotRecommendedUses": "❌ KHÔNG khuyến nghị",
+  "safetyNotRecommendedUsesList": "• Nhắc thuốc quan trọng (hãy dùng ứng dụng đạt chuẩn y tế)\n• Nhắc nhở liên quan tính mạng\n• Tình huống y tế khẩn cấp\n• Phụ thuộc khi chưa thử trước",
+  "safetyBestPractices": "💡 Thực hành tốt nhất:",
+  "safetyBestPracticesList": "• Thử báo thức trước khi dựa vào\n• Chuẩn bị nhắc nhở dự phòng cho việc quan trọng\n• Kiểm tra chế độ Không làm phiền và quyền thông báo\n• Hiểu rõ giới hạn của ứng dụng",
+  "safetyViewFullDisclaimer": "Xem tuyên bố miễn trừ",
+  "safetyAcceptAndContinue": "Tôi hiểu, tiếp tục",
+
+  "fullDisclaimerTitle": "Tuyên bố miễn trừ trách nhiệm",
+  "fullDisclaimerText": "Phần mềm này được cung cấp \"NGUYÊN TRẠNG\" mà không có bất kỳ bảo hành nào, dù rõ ràng hay ngụ ý.\n\nNhà phát triển không chịu trách nhiệm cho bất kỳ hậu quả nào phát sinh từ việc sử dụng phần mềm này, bao gồm nhưng không giới hạn ở: bỏ lỡ nhắc nhở, hẹn giờ không chính xác, lỗi ứng dụng, v.v.\n\nNgười dùng nên tự đánh giá rủi ro và chuẩn bị phương án dự phòng cho các tác vụ quan trọng.",
+
+  "close": "Đóng",
+  "aboutDisclaimer": "Lưu ý an toàn & miễn trừ",
+
+  "gestureSettings": "Cài đặt điều khiển cử chỉ",
+  "gestureSettingsDesc": "Cấu hình thao tác cử chỉ khi báo thức kêu",
+  "gestureActions": "Thao tác cử chỉ",
+
+  "gestureTypeScreenTap": "Chạm màn hình",
+  "gestureTypeVolumeUp": "Nút Tăng âm lượng",
+  "gestureTypeVolumeDown": "Nút Giảm âm lượng",
+  "gestureTypeShake": "Lắc điện thoại",
+  "gestureTypeFlip": "Úp điện thoại (màn hình xuống)",
+
+  "gestureActionStopAndReset": "Dừng & đặt lại",
+  "gestureActionNone": "Không làm gì",
+
+  "shakeSensitivity": "Độ nhạy lắc",
+  "shakeSensitivityLow": "Thấp (phải lắc mạnh)",
+  "shakeSensitivityHigh": "Cao (lắc nhẹ cũng được)",
+  "shakeSensitivityDesc": "Điều chỉnh độ nhạy phát hiện lắc",
+
+  "gestureHint": "Thân thiện với người lớn tuổi: bật chạm màn hình, nút âm lượng và úp điện thoại",
+  "gestureLimitationsHint": "Lưu ý: Một số thiết bị/hệ thống hạn chế nút bấm hoặc cảm biến khi khóa màn hình. Nếu cử chỉ không phản hồi khi đang khóa, hãy mở khóa trước rồi thử úp điện thoại hoặc bấm nút âm lượng.",
+
+  "onboardingCheckSoundTitle": "Quan trọng: Kiểm tra âm thanh",
+  "onboardingCheckSoundDesc": "Vui lòng bấm nút bên dưới và đảm bảo âm thanh của \"Timer Alarm (default)\" KHÔNG phải \"Không\" hoặc \"Im lặng\".\n\nNếu đặt im lặng, khi hết giờ bạn chỉ nhận được thông báo mà không nghe thấy tiếng chuông.",
+  "onboardingCheckSoundBtn": "Kiểm tra cài đặt âm thanh",
+  "onboardingCheckSoundMiuiHint": "Gợi ý cho người dùng MIUI: Nếu bạn không thể chọn âm thanh trong kênh thông báo, điều này là bình thường (giới hạn của MIUI). Ứng dụng đã tự bật phát âm thanh trong ứng dụng, báo thức vẫn sẽ hoạt động. Lưu ý: Tránh nhận quá nhiều tin nhắn khi báo thức đang kêu để hạn chế gián đoạn âm thanh.",
+
+  "grantPermission": "Cấp quyền",
+  "notificationPermissionGranted": "Đã cấp quyền thông báo",
+  "notificationPermissionDenied": "Quyền thông báo bị từ chối, vui lòng cấp thủ công trong cài đặt hệ thống",
+
+  "exactAlarmPermission": "Quyền báo thức chính xác",
+  "exactAlarmPermissionDesc": "Đảm bảo hẹn giờ thông báo đúng giờ (bắt buộc trên Android 12, 14+)",
+  "exactAlarmPermissionDescApi33": "Được cấp sẵn trên Android 13, có thể bị thu hồi trong cài đặt hệ thống",
+
+  "fullScreenIntentPermission": "Quyền thông báo toàn màn hình",
+  "fullScreenIntentPermissionDesc": "Cho phép hiển thị cảnh báo toàn màn hình khi hết giờ trên màn hình khóa (Android 14+)",
+  "fullScreenIntentStatusGranted": "Đã cho phép",
+  "fullScreenIntentStatusDenied": "Chưa cho phép (có thể không hiện toàn màn hình)",
+
+  "batteryOptimizationSettings": "Cài đặt tối ưu pin",
+  "batteryOptimizationDesc": "Tắt tối ưu pin để báo thức nền hoạt động ổn định",
+
+  "alarmSoundSettings": "Cài đặt âm báo",
+  "alarmSoundSettingsDesc": "Nếu âm thanh \"Timer Alarm (default)\" được đặt là \"Không\", hẹn giờ chỉ hiển thị thông báo mà không có âm thanh",
+  "alarmSoundSettingsMiuiHint": "Gợi ý cho người dùng MIUI: Do giới hạn của MIUI, một số thiết bị có thể không cho đổi âm thanh kênh thông báo. Ứng dụng đã tự bật phát âm thanh trong ứng dụng để đảm bảo báo thức hoạt động. Lưu ý: Âm thanh trong ứng dụng có thể bị thông báo khác ngắt hoặc giảm âm lượng; nên tránh nhận quá nhiều tin nhắn khi báo thức đang kêu.",
+
+  "appKilledWarning": "Quan trọng: Nếu ứng dụng bị hệ thống hoặc người dùng buộc đóng, hẹn giờ sẽ không đổ chuông. Vui lòng giữ ứng dụng chạy nền và tắt tối ưu pin.",
+
+  "alarmTroubleshooting": "Báo thức không kêu / bị trễ?",
+  "alarmTroubleshootingDesc": "Các phiên bản Android / ROM của hãng có thể hạn chế báo thức nền. Chạm để xem cách khắc phục.",
+  "alarmTroubleshootingDialogTitle": "Hướng dẫn độ tin cậy báo thức",
+  "alarmTroubleshootingDialogIntro": "Các phiên bản Android và ROM của hãng (ví dụ các giao diện tùy biến) áp dụng hạn chế khác nhau với chạy nền/thông báo, có thể làm báo thức bị im lặng hoặc trễ. Chúng tôi liên tục cải thiện tương thích, nhưng bạn nên kiểm tra theo thứ tự sau:",
+  "alarmTroubleshootingSteps": "1. Tắt Không làm phiền và tăng âm lượng Báo thức\n2. Bật quyền thông báo cho ứng dụng\n3. Trong kênh \"Timer Alarm (default)\", đảm bảo âm thanh không phải \"Không / Im lặng\"\n4. Tắt tối ưu pin / hạn chế tiết kiệm pin cho ứng dụng (cho phép chạy nền)\n5. Android 12+: trong \"Báo thức & nhắc nhở\" cho phép \"báo thức chính xác\"\n6. Android 14+: trong \"Thông báo toàn màn hình\" cho phép \"thông báo toàn màn hình\"",
+  "alarmTroubleshootingMiui": "Một số hệ thống tùy biến: hãy cho phép Tự khởi động và Hoạt động nền, tránh chế độ tiết kiệm pin quá gắt; nếu cần, hãy khóa ứng dụng trong màn hình đa nhiệm.",
+
+  "alarmTroubleshootingQuickActions": "Lối tắt",
+  "alarmTroubleshootingOpenChannel": "Kiểm tra âm thanh kênh thông báo",
+  "alarmTroubleshootingOpenNotifications": "Mở cài đặt thông báo",
+  "alarmTroubleshootingOpenExactAlarm": "Bật báo thức chính xác",
+  "alarmTroubleshootingOpenFullScreenIntent": "Bật cảnh báo toàn màn hình",
+  "alarmTroubleshootingOpenBattery": "Tắt tối ưu pin",
+
+  "alarmReliabilityMode": "Chế độ độ tin cậy báo thức",
+  "alarmReliabilityModeDesc": "Chọn cách lập lịch báo thức (ảnh hưởng việc có kêu khi ứng dụng bị tắt)",
+  "alarmReliabilityModeAppOnly": "Chỉ trong ứng dụng",
+  "alarmReliabilityModeAppOnlyDesc": "Tiết kiệm pin nhất, nhưng sẽ không kêu nếu ứng dụng bị tắt",
+  "alarmReliabilityModeNotification": "Thông báo hẹn giờ",
+  "alarmReliabilityModeNotificationDesc": "Dùng thông báo được hệ thống lập lịch, ổn định hơn khi chạy nền (khuyến nghị)",
+  "alarmReliabilityModeAlarmClock": "Tăng cường kiểu báo thức",
+  "alarmReliabilityModeAlarmClockDesc": "Độ tin cậy tối đa, vẫn kêu khi ứng dụng bị tắt (tốn pin hơn)",
+
+  "alarmTroubleshootingViewSafetyNotice": "Xem lưu ý an toàn",
+
+  "goToSettings": "Đi tới cài đặt",
+  "settingsButton": "Cài đặt",
+
+  "failedToOpenChannelSettings": "Không mở được cài đặt kênh thông báo: {error}",
+
+  "developerModeEnabled": "Đã bật chế độ nhà phát triển",
+  "developerModeDisabled": "Đã tắt chế độ nhà phát triển",
+
+  "speaking": "Đang đọc...",
+  "ttsTestFailed": "Thử giọng nói thất bại. Vui lòng kiểm tra cài đặt TTS của thiết bị.",
+  "ttsTestTimeout": "Thử giọng nói bị quá thời gian. Vui lòng kiểm tra xem công cụ TTS có hoạt động không.",
+
+  "ttsTestFailedTitle": "Thử giọng nói không thành công",
+  "ttsTestFailedMessage": "Không nghe thấy giọng đọc. Các nguyên nhân có thể:\n\n• Công cụ TTS chưa cấu hình đúng\n• Chưa cài gói ngôn ngữ\n• Âm lượng hệ thống đang tắt\n• Âm lượng media quá thấp\n\nVui lòng kiểm tra cài đặt hệ thống hoặc xem chẩn đoán.",
+  "viewDiagnostics": "Xem chẩn đoán",
+  "ttsDiagnostics": "Chẩn đoán TTS",
+  "ttsEngine": "Công cụ hiện tại",
+  "availableEngines": "Công cụ khả dụng",
+  "availableLanguages": "Ngôn ngữ khả dụng",
+  "andMore": "và {count} mục khác...",
+
+  "ttsNoEngineTitle": "Không phát hiện công cụ giọng nói",
+  "ttsNoEngineMessage": "Thiết bị của bạn không có công cụ TTS (Text-to-Speech) khả dụng. Điều này khá phổ biến trên một số thiết bị dùng Android tùy biến.",
+  "ttsNoEngineSteps": "Vui lòng làm theo các bước sau:\n\n1. Mở \"Cửa hàng ứng dụng\"\n2. Tìm \"Google Text-to-Speech\"\n3. Cài đặt công cụ giọng nói\n4. Sau khi cài, vào \"Cài đặt → Trợ năng → Văn bản thành giọng nói\"\n5. Chọn công cụ đã cài và tải gói ngôn ngữ",
+
+  "ttsUnavailableTitle": "Không thể dùng giọng nói",
+  "ttsUnavailableMessage": "Thiết bị của bạn có thể chưa cài gói giọng nói.\n\nVui lòng làm theo các bước sau:\n1. Mở Cài đặt hệ thống\n2. Tìm \"Text-to-Speech\" hoặc \"TTS\"\n3. Đảm bảo đã cài công cụ giọng nói\n4. Đặt ngôn ngữ mặc định",
+  "ttsUnavailableHint": "Mẹo: Trên một số thiết bị, hãy kiểm tra cài đặt công cụ giọng nói hệ thống hoặc cài Google TTS.",
+
+  "openTtsSettings": "Mở cài đặt TTS",
+  "ok": "OK",
+
+  "ttsSpeechRate": "Tốc độ đọc",
+  "ttsPitch": "Cao độ",
+  "ttsVolumeDesc": "Điều chỉnh âm lượng giọng đọc",
+  "ttsSpeechRateDesc": "Điều chỉnh tốc độ giọng đọc (0.5 là tốc độ bình thường)",
+  "ttsPitchDesc": "Điều chỉnh cao độ giọng đọc (1.0 là cao độ bình thường)",
+
+  "ttsLanguageNote": "Mẹo: Bạn có thể chọn ngôn ngữ thủ công nếu tự động nhận diện không chính xác.",
+  "ttsLanguageAutoDesc": "Tự chọn theo ngôn ngữ ứng dụng",
+
+  "followSystem": "Theo hệ thống",
+  "simplifiedChinese": "Tiếng Trung giản thể",
+  "english": "Tiếng Anh",
+
+  "speedVerySlow": "Rất chậm",
+  "speedSlow": "Chậm",
+  "speedNormal": "Bình thường",
+  "speedFast": "Nhanh",
+  "speedVeryFast": "Rất nhanh",
+
+  "pitchVeryLow": "Rất thấp",
+  "pitchLow": "Thấp",
+  "pitchNormal": "Bình thường",
+  "pitchHigh": "Cao",
+  "pitchVeryHigh": "Rất cao",
+
+  "onboardingNext": "Tiếp theo",
+  "onboardingStartUsing": "Bắt đầu sử dụng",
+
+  "onboardingWelcomeTitle": "Chào mừng đến với Bộ hẹn giờ lưới 3x3",
+  "onboardingWelcomeDesc": "Để đảm bảo bộ hẹn giờ chạy chính xác, chúng ta cần cấu hình một vài cài đặt đơn giản.\n\nViệc này chỉ mất một phút.",
+
+  "onboardingNotificationTitle": "Quyền thông báo",
+  "onboardingNotificationDesc": "Ứng dụng cần quyền thông báo để nhắc bạn khi kết thúc đếm ngược.\n\nKhông có quyền này, bạn có thể bỏ lỡ cảnh báo hoàn tất.",
+  "onboardingGrantNotification": "Cấp quyền thông báo",
+
+  "onboardingExactAlarmTitle": "Quyền báo thức chính xác",
+  "onboardingExactAlarmDesc": "Để đảm bảo hẹn giờ chính xác đến từng giây, ứng dụng cần quyền \"báo thức chính xác\".\n\nVui lòng cho phép trong hộp thoại hoặc cài đặt sắp tới.",
+  "onboardingGrantExactAlarm": "Cấp quyền báo thức chính xác",
+
+  "onboardingFullScreenIntentTitle": "Cảnh báo toàn màn hình",
+  "onboardingFullScreenIntentDesc": "Android 14+ có thể yêu cầu quyền đặc biệt để hiển thị cảnh báo toàn màn hình trên màn hình khóa.\n\nVui lòng cho phép \"Thông báo toàn màn hình\" cho ứng dụng để tăng độ tin cậy của báo thức.",
+  "onboardingGrantFullScreenIntent": "Mở cài đặt",
+  "onboardingOpenFullScreenIntentSettings": "Mở cài đặt thông báo toàn màn hình",
+
+  "onboardingBatteryTitle": "Tối ưu pin",
+  "onboardingBatteryDesc": "Để tránh hệ thống đóng ứng dụng khi chạy nền, khuyến nghị đặt ứng dụng này thành \"Không tối ưu pin\".\n\nĐiều này giúp các hẹn giờ dài không bị gián đoạn.\n\nMẹo: Trên một số thiết bị, nút \"Mở cài đặt tối ưu pin\" có thể bị chặn hoặc không hiển thị đúng tùy chọn. Hãy tìm trong cài đặt hệ thống các mục như \"Tối ưu pin\", \"Tiết kiệm pin\", \"Tự khởi động\", hoặc \"Hoạt động nền\" và đặt ứng dụng thành \"Không tối ưu\" / \"Không hạn chế\".",
+  "onboardingOpenBatterySettings": "Mở cài đặt tối ưu pin",
+
+  "onboardingCompletionTitle": "Sẵn sàng",
+  "onboardingCompletionDesc": "Đã hoàn tất tất cả cài đặt!\n\nMẹo: Hành vi có thể khác nhau tùy thiết bị và phiên bản hệ điều hành. Hãy thử nhanh với màn hình khóa/chạy nền trước khi dựa vào các hẹn giờ dài.\n\nBạn có thể cấu hình lại các tùy chọn này bất cứ lúc nào trong trang cài đặt.",
+
+  "onboardingGranted": "Đã cấp",
+  "onboardingNotRequired": "Không yêu cầu",
+
+  "onboardingNotRequiredNotificationDesc": "Phiên bản Android của bạn (dưới 13) cho phép thông báo mặc định. Không cần cấp thủ công.",
+  "onboardingNotRequiredExactAlarmDesc": "Phiên bản Android của bạn (dưới 12) hỗ trợ báo thức chính xác mặc định. Không cần cấp thủ công.",
+
+  "onboardingPreGrantedExactAlarmDesc": "Android 13 tự động cấp sẵn quyền báo thức chính xác cho ứng dụng mới cài.\n\nNếu bạn thu hồi quyền này, bạn có thể bật lại trong Cài đặt > Ứng dụng > {appName} > Báo thức & nhắc nhở.",
+  "onboardingPreGranted": "Được cấp sẵn",
+
+  "onboardingBatteryLegacyDesc": "Để tránh hệ thống đóng ứng dụng khi chạy nền, khuyến nghị cho phép {appName} chạy trong chế độ tiết kiệm pin.\n\nTham khảo đường dẫn: Cài đặt → Pin / Quản lý nguồn → Tiết kiệm pin → Ứng dụng được phép trong tiết kiệm pin → Bật {appName}\n\nMẹo: Đường dẫn có thể khác nhau tùy hãng và phiên bản hệ điều hành. Vui lòng tìm tùy chọn tương ứng trong cài đặt.",
+
+  "permissionNotRequiredStatus": "Không yêu cầu (được hệ thống hỗ trợ mặc định)",
+  "batteryOptimizationLegacyDesc": "Vui lòng cho phép ứng dụng chạy trong chế độ tiết kiệm pin.\nĐường dẫn: Cài đặt → Pin → Tiết kiệm pin → Ứng dụng được phép trong tiết kiệm pin",
+
+  "privacyPolicy": "Chính sách quyền riêng tư",
+  "privacyPolicyTitle": "Chính sách quyền riêng tư",
+  "privacyPolicyMessage": "Trước khi sử dụng ứng dụng, vui lòng đọc và đồng ý với Chính sách quyền riêng tư của chúng tôi.",
+  "privacyPolicyAgree": "Tôi đồng ý",
+  "privacyPolicyViewDetails": "Xem chi tiết",
+
+  "ossLicenses": "Giấy phép bên thứ ba",
+  "ossLicensesDesc": "Xem giấy phép của thư viện bên thứ ba",
+
+  "resetAllSettings": "Khôi phục cài đặt mặc định",
+  "resetAllSettingsDesc": "Khôi phục tất cả cài đặt về giá trị mặc định",
+  "resetAllSettingsConfirmTitle": "Khôi phục cài đặt mặc định?",
+  "resetAllSettingsConfirmMessage": "Thao tác này sẽ khôi phục tất cả cài đặt về mặc định. Không thể hoàn tác.",
+  "resetAllSettingsExitMessage": "Ứng dụng sẽ thoát sau {seconds} giây để hoàn tất việc đặt lại...",
+  "resetAllSettingsSuccess": "Đã đặt lại cài đặt thành công",
+
+  "displaySettings": "Hiển thị & trợ năng",
+  "themeMode": "Chế độ giao diện",
+  "themeModeDesc": "Chọn chủ đề hiển thị",
+  "themeSoftDark": "Tối dịu mắt",
+  "themeHighContrast": "Tương phản cao",
+  "themeLightHighContrast": "Nổi bật ban ngày",
+  "themeTraditional": "Truyền thống",
+  "themePastelGarden": "Vườn pastel",
+  "themeInkVermilion": "Mực & chu sa",
+  "themeGlacialBlue": "Xanh băng",
+  "themeClassicNavy": "Xanh navy cổ điển",
+
+  "permissionStatusGranted": "Đã cấp",
+  "permissionStatusDenied": "Chưa cấp",
+  "batteryOptimizationStatusDisabled": "Đã tắt (khuyến nghị)",
+  "batteryOptimizationStatusEnabled": "Đang bật (có thể ảnh hưởng báo thức)",
+  "exactAlarmStatusGranted": "Đã cho phép",
+  "exactAlarmStatusDenied": "Chưa cho phép (có thể trễ)",
+  "batteryOptimizationStatusUnknown": "Vui lòng kiểm tra thủ công",
+
+  "batteryOptimizationMiuiHint": "MIUI: đặt \"Tiết kiệm pin\" thành \"Không hạn chế\"",
+  "batteryOptimizationHuaweiHint": "Huawei/Honor: đặt \"Khởi chạy ứng dụng\" thành \"Quản lý thủ công\" và bật \"Chạy nền\"",
+  "batteryOptimizationOppoHint": "OPPO: trong \"Thông tin ứng dụng\" → \"Sử dụng pin\" → mở \"Kiểm soát tiêu thụ điện\" → chọn \"Cho phép hoạt động nền\"",
+  "batteryOptimizationVivoHint": "vivo: trong \"Thông tin ứng dụng\" → \"Pin\" → \"Chi tiết sử dụng pin\" → \"Quản lý pin nền\" → chọn \"Cho phép tiêu thụ pin nền cao\"",
+  "batteryOptimizationOemHint": "Mẹo: Trên các hệ thống tùy biến (MIUI/EMUI/HarmonyOS), bạn có thể cần tìm thủ công \"Tối ưu pin\", \"Tự khởi động\" hoặc \"Ứng dụng được bảo vệ\" trong cài đặt",
+  "batteryOptimizationStandardHint": "Mẹo: Nếu không thấy \"Không hạn chế\", hãy thử chạm vào dòng chữ \"Cho phép sử dụng nền\" (không phải công tắc) để vào thêm tùy chọn",
+
+  "gridDurationMustBePositive": "Thời lượng ô {index} phải là số nguyên dương",
+  "savedSuccessfullyGridUpdated": "Đã lưu, lưới đã được cập nhật",
+  "activeTimersRunningConfigWillApplyOnRestart": "Đang có hẹn giờ chạy, cấu hình sẽ có hiệu lực ở lần mở ứng dụng tiếp theo",
+  "configurationSavedButErrorDuringUpdate": "Đã lưu cấu hình, nhưng xảy ra lỗi khi cập nhật ứng dụng: {error}",
+
+  "debugTools": "Công cụ gỡ lỗi",
+  "testTimer10s": "Hẹn giờ thử 10s (Gỡ lỗi)",
+  "testTimer10sDesc": "Bắt đầu một hẹn giờ thật 10 giây",
+  "start": "Bắt đầu",
+
+  "audioTestDebug": "Kiểm tra âm thanh (Gỡ lỗi)",
+  "audioTestDebugDesc": "Chẩn đoán vấn đề âm thanh",
+  "errorTestDebug": "Kiểm tra lỗi (Gỡ lỗi)",
+  "errorTestDebugDesc": "Kiểm tra hệ thống báo lỗi",
+
+  "exitDeveloperMode": "Thoát chế độ nhà phát triển",
+  "exitDeveloperModeDesc": "Chạm để ẩn công cụ gỡ lỗi",
+
+  "failedToStartTestTimer": "Không thể bắt đầu hẹn giờ thử: {error}",
+
+  "audioTest": "Kiểm tra âm thanh",
+  "audioTestInstructions": "Vui lòng kiểm tra lần lượt các tính năng sau và quan sát xem có phát ra âm thanh hay không.\nNếu một bài kiểm tra thất bại, tính năng tương ứng đang có vấn đề.",
+  "clearLog": "Xóa nhật ký",
+  "startTest": "Bắt đầu kiểm tra",
+  "testLog": "Nhật ký kiểm tra:",
+  "waitingForTest": "Đang chờ kiểm tra...",
+  "testTimerStarted": "Đã bắt đầu hẹn giờ thử 10 giây! Ô đầu tiên hiện được đặt thành 10s.",
+  "stopActiveTimersBeforeTest": "Vui lòng dừng tất cả hẹn giờ đang chạy trước khi bắt đầu hẹn giờ thử",
+
+  "timeIsUp": "Hết giờ!",
+
+  "widgetTimersRinging": "{count, plural, other{{count} bộ hẹn giờ đang đổ chuông}}",
+  "widgetTimersActive": "{count, plural, other{{count} bộ hẹn giờ đang chạy}}",
+  "widgetTapToOpen": "Chạm để mở ứng dụng",
+  "widgetTimerRemaining": "{name}: {remaining}",
+  "widgetDescription": "Hiển thị trạng thái Grid Timer",
+
+  "deviceType": "Thiết bị/Nền tảng",
+  "deviceTypeMiui": "Xiaomi (MIUI)",
+  "deviceTypeHuawei": "Huawei/Honor (EMUI/HarmonyOS)",
+  "deviceTypeOppo": "OPPO/Realme/OnePlus (ColorOS)",
+  "deviceTypeVivo": "vivo/iQOO (FuntouchOS/OriginOS)",
+  "deviceTypeStandard": "Android chuẩn",
+  "deviceTypeIos": "iOS",
+  "deviceTypeMacos": "macOS",
+  "deviceTypeWindows": "Windows",
+  "deviceTypeLinux": "Linux",
+  "deviceTypeWeb": "Trình duyệt Web",
+
+  "singleInstanceWarningMessage": "Ứng dụng này đang chạy.\n\nChỉ có thể chạy một phiên bản tại một thời điểm.\n\nVui lòng dùng cửa sổ hiện có hoặc đóng nó trước khi mở phiên bản mới."
+}

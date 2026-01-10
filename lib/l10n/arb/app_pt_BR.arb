@@ -1,0 +1,431 @@
+{
+  "@@locale": "pt_BR",
+
+  "appTitle": "Grid Timer",
+  "timerIdle": "Pronto",
+  "timerRunning": "Em execução",
+  "timerPaused": "Pausado",
+  "timerRinging": "Tocando",
+
+  "confirmStartTitle": "Confirmar início?",
+  "confirmStartBody": "Há outros temporizadores em execução. Deseja continuar e iniciar {name}?",
+
+  "actionStart": "Iniciar",
+  "actionPause": "Pausar",
+  "actionResume": "Retomar",
+  "actionReset": "Redefinir",
+  "actionStop": "Parar",
+  "actionCancel": "Cancelar",
+
+  "timerActions": "Ações do temporizador",
+  "stopAlarm": "Parar alarme",
+
+  "timeUpTts": "O tempo do {name} acabou",
+
+  "timerIdleActions": "Escolher ação",
+  "actionAdjustTime": "Ajustar tempo",
+  "adjustTimeTitle": "Ajustar tempo - {slotName}",
+  "currentDuration": "Atual: {minutes} min {seconds} s",
+  "durationUpdatedSuccessfully": "Duração atualizada com sucesso",
+  "durationMustBePositive": "A duração deve ser maior que 0",
+
+  "idleGridClickBehaviorTitle": "Ação ao tocar em célula ociosa",
+  "idleGridClickBehaviorDesc": "Escolha a ação ao tocar em uma célula ociosa",
+  "showDialogOption": "Mostrar diálogo de ações (recomendado, evita toques acidentais)",
+  "directStartOption": "Iniciar temporizador diretamente (modo rápido)",
+
+  "permissionNotificationTitle": "Ativar notificações",
+  "permissionNotificationBody": "Para receber alertas do temporizador, ative as notificações.",
+
+  "permissionExactAlarmTitle": "Ativar alarmes exatos",
+  "permissionExactAlarmBody": "Para alertas precisos do temporizador, ative a permissão \"Alarmes e lembretes\".",
+
+  "openSettings": "Abrir configurações",
+  "later": "Mais tarde",
+
+  "minutes": "minutos",
+  "remainingSeconds": "tempo restante",
+  "pausing": "Pausado",
+  "timeUp": "Tempo esgotado",
+  "clickToStop": "Toque para parar",
+
+  "settings": "Configurações",
+  "appInformation": "Informações do app",
+  "version": "Versão",
+  "versionInfo": "Informações da versão",
+  "gitBranch": "Branch do Git",
+  "gitRevision": "Revisão do Git",
+
+  "timerSettings": "Configurações do temporizador",
+  "soundSettings": "Configurações de volume",
+  "soundSettingsDesc": "Configurar volume",
+  "ttsSettings": "Configurações de TTS",
+  "ttsSettingsDesc": "Configurar anúncios por voz",
+  "languageSettings": "Idioma",
+  "languageSettingsDesc": "Escolher o idioma do app",
+  "permissions": "Permissões",
+  "notificationPermission": "Permissão de notificações",
+  "notificationPermissionDesc": "Permitir notificações do temporizador",
+  "about": "Sobre",
+  "license": "Licença",
+  "licenseDesc": "Ver licenças de terceiros",
+  "comingSoon": "Em breve",
+  "selectLanguage": "Selecionar idioma",
+  "languageEnglish": "English",
+  "languageChineseSimplified": "简体中文",
+
+  "errorText": "Erro: {error}",
+  "confirmStart": "Há outros temporizadores em execução. Deseja continuar e iniciar este temporizador?",
+
+  "flashAnimation": "Animação de flash",
+  "flashAnimationDesc": "Piscar em vermelho quando o temporizador tocar",
+  "vibration": "Vibração",
+  "vibrationDesc": "Vibrar quando o temporizador tocar",
+  "keepScreenOn": "Manter a tela ligada",
+  "keepScreenOnDesc": "Evitar que a tela desligue enquanto o temporizador estiver em execução",
+  "showMinutesSecondsFormat": "Mostrar formato Minutos:Segundos",
+  "showMinutesSecondsFormatDesc": "Mostrar contagem regressiva como MM:SS (desativado mostra segundos totais)",
+  "ttsEnabled": "Anúncios por voz",
+  "ttsEnabledDesc": "Anunciar por voz quando o temporizador terminar",
+
+  "alarmSound": "Som do alarme",
+  "alarmSoundDesc": "Escolher som para alertas do temporizador",
+  "volume": "Volume",
+  "volumeDesc": "Ajustar volume do alarme",
+  "systemVolumeHint": "Se o volume estiver muito baixo, você pode ajustar o volume de Alarmes nas configurações do sistema. No Android, pressione o botão físico de volume e toque no menu (três pontos) para definir o volume de Alarme separadamente.",
+
+  "autoRaiseAlarmVolumeTitle": "Aumentar automaticamente o volume de Alarme do sistema",
+  "autoRaiseAlarmVolumeDesc": "Aumentar temporariamente o volume do sistema (Alarme) quando um temporizador tocar e restaurar após parar o alarme.",
+  "alarmVolumeBoostLevelTitle": "Nível de aumento",
+  "alarmVolumeBoostLevelMinAudible": "Mínimo audível (recomendado)",
+  "alarmVolumeBoostLevelMax": "Máximo",
+  "autoRaiseAlarmVolumeNote": "Observação: este recurso altera o volume de Alarme do sistema. Ele restaura o volume anterior quando você parar o alarme (ou após {minutes} minutos).",
+
+  "vibrationSystemWarning": "A configuração de vibração no app foi alterada. Observação: configurações do sistema (como Não Perturbe, alternar vibração do sistema etc.) também podem afetar se a vibração funciona. Para garantir que funcione, verifique também as configurações do sistema.",
+  "openSystemVibrationSettings": "Abrir configurações de vibração do sistema",
+  "volumeButtonLockScreenHint": "Em alguns sistemas, os botões de volume só funcionam quando o dispositivo está desbloqueado",
+
+  "ttsLanguage": "Idioma do TTS",
+  "ttsLanguageDesc": "Escolher o idioma do anúncio por voz",
+
+  "testSound": "Testar som",
+  "playing": "Reproduzindo...",
+  "testTts": "Testar voz",
+  "ttsTestMessage": "O tempo do Timer 1 acabou",
+
+  "unitSecondsShort": "s",
+  "unitMinutesShort": "min",
+  "unitHoursShort": "h",
+
+  "gridDurationsSettings": "Configurações da grade",
+  "gridDurationsSettingsDesc": "Personalizar nome e duração de cada célula da grade",
+  "gridSlot": "Grade {index}",
+
+  "seconds": "segundos",
+  "hours": "horas",
+
+  "save": "Salvar",
+  "reset": "Redefinir",
+  "resetToDefault": "Restaurar padrão",
+  "gridDurationsResetConfirm": "Tem certeza de que deseja restaurar as durações da grade para os valores padrão?",
+
+  "name": "Nome",
+  "optional": "Opcional",
+
+  "audioPlaybackSettings": "Configurações de reprodução de áudio",
+  "audioPlaybackSettingsDesc": "Configurar o modo de reprodução do áudio do alarme",
+  "audioPlaybackMode": "Modo de reprodução",
+  "audioPlaybackModeLoopIndefinitely": "Repetir indefinidamente até parar manualmente",
+  "audioPlaybackModeLoopForDuration": "Repetir por N minutos e parar automaticamente",
+  "audioPlaybackModeLoopWithInterval": "Repetir N min, pausar M min, repetir N min (uma vez)",
+  "audioPlaybackModeLoopWithIntervalRepeating": "Repetir N min, pausar M min, repetir até parar",
+  "audioPlaybackModePlayOnce": "Reproduzir apenas uma vez",
+
+  "loopDuration": "Duração do loop",
+  "intervalPause": "Duração da pausa do intervalo",
+  "minutesUnit": "minutos",
+
+  "audioPlaybackWhenEffectiveTitle": "Aviso importante",
+  "audioPlaybackWhenEffectiveDesc": "Estas configurações se aplicam apenas ao som de alarme padrão.\n\nSe você personalizou o som de notificação nas configurações do sistema, o alarme irá repetir continuamente até ser parado (essas configurações de reprodução não se aplicam).",
+
+  "safetyDisclaimerTitle": "Aviso de segurança",
+  "safetyDisclaimerMessage": "Para sua segurança, entenda o seguinte:",
+  "safetyRecommendedUses": "✅ Usos recomendados",
+  "safetyRecommendedUsesList": "• Temporizadores diários de cozinha\n• Lembretes gerais do dia a dia\n• Situações não críticas\n• Após testar",
+  "safetyNotRecommendedUses": "❌ NÃO recomendado",
+  "safetyNotRecommendedUsesList": "• Lembretes críticos de medicação (use apps de nível médico)\n• Lembretes de risco de vida\n• Situações médicas de emergência\n• Sem testar previamente",
+  "safetyBestPractices": "💡 Boas práticas:",
+  "safetyBestPracticesList": "• Teste o alarme antes de depender dele\n• Tenha lembretes de backup para tarefas críticas\n• Verifique o modo Não Perturbe e as permissões de notificação\n• Entenda as limitações do app",
+  "safetyViewFullDisclaimer": "Ver aviso legal",
+  "safetyAcceptAndContinue": "Entendi, continuar",
+
+  "fullDisclaimerTitle": "Aviso legal",
+  "fullDisclaimerText": "Este software é fornecido \"NO ESTADO EM QUE SE ENCONTRA\", sem garantia de qualquer tipo, expressa ou implícita.\n\nOs desenvolvedores não se responsabilizam por quaisquer consequências decorrentes do uso deste software, incluindo, entre outras: lembretes perdidos, temporização imprecisa, falhas do app etc.\n\nOs usuários devem avaliar os riscos por conta própria e preparar soluções de backup para tarefas críticas.",
+
+  "close": "Fechar",
+  "aboutDisclaimer": "Aviso de segurança e isenção de responsabilidade",
+
+  "gestureSettings": "Configurações de controle por gestos",
+  "gestureSettingsDesc": "Configurar ações por gestos quando o alarme tocar",
+  "gestureActions": "Ações por gestos",
+
+  "gestureTypeScreenTap": "Toque na tela",
+  "gestureTypeVolumeUp": "Botão Volume+",
+  "gestureTypeVolumeDown": "Botão Volume-",
+  "gestureTypeShake": "Agitar o telefone",
+  "gestureTypeFlip": "Virar o telefone (tela para baixo)",
+
+  "gestureActionStopAndReset": "Parar e redefinir",
+  "gestureActionNone": "Sem ação",
+
+  "shakeSensitivity": "Sensibilidade do movimento",
+  "shakeSensitivityLow": "Baixa (agite forte)",
+  "shakeSensitivityHigh": "Alta (agite de leve)",
+  "shakeSensitivityDesc": "Ajustar sensibilidade de detecção ao agitar",
+
+  "gestureHint": "Amigável para idosos: ative toque na tela, botões de volume e virar o telefone",
+  "gestureLimitationsHint": "Observação: alguns dispositivos/sistemas restringem botões ou sensores na tela de bloqueio. Se os gestos não responderem quando estiver bloqueado, desbloqueie primeiro e tente virar o telefone ou pressionar os botões de volume.",
+
+  "onboardingCheckSoundTitle": "Importante: verificar som",
+  "onboardingCheckSoundDesc": "Verifique se o som \"Timer Alarm (default)\" NÃO está definido como \"Nenhum\" ou \"Silencioso\".\n\nSe estiver silencioso, você receberá apenas uma notificação sem som quando o tempo acabar.",
+  "onboardingCheckSoundBtn": "Verificar configurações de som",
+  "onboardingCheckSoundMiuiHint": "Usuários MIUI: se você não conseguir selecionar um som no canal de notificação, isso é normal (limitação do MIUI). O app ativou automaticamente a reprodução de áudio no app, e o alarme funcionará corretamente. Observação: tente evitar muitas mensagens durante alarmes para prevenir interrupções de áudio.",
+
+  "grantPermission": "Conceder permissão",
+  "notificationPermissionGranted": "Permissão de notificação concedida",
+  "notificationPermissionDenied": "Permissão de notificação negada; conceda manualmente nas configurações do sistema",
+
+  "exactAlarmPermission": "Permissão de alarme exato",
+  "exactAlarmPermissionDesc": "Garantir que os temporizadores notifiquem no horário (Obrigatório no Android 12, 14+)",
+  "exactAlarmPermissionDescApi33": "Pré-concedida no Android 13; pode ser revogada nas configurações do sistema",
+
+  "fullScreenIntentPermission": "Permissão de intenção em tela cheia",
+  "fullScreenIntentPermissionDesc": "Permitir alertas em tela cheia quando um temporizador tocar na tela de bloqueio (Android 14+)",
+  "fullScreenIntentStatusGranted": "Permitido",
+  "fullScreenIntentStatusDenied": "Não permitido (pode não exibir alerta em tela cheia)",
+
+  "batteryOptimizationSettings": "Configurações de otimização de bateria",
+  "batteryOptimizationDesc": "Desativar otimização de bateria para garantir alarmes confiáveis em segundo plano",
+
+  "alarmSoundSettings": "Configurações de som do alarme",
+  "alarmSoundSettingsDesc": "Se o som \"Timer Alarm (default)\" estiver definido como \"Nenhum\", o temporizador apenas mostrará notificação sem som",
+  "alarmSoundSettingsMiuiHint": "Usuários MIUI: devido a limitações do MIUI, alguns dispositivos podem não permitir alterar sons do canal de notificação. O app ativou automaticamente a reprodução de áudio no app para garantir que o alarme funcione corretamente. Observação: o áudio no app pode ser interrompido ou reduzido por outros sons de notificação. Tente evitar muitas mensagens durante alarmes.",
+
+  "appKilledWarning": "Importante: se este app for encerrado à força pelo sistema ou pelo usuário, os temporizadores não tocarão. Mantenha-o em execução em segundo plano e desative a otimização de bateria.",
+
+  "alarmTroubleshooting": "Alarme não tocando / atrasado?",
+  "alarmTroubleshootingDesc": "Versões do Android e ROMs de fabricantes podem restringir alarmes em segundo plano. Toque para correções rápidas.",
+  "alarmTroubleshootingDialogTitle": "Guia de confiabilidade do alarme",
+  "alarmTroubleshootingDialogIntro": "Diferentes versões do Android e ROMs de fabricantes (por exemplo, skins personalizadas) aplicam restrições diferentes em segundo plano/notificações. Isso pode silenciar ou atrasar alarmes. Continuamos melhorando a compatibilidade, mas tente o seguinte:",
+  "alarmTroubleshootingSteps": "1. Desative o Não Perturbe e aumente o volume de Alarme\n2. Ative as notificações para este app\n3. No canal \"Timer Alarm (default)\", certifique-se de que o som não esteja Silencioso\n4. Desative otimizações de bateria para este app (permitir execução em segundo plano)\n5. Android 14+: permitir \"Alarmes e lembretes\" (alarmes exatos)\n6. Android 14+: permitir \"Intenções em tela cheia\"",
+  "alarmTroubleshootingMiui": "Skins personalizadas: também permita Inicialização automática e Atividade em segundo plano, e evite economia agressiva de bateria. Se necessário, fixe este app em Recentes.",
+
+  "alarmTroubleshootingQuickActions": "Ações rápidas",
+  "alarmTroubleshootingOpenChannel": "Verificar som do canal",
+  "alarmTroubleshootingOpenNotifications": "Abrir configurações de notificação",
+  "alarmTroubleshootingOpenExactAlarm": "Ativar alarmes exatos",
+  "alarmTroubleshootingOpenFullScreenIntent": "Ativar alertas em tela cheia",
+  "alarmTroubleshootingOpenBattery": "Desativar otimização de bateria",
+
+  "alarmReliabilityMode": "Modo de confiabilidade do alarme",
+  "alarmReliabilityModeDesc": "Escolha como os alarmes são agendados (afeta se os alarmes disparam após o app ser encerrado)",
+  "alarmReliabilityModeAppOnly": "Somente no app",
+  "alarmReliabilityModeAppOnlyDesc": "Mais eficiente em bateria, mas alarmes não disparam se o app for encerrado",
+  "alarmReliabilityModeNotification": "Notificação",
+  "alarmReliabilityModeNotificationDesc": "Usar notificações agendadas pelo sistema, melhor confiabilidade em segundo plano (recomendado)",
+  "alarmReliabilityModeAlarmClock": "Modo despertador",
+  "alarmReliabilityModeAlarmClockDesc": "Máxima confiabilidade, toca mesmo se o app for encerrado (usa mais bateria)",
+
+  "alarmTroubleshootingViewSafetyNotice": "Ver aviso de segurança",
+
+  "goToSettings": "Ir para configurações",
+  "settingsButton": "Configurações",
+
+  "failedToOpenChannelSettings": "Falha ao abrir configurações do canal de notificação: {error}",
+
+  "developerModeEnabled": "Modo desenvolvedor ativado",
+  "developerModeDisabled": "Modo desenvolvedor desativado",
+
+  "speaking": "Falando...",
+  "ttsTestFailed": "Falha no teste de voz. Verifique as configurações de TTS do dispositivo.",
+  "ttsTestTimeout": "O teste de voz expirou. Verifique se o mecanismo de TTS está funcionando.",
+
+  "ttsTestFailedTitle": "Teste de voz sem sucesso",
+  "ttsTestFailedMessage": "Não foi possível ouvir o anúncio de voz. Possíveis motivos:\n\n• Mecanismo de TTS não configurado corretamente\n• Pacote de idioma não instalado\n• Volume do sistema no mudo\n• Volume de mídia muito baixo\n\nVerifique as configurações do sistema ou veja os diagnósticos.",
+
+  "viewDiagnostics": "Ver diagnósticos",
+  "ttsDiagnostics": "Diagnósticos de TTS",
+  "ttsEngine": "Mecanismo atual",
+  "availableEngines": "Mecanismos disponíveis",
+  "availableLanguages": "Idiomas disponíveis",
+  "andMore": "e mais {count}...",
+
+  "ttsNoEngineTitle": "Nenhum mecanismo de voz detectado",
+  "ttsNoEngineMessage": "Nenhum mecanismo de TTS (Texto-para-Fala) está disponível no seu dispositivo. Isso é comum em alguns dispositivos com skins personalizadas do Android.",
+  "ttsNoEngineSteps": "Siga estas etapas:\n\n1. Abra a \"Loja de apps\"\n2. Procure por \"Google Text-to-Speech\"\n3. Instale o mecanismo de voz\n4. Após a instalação, vá em \"Configurações → Acessibilidade → Texto para fala\"\n5. Selecione o mecanismo instalado e baixe o pacote de idioma",
+
+  "ttsUnavailableTitle": "Recurso de voz indisponível",
+  "ttsUnavailableMessage": "Seu dispositivo pode não ter um pacote de voz instalado.\n\nSiga estas etapas:\n1. Abra as configurações do sistema\n2. Procure por \"Texto para fala\" ou \"TTS\"\n3. Certifique-se de que um mecanismo de voz está instalado\n4. Defina seu idioma como padrão",
+  "ttsUnavailableHint": "Dica: em alguns dispositivos, verifique as configurações do mecanismo de voz do sistema ou instale o mecanismo Google TTS.",
+
+  "openTtsSettings": "Abrir configurações de TTS",
+  "ok": "OK",
+
+  "ttsSpeechRate": "Velocidade da fala",
+  "ttsPitch": "Tom",
+  "ttsVolumeDesc": "Ajustar o volume do anúncio por voz",
+  "ttsSpeechRateDesc": "Ajustar a velocidade do anúncio por voz (0,5 é a velocidade normal)",
+  "ttsPitchDesc": "Ajustar o tom do anúncio por voz (1,0 é o tom normal)",
+
+  "ttsLanguageNote": "Dica: você pode selecionar o idioma manualmente se a detecção automática estiver imprecisa.",
+  "ttsLanguageAutoDesc": "Selecionar automaticamente com base no idioma do app",
+
+  "followSystem": "Seguir o sistema",
+  "simplifiedChinese": "Chinês simplificado",
+  "english": "Inglês",
+
+  "speedVerySlow": "Muito lenta",
+  "speedSlow": "Lenta",
+  "speedNormal": "Normal",
+  "speedFast": "Rápida",
+  "speedVeryFast": "Muito rápida",
+
+  "pitchVeryLow": "Muito baixo",
+  "pitchLow": "Baixo",
+  "pitchNormal": "Normal",
+  "pitchHigh": "Alto",
+  "pitchVeryHigh": "Muito alto",
+
+  "onboardingNext": "Próximo",
+  "onboardingStartUsing": "Começar a usar",
+
+  "onboardingWelcomeTitle": "Bem-vindo ao Grid Timer",
+  "onboardingWelcomeDesc": "Para garantir que o temporizador funcione com precisão, precisamos configurar algumas opções simples.\n\nIsso vai levar apenas um minuto.",
+
+  "onboardingNotificationTitle": "Permissão de notificações",
+  "onboardingNotificationDesc": "Este app precisa de permissão de notificação para avisar quando a contagem regressiva terminar.\n\nSem essa permissão, você pode perder alertas de conclusão do temporizador.",
+  "onboardingGrantNotification": "Conceder permissão de notificações",
+
+  "onboardingExactAlarmTitle": "Permissão de alarme exato",
+  "onboardingExactAlarmDesc": "Para garantir precisão do temporizador ao segundo, este app precisa de permissão de \"alarme exato\".\n\nPermita na próxima janela ou nas configurações.",
+  "onboardingGrantExactAlarm": "Conceder permissão de alarme exato",
+
+  "onboardingFullScreenIntentTitle": "Alertas em tela cheia",
+  "onboardingFullScreenIntentDesc": "No Android 14+, pode ser necessário um acesso especial para exibir alertas em tela cheia na tela de bloqueio.\n\nPermita \"Intenções em tela cheia\" para este app para melhorar a confiabilidade do alarme.",
+  "onboardingGrantFullScreenIntent": "Abrir configurações",
+  "onboardingOpenFullScreenIntentSettings": "Abrir configurações de intenções em tela cheia",
+
+  "onboardingBatteryTitle": "Otimização de bateria",
+  "onboardingBatteryDesc": "Para evitar que o sistema encerre o temporizador em segundo plano, recomendamos definir este app como \"Não otimizar o uso da bateria\".\n\nIsso garante que temporizadores longos não sejam interrompidos.\n\nDica: em alguns dispositivos, o botão \"Abrir configurações de otimização de bateria\" pode ser bloqueado ou a opção exata pode não aparecer. Procure nas configurações do sistema por \"Otimização de bateria\", \"Economia de energia\", \"Inicialização automática\" ou \"Atividade em segundo plano\" e defina este app como \"Não otimizar\" / \"Sem restrições\".",
+  "onboardingOpenBatterySettings": "Abrir configurações de otimização de bateria",
+
+  "onboardingCompletionTitle": "Tudo pronto",
+  "onboardingCompletionDesc": "Todas as configurações foram concluídas!\n\nDica: diferentes dispositivos e versões do sistema podem se comportar de forma diferente. Faça um teste rápido na tela de bloqueio/em segundo plano antes de depender de temporizadores longos.\n\nVocê pode reconfigurar essas opções a qualquer momento na página de configurações.",
+
+  "onboardingGranted": "Concedida",
+  "onboardingNotRequired": "Não é necessário",
+
+  "onboardingNotRequiredNotificationDesc": "Sua versão do Android (abaixo de 13) permite notificações por padrão. Nenhuma autorização manual é necessária.",
+  "onboardingNotRequiredExactAlarmDesc": "Sua versão do Android (abaixo de 12) oferece suporte a alarmes exatos por padrão. Nenhuma autorização manual é necessária.",
+
+  "onboardingPreGrantedExactAlarmDesc": "O Android 13 pré-concede automaticamente a permissão de alarme exato para apps recém-instalados.\n\nSe você revogar essa permissão, poderá reativá-la em Configurações > Apps > {appName} > Alarmes e lembretes.",
+  "onboardingPreGranted": "Pré-concedida",
+
+  "onboardingBatteryLegacyDesc": "Para evitar que o sistema encerre o temporizador em segundo plano, recomendamos permitir que {appName} execute no modo de economia de bateria.\n\nCaminho de referência: Configurações → Bateria / Gerenciamento de energia → Economia de bateria → Apps permitidos na economia de bateria → Ativar {appName}\n\nDica: o caminho exato pode variar por marca do dispositivo e versão do sistema. Encontre a opção correspondente nas suas configurações.",
+  "permissionNotRequiredStatus": "Não é necessário (suportado por padrão no seu sistema)",
+  "batteryOptimizationLegacyDesc": "Permita que este app execute no modo de economia de bateria.\nCaminho: Configurações → Bateria → Economia de bateria → Apps permitidos na economia de bateria",
+
+  "privacyPolicy": "Política de privacidade",
+  "privacyPolicyTitle": "Política de privacidade",
+  "privacyPolicyMessage": "Antes de usar este app, leia e concorde com nossa Política de Privacidade.",
+  "privacyPolicyAgree": "Concordo",
+  "privacyPolicyViewDetails": "Ver Política de Privacidade",
+
+  "ossLicenses": "Licenças de terceiros",
+  "ossLicensesDesc": "Ver licenças de bibliotecas de terceiros",
+
+  "resetAllSettings": "Redefinir todas as configurações",
+  "resetAllSettingsDesc": "Restaurar todas as configurações para os valores padrão",
+  "resetAllSettingsConfirmTitle": "Redefinir todas as configurações?",
+  "resetAllSettingsConfirmMessage": "Isso redefinirá todas as configurações para os valores padrão. Esta ação não pode ser desfeita.",
+  "resetAllSettingsExitMessage": "O app será encerrado em {seconds} segundos para concluir a redefinição...",
+  "resetAllSettingsSuccess": "Configurações redefinidas com sucesso",
+
+  "displaySettings": "Exibição e acessibilidade",
+  "themeMode": "Modo de tema",
+  "themeModeDesc": "Escolher tema visual",
+  "themeSoftDark": "Escuro suave",
+  "themeHighContrast": "Alto contraste",
+  "themeLightHighContrast": "Destaque diurno",
+  "themeTraditional": "Tradicional",
+  "themePastelGarden": "Jardim pastel",
+  "themeInkVermilion": "Tinta e Vermelhão",
+  "themeGlacialBlue": "Azul glacial",
+  "themeClassicNavy": "Azul-marinho clássico",
+
+  "permissionStatusGranted": "Concedida",
+  "permissionStatusDenied": "Não concedida",
+  "batteryOptimizationStatusDisabled": "Desativada (Recomendado)",
+  "batteryOptimizationStatusEnabled": "Ativada (pode afetar alarmes)",
+  "exactAlarmStatusGranted": "Permitido",
+  "exactAlarmStatusDenied": "Não permitido (pode atrasar alarmes)",
+  "batteryOptimizationStatusUnknown": "Verifique manualmente",
+
+  "batteryOptimizationMiuiHint": "MIUI: definir \"Economia de bateria\" como \"Sem restrições\"",
+  "batteryOptimizationHuaweiHint": "Huawei/Honor: em \"Inicialização de apps\", selecione \"Gerenciar manualmente\" e ative \"Executar em segundo plano\"",
+  "batteryOptimizationOppoHint": "OPPO: em \"Informações do app\", vá em \"Uso de bateria\", abra \"Controles de consumo\", selecione \"Permitir atividade em segundo plano\"",
+  "batteryOptimizationVivoHint": "vivo: em \"Informações do app\", vá em \"Uso de bateria\" e, em \"Detalhes de uso\", abra \"Controle de energia em segundo plano\" e selecione \"Alto uso de energia em segundo plano\"",
+  "batteryOptimizationOemHint": "Dica: em alguns sistemas personalizados (MIUI/EMUI/HarmonyOS), pode ser necessário procurar manualmente por \"Otimização de bateria\", \"Inicialização automática\" ou \"Apps protegidos\" nas configurações",
+  "batteryOptimizationStandardHint": "Dica: se você não encontrar \"Sem restrições\", tente tocar no texto \"Permitir uso em segundo plano\" (não no alternador) para acessar mais opções",
+
+  "gridDurationMustBePositive": "A duração da grade {index} deve ser um número inteiro positivo",
+  "savedSuccessfullyGridUpdated": "Salvo com sucesso, grade atualizada",
+  "activeTimersRunningConfigWillApplyOnRestart": "Há temporizadores ativos em execução; a configuração entrará em vigor na próxima inicialização do app",
+  "configurationSavedButErrorDuringUpdate": "Configuração salva, mas ocorreu um erro durante a atualização do app: {error}",
+
+  "debugTools": "Ferramentas de depuração",
+  "testTimer10s": "Temporizador de teste 10s (Depuração)",
+  "testTimer10sDesc": "Iniciar um temporizador real de 10 segundos",
+  "start": "Iniciar",
+
+  "audioTestDebug": "Teste de áudio (Depuração)",
+  "audioTestDebugDesc": "Diagnosticar problemas de som",
+  "errorTestDebug": "Teste de erro (Depuração)",
+  "errorTestDebugDesc": "Testar sistema de relatório de erros",
+
+  "exitDeveloperMode": "Sair do modo desenvolvedor",
+  "exitDeveloperModeDesc": "Toque para ocultar as ferramentas de depuração",
+
+  "failedToStartTestTimer": "Falha ao iniciar o temporizador de teste: {error}",
+
+  "audioTest": "Teste de áudio",
+  "audioTestInstructions": "Teste os seguintes recursos em ordem e observe se há saída de som.\nSe um teste falhar, o recurso correspondente tem um problema.",
+  "clearLog": "Limpar log",
+  "startTest": "Iniciar teste",
+  "testLog": "Log de teste:",
+  "waitingForTest": "Aguardando teste...",
+  "testTimerStarted": "Temporizador de teste de 10 segundos iniciado! A primeira célula agora está definida como 10s.",
+  "stopActiveTimersBeforeTest": "Pare todos os temporizadores ativos antes de iniciar o temporizador de teste",
+
+  "timeIsUp": "O tempo acabou!",
+
+  "widgetTimersRinging": "{count, plural, =1{1 temporizador tocando} other{{count} temporizadores tocando}}",
+  "widgetTimersActive": "{count, plural, =1{1 temporizador ativo} other{{count} temporizadores ativos}}",
+  "widgetTapToOpen": "Toque para abrir o app",
+  "widgetTimerRemaining": "{name}: {remaining}",
+  "widgetDescription": "Exibir status do Grid Timer",
+
+  "deviceType": "Dispositivo/Plataforma",
+  "deviceTypeMiui": "Xiaomi (MIUI)",
+  "deviceTypeHuawei": "Huawei/Honor (EMUI/HarmonyOS)",
+  "deviceTypeOppo": "OPPO/Realme/OnePlus (ColorOS)",
+  "deviceTypeVivo": "vivo/iQOO (FuntouchOS/OriginOS)",
+  "deviceTypeStandard": "Android padrão",
+  "deviceTypeIos": "iOS",
+  "deviceTypeMacos": "macOS",
+  "deviceTypeWindows": "Windows",
+  "deviceTypeLinux": "Linux",
+  "deviceTypeWeb": "Navegador web",
+
+  "singleInstanceWarningMessage": "Este aplicativo já está em execução.\n\nApenas uma instância pode ser executada por vez.\n\nUse a janela existente ou feche-a antes de iniciar uma nova."
+}
