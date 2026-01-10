@@ -86,11 +86,66 @@ class MainActivity: FlutterActivity() {
         return false
     }
 
+    /** Check if the device is running ColorOS (OPPO/Realme/OnePlus). */
+    private fun isColorOsDevice(): Boolean {
+        try {
+            val clazz = Class.forName("android.os.SystemProperties")
+            val getMethod = clazz.getMethod("get", String::class.java)
+            // ColorOS version property
+            val colorOsVersion = getMethod.invoke(null, "ro.build.version.opporom") as? String
+            if (!colorOsVersion.isNullOrEmpty()) {
+                return true
+            }
+            // Alternative property for newer ColorOS versions
+            val colorOsName = getMethod.invoke(null, "ro.oplus.image.my_product.type") as? String
+            if (!colorOsName.isNullOrEmpty()) {
+                return true
+            }
+        } catch (e: Exception) {
+            // Ignore reflection errors
+        }
+
+        // Do NOT use Build.MANUFACTURER as fallback because it represents hardware,
+        // not the OS. An OPPO device running custom ROM should not be treated as ColorOS.
+        return false
+    }
+
+    /** Check if the device is running FuntouchOS/OriginOS (vivo/iQOO). */
+    private fun isFuntouchOsDevice(): Boolean {
+        try {
+            val clazz = Class.forName("android.os.SystemProperties")
+            val getMethod = clazz.getMethod("get", String::class.java)
+            // FuntouchOS version property
+            val funtouchVersion = getMethod.invoke(null, "ro.vivo.os.version") as? String
+            if (!funtouchVersion.isNullOrEmpty()) {
+                return true
+            }
+            // Alternative: vivo software version
+            val vivoVersion = getMethod.invoke(null, "ro.vivo.product.version") as? String
+            if (!vivoVersion.isNullOrEmpty()) {
+                return true
+            }
+            // OriginOS identifier
+            val originOsVersion = getMethod.invoke(null, "ro.vivo.os.build.display.id") as? String
+            if (!originOsVersion.isNullOrEmpty()) {
+                return true
+            }
+        } catch (e: Exception) {
+            // Ignore reflection errors
+        }
+
+        // Do NOT use Build.MANUFACTURER as fallback because it represents hardware,
+        // not the OS. A vivo device running custom ROM should not be treated as FuntouchOS.
+        return false
+    }
+
     /** Get the device manufacturer category for specific handling. */
     private fun getDeviceManufacturerType(): String {
         return when {
             isMiuiDevice() -> "miui"
             isHonorHuaweiDevice() -> "honor_huawei"
+            isColorOsDevice() -> "coloros"
+            isFuntouchOsDevice() -> "funtouchos"
             else -> "standard"
         }
     }
@@ -727,6 +782,126 @@ class MainActivity: FlutterActivity() {
                                 setClassName(
                                     "com.huawei.systemmanager",
                                     "com.huawei.systemmanager.MainActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+                        }
+                        "coloros" -> {
+                            // OPPO/Realme/OnePlus ColorOS specific battery settings
+                            // ColorOS has app power consumption controls in different locations
+
+                            // Method 1: App details page - Battery usage section
+                            intentsToTry.add(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.parse("package:$packageName")
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 2: PowerConsumption app management page
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.coloros.oppoguardelf",
+                                    "com.coloros.powermanager.fuelgaue.PowerConsumptionActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 3: Battery manager - high power consumption apps
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.coloros.oppoguardelf",
+                                    "com.coloros.powermanager.fuelgaue.PowerUsageModelActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 4: App startup manager
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.coloros.safecenter",
+                                    "com.coloros.safecenter.startupapp.StartupAppListActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 5: Alternative startup manager path
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.oppo.safe",
+                                    "com.oppo.safe.permission.startup.StartupAppListActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 6: Battery optimization settings
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.coloros.oppoguardelf",
+                                    "com.coloros.powermanager.fuelgaue.PowerDetailActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+                        }
+                        "funtouchos" -> {
+                            // vivo/iQOO FuntouchOS/OriginOS specific battery settings
+                            // vivo has background power management in different locations
+
+                            // Method 1: App details page - Battery usage section
+                            intentsToTry.add(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.parse("package:$packageName")
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 2: iManager power management
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.vivo.abe",
+                                    "com.vivo.applicationbehaviorengine.ui.ExcessivePowerManagerActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 3: Background power consumption list
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.iqoo.powersaving",
+                                    "com.iqoo.powersaving.PowerSavingManagerActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 4: High background power consumption whitelist
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.vivo.abe",
+                                    "com.vivo.applicationbehaviorengine.ui.HighPowerAppListActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 5: Background app management
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.iqoo.secure",
+                                    "com.iqoo.secure.ui.phoneoptimize.BgAppManageActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 6: Permission manager - Auto-start
+                            intentsToTry.add(Intent().apply {
+                                setClassName(
+                                    "com.iqoo.secure",
+                                    "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity"
+                                )
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+
+                            // Method 7: vivo i Manager main page
+                            intentsToTry.add(Intent().apply {
+                                action = Intent.ACTION_MAIN
+                                setClassName(
+                                    "com.iqoo.secure",
+                                    "com.iqoo.secure.MainGuideActivity"
                                 )
                                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             })

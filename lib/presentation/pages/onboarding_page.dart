@@ -513,6 +513,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             description += '\n\n${l10n.batteryOptimizationMiuiHint}';
           } else if (manufacturerType == 'honor_huawei') {
             description += '\n\n${l10n.batteryOptimizationHuaweiHint}';
+          } else if (manufacturerType == 'coloros') {
+            description += '\n\n${l10n.batteryOptimizationOppoHint}';
+          } else if (manufacturerType == 'funtouchos') {
+            description += '\n\n${l10n.batteryOptimizationVivoHint}';
           }
         }
 

@@ -1539,6 +1539,10 @@ class _BatteryOptimizationTile extends StatelessWidget {
             specificHint = l10n.batteryOptimizationMiuiHint;
           } else if (manufacturerType == 'honor_huawei') {
             specificHint = l10n.batteryOptimizationHuaweiHint;
+          } else if (manufacturerType == 'coloros') {
+            specificHint = l10n.batteryOptimizationOppoHint;
+          } else if (manufacturerType == 'funtouchos') {
+            specificHint = l10n.batteryOptimizationVivoHint;
           } else if (manufacturerType == 'standard') {
             // Standard Android (e.g., Pixel): hint about tapping text vs toggle
             specificHint = l10n.batteryOptimizationStandardHint;

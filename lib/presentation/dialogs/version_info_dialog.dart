@@ -1,6 +1,9 @@
 // Copyright (C) 2025 Grid Timer developers
 // SPDX-License-Identifier: Apache-2.0
 
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/providers.dart';
@@ -60,6 +63,23 @@ class _VersionInfoDialogState extends ConsumerState<VersionInfoDialog> {
       }
       // Close dialog and return true to indicate developer mode was enabled
       Navigator.of(context).pop(true);
+    }
+  }
+
+  /// Get localized device type name from manufacturer type string.
+  String _getDeviceTypeName(String manufacturerType, AppLocalizations l10n) {
+    switch (manufacturerType) {
+      case 'miui':
+        return l10n.deviceTypeMiui;
+      case 'honor_huawei':
+        return l10n.deviceTypeHuawei;
+      case 'coloros':
+        return l10n.deviceTypeOppo;
+      case 'funtouchos':
+        return l10n.deviceTypeVivo;
+      case 'standard':
+      default:
+        return l10n.deviceTypeStandard;
     }
   }
 
@@ -156,6 +176,35 @@ class _VersionInfoDialogState extends ConsumerState<VersionInfoDialog> {
                 );
               },
             ),
+            // Device type (Android only)
+            if (!kIsWeb && Platform.isAndroid)
+              FutureBuilder<String>(
+                future: ref
+                    .read(permissionServiceProvider)
+                    .getDeviceManufacturerType(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const SizedBox.shrink();
+                  }
+                  final manufacturerType = snapshot.data!;
+                  final deviceTypeName = _getDeviceTypeName(manufacturerType, l10n);
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 16),
+                      Text(
+                        l10n.deviceType,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        deviceTypeName,
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    ],
+                  );
+                },
+              ),
           ],
         ),
       ),

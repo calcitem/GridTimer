@@ -295,8 +295,10 @@
   "exactAlarmStatusGranted": "已允许",
   "exactAlarmStatusDenied": "未允许（闹钟可能延迟）",
   "batteryOptimizationStatusUnknown": "请手动检查",
-  "batteryOptimizationMiuiHint": "MIUI 设备：请在“省电策略”中设置为“无限制”",
-  "batteryOptimizationHuaweiHint": "华为/荣耀设备：请在“应用启动管理”中改为“手动管理”，并允许“后台运行”",
+  "batteryOptimizationMiuiHint": "MIUI 设备：请在「省电策略」中设置为「无限制」",
+  "batteryOptimizationHuaweiHint": "华为/荣耀设备：请在「应用启动管理」中改为「手动管理」，并允许「后台运行」",
+  "batteryOptimizationOppoHint": "OPPO 设备：在「应用详情」中进入「耗电管理」，打开「耗电行为控制」，选择「完全允许后台行为」",
+  "batteryOptimizationVivoHint": "vivo 设备：在「应用程序信息」中进入「电量」，在「应用耗电详情」中打开「后台耗电管理」，选择「允许后台高耗电」",
   "batteryOptimizationOemHint": "提示：部分定制系统（MIUI / EMUI / HarmonyOS）可能需要手动在设置中搜索「电池优化」、「自启动」或「受保护应用」",
   "batteryOptimizationStandardHint": "提示：如果找不到「无限制」选项，请尝试点击「允许后台使用」文字（而非开关）进入更多设置",
 
@@ -329,5 +331,12 @@
   "widgetTimersActive": "{count, plural, other{{count} 个计时器运行中}}",
   "widgetTapToOpen": "点击打开应用",
   "widgetTimerRemaining": "{name}: {remaining}",
-  "widgetDescription": "显示九宫计时状态"
+  "widgetDescription": "显示九宫计时状态",
+
+  "deviceType": "设备类型",
+  "deviceTypeMiui": "小米（MIUI）",
+  "deviceTypeHuawei": "华为/荣耀（EMUI/HarmonyOS）",
+  "deviceTypeOppo": "OPPO/Realme/OnePlus（ColorOS）",
+  "deviceTypeVivo": "vivo/iQOO（FuntouchOS/OriginOS）",
+  "deviceTypeStandard": "通用 Android"
 }

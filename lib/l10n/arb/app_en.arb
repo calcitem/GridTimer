@@ -1402,6 +1402,16 @@
     "description": "Hint for Huawei/Honor users about battery optimization settings"
   },
 
+  "batteryOptimizationOppoHint": "OPPO: In 'App info', go to 'Battery usage', open 'Power consumption controls', select 'Allow background activity'",
+  "@batteryOptimizationOppoHint": {
+    "description": "Hint for OPPO/ColorOS users about battery optimization settings"
+  },
+
+  "batteryOptimizationVivoHint": "vivo: In 'App info', go to 'Battery usage', in 'Battery usage details' open 'Background power control', select 'High background power usage'",
+  "@batteryOptimizationVivoHint": {
+    "description": "Hint for vivo/FuntouchOS users about battery optimization settings"
+  },
+
   "batteryOptimizationOemHint": "Tip: On some custom systems (MIUI/EMUI/HarmonyOS), you may need to manually search for 'Battery Optimization', 'Auto-start', or 'Protected Apps' in settings",
   "@batteryOptimizationOemHint": {
     "description": "Hint for OEM device users (MIUI/Honor/Huawei) about battery optimization settings"
@@ -1595,5 +1605,35 @@
   "widgetDescription": "Display Grid Timer status",
   "@widgetDescription": {
     "description": "Widget description for Android widget settings"
+  },
+
+  "deviceType": "Device Type",
+  "@deviceType": {
+    "description": "Label for device type in version info dialog"
+  },
+
+  "deviceTypeMiui": "Xiaomi (MIUI)",
+  "@deviceTypeMiui": {
+    "description": "Device type name for MIUI devices"
+  },
+
+  "deviceTypeHuawei": "Huawei/Honor (EMUI/HarmonyOS)",
+  "@deviceTypeHuawei": {
+    "description": "Device type name for Huawei/Honor devices"
+  },
+
+  "deviceTypeOppo": "OPPO/Realme/OnePlus (ColorOS)",
+  "@deviceTypeOppo": {
+    "description": "Device type name for OPPO/ColorOS devices"
+  },
+
+  "deviceTypeVivo": "vivo/iQOO (FuntouchOS/OriginOS)",
+  "@deviceTypeVivo": {
+    "description": "Device type name for vivo/FuntouchOS devices"
+  },
+
+  "deviceTypeStandard": "Standard Android",
+  "@deviceTypeStandard": {
+    "description": "Device type name for standard Android devices"
   }
 }
