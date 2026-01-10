@@ -54,10 +54,7 @@ class AudioPlaybackSettingsPage extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: Colors.blue.shade900.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(
-                  color: Colors.blue.shade700,
-                  width: 1,
-                ),
+                border: Border.all(color: Colors.blue.shade700, width: 1),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,9 +70,7 @@ class AudioPlaybackSettingsPage extends ConsumerWidget {
                       Expanded(
                         child: Text(
                           l10n.audioPlaybackWhenEffectiveTitle,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall
+                          style: Theme.of(context).textTheme.titleSmall
                               ?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blue.shade300,
