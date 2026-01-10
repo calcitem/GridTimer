@@ -36,8 +36,14 @@ Duration? tryParsePcmWavDuration(Uint8List bytes) {
       final audioFormat = byteData.getUint16(chunkDataStart + 0, Endian.little);
       final numChannels = byteData.getUint16(chunkDataStart + 2, Endian.little);
       final sampleRate = byteData.getUint32(chunkDataStart + 4, Endian.little);
-      final headerByteRate = byteData.getUint32(chunkDataStart + 8, Endian.little);
-      final bitsPerSample = byteData.getUint16(chunkDataStart + 14, Endian.little);
+      final headerByteRate = byteData.getUint32(
+        chunkDataStart + 8,
+        Endian.little,
+      );
+      final bitsPerSample = byteData.getUint16(
+        chunkDataStart + 14,
+        Endian.little,
+      );
 
       // Only PCM (format = 1) is supported for now.
       if (audioFormat != 1) return null;

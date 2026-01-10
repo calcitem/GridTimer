@@ -27,10 +27,7 @@ void main() {
       dataSizeBytes: 8000, // 0.5 seconds
     );
 
-    expect(
-      tryParsePcmWavDuration(wavBytes),
-      const Duration(milliseconds: 500),
-    );
+    expect(tryParsePcmWavDuration(wavBytes), const Duration(milliseconds: 500));
   });
 }
 

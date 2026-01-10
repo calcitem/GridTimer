@@ -59,7 +59,9 @@ class PlatformCapabilities {
 
   /// Whether any gesture controls are supported.
   static bool get supportsGestureControls =>
-      supportsShakeGesture || supportsFlipGesture || supportsVolumeButtonGesture;
+      supportsShakeGesture ||
+      supportsFlipGesture ||
+      supportsVolumeButtonGesture;
 
   /// Whether keeping the screen on is supported/relevant.
   /// Mainly for mobile devices to prevent sleep during timers.
