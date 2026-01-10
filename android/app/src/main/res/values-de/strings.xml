@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Raster-Timer</string>
+    <string name="widget_description">Grid-Timer-Status anzeigen</string>
+    <string name="widget_timers_ringing">%d Timer klingeln</string>
+    <string name="widget_timers_active">%d Timer aktiv</string>
+    <string name="widget_tap_to_open">Tippen, um die App zu öffnen</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Timer Grid</string>
+    <string name="widget_description">Tampilkan status Timer Grid</string>
+    <string name="widget_timers_ringing">%d timer berbunyi</string>
+    <string name="widget_timers_active">%d timer aktif</string>
+    <string name="widget_tap_to_open">Ketuk untuk membuka aplikasi</string>
+</resources>

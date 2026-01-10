@@ -1,0 +1,32 @@
+/* Localized versions of MainMenu.xib keys */
+
+/* Window Title */
+"QvC-M9-y7g.title" = "Raster-Timer";
+
+/* Application Menu */
+"1Xt-HY-uBw.title" = "Raster-Timer";
+"uQy-DD-JDr.title" = "Raster-Timer";
+"5kV-Vb-QxS.title" = "Über Raster-Timer";
+"BOF-NM-1cW.title" = "Einstellungen…";
+"NMo-om-nkz.title" = "Dienste";
+"hz9-B4-Xy5.title" = "Dienste";
+"Olw-nP-bQN.title" = "Raster-Timer ausblenden";
+"Vdr-fp-XzO.title" = "Andere ausblenden";
+"Kd2-mp-pUS.title" = "Alle einblenden";
+"4sb-4s-VLi.title" = "Raster-Timer beenden";
+
+/* Edit Menu */
+"5QF-Oa-p0T.title" = "Bearbeiten";
+"W48-6f-4Dl.title" = "Bearbeiten";
+
+/* View Menu */
+"H8h-7b-M4v.title" = "Ansicht";
+"HyV-fh-RgO.title" = "Ansicht";
+"4J7-dP-txa.title" = "Vollbild";
+
+/* Window Menu */
+"aUF-d1-5bR.title" = "Fenster";
+"Td7-aD-5lo.title" = "Fenster";
+"OY7-WF-poV.title" = "Minimieren";
+"R4o-n2-Eq4.title" = "Zoomen";
+"LE2-aR-0XJ.title" = "Alle nach vorne";

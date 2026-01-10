@@ -1,0 +1,32 @@
+/* Localized versions of MainMenu.xib keys */
+
+/* Window Title */
+"QvC-M9-y7g.title" = "مؤقّت الشبكة";
+
+/* Application Menu */
+"1Xt-HY-uBw.title" = "مؤقّت الشبكة";
+"uQy-DD-JDr.title" = "مؤقّت الشبكة";
+"5kV-Vb-QxS.title" = "حول مؤقّت الشبكة";
+"BOF-NM-1cW.title" = "التفضيلات…";
+"NMo-om-nkz.title" = "الخدمات";
+"hz9-B4-Xy5.title" = "الخدمات";
+"Olw-nP-bQN.title" = "إخفاء مؤقّت الشبكة";
+"Vdr-fp-XzO.title" = "إخفاء الآخرين";
+"Kd2-mp-pUS.title" = "إظهار الكل";
+"4sb-4s-VLi.title" = "إنهاء مؤقّت الشبكة";
+
+/* Edit Menu */
+"5QF-Oa-p0T.title" = "تحرير";
+"W48-6f-4Dl.title" = "تحرير";
+
+/* View Menu */
+"H8h-7b-M4v.title" = "عرض";
+"HyV-fh-RgO.title" = "عرض";
+"4J7-dP-txa.title" = "دخول ملء الشاشة";
+
+/* Window Menu */
+"aUF-d1-5bR.title" = "النافذة";
+"Td7-aD-5lo.title" = "النافذة";
+"OY7-WF-poV.title" = "تصغير";
+"R4o-n2-Eq4.title" = "تكبير";
+"LE2-aR-0XJ.title" = "إحضار الكل للأمام";

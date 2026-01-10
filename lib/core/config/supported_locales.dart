@@ -36,7 +36,30 @@ class SupportedLanguage {
   });
 
   /// Convert to Flutter Locale.
-  Locale get locale => Locale(code);
+  Locale get locale {
+    // Handle script codes and country codes
+    // Examples:
+    // - 'zh_Hant' -> Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')
+    // - 'pt_BR' -> Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR')
+    final parts = code.split('_');
+    if (parts.length == 2) {
+      final secondPart = parts[1];
+      // Script codes are 4 letters (e.g., 'Hant', 'Hans')
+      // Country codes are 2 letters (e.g., 'BR', 'US', 'TW')
+      if (secondPart.length == 4) {
+        return Locale.fromSubtags(
+          languageCode: parts[0],
+          scriptCode: secondPart,
+        );
+      } else if (secondPart.length == 2) {
+        return Locale.fromSubtags(
+          languageCode: parts[0],
+          countryCode: secondPart,
+        );
+      }
+    }
+    return Locale(code);
+  }
 }
 
 /// Configuration for all supported languages in the app.
@@ -57,10 +80,106 @@ class SupportedLocales {
   /// 3. Run ./tool/gen.sh to regenerate localization files
   static const List<SupportedLanguage> languages = [
     SupportedLanguage(
+      code: 'ar',
+      nativeName: 'العربية',
+      englishName: 'Arabic',
+      ttsLocale: 'ar-SA',
+    ),
+    SupportedLanguage(
+      code: 'bn',
+      nativeName: 'বাংলা',
+      englishName: 'Bengali',
+      ttsLocale: 'bn-IN',
+    ),
+    SupportedLanguage(
+      code: 'de',
+      nativeName: 'Deutsch',
+      englishName: 'German',
+      ttsLocale: 'de-DE',
+    ),
+    SupportedLanguage(
       code: 'en',
       nativeName: 'English',
       englishName: 'English',
       ttsLocale: 'en-US',
+    ),
+    SupportedLanguage(
+      code: 'es',
+      nativeName: 'Español',
+      englishName: 'Spanish',
+      ttsLocale: 'es-ES',
+    ),
+    SupportedLanguage(
+      code: 'fr',
+      nativeName: 'Français',
+      englishName: 'French',
+      ttsLocale: 'fr-FR',
+    ),
+    SupportedLanguage(
+      code: 'hi',
+      nativeName: 'हिन्दी',
+      englishName: 'Hindi',
+      ttsLocale: 'hi-IN',
+    ),
+    SupportedLanguage(
+      code: 'id',
+      nativeName: 'Bahasa Indonesia',
+      englishName: 'Indonesian',
+      ttsLocale: 'id-ID',
+    ),
+    SupportedLanguage(
+      code: 'it',
+      nativeName: 'Italiano',
+      englishName: 'Italian',
+      ttsLocale: 'it-IT',
+    ),
+    SupportedLanguage(
+      code: 'ja',
+      nativeName: '日本語',
+      englishName: 'Japanese',
+      ttsLocale: 'ja-JP',
+    ),
+    SupportedLanguage(
+      code: 'ko',
+      nativeName: '한국어',
+      englishName: 'Korean',
+      ttsLocale: 'ko-KR',
+    ),
+    SupportedLanguage(
+      code: 'pt',
+      nativeName: 'Português',
+      englishName: 'Portuguese',
+      ttsLocale: 'pt-PT',
+    ),
+    SupportedLanguage(
+      code: 'pt_BR',
+      nativeName: 'Português (Brasil)',
+      englishName: 'Portuguese (Brazil)',
+      ttsLocale: 'pt-BR',
+    ),
+    SupportedLanguage(
+      code: 'ru',
+      nativeName: 'Русский',
+      englishName: 'Russian',
+      ttsLocale: 'ru-RU',
+    ),
+    SupportedLanguage(
+      code: 'th',
+      nativeName: 'ไทย',
+      englishName: 'Thai',
+      ttsLocale: 'th-TH',
+    ),
+    SupportedLanguage(
+      code: 'tr',
+      nativeName: 'Türkçe',
+      englishName: 'Turkish',
+      ttsLocale: 'tr-TR',
+    ),
+    SupportedLanguage(
+      code: 'vi',
+      nativeName: 'Tiếng Việt',
+      englishName: 'Vietnamese',
+      ttsLocale: 'vi-VN',
     ),
     SupportedLanguage(
       code: 'zh',
@@ -68,6 +187,12 @@ class SupportedLocales {
       englishName: 'Simplified Chinese',
       ttsLocale: 'zh-CN',
       requiresPrivacyPolicyOnFirstLaunch: true,
+    ),
+    SupportedLanguage(
+      code: 'zh_Hant',
+      nativeName: '繁體中文',
+      englishName: 'Traditional Chinese',
+      ttsLocale: 'zh-TW',
     ),
   ];
 
@@ -77,7 +202,7 @@ class SupportedLocales {
   /// and returns true if that locale requires privacy policy acceptance.
   static bool requiresPrivacyPolicy(Locale? userLocale, Locale systemLocale) {
     final effectiveLocale = userLocale ?? systemLocale;
-    final language = getByCode(effectiveLocale.languageCode);
+    final language = getByLocale(effectiveLocale);
     return language?.requiresPrivacyPolicyOnFirstLaunch ?? false;
   }
 
@@ -88,22 +213,44 @@ class SupportedLocales {
   /// falls back to the default English URL.
   static String getPrivacyPolicyUrl(Locale? userLocale, Locale systemLocale) {
     final effectiveLocale = userLocale ?? systemLocale;
-    // Use Chinese privacy policy for all Chinese variants (zh, zh-CN, zh-TW, etc.)
+    // Use Chinese privacy policy for all Chinese variants (zh, zh-CN, zh-Hant, etc.)
     if (effectiveLocale.languageCode == 'zh') {
       return chinesePrivacyPolicyUrl;
     }
     // Check for locale-specific URL in configuration
-    final language = getByCode(effectiveLocale.languageCode);
+    final language = getByLocale(effectiveLocale);
     return language?.privacyPolicyUrl ?? defaultPrivacyPolicyUrl;
   }
 
   /// Get language by code.
+  ///
+  /// For locales with script codes (e.g., 'zh_Hant'), this method will match
+  /// by the full code. For plain language codes (e.g., 'zh'), it matches by
+  /// language code only.
   static SupportedLanguage? getByCode(String code) {
     try {
       return languages.firstWhere((lang) => lang.code == code);
     } catch (_) {
       return null;
     }
+  }
+
+  /// Get language by Locale object.
+  ///
+  /// Handles simple locales (e.g., Locale('en')), locales with script codes
+  /// (e.g., Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')),
+  /// and locales with country codes
+  /// (e.g., Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR')).
+  static SupportedLanguage? getByLocale(Locale locale) {
+    String codeToMatch;
+    if (locale.scriptCode != null) {
+      codeToMatch = '${locale.languageCode}_${locale.scriptCode}';
+    } else if (locale.countryCode != null) {
+      codeToMatch = '${locale.languageCode}_${locale.countryCode}';
+    } else {
+      codeToMatch = locale.languageCode;
+    }
+    return getByCode(codeToMatch);
   }
 
   /// Get language by TTS locale.

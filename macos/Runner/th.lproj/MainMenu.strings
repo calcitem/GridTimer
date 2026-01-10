@@ -1,0 +1,32 @@
+/* Localized versions of MainMenu.xib keys */
+
+/* Window Title */
+"QvC-M9-y7g.title" = "ไทม์เมอร์ตาราง";
+
+/* Application Menu */
+"1Xt-HY-uBw.title" = "ไทม์เมอร์ตาราง";
+"uQy-DD-JDr.title" = "ไทม์เมอร์ตาราง";
+"5kV-Vb-QxS.title" = "เกี่ยวกับไทม์เมอร์ตาราง";
+"BOF-NM-1cW.title" = "การตั้งค่า…";
+"NMo-om-nkz.title" = "บริการ";
+"hz9-B4-Xy5.title" = "บริการ";
+"Olw-nP-bQN.title" = "ซ่อนไทม์เมอร์ตาราง";
+"Vdr-fp-XzO.title" = "ซ่อนอื่นๆ";
+"Kd2-mp-pUS.title" = "แสดงทั้งหมด";
+"4sb-4s-VLi.title" = "ออกจากไทม์เมอร์ตาราง";
+
+/* Edit Menu */
+"5QF-Oa-p0T.title" = "แก้ไข";
+"W48-6f-4Dl.title" = "แก้ไข";
+
+/* View Menu */
+"H8h-7b-M4v.title" = "ดู";
+"HyV-fh-RgO.title" = "ดู";
+"4J7-dP-txa.title" = "เข้าสู่โหมดเต็มหน้าจอ";
+
+/* Window Menu */
+"aUF-d1-5bR.title" = "หน้าต่าง";
+"Td7-aD-5lo.title" = "หน้าต่าง";
+"OY7-WF-poV.title" = "ย่อเล็กสุด";
+"R4o-n2-Eq4.title" = "ซูม";
+"LE2-aR-0XJ.title" = "นำทั้งหมดมาข้างหน้า";

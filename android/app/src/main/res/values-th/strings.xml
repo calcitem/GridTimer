@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ไทม์เมอร์ตาราง</string>
+    <string name="widget_description">แสดงสถานะ Grid Timer</string>
+    <string name="widget_timers_ringing">ตัวจับเวลา %d ตัวกำลังดัง</string>
+    <string name="widget_timers_active">ตัวจับเวลา %d ตัวทำงานอยู่</string>
+    <string name="widget_tap_to_open">แตะเพื่อเปิดแอป</string>
+</resources>

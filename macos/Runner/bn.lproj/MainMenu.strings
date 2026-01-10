@@ -1,0 +1,32 @@
+/* Localized versions of MainMenu.xib keys */
+
+/* Window Title */
+"QvC-M9-y7g.title" = "গ্রিড টাইমার";
+
+/* Application Menu */
+"1Xt-HY-uBw.title" = "গ্রিড টাইমার";
+"uQy-DD-JDr.title" = "গ্রিড টাইমার";
+"5kV-Vb-QxS.title" = "গ্রিড টাইমার সম্পর্কে";
+"BOF-NM-1cW.title" = "পছন্দসমূহ…";
+"NMo-om-nkz.title" = "সেবা";
+"hz9-B4-Xy5.title" = "সেবা";
+"Olw-nP-bQN.title" = "গ্রিড টাইমার লুকান";
+"Vdr-fp-XzO.title" = "অন্যান্য লুকান";
+"Kd2-mp-pUS.title" = "সব দেখান";
+"4sb-4s-VLi.title" = "গ্রিড টাইমার বন্ধ করুন";
+
+/* Edit Menu */
+"5QF-Oa-p0T.title" = "সম্পাদনা";
+"W48-6f-4Dl.title" = "সম্পাদনা";
+
+/* View Menu */
+"H8h-7b-M4v.title" = "দেখুন";
+"HyV-fh-RgO.title" = "দেখুন";
+"4J7-dP-txa.title" = "পূর্ণ স্ক্রীন প্রবেশ করুন";
+
+/* Window Menu */
+"aUF-d1-5bR.title" = "উইন্ডো";
+"Td7-aD-5lo.title" = "উইন্ডো";
+"OY7-WF-poV.title" = "ছোট করুন";
+"R4o-n2-Eq4.title" = "জুম";
+"LE2-aR-0XJ.title" = "সব সামনে আনুন";

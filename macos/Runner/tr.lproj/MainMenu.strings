@@ -1,0 +1,32 @@
+/* Localized versions of MainMenu.xib keys */
+
+/* Window Title */
+"QvC-M9-y7g.title" = "9'lu Zamanlayıcı";
+
+/* Application Menu */
+"1Xt-HY-uBw.title" = "9'lu Zamanlayıcı";
+"uQy-DD-JDr.title" = "9'lu Zamanlayıcı";
+"5kV-Vb-QxS.title" = "9'lu Zamanlayıcı Hakkında";
+"BOF-NM-1cW.title" = "Tercihler…";
+"NMo-om-nkz.title" = "Hizmetler";
+"hz9-B4-Xy5.title" = "Hizmetler";
+"Olw-nP-bQN.title" = "9'lu Zamanlayıcı'yı Gizle";
+"Vdr-fp-XzO.title" = "Diğerlerini Gizle";
+"Kd2-mp-pUS.title" = "Tümünü Göster";
+"4sb-4s-VLi.title" = "9'lu Zamanlayıcı'dan Çık";
+
+/* Edit Menu */
+"5QF-Oa-p0T.title" = "Düzenle";
+"W48-6f-4Dl.title" = "Düzenle";
+
+/* View Menu */
+"H8h-7b-M4v.title" = "Görünüm";
+"HyV-fh-RgO.title" = "Görünüm";
+"4J7-dP-txa.title" = "Tam Ekrana Geç";
+
+/* Window Menu */
+"aUF-d1-5bR.title" = "Pencere";
+"Td7-aD-5lo.title" = "Pencere";
+"OY7-WF-poV.title" = "Küçült";
+"R4o-n2-Eq4.title" = "Yakınlaştır";
+"LE2-aR-0XJ.title" = "Tümünü Öne Getir";

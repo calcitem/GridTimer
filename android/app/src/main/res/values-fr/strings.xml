@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Minuteur Grille</string>
+    <string name="widget_description">Afficher l\'état de Minuteur Grille</string>
+    <string name="widget_timers_ringing">%d minuteurs sonnent</string>
+    <string name="widget_timers_active">%d minuteurs actifs</string>
+    <string name="widget_tap_to_open">Appuyez pour ouvrir l\'application</string>
+</resources>

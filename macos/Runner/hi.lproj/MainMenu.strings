@@ -1,0 +1,32 @@
+/* Localized versions of MainMenu.xib keys */
+
+/* Window Title */
+"QvC-M9-y7g.title" = "ग्रिड टाइमर";
+
+/* Application Menu */
+"1Xt-HY-uBw.title" = "ग्रिड टाइमर";
+"uQy-DD-JDr.title" = "ग्रिड टाइमर";
+"5kV-Vb-QxS.title" = "ग्रिड टाइमर के बारे में";
+"BOF-NM-1cW.title" = "वरीयताएँ…";
+"NMo-om-nkz.title" = "सेवाएँ";
+"hz9-B4-Xy5.title" = "सेवाएँ";
+"Olw-nP-bQN.title" = "ग्रिड टाइमर छिपाएँ";
+"Vdr-fp-XzO.title" = "अन्य छिपाएँ";
+"Kd2-mp-pUS.title" = "सभी दिखाएँ";
+"4sb-4s-VLi.title" = "ग्रिड टाइमर से बाहर निकलें";
+
+/* Edit Menu */
+"5QF-Oa-p0T.title" = "संपादित करें";
+"W48-6f-4Dl.title" = "संपादित करें";
+
+/* View Menu */
+"H8h-7b-M4v.title" = "देखें";
+"HyV-fh-RgO.title" = "देखें";
+"4J7-dP-txa.title" = "पूर्ण स्क्रीन में प्रवेश करें";
+
+/* Window Menu */
+"aUF-d1-5bR.title" = "विंडो";
+"Td7-aD-5lo.title" = "विंडो";
+"OY7-WF-poV.title" = "छोटा करें";
+"R4o-n2-Eq4.title" = "ज़ूम";
+"LE2-aR-0XJ.title" = "सभी को सामने लाएँ";

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Temporizador em Grade</string>
+    <string name="widget_description">Exibir status do Grid Timer</string>
+    <string name="widget_timers_ringing">%d temporizadores tocando</string>
+    <string name="widget_timers_active">%d temporizadores ativos</string>
+    <string name="widget_tap_to_open">Toque para abrir o app</string>
+</resources>

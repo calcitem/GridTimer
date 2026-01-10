@@ -1,7 +1,7 @@
 {
   "@@locale": "th",
 
-  "appTitle": "Grid Timer",
+  "appTitle": "ไทม์เมอร์ตาราง",
   "timerIdle": "ว่าง",
   "timerRunning": "กำลังทำงาน",
   "timerPaused": "หยุดชั่วคราว",

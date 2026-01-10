@@ -241,7 +241,7 @@ A:
 - [ ] iOS platform support
 - [ ] Windows platform support
 - [ ] Linux platform support
-- [ ] Support regional variants (e.g., en-US vs en-GB, zh-CN vs zh-TW)
+- [ ] Support regional variants (e.g., en-US vs en-GB, zh-CN vs zh-Hant)
 - [ ] Translation completeness checking tool
 - [ ] Integration with translation management platforms (Crowdin, Lokalise)
 - [ ] Automated translation validation in CI/CD

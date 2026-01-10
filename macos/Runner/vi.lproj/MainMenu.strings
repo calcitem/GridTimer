@@ -1,0 +1,32 @@
+/* Localized versions of MainMenu.xib keys */
+
+/* Window Title */
+"QvC-M9-y7g.title" = "Bộ hẹn giờ lưới 3x3";
+
+/* Application Menu */
+"1Xt-HY-uBw.title" = "Bộ hẹn giờ lưới 3x3";
+"uQy-DD-JDr.title" = "Bộ hẹn giờ lưới 3x3";
+"5kV-Vb-QxS.title" = "Giới thiệu Bộ hẹn giờ lưới 3x3";
+"BOF-NM-1cW.title" = "Tùy chọn…";
+"NMo-om-nkz.title" = "Dịch vụ";
+"hz9-B4-Xy5.title" = "Dịch vụ";
+"Olw-nP-bQN.title" = "Ẩn Bộ hẹn giờ lưới 3x3";
+"Vdr-fp-XzO.title" = "Ẩn các ứng dụng khác";
+"Kd2-mp-pUS.title" = "Hiện tất cả";
+"4sb-4s-VLi.title" = "Thoát Bộ hẹn giờ lưới 3x3";
+
+/* Edit Menu */
+"5QF-Oa-p0T.title" = "Chỉnh sửa";
+"W48-6f-4Dl.title" = "Chỉnh sửa";
+
+/* View Menu */
+"H8h-7b-M4v.title" = "Hiển thị";
+"HyV-fh-RgO.title" = "Hiển thị";
+"4J7-dP-txa.title" = "Vào chế độ toàn màn hình";
+
+/* Window Menu */
+"aUF-d1-5bR.title" = "Cửa sổ";
+"Td7-aD-5lo.title" = "Cửa sổ";
+"OY7-WF-poV.title" = "Thu nhỏ";
+"R4o-n2-Eq4.title" = "Phóng to";
+"LE2-aR-0XJ.title" = "Đưa tất cả ra phía trước";

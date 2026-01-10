@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">九宮計時</string>
+    <string name="widget_description">顯示九宮計時狀態</string>
+    <string name="widget_timers_ringing">%d 個計時器響鈴</string>
+    <string name="widget_timers_active">%d 個計時器運行中</string>
+    <string name="widget_tap_to_open">點擊開啟應用</string>
+</resources>

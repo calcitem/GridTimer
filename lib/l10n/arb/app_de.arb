@@ -1,7 +1,7 @@
 {
   "@@locale": "de",
 
-  "appTitle": "Grid Timer",
+  "appTitle": "Raster-Timer",
   "@appTitle": {
     "description": "Application title"
   },

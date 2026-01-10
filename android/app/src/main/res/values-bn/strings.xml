@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">গ্রিড টাইমার</string>
+    <string name="widget_description">গ্রিড টাইমারের স্ট্যাটাস দেখান</string>
+    <string name="widget_timers_ringing">%dটি টাইমার রিং হচ্ছে</string>
+    <string name="widget_timers_active">%dটি টাইমার চলছে</string>
+    <string name="widget_tap_to_open">অ্যাপ খুলতে ট্যাপ করুন</string>
+</resources>

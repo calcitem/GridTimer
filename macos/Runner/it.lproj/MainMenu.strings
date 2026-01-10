@@ -1,0 +1,32 @@
+/* Localized versions of MainMenu.xib keys */
+
+/* Window Title */
+"QvC-M9-y7g.title" = "Timer a Griglia";
+
+/* Application Menu */
+"1Xt-HY-uBw.title" = "Timer a Griglia";
+"uQy-DD-JDr.title" = "Timer a Griglia";
+"5kV-Vb-QxS.title" = "Informazioni su Timer a Griglia";
+"BOF-NM-1cW.title" = "Preferenze…";
+"NMo-om-nkz.title" = "Servizi";
+"hz9-B4-Xy5.title" = "Servizi";
+"Olw-nP-bQN.title" = "Nascondi Timer a Griglia";
+"Vdr-fp-XzO.title" = "Nascondi altri";
+"Kd2-mp-pUS.title" = "Mostra tutti";
+"4sb-4s-VLi.title" = "Esci da Timer a Griglia";
+
+/* Edit Menu */
+"5QF-Oa-p0T.title" = "Modifica";
+"W48-6f-4Dl.title" = "Modifica";
+
+/* View Menu */
+"H8h-7b-M4v.title" = "Vista";
+"HyV-fh-RgO.title" = "Vista";
+"4J7-dP-txa.title" = "Passa a schermo intero";
+
+/* Window Menu */
+"aUF-d1-5bR.title" = "Finestra";
+"Td7-aD-5lo.title" = "Finestra";
+"OY7-WF-poV.title" = "Riduci";
+"R4o-n2-Eq4.title" = "Zoom";
+"LE2-aR-0XJ.title" = "Porta tutto in primo piano";

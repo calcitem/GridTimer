@@ -1,0 +1,32 @@
+/* Localized versions of MainMenu.xib keys */
+
+/* Window Title */
+"QvC-M9-y7g.title" = "그리드 타이머";
+
+/* Application Menu */
+"1Xt-HY-uBw.title" = "그리드 타이머";
+"uQy-DD-JDr.title" = "그리드 타이머";
+"5kV-Vb-QxS.title" = "그리드 타이머 정보";
+"BOF-NM-1cW.title" = "환경설정…";
+"NMo-om-nkz.title" = "서비스";
+"hz9-B4-Xy5.title" = "서비스";
+"Olw-nP-bQN.title" = "그리드 타이머 가리기";
+"Vdr-fp-XzO.title" = "기타 가리기";
+"Kd2-mp-pUS.title" = "모두 보기";
+"4sb-4s-VLi.title" = "그리드 타이머 종료";
+
+/* Edit Menu */
+"5QF-Oa-p0T.title" = "편집";
+"W48-6f-4Dl.title" = "편집";
+
+/* View Menu */
+"H8h-7b-M4v.title" = "보기";
+"HyV-fh-RgO.title" = "보기";
+"4J7-dP-txa.title" = "전체 화면으로 전환";
+
+/* Window Menu */
+"aUF-d1-5bR.title" = "윈도우";
+"Td7-aD-5lo.title" = "윈도우";
+"OY7-WF-poV.title" = "최소화";
+"R4o-n2-Eq4.title" = "확대/축소";
+"LE2-aR-0XJ.title" = "모두 앞으로 가져오기";

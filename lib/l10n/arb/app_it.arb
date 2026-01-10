@@ -1,7 +1,7 @@
 {
   "@@locale": "it",
 
-  "appTitle": "Grid Timer",
+  "appTitle": "Timer a Griglia",
   "timerIdle": "Pronto",
   "timerRunning": "In esecuzione",
   "timerPaused": "In pausa",

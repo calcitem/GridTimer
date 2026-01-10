@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">9\'lu Zamanlayıcı</string>
+    <string name="widget_description">9\'lu Zamanlayıcı durumunu göster</string>
+    <string name="widget_timers_ringing">%d zamanlayıcı çalıyor</string>
+    <string name="widget_timers_active">%d zamanlayıcı çalışıyor</string>
+    <string name="widget_tap_to_open">Uygulamayı açmak için dokunun</string>
+</resources>

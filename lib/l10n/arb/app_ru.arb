@@ -1,7 +1,7 @@
 {
   "@@locale": "ru",
 
-  "appTitle": "Grid Timer",
+  "appTitle": "Таймер-Сетка",
   "timerIdle": "Готов",
   "timerRunning": "Запущен",
   "timerPaused": "Пауза",

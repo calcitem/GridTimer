@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مؤقّت الشبكة</string>
+    <string name="widget_description">عرض حالة Grid Timer</string>
+    <string name="widget_timers_ringing">%d مؤقّتات تَرِنّ</string>
+    <string name="widget_timers_active">%d مؤقّتات نشطة</string>
+    <string name="widget_tap_to_open">انقر لفتح التطبيق</string>
+</resources>

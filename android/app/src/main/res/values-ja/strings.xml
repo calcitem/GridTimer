@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">グリッドタイマー</string>
+    <string name="widget_description">グリッドタイマーの状態を表示</string>
+    <string name="widget_timers_ringing">%d 件のタイマーが鳴っています</string>
+    <string name="widget_timers_active">%d 件のタイマーが動作中</string>
+    <string name="widget_tap_to_open">タップしてアプリを開く</string>
+</resources>

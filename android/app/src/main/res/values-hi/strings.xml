@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ग्रिड टाइमर</string>
+    <string name="widget_description">ग्रिड टाइमर की स्थिति दिखाएँ</string>
+    <string name="widget_timers_ringing">%d टाइमर बज रहे हैं</string>
+    <string name="widget_timers_active">%d टाइमर चल रहे हैं</string>
+    <string name="widget_tap_to_open">ऐप खोलने के लिए टैप करें</string>
+</resources>

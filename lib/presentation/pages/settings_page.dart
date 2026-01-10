@@ -862,7 +862,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
     if (locale == null) {
       return l10n.followSystem;
     }
-    final language = SupportedLocales.getByCode(locale.languageCode);
+    final language = SupportedLocales.getByLocale(locale);
     return language?.nativeName ?? locale.languageCode;
   }
 
@@ -965,18 +965,36 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
   ) {
     final currentLocale = ref.read(localeProvider);
 
+    // Build the current locale code for matching (e.g., 'zh_Hant', 'pt_BR', 'en')
+    String? currentLocaleCode;
+    if (currentLocale != null) {
+      if (currentLocale.scriptCode != null) {
+        currentLocaleCode =
+            '${currentLocale.languageCode}_${currentLocale.scriptCode}';
+      } else if (currentLocale.countryCode != null) {
+        currentLocaleCode =
+            '${currentLocale.languageCode}_${currentLocale.countryCode}';
+      } else {
+        currentLocaleCode = currentLocale.languageCode;
+      }
+    }
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(l10n.selectLanguage),
         content: SingleChildScrollView(
           child: RadioGroup<String?>(
-            groupValue: currentLocale?.languageCode,
+            groupValue: currentLocaleCode,
             onChanged: (value) {
               if (value == null) {
                 ref.read(localeProvider.notifier).setLocale(null);
               } else {
-                ref.read(localeProvider.notifier).setLocale(Locale(value));
+                // Find the language and use its properly constructed Locale
+                final language = SupportedLocales.getByCode(value);
+                if (language != null) {
+                  ref.read(localeProvider.notifier).setLocale(language.locale);
+                }
               }
               Navigator.pop(context);
             },

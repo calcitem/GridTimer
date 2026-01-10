@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Таймер-Сетка</string>
+    <string name="widget_description">Показать статус Grid Timer</string>
+    <string name="widget_timers_ringing">%d таймеров звонит</string>
+    <string name="widget_timers_active">%d таймеров активно</string>
+    <string name="widget_tap_to_open">Нажмите, чтобы открыть приложение</string>
+</resources>

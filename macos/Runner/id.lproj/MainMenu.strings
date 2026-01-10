@@ -1,0 +1,32 @@
+/* Localized versions of MainMenu.xib keys */
+
+/* Window Title */
+"QvC-M9-y7g.title" = "Timer Grid";
+
+/* Application Menu */
+"1Xt-HY-uBw.title" = "Timer Grid";
+"uQy-DD-JDr.title" = "Timer Grid";
+"5kV-Vb-QxS.title" = "Tentang Timer Grid";
+"BOF-NM-1cW.title" = "Preferensi…";
+"NMo-om-nkz.title" = "Layanan";
+"hz9-B4-Xy5.title" = "Layanan";
+"Olw-nP-bQN.title" = "Sembunyikan Timer Grid";
+"Vdr-fp-XzO.title" = "Sembunyikan Lainnya";
+"Kd2-mp-pUS.title" = "Tampilkan Semua";
+"4sb-4s-VLi.title" = "Keluar dari Timer Grid";
+
+/* Edit Menu */
+"5QF-Oa-p0T.title" = "Sunting";
+"W48-6f-4Dl.title" = "Sunting";
+
+/* View Menu */
+"H8h-7b-M4v.title" = "Tampilan";
+"HyV-fh-RgO.title" = "Tampilan";
+"4J7-dP-txa.title" = "Masuk Layar Penuh";
+
+/* Window Menu */
+"aUF-d1-5bR.title" = "Jendela";
+"Td7-aD-5lo.title" = "Jendela";
+"OY7-WF-poV.title" = "Minimalkan";
+"R4o-n2-Eq4.title" = "Zum";
+"LE2-aR-0XJ.title" = "Bawa Semua ke Depan";

@@ -29,7 +29,29 @@ class LocaleNotifier extends Notifier<Locale?> {
       final box = await Hive.openBox(_boxName);
       final savedLocale = box.get(_localeKey) as String?;
       if (savedLocale != null) {
-        state = Locale(savedLocale);
+        // Parse locale string
+        // Examples: 'zh_Hant', 'pt_BR', 'en'
+        final parts = savedLocale.split('_');
+        if (parts.length == 2) {
+          final secondPart = parts[1];
+          // Script codes are 4 letters (e.g., 'Hant')
+          // Country codes are 2 letters (e.g., 'BR')
+          if (secondPart.length == 4) {
+            state = Locale.fromSubtags(
+              languageCode: parts[0],
+              scriptCode: secondPart,
+            );
+          } else if (secondPart.length == 2) {
+            state = Locale.fromSubtags(
+              languageCode: parts[0],
+              countryCode: secondPart,
+            );
+          } else {
+            state = Locale(savedLocale);
+          }
+        } else {
+          state = Locale(savedLocale);
+        }
       }
     } catch (e) {
       // Ignore errors, use system default
@@ -43,7 +65,17 @@ class LocaleNotifier extends Notifier<Locale?> {
     try {
       final box = await Hive.openBox(_boxName);
       if (locale != null) {
-        await box.put(_localeKey, locale.languageCode);
+        // Save full locale string including script code or country code
+        // Examples: 'zh_Hant', 'pt_BR', 'en'
+        String localeString;
+        if (locale.scriptCode != null) {
+          localeString = '${locale.languageCode}_${locale.scriptCode}';
+        } else if (locale.countryCode != null) {
+          localeString = '${locale.languageCode}_${locale.countryCode}';
+        } else {
+          localeString = locale.languageCode;
+        }
+        await box.put(_localeKey, localeString);
       } else {
         await box.delete(_localeKey);
       }
