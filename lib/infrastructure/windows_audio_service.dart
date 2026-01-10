@@ -7,11 +7,39 @@ import '../core/domain/services/i_audio_service.dart';
 import '../core/domain/types.dart';
 import 'windows_wav_player.dart';
 
-/// Windows audio service implementation using winmm PlaySound (FFI).
+/// Windows-specific audio service implementation using winmm PlaySound API via FFI.
 ///
-/// NOTE: We intentionally avoid the `audioplayers` plugin on Windows because
-/// it may crash when platform channel messages are sent from a non-platform
-/// thread. PlaySound is stable and sufficient for alarm-style WAV playback.
+/// ## Why not use audioplayers on Windows?
+///
+/// The `audioplayers` plugin can crash on Windows when platform channel messages
+/// are sent from non-platform threads, which is common in alarm/timer scenarios
+/// where audio playback is triggered from background timers or system callbacks.
+///
+/// ## Implementation details:
+///
+/// - Uses native Windows **winmm.dll** `PlaySoundW` function via FFI
+/// - Loads WAV file into memory once during initialization
+/// - Supports both one-shot and looping playback modes
+/// - No platform channel overhead - direct native calls
+/// - Stable and reliable even when called from background threads
+///
+/// ## Limitations:
+///
+/// - Only supports WAV format (sufficient for alarm sounds)
+/// - Single audio file loaded at initialization (all timers use same sound)
+/// - Basic volume control (0.0 = stop playback, >0.0 = system volume)
+/// - No audio session management (uses default Windows audio routing)
+///
+/// ## Platform compatibility:
+///
+/// This service is **only instantiated on Windows** (see `audioServiceProvider`
+/// in `lib/app/providers.dart`). Other desktop platforms:
+/// - **Linux & macOS**: Use `AudioService` (audioplayers plugin works well)
+/// - **Android & iOS**: Use `AudioService` with mobile-specific AudioContext
+///
+/// ## See also:
+/// - `windows_wav_player.dart` for the FFI abstraction layer
+/// - `windows_wav_player_ffi.dart` for the native PlaySound implementation
 class WindowsAudioService implements IAudioService {
   static const String _alarmAssetKey = 'assets/sounds/sound.wav';
 

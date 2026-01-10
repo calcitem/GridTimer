@@ -51,10 +51,37 @@ final alarmVolumeServiceProvider = Provider<IAlarmVolumeService>((ref) {
 });
 
 /// Audio service provider.
+///
+/// Platform-specific audio implementation strategy:
+///
+/// **Windows**:
+/// - Uses `WindowsAudioService` (FFI-based, winmm.dll PlaySound API)
+/// - Reason: The `audioplayers` plugin can crash on Windows when platform
+///   channel messages are sent from non-platform threads (common in alarm
+///   scenarios). Windows native PlaySound is more stable and reliable.
+///
+/// **Linux & macOS**:
+/// - Uses `AudioService` (audioplayers plugin)
+/// - The audioplayers plugin supports these platforms well for basic playback.
+/// - AudioContext configuration is mobile-only and correctly skipped on desktop.
+/// - Playback, volume control, and looping work reliably on both platforms.
+///
+/// **Android & iOS**:
+/// - Uses `AudioService` (audioplayers plugin)
+/// - Includes platform-specific AudioContext configuration for:
+///   - Android: USAGE_ALARM with no audio focus (mixes with other sounds)
+///   - iOS: AVAudioSession playback category with mixWithOthers
+///
+/// **Web**:
+/// - Uses `AudioService` (audioplayers plugin with web support)
+/// - AudioContext is not applicable and correctly skipped.
 final audioServiceProvider = Provider<IAudioService>((ref) {
+  // Windows requires special FFI-based implementation for stability
   if (!kIsWeb && defaultTargetPlatform == TargetPlatform.windows) {
     return WindowsAudioService();
   }
+
+  // All other platforms (Linux, macOS, Android, iOS, Web) use audioplayers
   return AudioService();
 });
 

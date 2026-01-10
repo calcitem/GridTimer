@@ -7,7 +7,36 @@ import '../core/domain/enums.dart';
 import '../core/domain/services/i_audio_service.dart';
 import '../core/domain/types.dart';
 
-/// Audio playback service implementation with multiple playback modes.
+/// Audio playback service implementation using the audioplayers plugin.
+///
+/// This service is used on:
+/// - **Android & iOS**: Full support with platform-specific AudioContext
+/// - **Linux & macOS**: Basic playback support (AudioContext not applicable)
+/// - **Web**: Basic playback support via HTML5 audio
+///
+/// For Windows, a separate `WindowsAudioService` using FFI is used instead
+/// to avoid platform channel thread safety issues.
+///
+/// ## Platform-specific behavior:
+///
+/// ### Android
+/// - Uses USAGE_ALARM audio stream for reliable alarm playback
+/// - Audio focus set to 'none' to mix with other app sounds
+/// - Stays awake during playback to prevent sleep interruption
+///
+/// ### iOS
+/// - Uses AVAudioSession playback category
+/// - Mixes with other apps' audio (mixWithOthers option)
+///
+/// ### Linux & macOS
+/// - Standard audio playback without mobile-specific AudioContext
+/// - Volume control, looping, and playback modes all supported
+/// - Relies on system audio routing (no custom audio session management)
+///
+/// ### Web
+/// - HTML5 audio backend
+/// - Basic playback features supported
+/// - Platform limitations may apply (e.g., autoplay policies)
 class AudioService implements IAudioService {
   final AudioPlayer _player = AudioPlayer();
   double _currentVolume = 1.0;
@@ -18,6 +47,10 @@ class AudioService implements IAudioService {
   /// Timer for interval mode.
   Timer? _intervalTimer;
 
+  /// Builds AudioContext for mobile platforms.
+  ///
+  /// This configures platform-specific audio behavior for Android and iOS.
+  /// Desktop and Web platforms do not use AudioContext.
   AudioContext _buildAudioContext() {
     return AudioContext(
       android: const AudioContextAndroid(
@@ -39,12 +72,21 @@ class AudioService implements IAudioService {
     );
   }
 
+  /// Checks if the current platform supports AudioContext configuration.
+  ///
+  /// Returns true only for Android and iOS where audio session management
+  /// is available and necessary. Desktop platforms (Linux, macOS) and Web
+  /// do not require AudioContext configuration.
   bool get _supportsAudioContext {
     if (kIsWeb) return false;
     return defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS;
   }
 
+  /// Sets AudioContext if the platform supports it.
+  ///
+  /// On Android/iOS, this configures the audio session for alarm playback.
+  /// On Linux/macOS/Web, this is a no-op as AudioContext is not applicable.
   Future<void> _setAudioContextIfSupported() async {
     if (!_supportsAudioContext) return;
     await _player.setAudioContext(_buildAudioContext());
@@ -57,6 +99,7 @@ class AudioService implements IAudioService {
     await _player.setVolume(_currentVolume);
 
     // Set audio context to alarm/notification to ensure playback even when locked.
+    // This is only effective on Android/iOS; desktop platforms work without it.
     await _setAudioContextIfSupported();
   }
 
@@ -97,7 +140,8 @@ class AudioService implements IAudioService {
       // Always stop first to ensure clean state.
       await _player.stop();
 
-      // Re-apply audio context to ensure we have focus.
+      // Re-apply audio context to ensure we have focus (Android/iOS only).
+      // On desktop platforms, this is a no-op.
       await _setAudioContextIfSupported();
 
       // Set volume before playing.
