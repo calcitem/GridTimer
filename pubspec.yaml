@@ -57,6 +57,7 @@ dependencies:
   ffi: 2.1.4
   package_info_plus: ^9.0.0
   flutter_single_instance: ^1.7.0
+  numberpicker: ^2.1.2
 
 dev_dependencies:
   flutter_test:

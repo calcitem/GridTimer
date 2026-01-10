@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../core/domain/entities/app_settings.dart';
+import '../core/domain/entities/idle_grid_click_behavior.dart';
 import '../core/domain/enums.dart';
 import '../core/theme/app_theme.dart';
 import '../core/domain/services/i_clock.dart';
@@ -407,6 +408,13 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
     await updateSettings(
       (s) => s.copyWith(gridDurationsInSeconds: durationsInSeconds),
     );
+  }
+
+  /// Update idle grid click behavior.
+  Future<void> updateIdleGridClickBehavior(
+    IdleGridClickBehavior behavior,
+  ) async {
+    await updateSettings((s) => s.copyWith(idleGridClickBehavior: behavior));
   }
 
   /// Reset all settings to default values.

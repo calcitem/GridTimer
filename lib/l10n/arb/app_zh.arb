@@ -22,6 +22,17 @@
 
   "timeUpTts": "{name} 时间到了",
 
+  "timerIdleActions": "选择操作",
+  "actionAdjustTime": "调整时间",
+  "adjustTimeTitle": "调整时间 - {slotName}",
+  "currentDuration": "当前: {minutes} 分 {seconds} 秒",
+  "durationUpdatedSuccessfully": "时长已更新",
+  "durationMustBePositive": "时长必须大于 0",
+  "idleGridClickBehaviorTitle": "点击空闲格子行为",
+  "idleGridClickBehaviorDesc": "选择点击空闲格子时的行为",
+  "showDialogOption": "显示操作对话框（推荐，防误触）",
+  "directStartOption": "直接启动计时器（快捷模式）",
+
   "permissionNotificationTitle": "开启通知",
   "permissionNotificationBody": "为了接收计时器提醒，请开启通知权限。",
 

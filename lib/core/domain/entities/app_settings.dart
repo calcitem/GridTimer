@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../types.dart';
 import '../enums.dart';
+import 'idle_grid_click_behavior.dart';
 
 part 'app_settings.freezed.dart';
 part 'app_settings.g.dart';
@@ -140,6 +141,11 @@ abstract class AppSettings with _$AppSettings {
     /// Default is alarmClock (maximum reliability, maintains backward compatibility).
     @Default(AlarmReliabilityMode.alarmClock)
     AlarmReliabilityMode alarmReliabilityMode,
+
+    /// Behavior when clicking on an idle grid cell.
+    /// Default is showDialog (safer, prevents accidental start).
+    @Default(IdleGridClickBehavior.showDialog)
+    IdleGridClickBehavior idleGridClickBehavior,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>

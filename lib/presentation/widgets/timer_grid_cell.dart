@@ -1,12 +1,16 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../app/providers.dart';
+import '../../core/domain/entities/idle_grid_click_behavior.dart';
 import '../../core/domain/entities/timer_config.dart';
 import '../../core/domain/entities/timer_session.dart';
 import '../../core/domain/enums.dart';
 import '../../core/theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
+import '../dialogs/quick_duration_editor_dialog.dart';
 
 /// A single cell in the 3x3 timer grid.
 class TimerGridCell extends ConsumerStatefulWidget {
@@ -586,15 +590,23 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
     }
   }
 
-  void _handleTap(BuildContext context, WidgetRef ref) {
+  Future<void> _handleTap(BuildContext context, WidgetRef ref) async {
     final timerService = ref.read(timerServiceProvider);
 
     switch (widget.session.status) {
       case TimerStatus.idle:
-        if (timerService.hasActiveTimers()) {
-          _showStartConfirmation(context, ref);
+        final settings = await ref.read(appSettingsProvider.future);
+        // Avoid using BuildContext across async gaps.
+        if (!context.mounted) return;
+        if (settings.idleGridClickBehavior ==
+            IdleGridClickBehavior.directStart) {
+          if (timerService.hasActiveTimers()) {
+            _showStartConfirmation(context, ref);
+          } else {
+            _startTimer(ref);
+          }
         } else {
-          _startTimer(ref);
+          _showIdleActions(context, ref);
         }
         break;
       case TimerStatus.running:
@@ -606,6 +618,134 @@ class _TimerGridCellState extends ConsumerState<TimerGridCell>
       case TimerStatus.ringing:
         _showRingingActions(context, ref);
         break;
+    }
+  }
+
+  void _showIdleActions(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final theme = ref.read(themeProvider);
+    final tokens = theme.tokens;
+
+    if (l10n == null) return;
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.timerIdleActions),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Start Timer (Large Button)
+              _buildTileButton(
+                icon: Icons.play_arrow,
+                label: l10n.actionStart,
+                color: tokens.accent,
+                textColor: tokens.bg,
+                onPressed: () {
+                  Navigator.pop(dialogContext);
+                  // Check for active timers even in dialog mode
+                  final timerService = ref.read(timerServiceProvider);
+                  if (timerService.hasActiveTimers()) {
+                    _showStartConfirmation(context, ref);
+                  } else {
+                    _startTimer(ref);
+                  }
+                },
+                isLarge: true,
+              ),
+              const SizedBox(height: 16),
+              // Adjust Time (Middle)
+              SizedBox(
+                width: double.infinity,
+                child: _buildTileButton(
+                  icon: Icons.edit_calendar_outlined,
+                  label: l10n.actionAdjustTime,
+                  color: const Color(0xFF448AFF), // Blue for config action
+                  textColor: Colors.white,
+                  isHorizontal: true,
+                  onPressed: () async {
+                    Navigator.pop(dialogContext);
+                    await _showQuickDurationEditor(ref);
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Cancel (Bottom)
+              SizedBox(
+                width: double.infinity,
+                child: _buildTileButton(
+                  icon: Icons.close,
+                  label: l10n.actionCancel,
+                  color: tokens.surfacePressed,
+                  textColor: tokens.textPrimary,
+                  isHorizontal: true,
+                  onPressed: () => Navigator.pop(dialogContext),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showQuickDurationEditor(WidgetRef ref) async {
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
+    final theme = ref.read(themeProvider);
+    if (l10n == null) return;
+
+    // Get current preset duration in seconds
+    final currentSeconds = widget.config.presetDurationMs ~/ 1000;
+
+    final newSeconds = await QuickDurationEditorDialog.show(
+      context,
+      initialDurationSeconds: currentSeconds,
+      slotName: widget.config.name,
+      tokens: theme.tokens,
+    );
+
+    if (newSeconds != null && newSeconds != currentSeconds && mounted) {
+      // Update the setting
+      final settings = await ref.read(appSettingsProvider.future);
+      final newDurations = List<int>.from(settings.gridDurationsInSeconds);
+
+      // Ensure index is valid
+      if (widget.slotIndex < newDurations.length) {
+        newDurations[widget.slotIndex] = newSeconds;
+
+        await ref
+            .read(appSettingsProvider.notifier)
+            .updateGridDurations(newDurations);
+
+        // Refresh grid configuration
+        final timerService = ref.read(timerServiceProvider);
+
+        // If timers are active, show warning that it will apply next time
+        if (timerService.hasActiveTimers()) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(l10n.activeTimersRunningConfigWillApplyOnRestart),
+                backgroundColor: Colors.orange,
+              ),
+            );
+          }
+        } else {
+          // No active timers, update immediately
+          await timerService.updateDefaultGridDurations();
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(l10n.durationUpdatedSuccessfully),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        }
+      }
     }
   }
 

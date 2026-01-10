@@ -93,6 +93,72 @@
     }
   },
 
+  "timerIdleActions": "Choose Action",
+  "@timerIdleActions": {
+    "description": "Dialog title for idle timer actions"
+  },
+
+  "actionAdjustTime": "Adjust Time",
+  "@actionAdjustTime": {
+    "description": "Action: adjust timer duration"
+  },
+
+  "adjustTimeTitle": "Adjust Time - {slotName}",
+  "@adjustTimeTitle": {
+    "description": "Title for time adjustment dialog",
+    "placeholders": {
+      "slotName": {
+        "type": "String",
+        "example": "Timer 1"
+      }
+    }
+  },
+
+  "currentDuration": "Current: {minutes} min {seconds} sec",
+  "@currentDuration": {
+    "description": "Current duration preview",
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "5"
+      },
+      "seconds": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+
+  "durationUpdatedSuccessfully": "Duration updated successfully",
+  "@durationUpdatedSuccessfully": {
+    "description": "Success message when duration is updated"
+  },
+
+  "durationMustBePositive": "Duration must be greater than 0",
+  "@durationMustBePositive": {
+    "description": "Error message when duration is 0"
+  },
+
+  "idleGridClickBehaviorTitle": "Idle Grid Click Behavior",
+  "@idleGridClickBehaviorTitle": {
+    "description": "Setting title for idle grid click behavior"
+  },
+
+  "idleGridClickBehaviorDesc": "Choose action when clicking idle grid cell",
+  "@idleGridClickBehaviorDesc": {
+    "description": "Setting description for idle grid click behavior"
+  },
+
+  "showDialogOption": "Show action dialog (recommended, prevents accidental tap)",
+  "@showDialogOption": {
+    "description": "Option to show dialog when clicking idle grid"
+  },
+
+  "directStartOption": "Start timer directly (quick mode)",
+  "@directStartOption": {
+    "description": "Option to start timer directly when clicking idle grid"
+  },
+
   "permissionNotificationTitle": "Enable Notifications",
   "@permissionNotificationTitle": {
     "description": "Permission guide: notification title"

@@ -11,6 +11,7 @@ import '../../core/config/environment_config.dart';
 import '../../core/config/platform_capabilities.dart';
 import '../../core/config/supported_locales.dart';
 import '../../core/domain/entities/app_settings.dart';
+import '../../core/domain/entities/idle_grid_click_behavior.dart';
 import '../../core/domain/enums.dart';
 import '../../l10n/app_localizations.dart';
 import '../dialogs/alarm_troubleshooting_dialog.dart';
@@ -165,6 +166,22 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
                     builder: (_) => const GridDurationsSettingsPage(),
                   ),
                 );
+              },
+            ),
+
+            // Idle Grid Click Behavior
+            ListTile(
+              leading: const Icon(Icons.touch_app_outlined),
+              title: Text(l10n.idleGridClickBehaviorTitle),
+              subtitle: Text(
+                settings.idleGridClickBehavior ==
+                        IdleGridClickBehavior.directStart
+                    ? l10n.directStartOption
+                    : l10n.showDialogOption,
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                _showIdleGridClickBehaviorDialog(context, ref, l10n, settings);
               },
             ),
 
@@ -1184,6 +1201,79 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
                       ? const Icon(Icons.check)
                       : null,
                   onTap: () => selectTheme('classic_navy'),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.actionCancel),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showIdleGridClickBehaviorDialog(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+    AppSettings settings,
+  ) {
+    void selectBehavior(IdleGridClickBehavior behavior) {
+      ref
+          .read(appSettingsProvider.notifier)
+          .updateIdleGridClickBehavior(behavior);
+      Navigator.pop(context);
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.idleGridClickBehaviorTitle),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.idleGridClickBehaviorDesc,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 16),
+              Semantics(
+                button: true,
+                selected:
+                    settings.idleGridClickBehavior ==
+                    IdleGridClickBehavior.showDialog,
+                child: ListTile(
+                  leading: const Icon(Icons.menu_open),
+                  title: Text(l10n.showDialogOption),
+                  trailing:
+                      settings.idleGridClickBehavior ==
+                          IdleGridClickBehavior.showDialog
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => selectBehavior(IdleGridClickBehavior.showDialog),
+                ),
+              ),
+              Semantics(
+                button: true,
+                selected:
+                    settings.idleGridClickBehavior ==
+                    IdleGridClickBehavior.directStart,
+                child: ListTile(
+                  leading: const Icon(Icons.play_arrow),
+                  title: Text(l10n.directStartOption),
+                  trailing:
+                      settings.idleGridClickBehavior ==
+                          IdleGridClickBehavior.directStart
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () =>
+                      selectBehavior(IdleGridClickBehavior.directStart),
                 ),
               ),
             ],
