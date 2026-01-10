@@ -39,8 +39,6 @@ class GestureSettingsPage extends ConsumerWidget {
     switch (action) {
       case AlarmGestureAction.stopAndReset:
         return l10n.gestureActionStopAndReset;
-      case AlarmGestureAction.pause:
-        return l10n.gestureActionPause;
       case AlarmGestureAction.none:
         return l10n.gestureActionNone;
     }

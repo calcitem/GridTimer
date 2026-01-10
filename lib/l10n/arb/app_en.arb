@@ -660,11 +660,6 @@
     "description": "Stop and reset action"
   },
 
-  "gestureActionPause": "Pause",
-  "@gestureActionPause": {
-    "description": "Pause action"
-  },
-
   "gestureActionNone": "No Action",
   "@gestureActionNone": {
     "description": "No action"

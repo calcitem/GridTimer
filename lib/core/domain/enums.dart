@@ -76,14 +76,11 @@ enum AlarmGestureAction {
   /// Stop the alarm and reset timer.
   stopAndReset,
 
-  /// Pause the alarm (can be resumed).
-  pause,
-
   /// Do nothing.
   none,
 }
 
-/// Types of gestures that can stop/pause alarms.
+/// Types of gestures that can control alarms.
 enum AlarmGestureType {
   /// Press volume up button.
   volumeUp,

@@ -211,9 +211,6 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         case AlarmGestureAction.stopAndReset:
           await stopRinging(timerId);
           break;
-        case AlarmGestureAction.pause:
-          await pause(timerId);
-          break;
         case AlarmGestureAction.none:
           break;
       }
