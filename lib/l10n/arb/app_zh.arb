@@ -28,6 +28,7 @@
   "currentDuration": "当前: {minutes} 分 {seconds} 秒",
   "durationUpdatedSuccessfully": "时长已更新",
   "durationMustBePositive": "时长必须大于 0",
+
   "idleGridClickBehaviorTitle": "点击空闲格子行为",
   "idleGridClickBehaviorDesc": "选择点击空闲格子时的行为",
   "showDialogOption": "显示操作对话框（推荐，防误触）",
@@ -54,6 +55,7 @@
   "versionInfo": "版本信息",
   "gitBranch": "Git 分支",
   "gitRevision": "Git 提交哈希",
+
   "timerSettings": "计时器设置",
   "soundSettings": "音量设置",
   "soundSettingsDesc": "配置音量",
@@ -71,6 +73,7 @@
   "selectLanguage": "选择语言",
   "languageEnglish": "English",
   "languageChineseSimplified": "简体中文",
+
   "errorText": "错误：{error}",
   "confirmStart": "当前已有计时器在运行。要继续启动此计时器吗？",
 
@@ -84,6 +87,7 @@
   "showMinutesSecondsFormatDesc": "倒计时显示为分:秒格式（关闭则显示总秒数）",
   "ttsEnabled": "语音播报",
   "ttsEnabledDesc": "计时结束时语音播报",
+
   "alarmSound": "提醒声音",
   "alarmSoundDesc": "选择计时器提醒声音",
   "volume": "音量",
@@ -100,25 +104,31 @@
   "vibrationSystemWarning": "已为您切换应用内的振动设置。但请注意，手机系统的振动设置（如勿扰模式、系统振动开关等）也可能影响实际是否振动。如需确保振动生效，请同时检查系统设置。",
   "openSystemVibrationSettings": "打开系统振动设置",
   "volumeButtonLockScreenHint": "某些系统仅在非锁屏状态下按音量键才能生效",
+
   "ttsLanguage": "语音播报语言",
   "ttsLanguageDesc": "选择语音播报语言",
+
   "testSound": "测试声音",
   "playing": "播放中...",
   "testTts": "测试语音",
-
   "ttsTestMessage": "计时器 1 时间到了",
+
   "unitSecondsShort": "秒",
   "unitMinutesShort": "分钟",
   "unitHoursShort": "小时",
+
   "gridDurationsSettings": "九宫格设置",
   "gridDurationsSettingsDesc": "自定义每个宫格的名称和时长",
   "gridSlot": "宫格 {index}",
+
   "seconds": "秒",
   "hours": "小时",
+
   "save": "保存",
   "reset": "重置",
   "resetToDefault": "恢复默认",
   "gridDurationsResetConfirm": "确定要将九宫格时长恢复为默认值吗？",
+
   "name": "名称",
   "optional": "可选",
 
@@ -130,6 +140,7 @@
   "audioPlaybackModeLoopWithInterval": "循环 N 分钟，间隔 M 分钟，再循环 N 分钟（共一次）",
   "audioPlaybackModeLoopWithIntervalRepeating": "循环 N 分钟，间隔 M 分钟，重复直到停止",
   "audioPlaybackModePlayOnce": "只播放一次",
+
   "loopDuration": "循环时长",
   "intervalPause": "间隔暂停时长",
   "minutesUnit": "分钟",
@@ -147,25 +158,31 @@
   "safetyBestPracticesList": "• 使用前先测试闹钟是否正常\n• 关键任务请准备备用提醒方式\n• 检查设备的勿扰模式和通知权限\n• 了解应用的限制",
   "safetyViewFullDisclaimer": "查看免责声明",
   "safetyAcceptAndContinue": "我理解，继续使用",
+
   "fullDisclaimerTitle": "免责声明",
   "fullDisclaimerText": "本软件按“原样”提供，不提供任何明示或暗示的担保。\n\n开发者不对因使用本软件而产生的任何后果负责，包括但不限于：错过的提醒、不准确的计时、应用故障等。\n\n用户应自行评估使用风险，并对关键任务准备备用方案。",
+
   "close": "关闭",
   "aboutDisclaimer": "安全提示与免责声明",
 
   "gestureSettings": "手势控制设置",
   "gestureSettingsDesc": "配置闹铃响起时的手势操作",
   "gestureActions": "手势动作",
+
   "gestureTypeScreenTap": "触摸屏幕",
   "gestureTypeVolumeUp": "音量+ 键",
   "gestureTypeVolumeDown": "音量- 键",
   "gestureTypeShake": "摇晃手机",
   "gestureTypeFlip": "翻转手机（屏幕朝下）",
+
   "gestureActionStopAndReset": "停止并重置",
   "gestureActionNone": "无动作",
+
   "shakeSensitivity": "摇晃灵敏度",
   "shakeSensitivityLow": "低（需要用力摇）",
   "shakeSensitivityHigh": "高（轻轻摇即可）",
   "shakeSensitivityDesc": "调整摇晃手机的灵敏度",
+
   "gestureHint": "长辈友好：建议开启触摸屏幕、音量键和翻转手机",
   "gestureLimitationsHint": "提示：不同品牌 / 系统在锁屏状态下可能会限制按键与传感器。若锁屏时手势无响应，请先解锁，再尝试翻转手机或按音量键。",
 
@@ -177,34 +194,38 @@
   "grantPermission": "授予权限",
   "notificationPermissionGranted": "通知权限已授予",
   "notificationPermissionDenied": "通知权限被拒绝，请在系统设置中手动授予",
+
   "exactAlarmPermission": "精确闹钟权限",
   "exactAlarmPermissionDesc": "确保计时器准时通知（Android 12、14+ 必需）",
   "exactAlarmPermissionDescApi33": "Android 13 默认预授予，可在系统设置中撤销",
+
   "fullScreenIntentPermission": "全屏提醒权限",
   "fullScreenIntentPermissionDesc": "允许计时结束时在锁屏显示全屏提醒（Android 14+）",
   "fullScreenIntentStatusGranted": "已允许",
   "fullScreenIntentStatusDenied": "未允许（可能无法全屏弹出）",
+
   "batteryOptimizationSettings": "电池优化设置",
   "batteryOptimizationDesc": "禁用电池优化以确保后台闹钟可靠运行",
+
   "alarmSoundSettings": "闹铃声音设置",
   "alarmSoundSettingsDesc": "如果 \"Timer Alarm (default)\" 声音设为「无」，计时器将只显示通知而无声音",
   "alarmSoundSettingsMiuiHint": "MIUI 用户提示：由于 MIUI 系统限制，部分设备可能无法修改通知渠道声音。应用已自动启用音频播放功能确保闹铃正常响起。注意：应用内音频可能会被其他消息通知音打断或音量降低，建议响铃时避免接收大量消息。",
+
   "appKilledWarning": "重要提示：如果本应用被系统或用户强制关闭，计时器将无法响铃。请保持应用在后台运行，并关闭电池优化。",
+
   "alarmTroubleshooting": "闹铃不响 / 延迟？",
   "alarmTroubleshootingDesc": "不同 Android 版本 / 厂商 ROM 可能会限制后台提醒。点这里查看解决方法。",
   "alarmTroubleshootingDialogTitle": "提醒可靠性指南",
   "alarmTroubleshootingDialogIntro": "不同 Android 版本与厂商 ROM（例如部分定制系统）对后台与通知的限制不同，这可能导致提醒无声或延迟。我们会持续优化兼容性，但仍建议按以下顺序检查：",
   "alarmTroubleshootingSteps": "1. 关闭勿扰模式，并把「闹钟」音量调高\n2. 开启本应用的通知权限\n3. 在「Timer Alarm (default)」通知渠道中，确认声音不是「无 / 静音」\n4. 关闭对本应用的电池优化 / 省电限制（允许后台运行）\n5. Android 12+：在「闹钟和提醒」里允许「精确闹钟」\n6. Android 14+：在「全屏提醒」里允许「全屏通知」",
   "alarmTroubleshootingMiui": "部分定制系统：请在系统的应用管理 / 省电策略里允许自启动、允许后台弹出 / 后台运行，并避免激进省电；必要时可在最近任务中锁定本应用。",
+
   "alarmTroubleshootingQuickActions": "快捷入口",
   "alarmTroubleshootingOpenChannel": "去检查通知渠道声音",
   "alarmTroubleshootingOpenNotifications": "去检查通知设置",
   "alarmTroubleshootingOpenExactAlarm": "去开启精确闹钟",
   "alarmTroubleshootingOpenFullScreenIntent": "去开启全屏提醒",
   "alarmTroubleshootingOpenBattery": "去关闭电池优化",
-  "alarmTroubleshootingViewSafetyNotice": "查看安全提示",
-  "goToSettings": "前往设置",
-  "settingsButton": "设置",
 
   "alarmReliabilityMode": "闹铃可靠性模式",
   "alarmReliabilityModeDesc": "选择闹铃的调度方式（影响 App 被杀后是否能响）",
@@ -214,15 +235,24 @@
   "alarmReliabilityModeNotificationDesc": "使用系统定时通知，后台可靠性较好（推荐）",
   "alarmReliabilityModeAlarmClock": "闹钟增强",
   "alarmReliabilityModeAlarmClockDesc": "闹钟级可靠性，App 被杀也能响（更耗电）",
+
+  "alarmTroubleshootingViewSafetyNotice": "查看安全提示",
+
+  "goToSettings": "前往设置",
+  "settingsButton": "设置",
+
   "failedToOpenChannelSettings": "打开通知渠道设置失败：{error}",
+
   "developerModeEnabled": "开发者模式已启用",
   "developerModeDisabled": "开发者模式已禁用",
 
   "speaking": "播报中...",
   "ttsTestFailed": "语音测试失败，请检查设备的 TTS 设置",
   "ttsTestTimeout": "语音测试超时，请检查设备的 TTS 引擎是否正常",
+
   "ttsTestFailedTitle": "语音测试未成功",
   "ttsTestFailedMessage": "未能听到语音播报。可能的原因：\n\n• TTS 引擎未正确配置\n• 中文语音包未安装\n• 系统音量为静音\n• 媒体音量过低\n\n请检查系统设置或查看诊断信息。",
+
   "viewDiagnostics": "查看诊断",
   "ttsDiagnostics": "TTS 诊断信息",
   "ttsEngine": "当前引擎",
@@ -233,26 +263,33 @@
   "ttsNoEngineTitle": "未检测到语音引擎",
   "ttsNoEngineMessage": "您的设备上没有可用的 TTS（文字转语音）引擎。这在部分定制系统的设备上较常见。",
   "ttsNoEngineSteps": "请按以下步骤解决：\n\n1. 打开「应用商店」\n2. 搜索「Google 文字转语音」或「讯飞语音引擎」\n3. 安装语音引擎\n4. 安装后打开「设置 → 更多设置 → 无障碍 → 文字转语音」\n5. 选择刚安装的引擎并下载中文语音包",
+
   "ttsUnavailableTitle": "语音功能不可用",
   "ttsUnavailableMessage": "您的设备可能未安装中文语音包。\n\n请按以下步骤操作：\n1. 打开系统设置\n2. 搜索「文字转语音」或「TTS」\n3. 确保已安装中文语音引擎\n4. 设置中文为默认语言",
   "ttsUnavailableHint": "提示：部分设备请检查系统语音引擎设置，或安装 Google TTS 语音引擎。",
+
   "openTtsSettings": "打开语音设置",
   "ok": "确定",
+
   "ttsSpeechRate": "语速",
   "ttsPitch": "音调",
   "ttsVolumeDesc": "调整语音播报音量",
   "ttsSpeechRateDesc": "调整语音播报速度（0.5 为正常速度）",
   "ttsPitchDesc": "调整语音播报音调（1.0 为正常音调）",
+
   "ttsLanguageNote": "提示：如果自动检测不准确，可以手动选择语言。",
   "ttsLanguageAutoDesc": "根据应用语言自动选择",
+
   "followSystem": "跟随系统",
   "simplifiedChinese": "简体中文",
   "english": "English",
+
   "speedVerySlow": "很慢",
   "speedSlow": "慢",
   "speedNormal": "正常",
   "speedFast": "快",
   "speedVeryFast": "很快",
+
   "pitchVeryLow": "很低",
   "pitchLow": "低",
   "pitchNormal": "正常",
@@ -261,14 +298,18 @@
 
   "onboardingNext": "下一步",
   "onboardingStartUsing": "开始使用",
+
   "onboardingWelcomeTitle": "欢迎使用九宫计时",
   "onboardingWelcomeDesc": "为确保计时器准确运行，我们需要配置一些简单的设置。\n\n这只需要一分钟。",
+
   "onboardingNotificationTitle": "通知权限",
   "onboardingNotificationDesc": "本应用需要通知权限来在倒计时结束时提醒您。\n\n没有此权限，您可能会错过计时完成提醒。",
   "onboardingGrantNotification": "授予通知权限",
+
   "onboardingExactAlarmTitle": "精确闹钟权限",
   "onboardingExactAlarmDesc": "为确保计时器精确到秒，本应用需要「精确闹钟」权限。\n\n请在即将出现的对话框或设置中允许。",
   "onboardingGrantExactAlarm": "授予精确闹钟权限",
+
   "onboardingFullScreenIntentTitle": "全屏提醒权限",
   "onboardingFullScreenIntentDesc": "Android 14+ 需要允许「全屏提醒」才能在锁屏弹出全屏提醒。\n\n请在设置中为本应用开启此权限。",
   "onboardingGrantFullScreenIntent": "打开设置",
@@ -277,15 +318,21 @@
   "onboardingBatteryTitle": "电池优化",
   "onboardingBatteryDesc": "为防止系统在后台关闭计时器，建议将本应用设置为「不优化电池使用」。\n\n这可确保长时间计时器不会被中断。\n\n提示：部分设备点击「打开电池优化设置」可能无法跳转，或跳转后看不到对应选项。请在系统设置中手动搜索「电池优化」「省电」「自启动」「后台运行」等，并将本应用设为「不优化 / 无限制」。",
   "onboardingOpenBatterySettings": "打开电池优化设置",
+
   "onboardingCompletionTitle": "准备就绪",
   "onboardingCompletionDesc": "所有设置已完成！\n\n提示：不同设备和系统版本的表现可能不同。建议锁屏 / 后台先测试一次，再用于较长计时。\n\n您可以随时在设置页面重新配置这些选项。",
+
   "onboardingGranted": "已授予",
   "onboardingNotRequired": "无需手动设置",
+
   "onboardingNotRequiredNotificationDesc": "您的 Android 版本（低于 13）默认允许通知，无需手动授权。",
   "onboardingNotRequiredExactAlarmDesc": "您的 Android 版本（低于 12）默认支持精确闹钟，无需手动授权。",
+
   "onboardingPreGrantedExactAlarmDesc": "Android 13 会自动向新安装的应用预授予精确闹钟权限。\n\n如果您撤销了此权限，可在「设置 → 应用 → {appName} → 闹钟和提醒」中重新开启。",
   "onboardingPreGranted": "已预授予",
+
   "onboardingBatteryLegacyDesc": "为防止系统在后台关闭计时器，建议在省电设置中允许 {appName} 在省电模式下运行。\n\n路径参考：设置 → 电池 / 电源管理 → 省电模式 → 省电模式下仍启用的应用 → 勾选 {appName}\n\n提示：不同品牌和系统版本的路径可能略有不同，请根据实际情况查找相关选项。",
+
   "permissionNotRequiredStatus": "无需手动设置（您的系统版本默认支持）",
   "batteryOptimizationLegacyDesc": "请在省电设置中允许九宫计时在省电模式下运行。\n路径参考：设置 → 电池 → 省电模式 → 省电模式下仍启用的应用",
 
@@ -304,6 +351,7 @@
   "resetAllSettingsConfirmMessage": "这将把所有设置恢复为默认值。此操作不可撤销。",
   "resetAllSettingsExitMessage": "应用将在 {seconds} 秒后退出以完成重置...",
   "resetAllSettingsSuccess": "设置重置成功",
+
   "displaySettings": "显示与无障碍",
   "themeMode": "主题模式",
   "themeModeDesc": "选择视觉主题",
@@ -323,6 +371,7 @@
   "exactAlarmStatusGranted": "已允许",
   "exactAlarmStatusDenied": "未允许（闹钟可能延迟）",
   "batteryOptimizationStatusUnknown": "请手动检查",
+
   "batteryOptimizationMiuiHint": "MIUI 设备：请在「省电策略」中设置为「无限制」",
   "batteryOptimizationHuaweiHint": "华为/荣耀设备：请在「应用启动管理」中改为「手动管理」，并允许「后台运行」",
   "batteryOptimizationOppoHint": "OPPO 设备：在「应用详情」中进入「耗电管理」，打开「耗电行为控制」，选择「完全允许后台行为」",
@@ -334,16 +383,20 @@
   "savedSuccessfullyGridUpdated": "保存成功，九宫格已更新",
   "activeTimersRunningConfigWillApplyOnRestart": "有计时器正在运行，配置将在下次启动时生效",
   "configurationSavedButErrorDuringUpdate": "配置已保存，但应用更新时出错：{error}",
+
   "debugTools": "调试工具",
   "testTimer10s": "10 秒测试计时器（调试）",
   "testTimer10sDesc": "启动一个真实的 10 秒计时器",
   "start": "开始",
+
   "audioTestDebug": "音频测试（调试）",
   "audioTestDebugDesc": "诊断声音问题",
   "errorTestDebug": "错误测试（调试）",
   "errorTestDebugDesc": "测试错误报告系统",
+
   "exitDeveloperMode": "退出开发者模式",
   "exitDeveloperModeDesc": "点击隐藏调试工具",
+
   "failedToStartTestTimer": "启动测试计时器失败：{error}",
 
   "audioTest": "音频测试",
@@ -356,6 +409,7 @@
   "stopActiveTimersBeforeTest": "启动测试计时器前，请先停止所有运行中的计时器",
 
   "timeIsUp": "时间到!",
+
   "widgetTimersRinging": "{count, plural, other{{count} 个计时器响铃}}",
   "widgetTimersActive": "{count, plural, other{{count} 个计时器运行中}}",
   "widgetTapToOpen": "点击打开应用",

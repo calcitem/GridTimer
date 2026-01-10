@@ -226,7 +226,6 @@
   "alarmTroubleshootingOpenExactAlarm": "정확한 알람 활성화",
   "alarmTroubleshootingOpenFullScreenIntent": "전체 화면 알림 활성화",
   "alarmTroubleshootingOpenBattery": "배터리 최적화 끄기",
-  "alarmTroubleshootingViewSafetyNotice": "안전 안내 보기",
 
   "alarmReliabilityMode": "알람 신뢰성 모드",
   "alarmReliabilityModeDesc": "알람을 예약하는 방식을 선택합니다(앱이 종료된 뒤에도 울리는지에 영향)",
@@ -236,6 +235,8 @@
   "alarmReliabilityModeNotificationDesc": "시스템 예약 알림 사용, 백그라운드 신뢰성 향상(권장)",
   "alarmReliabilityModeAlarmClock": "알람 시계",
   "alarmReliabilityModeAlarmClockDesc": "최고 신뢰성, 앱이 종료되어도 울림(배터리 사용 증가)",
+
+  "alarmTroubleshootingViewSafetyNotice": "안전 안내 보기",
 
   "goToSettings": "설정으로 이동",
   "settingsButton": "설정",
