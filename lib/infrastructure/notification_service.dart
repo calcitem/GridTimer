@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive_ce/hive.dart';
@@ -34,7 +35,7 @@ class NotificationService implements INotificationService {
   Future<Map<dynamic, dynamic>?> _getAndroidNotificationChannelInfo({
     required String channelId,
   }) async {
-    if (!Platform.isAndroid) return null;
+    if (kIsWeb || !Platform.isAndroid) return null;
     try {
       return await _systemSettingsChannel.invokeMethod<Map<dynamic, dynamic>>(
         'getNotificationChannelInfo',
@@ -56,7 +57,7 @@ class NotificationService implements INotificationService {
     required String alarmChannelIdV3,
     required String legacyChannelIdV2,
   }) async {
-    if (!Platform.isAndroid) return alarmChannelIdV3;
+    if (kIsWeb || !Platform.isAndroid) return alarmChannelIdV3;
 
     final v3 = await _getAndroidNotificationChannelInfo(
       channelId: alarmChannelIdV3,
@@ -93,6 +94,8 @@ class NotificationService implements INotificationService {
   Future<void> init() async {
     // Always initialize timezone data
     tz_data.initializeTimeZones();
+
+    if (kIsWeb) return;
 
     // Initialize notification plugin only on supported platforms
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -136,7 +139,7 @@ class NotificationService implements INotificationService {
 
   @override
   Future<void> ensureAndroidChannels({required Set<String> soundKeys}) async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
 
     final androidPlugin = _plugin
         .resolvePlatformSpecificImplementation<
@@ -363,7 +366,7 @@ class NotificationService implements INotificationService {
 
   @override
   Future<bool> requestPostNotificationsPermission() async {
-    if (!Platform.isAndroid) return true;
+    if (kIsWeb || !Platform.isAndroid) return true;
 
     final androidPlugin = _plugin
         .resolvePlatformSpecificImplementation<
@@ -377,7 +380,7 @@ class NotificationService implements INotificationService {
 
   @override
   Future<bool> requestExactAlarmPermission() async {
-    if (!Platform.isAndroid) return true;
+    if (kIsWeb || !Platform.isAndroid) return true;
 
     final androidPlugin = _plugin
         .resolvePlatformSpecificImplementation<
@@ -408,6 +411,7 @@ class NotificationService implements INotificationService {
     bool preferAlarmAudioUsage = false,
   }) async {
     // Schedule notification only on supported platforms
+    if (kIsWeb) return;
     if (!Platform.isAndroid && !Platform.isIOS) {
       return;
     }
@@ -469,7 +473,7 @@ class NotificationService implements INotificationService {
       effectiveLocale = ttsLanguage;
     } else {
       // Fall back to app locale from Hive, then system locale
-      String locale = Platform.localeName;
+      String locale = kIsWeb ? 'en' : Platform.localeName;
       try {
         if (Hive.isBoxOpen('settings')) {
           final box = Hive.box('settings');
@@ -569,6 +573,7 @@ class NotificationService implements INotificationService {
     required int slotIndex,
   }) async {
     // Cancel notification only on supported platforms
+    if (kIsWeb) return;
     if (!Platform.isAndroid && !Platform.isIOS) {
       return;
     }
@@ -579,6 +584,7 @@ class NotificationService implements INotificationService {
   @override
   Future<void> cancelAll() async {
     // Cancel notifications only on supported platforms
+    if (kIsWeb) return;
     if (!Platform.isAndroid && !Platform.isIOS) {
       return;
     }
@@ -595,6 +601,7 @@ class NotificationService implements INotificationService {
     String? ttsLanguage,
   }) async {
     // Show notification only on supported platforms
+    if (kIsWeb) return;
     if (!Platform.isAndroid && !Platform.isIOS) {
       return;
     }
@@ -627,7 +634,7 @@ class NotificationService implements INotificationService {
       effectiveLocale = ttsLanguage;
     } else {
       // Fall back to app locale from Hive, then system locale
-      String locale = Platform.localeName;
+      String locale = kIsWeb ? 'en' : Platform.localeName;
       try {
         if (Hive.isBoxOpen('settings')) {
           final box = Hive.box('settings');
@@ -703,10 +710,10 @@ class NotificationService implements INotificationService {
 
   @override
   Future<void> showAppRunningIndicator() async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
 
     // Determine effective locale for app running indicator
-    String effectiveLocale = Platform.localeName;
+    String effectiveLocale = kIsWeb ? 'en' : Platform.localeName;
     try {
       if (Hive.isBoxOpen('settings')) {
         final box = Hive.box('settings');
@@ -750,7 +757,7 @@ class NotificationService implements INotificationService {
 
   @override
   Future<void> hideAppRunningIndicator() async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
     await _plugin.cancel(_runningIndicatorNotificationId);
   }
 

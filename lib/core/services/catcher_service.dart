@@ -28,15 +28,17 @@ Future<void> _initCatcher(Catcher2 catcher) async {
   final String path = "$externalDirStr/${Constants.crashLogsFile}";
   debugPrint('[env] ExternalStorageDirectory: $externalDirStr');
 
+  final List<ReportHandler> handlers = [
+    ConsoleHandler(),
+    if (!kIsWeb) FileHandler(File(path), printLogs: true),
+    EmailManualHandler(Constants.recipientEmails, printLogs: true),
+  ];
+
   final Catcher2Options debugOptions = Catcher2Options(
     kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
         ? SilentReportMode()
         : PageReportMode(),
-    <ReportHandler>[
-      ConsoleHandler(),
-      FileHandler(File(path), printLogs: true),
-      EmailManualHandler(Constants.recipientEmails, printLogs: true),
-    ],
+    handlers,
     customParameters: customParameters,
   );
 
@@ -47,19 +49,12 @@ Future<void> _initCatcher(Catcher2 catcher) async {
     kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
         ? SilentReportMode()
         : PageReportMode(),
-    <ReportHandler>[
-      FileHandler(File(path), printLogs: true),
-      EmailManualHandler(Constants.recipientEmails, printLogs: true),
-    ],
+    handlers,
     customParameters: customParameters,
   );
 
   final Catcher2Options profileOptions =
-      Catcher2Options(PageReportMode(), <ReportHandler>[
-        ConsoleHandler(),
-        FileHandler(File(path), printLogs: true),
-        EmailManualHandler(Constants.recipientEmails, printLogs: true),
-      ], customParameters: customParameters);
+      Catcher2Options(PageReportMode(), handlers, customParameters: customParameters);
 
   /// Pass root widget (GridTimerApp) along with Catcher configuration:
   catcher.updateConfig(

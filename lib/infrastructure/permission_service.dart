@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -14,7 +15,7 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<bool> canPostNotifications() async {
-    if (!Platform.isAndroid) return true;
+    if (kIsWeb || !Platform.isAndroid) return true;
 
     final status = await Permission.notification.status;
     return status.isGranted;
@@ -22,7 +23,7 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<bool> canScheduleExactAlarms() async {
-    if (!Platform.isAndroid) return true;
+    if (kIsWeb || !Platform.isAndroid) return true;
 
     // Note: permission_handler may not expose this API.
     // This is a best-effort implementation.
@@ -47,7 +48,7 @@ class PermissionService implements IPermissionService {
     }
 
     // app_settings is only available on Android and iOS
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       await AppSettings.openAppSettings(type: AppSettingsType.notification);
     }
   }
@@ -56,7 +57,7 @@ class PermissionService implements IPermissionService {
   Future<void> openNotificationChannelSettings({
     required String channelId,
   }) async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
     assert(channelId.isNotEmpty, 'channelId must not be empty');
 
     // Block opening system settings in test environment to prevent interference with Monkey testing
@@ -82,7 +83,7 @@ class PermissionService implements IPermissionService {
     }
 
     // app_settings is only available on Android and iOS
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       await AppSettings.openAppSettings(type: AppSettingsType.alarm);
     }
   }
@@ -98,7 +99,7 @@ class PermissionService implements IPermissionService {
     }
 
     // app_settings is only available on Android and iOS
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       await AppSettings.openAppSettings();
     }
   }
@@ -112,6 +113,8 @@ class PermissionService implements IPermissionService {
       );
       return;
     }
+
+    if (kIsWeb) return;
 
     if (Platform.isAndroid) {
       // Use native implementation for better MIUI/OEM compatibility
@@ -137,7 +140,7 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<bool?> isBatteryOptimizationDisabled() async {
-    if (!Platform.isAndroid) return true;
+    if (kIsWeb || !Platform.isAndroid) return true;
 
     try {
       final result = await _systemSettingsChannel.invokeMethod<bool?>(
@@ -153,7 +156,7 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<bool> isMiuiDevice() async {
-    if (!Platform.isAndroid) return false;
+    if (kIsWeb || !Platform.isAndroid) return false;
 
     try {
       final result = await _systemSettingsChannel.invokeMethod<bool>(
@@ -167,7 +170,7 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<String> getDeviceManufacturerType() async {
-    if (!Platform.isAndroid) return 'standard';
+    if (kIsWeb || !Platform.isAndroid) return 'standard';
 
     try {
       final result = await _systemSettingsChannel.invokeMethod<String>(
@@ -188,7 +191,7 @@ class PermissionService implements IPermissionService {
     }
 
     // app_settings is only available on Android and iOS
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       await AppSettings.openAppSettings();
     }
   }
@@ -200,6 +203,8 @@ class PermissionService implements IPermissionService {
       debugPrint('Opening TTS settings blocked in test environment');
       return;
     }
+
+    if (kIsWeb) return;
 
     if (Platform.isAndroid) {
       try {
@@ -217,7 +222,7 @@ class PermissionService implements IPermissionService {
   }
 
   @override
-  bool get canOpenTtsSettings => Platform.isAndroid || Platform.isIOS;
+  bool get canOpenTtsSettings => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 
   @override
   Future<void> openSystemSoundSettings() async {
@@ -226,6 +231,8 @@ class PermissionService implements IPermissionService {
       debugPrint('Opening system sound settings blocked in test environment');
       return;
     }
+
+    if (kIsWeb) return;
 
     if (Platform.isAndroid) {
       try {
@@ -244,7 +251,7 @@ class PermissionService implements IPermissionService {
 
   @override
   Future<int> getAndroidSdkVersion() async {
-    if (!Platform.isAndroid) return 0;
+    if (kIsWeb || !Platform.isAndroid) return 0;
 
     try {
       final result = await _systemSettingsChannel.invokeMethod<int>(

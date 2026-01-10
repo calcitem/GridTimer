@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,7 +44,7 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
   AudioPlayer? _testPlayer;
   String _log = '';
 
-  bool get _isWindows => Platform.isWindows;
+  bool get _isWindows => !kIsWeb && Platform.isWindows;
 
   @override
   void initState() {
@@ -370,8 +371,8 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       'audio_test_page.dart:_testShowNotification:entry',
       'Test 3 started',
       {
-        'platform': Platform.operatingSystem,
-        'platformVersion': Platform.operatingSystemVersion,
+        'platform': kIsWeb ? 'web' : Platform.operatingSystem,
+        'platformVersion': kIsWeb ? 'web' : Platform.operatingSystemVersion,
       },
       'A,B',
     );
@@ -809,8 +810,8 @@ class _AudioTestPageState extends ConsumerState<AudioTestPage> {
       'audio_test_page.dart:_testScheduleNotification:entry',
       'Test 4 started',
       {
-        'platform': Platform.operatingSystem,
-        'platformVersion': Platform.operatingSystemVersion,
+        'platform': kIsWeb ? 'web' : Platform.operatingSystem,
+        'platformVersion': kIsWeb ? 'web' : Platform.operatingSystemVersion,
       },
       'A,B,D,E',
     );

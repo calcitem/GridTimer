@@ -24,7 +24,7 @@ class AlarmVolumeService implements IAlarmVolumeService {
     required AlarmVolumeBoostLevel level,
     required int restoreAfterMinutes,
   }) async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
     assert(slotIndex >= 0 && slotIndex < 9, 'slotIndex must be in [0, 8]');
     assert(triggerAtEpochMs > 0, 'triggerAtEpochMs must be > 0');
     assert(restoreAfterMinutes > 0, 'restoreAfterMinutes must be > 0');
@@ -50,7 +50,7 @@ class AlarmVolumeService implements IAlarmVolumeService {
 
   @override
   Future<void> cancelScheduledBoost({required int slotIndex}) async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
     assert(slotIndex >= 0 && slotIndex < 9, 'slotIndex must be in [0, 8]');
 
     try {
@@ -69,7 +69,7 @@ class AlarmVolumeService implements IAlarmVolumeService {
     required AlarmVolumeBoostLevel level,
     required int restoreAfterMinutes,
   }) async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
     assert(restoreAfterMinutes > 0, 'restoreAfterMinutes must be > 0');
 
     try {
@@ -88,7 +88,7 @@ class AlarmVolumeService implements IAlarmVolumeService {
 
   @override
   Future<void> restoreIfBoosted() async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
     try {
       final activeCount = await _channel.invokeMethod<int>(
         'getActiveTimeUpNotificationCount',

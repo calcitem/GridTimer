@@ -10,7 +10,7 @@ import '../core/domain/enums.dart';
 class WidgetService {
   /// Initialize widget service
   Future<void> init() async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
 
     try {
       // Register widget interaction callback
@@ -25,7 +25,7 @@ class WidgetService {
   ///
   /// [sessions] Current timer sessions
   Future<void> updateWidget(List<TimerSession> sessions) async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
 
     try {
       // Count active and ringing timers

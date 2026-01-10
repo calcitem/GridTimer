@@ -78,7 +78,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
   }
 
   Future<void> _loadAndroidSdkVersion() async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
 
     final permissionService = ref.read(permissionServiceProvider);
     final sdkVersion = await permissionService.getAndroidSdkVersion();
@@ -90,7 +90,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
   }
 
   Future<void> _loadMiuiDeviceInfo() async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
 
     final permissionService = ref.read(permissionServiceProvider);
     final isMiui = await permissionService.isMiuiDevice();
@@ -845,6 +845,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
     }
 
     // Otherwise, check the system locale
+    // On Web, accessing Platform.localeName can fail or give different results.
+    // However, platformDispatcher.locale is generally safe.
     final systemLocale = WidgetsBinding.instance.platformDispatcher.locale;
     return systemLocale.languageCode == 'zh';
   }
@@ -866,7 +868,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(l10n.vibrationSystemWarning),
-              if (Platform.isAndroid) ...[
+              if (!kIsWeb && Platform.isAndroid) ...[
                 const SizedBox(height: 12),
                 GestureDetector(
                   onTap: () =>
@@ -1282,9 +1284,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
     }
 
     // Try platform-specific exit methods
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       SystemNavigator.pop();
-    } else {
+    } else if (!kIsWeb) {
       exit(0);
     }
   }

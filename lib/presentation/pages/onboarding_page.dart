@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -47,7 +48,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   Future<void> _loadAndroidSdkVersion() async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
 
     final permissionService = ref.read(permissionServiceProvider);
     final sdkVersion = await permissionService.getAndroidSdkVersion();
@@ -59,7 +60,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   Future<void> _loadMiuiDeviceInfo() async {
-    if (!Platform.isAndroid) return;
+    if (kIsWeb || !Platform.isAndroid) return;
 
     final permissionService = ref.read(permissionServiceProvider);
     final isMiui = await permissionService.isMiuiDevice();
@@ -91,16 +92,38 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Future<void> _checkPermissions() async {
     final permissionService = ref.read(permissionServiceProvider);
 
-    final notification = await permissionService.canPostNotifications();
-    final exactAlarm = await permissionService.canScheduleExactAlarms();
-    // Battery optimization: checking if *ignoring* optimizations is enabled.
-    // The service doesn't expose a direct check for "isIgnoringBatteryOptimizations",
-    // but typically we can check permission_handler's ignoreBatteryOptimizations status.
-    // Since the service wrapper might not expose it, we'll check directly via permission_handler for now
-    // or assume we need to ask if we can't check.
-    // Let's check using Permission.ignoreBatteryOptimizations.status
-    final batteryStatus = await Permission.ignoreBatteryOptimizations.status;
-    final batteryIgnored = batteryStatus.isGranted;
+    bool notification = false;
+    bool exactAlarm = false;
+    bool batteryIgnored = false;
+
+    if (!kIsWeb) {
+      notification = await permissionService.canPostNotifications();
+      exactAlarm = await permissionService.canScheduleExactAlarms();
+
+      // Battery optimization: checking if *ignoring* optimizations is enabled.
+      // Only applicable on Android (and potentially iOS in future, but mainly Android)
+      if (Platform.isAndroid) {
+        // The service doesn't expose a direct check for "isIgnoringBatteryOptimizations",
+        // but typically we can check permission_handler's ignoreBatteryOptimizations status.
+        // Since the service wrapper might not expose it, we'll check directly via permission_handler for now
+        // or assume we need to ask if we can't check.
+        // Let's check using Permission.ignoreBatteryOptimizations.status
+        try {
+          final batteryStatus = await Permission.ignoreBatteryOptimizations.status;
+          batteryIgnored = batteryStatus.isGranted;
+        } catch (e) {
+          debugPrint('Error checking battery optimization status: $e');
+        }
+      } else {
+        // Non-Android platforms don't need this specific check
+        batteryIgnored = true;
+      }
+    } else {
+       // Web platform defaults
+       notification = true;
+       exactAlarm = true;
+       batteryIgnored = true;
+    }
 
     // Full screen intent (Android 14+)
     // Permission.scheduleExactAlarm covers exact alarms.
@@ -241,7 +264,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Widget build(BuildContext context) {
     // Only Android needs complex permissions for this app usually.
     // iOS handles notifications, but exact alarm/battery/overlay are Android specific concepts.
-    final isAndroid = Platform.isAndroid;
+    final isAndroid = !kIsWeb && Platform.isAndroid;
     final l10n = AppLocalizations.of(context)!;
 
     final steps = <Widget>[

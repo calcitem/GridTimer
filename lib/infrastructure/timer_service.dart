@@ -182,7 +182,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
       // Best-effort: restore alarm volume if we boosted it for ringing.
       final settings = await _storage.getSettings();
-      if (Platform.isAndroid &&
+      if (!kIsWeb &&
+          Platform.isAndroid &&
           (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
         await _alarmVolume.restoreIfBoosted();
       }
@@ -310,7 +311,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
 
         // Best-effort: boost Android system alarm volume when ringing starts.
         // This helps ensure the alarm is audible on the lock screen.
-        if (Platform.isAndroid &&
+        if (!kIsWeb &&
+            Platform.isAndroid &&
             (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
           await _alarmVolume.boostNow(
             level:
@@ -337,6 +339,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         final reliabilityMode =
             settings?.alarmReliabilityMode ?? AlarmReliabilityMode.notification;
         final useNotificationSound =
+            !kIsWeb &&
             Platform.isAndroid &&
             (reliabilityMode == AlarmReliabilityMode.notification ||
                 reliabilityMode == AlarmReliabilityMode.alarmClock);
@@ -349,7 +352,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         //   (like MIUI) that may not play notification sounds. If user customized
         //   the sound in system settings, don't play in-app audio to avoid double-playing.
         bool shouldPlayInAppAudio = !useNotificationSound;
-        if (Platform.isAndroid && useNotificationSound) {
+        if (!kIsWeb && Platform.isAndroid && useNotificationSound) {
           // Check if notification channel is using app's default sound resource
           final channelInfo = await _notification.getChannelInfo(
             channelId: 'gt.alarm.timeup.${config.soundKey}.v3',
@@ -482,7 +485,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         preferAlarmAudioUsage: autoBoostEnabled,
       );
 
-      if (autoBoostEnabled && Platform.isAndroid) {
+      if (autoBoostEnabled && !kIsWeb && Platform.isAndroid) {
         await _alarmVolume.scheduleBoost(
           slotIndex: slotIndex,
           triggerAtEpochMs: endMs,
@@ -566,7 +569,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         preferAlarmAudioUsage: autoBoostEnabled,
       );
 
-      if (autoBoostEnabled && Platform.isAndroid) {
+      if (autoBoostEnabled && !kIsWeb && Platform.isAndroid) {
         await _alarmVolume.scheduleBoost(
           slotIndex: session.slotIndex,
           triggerAtEpochMs: newEndMs,
@@ -624,7 +627,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         await _audio.stop();
         _gesture.stopMonitoring();
         final settings = await _storage.getSettings();
-        if (Platform.isAndroid &&
+        if (!kIsWeb &&
+            Platform.isAndroid &&
             (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
           await _alarmVolume.restoreIfBoosted();
         }
@@ -736,7 +740,8 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
           _gesture.updateShakeSensitivity(settings.shakeSensitivity);
         }
 
-        if (Platform.isAndroid &&
+        if (!kIsWeb &&
+            Platform.isAndroid &&
             (settings?.autoRaiseAlarmVolumeEnabled ?? false)) {
           await _alarmVolume.boostNow(
             level:
@@ -763,7 +768,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
               reliabilityMode == AlarmReliabilityMode.alarmClock);
 
       bool shouldPlayInAppAudio = !useNotificationSound;
-      if (Platform.isAndroid && useNotificationSound) {
+      if (!kIsWeb && Platform.isAndroid && useNotificationSound) {
         final channelInfo = await _notification.getChannelInfo(
           channelId: 'gt.alarm.timeup.${config.soundKey}.v3',
         );
@@ -882,6 +887,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
             );
 
             if (autoBoostEnabled &&
+                !kIsWeb &&
                 Platform.isAndroid &&
                 session.endAtEpochMs != null) {
               await _alarmVolume.scheduleBoost(
@@ -959,7 +965,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     }
 
     // Fall back to app locale from Hive, then system locale
-    String effectiveLocale = Platform.localeName;
+    String effectiveLocale = kIsWeb ? 'en' : Platform.localeName;
     try {
       if (Hive.isBoxOpen('settings')) {
         final box = Hive.box('settings');
@@ -1024,7 +1030,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
     // First, try to read from Hive 'settings' box ('app_locale' key) which is set
     // by the locale_provider when user changes language in app settings.
     // Fall back to system locale if not set.
-    String effectiveLocale = Platform.localeName;
+    String effectiveLocale = kIsWeb ? 'en' : Platform.localeName;
     try {
       // Open the settings box if not already open (locale_provider uses this box)
       final box = await Hive.openBox('settings');
