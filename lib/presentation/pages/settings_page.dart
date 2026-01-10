@@ -9,6 +9,7 @@ import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
 import '../../core/config/environment_config.dart';
 import '../../core/config/platform_capabilities.dart';
+import '../../core/config/supported_locales.dart';
 import '../../core/domain/entities/app_settings.dart';
 import '../../core/domain/enums.dart';
 import '../../l10n/app_localizations.dart';
@@ -842,16 +843,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
   /// Get display name for current language.
   String _getLanguageName(Locale? locale, AppLocalizations l10n) {
     if (locale == null) {
-      return '${l10n.languageChineseSimplified} / ${l10n.languageEnglish}';
+      return l10n.followSystem;
     }
-    switch (locale.languageCode) {
-      case 'zh':
-        return l10n.languageChineseSimplified;
-      case 'en':
-        return l10n.languageEnglish;
-      default:
-        return locale.languageCode;
-    }
+    final language = SupportedLocales.getByCode(locale.languageCode);
+    return language?.nativeName ?? locale.languageCode;
   }
 
   /// Open privacy policy URL based on locale.
@@ -968,35 +963,42 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
     WidgetRef ref,
     AppLocalizations l10n,
   ) {
+    final currentLocale = ref.read(localeProvider);
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(l10n.selectLanguage),
         content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                title: Text(l10n.languageEnglish),
-                leading: const Icon(Icons.language),
-                onTap: () {
-                  ref
-                      .read(localeProvider.notifier)
-                      .setLocale(const Locale('en'));
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text(l10n.languageChineseSimplified),
-                leading: const Icon(Icons.language),
-                onTap: () {
-                  ref
-                      .read(localeProvider.notifier)
-                      .setLocale(const Locale('zh'));
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+          child: RadioGroup<String?>(
+            groupValue: currentLocale?.languageCode,
+            onChanged: (value) {
+              if (value == null) {
+                ref.read(localeProvider.notifier).setLocale(null);
+              } else {
+                ref.read(localeProvider.notifier).setLocale(Locale(value));
+              }
+              Navigator.pop(context);
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // System default option
+                RadioListTile<String?>(
+                  title: Text(l10n.followSystem),
+                  value: null,
+                ),
+                const Divider(),
+                // Language options
+                ...SupportedLocales.languages.map((language) {
+                  return RadioListTile<String?>(
+                    title: Text(language.nativeName),
+                    subtitle: Text(language.englishName),
+                    value: language.code,
+                  );
+                }),
+              ],
+            ),
           ),
         ),
         actions: [

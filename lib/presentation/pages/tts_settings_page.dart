@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/locale_provider.dart';
 import '../../app/providers.dart';
+import '../../core/config/supported_locales.dart';
 import '../../core/services/service_localizations.dart';
 import '../../l10n/app_localizations.dart';
 
@@ -526,14 +527,8 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
     if (ttsLanguage == null) {
       return l10n.followSystem;
     }
-    switch (ttsLanguage) {
-      case 'zh-CN':
-        return l10n.simplifiedChinese;
-      case 'en-US':
-        return l10n.english;
-      default:
-        return ttsLanguage;
-    }
+    final language = SupportedLocales.getByTtsLocale(ttsLanguage);
+    return language?.nativeName ?? ttsLanguage;
   }
 
   void _showLanguageSelector(String? currentLanguage) {
@@ -554,21 +549,21 @@ class _TtsSettingsPageState extends ConsumerState<TtsSettingsPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // System default option
                 RadioListTile<String?>(
                   title: Text(l10n.followSystem),
                   subtitle: Text(l10n.ttsLanguageAutoDesc),
                   value: null,
                 ),
-                RadioListTile<String?>(
-                  title: Text(l10n.english),
-                  subtitle: const Text('en-US'),
-                  value: 'en-US',
-                ),
-                RadioListTile<String?>(
-                  title: Text(l10n.simplifiedChinese),
-                  subtitle: const Text('zh-CN'),
-                  value: 'zh-CN',
-                ),
+                const Divider(),
+                // Language options
+                ...SupportedLocales.languages.map((language) {
+                  return RadioListTile<String?>(
+                    title: Text(language.nativeName),
+                    subtitle: Text(language.ttsLocale),
+                    value: language.ttsLocale,
+                  );
+                }),
               ],
             ),
           ),
