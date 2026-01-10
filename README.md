@@ -83,6 +83,10 @@ lib/
 - UI text must be internationalized through ARB files
 - Follow `analysis_options.yaml` rules
 
+### Adding a New Language
+
+Grid Timer supports multi-language localization. See **[docs/LOCALIZATION_GUIDE.md](docs/LOCALIZATION_GUIDE.md)** for the complete guide.
+
 ### Run Checks
 
 ```bash

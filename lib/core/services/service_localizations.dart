@@ -57,7 +57,9 @@ class ServiceLocalizations {
 
   /// Get localized "time is up" suffix for TTS.
   ///
-  /// Example: "Timer 1 time is up" or "计时器 1 时间到"
+  /// Examples:
+  /// - English: "Timer 1 time is up"
+  /// - Chinese: "计时器 1 时间到" (jì shí qì 1 shí jiān dào)
   String timeIsUpSuffix(String timerName) {
     return _l10n.timeUpTts(timerName);
   }

@@ -5,7 +5,8 @@ class SupportedLanguage {
   /// Language code (e.g., 'en', 'zh').
   final String code;
 
-  /// Native name of the language (e.g., 'English', '简体中文').
+  /// Native name of the language in its own script.
+  /// Examples: 'English', 'Simplified Chinese (简体中文)', '日本語' (Japanese)
   final String nativeName;
 
   /// English name of the language (for reference).

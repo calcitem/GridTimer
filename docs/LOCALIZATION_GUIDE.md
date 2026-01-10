@@ -1,142 +1,200 @@
 # Localization Guide
 
+This guide explains how to add complete multi-language support to Grid Timer.
+
 ## Overview
 
-Grid Timer uses a centralized localization architecture that makes adding new language support simple and consistent.
+Grid Timer uses a multi-layered localization architecture that supports all platforms (Android, iOS, macOS).
 
-This guide explains how to add new language support to Grid Timer.
+**Note**: Chinese characters (or other non-English text) should ONLY appear in:
+- ARB translation files (`lib/l10n/arb/app_*.arb`)
+- Platform resources (`android/app/src/main/res/values-*/`, `macos/Runner/*.lproj/`)
+- App Store metadata (`fastlane/metadata/android/*/`)
+- Code comment examples (showing expected output)
 
-## Architecture
+All source code comments must be in English.
 
-Localization texts are divided into two categories:
+## Architecture Layers
 
-1. **UI Text**: Uses Flutter ARB files (`lib/l10n/arb/*.arb`)
-2. **Service Layer Text**: Uses independent translation maps (not dependent on Flutter BuildContext)
+Grid Timer's localization spans four layers:
 
-### Why Separate Service Layer Localizations?
+### 1. Flutter Layer (UI Strings)
+- **Location**: `lib/l10n/arb/*.arb`
+- **Purpose**: All UI text, dialogs, settings, etc.
+- **Access**: Via `AppLocalizations.of(context)`
+- **Generated Code**: `lib/l10n/app_localizations_*.dart`
 
-Service layer components (notifications, TTS, background tasks) need localized text in scenarios where:
-- Application is in early startup phase, `BuildContext` is not yet available
-- Background tasks cannot access Flutter UI context
-- Following Clean Architecture principles, infrastructure layer should be independent of Flutter
+### 2. Platform Layer (Native Resources)
+- **Android**: `android/app/src/main/res/values-*/strings.xml`
+  - App name in launcher
+  - Home screen widget text
+- **macOS**: `macos/Runner/*.lproj/MainMenu.strings`
+  - Window title
+  - Menu items
+- **iOS** (future): `ios/Runner/*.lproj/InfoPlist.strings`
 
-## Adding a New Language
+### 3. Service Layer (Background Services)
+- **Implementation**: Uses generated `AppLocalizations` directly
+- **Purpose**: Notifications, TTS, widgets
+- **Note**: No longer requires separate translation maps (refactored to use ARB-generated code)
 
-Assume you want to add Japanese support. Follow these steps:
+### 4. Metadata Layer (App Stores)
+- **Location**: `fastlane/metadata/android/*/`
+- **Purpose**: App Store listings, descriptions, changelogs
 
-### 1. Configure Supported Language
+## Adding a New Language - Quick Checklist
 
-Edit `lib/core/config/supported_locales.dart`:
+For a new language (e.g., Japanese `ja`):
+
+1. ✅ Add to `lib/core/config/supported_locales.dart`
+2. ✅ Create `lib/l10n/arb/app_ja.arb` (translate all strings)
+3. ✅ Create `android/app/src/main/res/values-ja/strings.xml`
+4. ✅ Create `macos/Runner/ja.lproj/MainMenu.strings`
+5. ✅ Create `fastlane/metadata/android/ja/*.txt` (App Store metadata)
+6. ✅ Run `./tool/gen.sh` to regenerate code
+7. ✅ Test thoroughly
+
+## Step-by-Step Guide
+
+### Step 1: Configure Supported Language
+
+Edit `lib/core/config/supported_locales.dart` and add your language:
 
 ```dart
 static const List<SupportedLanguage> languages = [
+  // ... existing languages
   SupportedLanguage(
-    code: 'en',
-    nativeName: 'English',
-    englishName: 'English',
-    ttsLocale: 'en-US',
-  ),
-  SupportedLanguage(
-    code: 'zh',
-    nativeName: '简体中文',
-    englishName: 'Simplified Chinese',
-    ttsLocale: 'zh-CN',
-  ),
-  // Add Japanese
-  SupportedLanguage(
-    code: 'ja',
-    nativeName: '日本語',
-    englishName: 'Japanese',
-    ttsLocale: 'ja-JP',
+    code: 'ja',                    // ISO 639-1 language code
+    nativeName: '日本語',           // Language name in native script
+    englishName: 'Japanese',       // Language name in English
+    ttsLocale: 'ja-JP',            // TTS locale code
   ),
 ];
 ```
 
-### 2. Add Service Layer Translations
+### Step 2: Create ARB File
 
-#### 2.1 Update ServiceLocalizations
+```bash
+# Copy English template
+cp lib/l10n/arb/app_en.arb lib/l10n/arb/app_ja.arb
 
-Edit `lib/core/services/service_localizations.dart`:
-
-```dart
-static const Map<String, Map<String, String>> _translations = {
-  'en': { /* ... */ },
-  'zh': { /* ... */ },
-  'ja': {
-    'timeIsUp': '時間です!',
-    'stop': '停止',
-    'appTitle': 'グリッドタイマー',
-    'running': '実行中',
-    'tapToOpen': 'タップして開く',
-    'ttsTestMessage': 'タイマー 1 時間です',
-    'timerRinging': 'タイマーが鳴っています',
-    'timersRinging': 'タイマーが鳴っています',
-    'timerActive': 'タイマーが実行中',
-    'timersActive': 'タイマーが実行中',
-    'timeIsUpTemplate': '{name} 時間です',
-  },
-};
+# Edit app_ja.arb and translate all ~300 strings
+# Keep the same keys, translate the values
 ```
 
-#### 2.2 Update DurationFormatter
-
-Edit `lib/core/services/duration_formatter.dart`:
-
-```dart
-static const Map<String, Map<String, String>> _timeUnits = {
-  'en': { /* ... */ },
-  'zh': { /* ... */ },
-  'ja': {
-    'seconds': '秒',
-    'minutes': '分',
-    'hours': '時間',
-  },
-};
-```
-
-### 3. Create ARB File
-
-Copy `lib/l10n/arb/app_en.arb` to `lib/l10n/arb/app_ja.arb` and translate all strings:
-
+Example:
 ```json
 {
   "@@locale": "ja",
   "appTitle": "グリッドタイマー",
-  "timerIdle": "待機中",
   "timerRunning": "実行中",
   ...
 }
 ```
 
-### 4. Run Code Generation
+### Step 3: Create Android Resources
+
+```bash
+mkdir -p android/app/src/main/res/values-ja
+```
+
+Create `android/app/src/main/res/values-ja/strings.xml`:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">グリッドタイマー</string>
+    <string name="widget_description">グリッドタイマーの状態を表示</string>
+    <string name="widget_timers_ringing">%d 個のタイマーが鳴っています</string>
+    <string name="widget_timers_active">%d 個のタイマーが実行中</string>
+    <string name="widget_tap_to_open">タップしてアプリを開く</string>
+</resources>
+```
+
+### Step 4: Create macOS Resources
+
+```bash
+mkdir -p macos/Runner/ja.lproj
+```
+
+Create `macos/Runner/ja.lproj/MainMenu.strings`:
+
+```
+/* Localized versions of MainMenu.xib keys */
+
+/* Window Title */
+"QvC-M9-y7g.title" = "グリッドタイマー";
+
+/* Application Menu */
+"1Xt-HY-uBw.title" = "グリッドタイマー";
+"uQy-DD-JDr.title" = "グリッドタイマー";
+"5kV-Vb-QxS.title" = "グリッドタイマーについて";
+...
+```
+
+**Tip**: Copy from `zh-Hans.lproj/MainMenu.strings` and translate the values (keep Object IDs unchanged).
+
+### Step 5: Create App Store Metadata (Optional)
+
+```bash
+mkdir -p fastlane/metadata/android/ja/{changelogs,images}
+echo "グリッドタイマー" > fastlane/metadata/android/ja/title.txt
+echo "シニア向けの9グリッド並列タイマー" > fastlane/metadata/android/ja/short_description.txt
+# Create full_description.txt with complete app description
+```
+
+### Step 6: Generate Code
 
 ```bash
 ./tool/gen.sh
 ```
 
-Or manually run:
+This generates `lib/l10n/app_localizations_ja.dart`.
+
+### Step 7: Test
 
 ```bash
-flutter gen-l10n
+flutter run
+# Navigate to Settings → Language → 日本語
+# Verify all text is translated correctly
 ```
 
-### 5. Test
+## File Locations by Language Layer
 
-1. Restart the application
-2. Go to Settings → Language
-3. Select the newly added language
-4. Verify that UI text, notifications, and TTS are displayed correctly
+### Core Configuration
+| File | Purpose |
+|------|---------|
+| `lib/core/config/supported_locales.dart` | Define all supported languages |
 
-## File Locations
+### Flutter Layer (ARB Files)
+| File Pattern | Purpose |
+|--------------|---------|
+| `lib/l10n/arb/app_en.arb` | English UI strings (template) |
+| `lib/l10n/arb/app_zh.arb` | Chinese UI strings |
+| `lib/l10n/arb/app_*.arb` | Other language UI strings |
+| `lib/l10n/app_localizations_*.dart` | Generated localization code |
 
-| File Type | Path | Purpose |
-|-----------|------|---------|
-| Language Configuration | `lib/core/config/supported_locales.dart` | Define all supported languages |
-| Service Layer Text | `lib/core/services/service_localizations.dart` | Notifications, TTS, Widget text |
-| Duration Formatting | `lib/core/services/duration_formatter.dart` | Time unit localization |
-| UI Text | `lib/l10n/arb/app_*.arb` | Flutter app UI text |
-| Platform Resources (Android) | `android/app/src/main/res/values-*/strings.xml` | Android app name |
-| Platform Resources (macOS) | `macos/Runner/*.lproj/InfoPlist.strings` | macOS window title |
+### Platform Layer
+| Platform | File Pattern | Purpose |
+|----------|--------------|---------|
+| Android | `android/app/src/main/res/values/strings.xml` | English (default) |
+| Android | `android/app/src/main/res/values-zh/strings.xml` | Chinese resources |
+| Android | `android/app/src/main/res/values-*/strings.xml` | Other languages |
+| macOS | `macos/Runner/en.lproj/MainMenu.strings` | English menu |
+| macOS | `macos/Runner/zh-Hans.lproj/MainMenu.strings` | Chinese menu |
+| macOS | `macos/Runner/*.lproj/MainMenu.strings` | Other language menus |
+| iOS (future) | `ios/Runner/en.lproj/InfoPlist.strings` | English app info |
+| iOS (future) | `ios/Runner/*/InfoPlist.strings` | Other languages |
+
+### Metadata Layer (App Stores)
+| File Pattern | Purpose |
+|--------------|---------|
+| `fastlane/metadata/android/en-US/*.txt` | English Play Store listing |
+| `fastlane/metadata/android/zh-CN/*.txt` | Chinese Play Store listing |
+| `fastlane/metadata/android/*/title.txt` | App title per language |
+| `fastlane/metadata/android/*/short_description.txt` | Short description |
+| `fastlane/metadata/android/*/full_description.txt` | Full description |
+| `fastlane/metadata/android/*/changelogs/*.txt` | Release notes |
 
 ## Best Practices
 
@@ -165,12 +223,28 @@ A:
 2. Click the "Test Voice" button
 3. Confirm the announcement is in the correct language
 
+## Current Status
+
+**Fully Supported Languages:**
+- 🇬🇧 English (`en`)
+- 🇨🇳 Simplified Chinese (`zh`)
+
+**Platforms:**
+- ✅ Android (14+)
+- ✅ macOS (10.14+)
+- 🚧 iOS (planned)
+- 🚧 Windows (planned)
+- 🚧 Linux (planned)
+
 ## Future Enhancements
 
-- [ ] Auto-detect system language and set default language
-- [ ] Support regional variants (e.g., en-US vs en-GB)
-- [ ] Provide translation completeness checking tool
-- [ ] Consider using translation management platforms (e.g., Crowdin)
+- [ ] iOS platform support
+- [ ] Windows platform support
+- [ ] Linux platform support
+- [ ] Support regional variants (e.g., en-US vs en-GB, zh-CN vs zh-TW)
+- [ ] Translation completeness checking tool
+- [ ] Integration with translation management platforms (Crowdin, Lokalise)
+- [ ] Automated translation validation in CI/CD
 
 ## References
 
@@ -178,48 +252,33 @@ A:
 - [ARB File Format](https://github.com/google/app-resource-bundle)
 - [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 
-## Example: Adding Korean Support
+## Language Code Reference
 
-Here's a complete example of adding Korean (ko) support:
+| Language | Code | TTS Locale | Android Folder | macOS Folder |
+|----------|------|------------|----------------|--------------|
+| English | `en` | `en-US` | `values` | `en.lproj` |
+| Chinese (Simplified) | `zh` | `zh-CN` | `values-zh` | `zh-Hans.lproj` |
+| Japanese | `ja` | `ja-JP` | `values-ja` | `ja.lproj` |
+| Korean | `ko` | `ko-KR` | `values-ko` | `ko.lproj` |
+| French | `fr` | `fr-FR` | `values-fr` | `fr.lproj` |
+| German | `de` | `de-DE` | `values-de` | `de.lproj` |
+| Spanish | `es` | `es-ES` | `values-es` | `es.lproj` |
 
-**Step 1**: Add to `lib/core/config/supported_locales.dart`
-```dart
-SupportedLanguage(
-  code: 'ko',
-  nativeName: '한국어',
-  englishName: 'Korean',
-  ttsLocale: 'ko-KR',
-),
-```
+## Want to Contribute a Translation?
 
-**Step 2**: Add to `lib/core/services/service_localizations.dart`
-```dart
-'ko': {
-  'timeIsUp': '시간이 다 되었습니다!',
-  'stop': '정지',
-  'appTitle': '그리드 타이머',
-  'running': '실행 중',
-  'tapToOpen': '앱을 열려면 탭하세요',
-  'ttsTestMessage': '타이머 1 시간이 다 되었습니다',
-  'timerRinging': '타이머가 울리고 있습니다',
-  'timersRinging': '타이머가 울리고 있습니다',
-  'timerActive': '타이머가 실행 중입니다',
-  'timersActive': '타이머가 실행 중입니다',
-  'timeIsUpTemplate': '{name} 시간이 다 되었습니다',
-},
-```
+We welcome community contributions!
 
-**Step 3**: Add to `lib/core/services/duration_formatter.dart`
-```dart
-'ko': {
-  'seconds': '초',
-  'minutes': '분',
-  'hours': '시간',
-},
-```
+**Most Wanted Languages:**
+- 🇯🇵 Japanese
+- 🇰🇷 Korean
+- 🇫🇷 French
+- 🇩🇪 German
+- 🇪🇸 Spanish
+- 🇷🇺 Russian
+- 🇸🇦 Arabic
 
-**Step 4**: Create `lib/l10n/arb/app_ko.arb` with all translations
-
-**Step 5**: Run `./tool/gen.sh`
-
-Done! The Korean language option will now appear in both Settings and TTS Settings pages.
+**Pull Request Checklist:**
+1. ✅ All files listed in the checklist above
+2. ✅ Tested on at least one device
+3. ✅ Include screenshots showing the language working
+4. ✅ Note any translation decisions in PR description

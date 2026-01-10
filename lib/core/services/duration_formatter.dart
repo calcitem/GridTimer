@@ -16,7 +16,7 @@ class DurationFormatter {
   final AppLocalizations _l10n;
 
   DurationFormatter(String localeName)
-      : _l10n = lookupAppLocalizations(_parseLocale(localeName));
+    : _l10n = lookupAppLocalizations(_parseLocale(localeName));
 
   /// Parse locale string to Locale object.
   static Locale _parseLocale(String localeName) {
@@ -39,8 +39,8 @@ class DurationFormatter {
   /// Format duration in seconds to a human-readable string with localized units.
   ///
   /// Examples:
-  /// - Chinese: "12 秒", "2 分钟", "1 小时"
   /// - English: "12 s", "2 min", "1 h"
+  /// - Chinese: "12 秒" (miǎo), "2 分钟" (fēnzhōng), "1 小时" (xiǎoshí)
   String format(int seconds) {
     if (seconds < 60) {
       return '$seconds ${_l10n.unitSecondsShort}';
