@@ -180,18 +180,19 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
               },
             ),
 
-            // Keep Screen On
-            SwitchListTile(
-              secondary: const Icon(Icons.screen_lock_portrait),
-              title: Text(l10n.keepScreenOn),
-              subtitle: Text(l10n.keepScreenOnDesc),
-              value: settings.keepScreenOnWhileRunning,
-              onChanged: (value) {
-                ref
-                    .read(appSettingsProvider.notifier)
-                    .toggleKeepScreenOn(value);
-              },
-            ),
+            // Keep Screen On (mobile platforms only)
+            if (PlatformCapabilities.supportsKeepScreenOn)
+              SwitchListTile(
+                secondary: const Icon(Icons.screen_lock_portrait),
+                title: Text(l10n.keepScreenOn),
+                subtitle: Text(l10n.keepScreenOnDesc),
+                value: settings.keepScreenOnWhileRunning,
+                onChanged: (value) {
+                  ref
+                      .read(appSettingsProvider.notifier)
+                      .toggleKeepScreenOn(value);
+                },
+              ),
 
             const Divider(),
 

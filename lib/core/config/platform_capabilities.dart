@@ -61,6 +61,11 @@ class PlatformCapabilities {
   static bool get supportsGestureControls =>
       supportsShakeGesture || supportsFlipGesture || supportsVolumeButtonGesture;
 
+  /// Whether keeping the screen on is supported/relevant.
+  /// Mainly for mobile devices to prevent sleep during timers.
+  /// On desktop, window managers handle this differently or it's less critical.
+  static bool get supportsKeepScreenOn => isMobile;
+
   /// Whether system volume control is supported.
   /// Currently only works on Android.
   static bool get supportsVolumeControl => isAndroid;
