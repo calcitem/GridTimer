@@ -1,0 +1,431 @@
+{
+  "@@locale": "ko",
+
+  "appTitle": "그리드 타이머",
+  "timerIdle": "대기",
+  "timerRunning": "실행 중",
+  "timerPaused": "일시정지",
+  "timerRinging": "울림 중",
+
+  "confirmStartTitle": "시작할까요?",
+  "confirmStartBody": "다른 타이머가 실행 중입니다. {name}을(를) 계속 시작할까요?",
+
+  "actionStart": "시작",
+  "actionPause": "일시정지",
+  "actionResume": "재개",
+  "actionReset": "초기화",
+  "actionStop": "중지",
+  "actionCancel": "취소",
+
+  "timerActions": "타이머 작업",
+  "stopAlarm": "알람 중지",
+
+  "timeUpTts": "{name} 시간이 끝났습니다",
+
+  "timerIdleActions": "동작 선택",
+  "actionAdjustTime": "시간 조정",
+  "adjustTimeTitle": "시간 조정 - {slotName}",
+  "currentDuration": "현재: {minutes}분 {seconds}초",
+  "durationUpdatedSuccessfully": "시간이 업데이트되었습니다",
+  "durationMustBePositive": "시간은 0보다 커야 합니다",
+
+  "idleGridClickBehaviorTitle": "대기 그리드 탭 동작",
+  "idleGridClickBehaviorDesc": "대기 상태의 그리드 셀을 탭했을 때의 동작을 선택하세요",
+  "showDialogOption": "동작 선택 창 표시(권장, 오탭 방지)",
+  "directStartOption": "바로 타이머 시작(빠른 모드)",
+
+  "permissionNotificationTitle": "알림 활성화",
+  "permissionNotificationBody": "타이머 알림을 받으려면 알림 권한을 켜 주세요.",
+
+  "permissionExactAlarmTitle": "정확한 알람 활성화",
+  "permissionExactAlarmBody": "정확한 타이머 알림을 위해 '알람 및 리마인더' 권한을 켜 주세요.",
+
+  "openSettings": "설정 열기",
+  "later": "나중에",
+
+  "minutes": "분",
+  "remainingSeconds": "남은 시간",
+  "pausing": "일시정지됨",
+  "timeUp": "시간 종료",
+  "clickToStop": "탭하여 중지",
+
+  "settings": "설정",
+  "appInformation": "앱 정보",
+  "version": "버전",
+  "versionInfo": "버전 정보",
+  "gitBranch": "Git 브랜치",
+  "gitRevision": "Git 리비전",
+
+  "timerSettings": "타이머 설정",
+  "soundSettings": "볼륨 설정",
+  "soundSettingsDesc": "볼륨을 구성합니다",
+  "ttsSettings": "TTS 설정",
+  "ttsSettingsDesc": "음성 안내를 구성합니다",
+  "languageSettings": "언어",
+  "languageSettingsDesc": "앱 언어를 선택합니다",
+  "permissions": "권한",
+  "notificationPermission": "알림 권한",
+  "notificationPermissionDesc": "타이머 알림 허용",
+  "about": "정보",
+  "license": "라이선스",
+  "licenseDesc": "서드파티 라이선스 보기",
+  "comingSoon": "준비 중",
+  "selectLanguage": "언어 선택",
+  "languageEnglish": "English",
+  "languageChineseSimplified": "简体中文",
+
+  "errorText": "오류: {error}",
+  "confirmStart": "다른 타이머가 실행 중입니다. 이 타이머를 계속 시작할까요?",
+
+  "flashAnimation": "플래시 애니메이션",
+  "flashAnimationDesc": "타이머가 울릴 때 빨간색으로 깜빡임",
+  "vibration": "진동",
+  "vibrationDesc": "타이머가 울릴 때 진동",
+  "keepScreenOn": "화면 켜짐 유지",
+  "keepScreenOnDesc": "타이머 실행 중 화면이 꺼지지 않도록 합니다",
+  "showMinutesSecondsFormat": "분:초 형식 표시",
+  "showMinutesSecondsFormatDesc": "카운트다운을 MM:SS로 표시(끄면 총 초로 표시)",
+  "ttsEnabled": "음성 안내",
+  "ttsEnabledDesc": "타이머 완료 시 음성으로 알림",
+
+  "alarmSound": "알람 소리",
+  "alarmSoundDesc": "타이머 알림 소리를 선택합니다",
+  "volume": "볼륨",
+  "volumeDesc": "알람 볼륨 조절",
+  "systemVolumeHint": "볼륨이 너무 낮다면 시스템 설정에서 알람 볼륨을 조절할 수 있습니다. Android에서는 물리 볼륨 버튼을 누른 뒤 메뉴(점 세 개)를 탭하여 알람 볼륨을 따로 설정할 수 있습니다.",
+
+  "autoRaiseAlarmVolumeTitle": "시스템 알람 볼륨 자동 증폭",
+  "autoRaiseAlarmVolumeDesc": "타이머가 울릴 때 시스템 '알람' 볼륨을 일시적으로 올리고, 알람을 멈추면 원래대로 복원합니다.",
+  "alarmVolumeBoostLevelTitle": "증폭 수준",
+  "alarmVolumeBoostLevelMinAudible": "최소로 들릴 정도(권장)",
+  "alarmVolumeBoostLevelMax": "최대",
+  "autoRaiseAlarmVolumeNote": "참고: 이 기능은 시스템 알람 볼륨을 변경합니다. 알람을 멈추면(또는 {minutes}분 후) 이전 볼륨으로 복원됩니다.",
+
+  "vibrationSystemWarning": "앱 내 진동 설정이 변경되었습니다. 단, 방해금지 모드, 시스템 진동 토글 등 기기 시스템 설정도 실제 진동 동작에 영향을 줄 수 있습니다. 진동이 정상 동작하도록 시스템 설정도 함께 확인해 주세요.",
+  "openSystemVibrationSettings": "시스템 진동 설정 열기",
+  "volumeButtonLockScreenHint": "일부 기기에서는 잠금 해제 상태에서만 볼륨 버튼이 동작합니다",
+
+  "ttsLanguage": "TTS 언어",
+  "ttsLanguageDesc": "음성 안내 언어를 선택합니다",
+
+  "testSound": "소리 테스트",
+  "playing": "재생 중...",
+  "testTts": "음성 테스트",
+  "ttsTestMessage": "타이머 1 시간이 끝났습니다",
+
+  "unitSecondsShort": "초",
+  "unitMinutesShort": "분",
+  "unitHoursShort": "시간",
+
+  "gridDurationsSettings": "그리드 설정",
+  "gridDurationsSettingsDesc": "각 그리드 셀의 이름과 시간을 사용자 지정합니다",
+  "gridSlot": "그리드 {index}",
+
+  "seconds": "초",
+  "hours": "시간",
+
+  "save": "저장",
+  "reset": "초기화",
+  "resetToDefault": "기본값으로 재설정",
+  "gridDurationsResetConfirm": "그리드 시간을 기본값으로 재설정할까요?",
+
+  "name": "이름",
+  "optional": "선택 사항",
+
+  "audioPlaybackSettings": "오디오 재생 설정",
+  "audioPlaybackSettingsDesc": "알람 오디오 재생 모드를 설정합니다",
+  "audioPlaybackMode": "재생 모드",
+  "audioPlaybackModeLoopIndefinitely": "수동으로 멈출 때까지 무한 반복",
+  "audioPlaybackModeLoopForDuration": "N분 동안 반복 후 자동 중지",
+  "audioPlaybackModeLoopWithInterval": "N분 반복, M분 일시정지, 다시 N분 반복(1회)",
+  "audioPlaybackModeLoopWithIntervalRepeating": "N분 반복, M분 일시정지, 멈출 때까지 반복",
+  "audioPlaybackModePlayOnce": "한 번만 재생",
+
+  "loopDuration": "반복 시간",
+  "intervalPause": "간격 일시정지 시간",
+  "minutesUnit": "분",
+
+  "audioPlaybackWhenEffectiveTitle": "중요 안내",
+  "audioPlaybackWhenEffectiveDesc": "이 설정은 기본 알람 소리에만 적용됩니다.\n\n시스템 설정에서 알림 소리를 사용자 지정했다면, 알람은 멈출 때까지 계속 반복되며(이 재생 설정이 적용되지 않습니다).",
+
+  "safetyDisclaimerTitle": "안전 안내",
+  "safetyDisclaimerMessage": "안전을 위해 다음 내용을 확인해 주세요:",
+  "safetyRecommendedUses": "✅ 권장 사용",
+  "safetyRecommendedUsesList": "• 일상 요리 타이머\n• 일반 생활 알림\n• 비중요 상황\n• 테스트 후 사용",
+  "safetyNotRecommendedUses": "❌ 권장하지 않음",
+  "safetyNotRecommendedUsesList": "• 중요한 복약 알림(의료용 앱 사용)\n• 생명과 직결되는 알림\n• 응급 의료 상황\n• 테스트 없이 의존",
+  "safetyBestPractices": "💡 모범 사례:",
+  "safetyBestPracticesList": "• 사용 전 알람을 테스트하세요\n• 중요한 작업은 백업 알림을 준비하세요\n• 방해금지 및 알림 권한을 확인하세요\n• 앱의 한계를 이해하세요",
+  "safetyViewFullDisclaimer": "면책 조항 보기",
+  "safetyAcceptAndContinue": "이해했습니다. 계속",
+
+  "fullDisclaimerTitle": "법적 면책 조항",
+  "fullDisclaimerText": "이 소프트웨어는 어떠한 보증도 없이 \"있는 그대로\" 제공됩니다.\n\n개발자는 이 소프트웨어 사용으로 발생하는 어떠한 결과(예: 알림 누락, 부정확한 타이밍, 앱 오류 등)에 대해서도 책임을 지지 않습니다.\n\n사용자는 위험을 스스로 평가하고, 중요한 작업에는 백업 수단을 마련해야 합니다.",
+
+  "close": "닫기",
+  "aboutDisclaimer": "안전 안내 및 면책 조항",
+
+  "gestureSettings": "제스처 제어 설정",
+  "gestureSettingsDesc": "알람이 울릴 때의 제스처 동작을 설정합니다",
+  "gestureActions": "제스처 동작",
+
+  "gestureTypeScreenTap": "화면 탭",
+  "gestureTypeVolumeUp": "볼륨+ 버튼",
+  "gestureTypeVolumeDown": "볼륨- 버튼",
+  "gestureTypeShake": "휴대폰 흔들기",
+  "gestureTypeFlip": "휴대폰 뒤집기(화면 아래로)",
+
+  "gestureActionStopAndReset": "중지 및 초기화",
+  "gestureActionNone": "동작 없음",
+
+  "shakeSensitivity": "흔들기 민감도",
+  "shakeSensitivityLow": "낮음(세게 흔들기)",
+  "shakeSensitivityHigh": "높음(가볍게 흔들기)",
+  "shakeSensitivityDesc": "흔들기 감지 민감도를 조절합니다",
+
+  "gestureHint": "어르신 친화: 화면 탭, 볼륨 버튼, 뒤집기를 켜는 것을 권장합니다",
+  "gestureLimitationsHint": "참고: 일부 기기/시스템은 잠금 화면에서 버튼이나 센서를 제한합니다. 잠금 상태에서 제스처가 반응하지 않으면 잠금을 해제한 뒤 뒤집거나 볼륨 버튼을 눌러 보세요.",
+
+  "onboardingCheckSoundTitle": "중요: 소리 확인",
+  "onboardingCheckSoundDesc": "아래 버튼을 눌러 \"Timer Alarm (default)\" 소리가 '없음' 또는 '무음'이 아닌지 확인하세요.\n\n무음으로 설정하면 시간이 끝났을 때 소리 없이 알림만 표시됩니다.",
+  "onboardingCheckSoundBtn": "소리 설정 확인",
+  "onboardingCheckSoundMiuiHint": "MIUI 사용자: 알림 채널에서 소리를 선택할 수 없는 것은 정상입니다(MIUI 시스템 제한). 앱이 자동으로 인앱 오디오 재생을 활성화했으며 알람은 정상적으로 울립니다. 참고: 알람 중에는 오디오 중단을 줄이기 위해 메시지 알림이 과도하지 않도록 해주세요.",
+
+  "grantPermission": "권한 부여",
+  "notificationPermissionGranted": "알림 권한이 부여되었습니다",
+  "notificationPermissionDenied": "알림 권한이 거부되었습니다. 시스템 설정에서 수동으로 허용해 주세요",
+
+  "exactAlarmPermission": "정확한 알람 권한",
+  "exactAlarmPermissionDesc": "타이머가 제시간에 알리도록 보장(Android 12, 14+ 필수)",
+  "exactAlarmPermissionDescApi33": "Android 13에서는 기본으로 부여되며, 시스템 설정에서 해제할 수 있습니다",
+
+  "fullScreenIntentPermission": "전체 화면 인텐트 권한",
+  "fullScreenIntentPermissionDesc": "잠금 화면에서 타이머가 울릴 때 전체 화면 알림을 허용(Android 14+)",
+  "fullScreenIntentStatusGranted": "허용됨",
+  "fullScreenIntentStatusDenied": "허용되지 않음(전체 화면 알림이 표시되지 않을 수 있음)",
+
+  "batteryOptimizationSettings": "배터리 최적화 설정",
+  "batteryOptimizationDesc": "백그라운드 알람의 신뢰성을 위해 배터리 최적화를 끄세요",
+
+  "alarmSoundSettings": "알람 소리 설정",
+  "alarmSoundSettingsDesc": "\"Timer Alarm (default)\" 소리가 '없음'으로 설정되면, 타이머는 소리 없이 알림만 표시합니다",
+  "alarmSoundSettingsMiuiHint": "MIUI 사용자: MIUI 제한으로 일부 기기는 알림 채널 소리를 변경할 수 없습니다. 앱이 자동으로 인앱 오디오 재생을 활성화해 알람이 정상적으로 울립니다. 참고: 인앱 오디오는 다른 알림 소리에 의해 중단되거나 볼륨이 낮아질 수 있으니, 알람 중에는 메시지 알림을 과도하게 받지 않도록 해주세요.",
+
+  "appKilledWarning": "중요: 이 앱이 시스템이나 사용자에 의해 강제 종료되면 타이머가 울리지 않습니다. 백그라운드에서 실행되도록 유지하고 배터리 최적화를 끄세요.",
+
+  "alarmTroubleshooting": "알람이 울리지 않거나 지연되나요?",
+  "alarmTroubleshootingDesc": "Android 버전 및 제조사 ROM이 백그라운드 알람을 제한할 수 있습니다. 탭하여 빠른 해결책을 확인하세요.",
+  "alarmTroubleshootingDialogTitle": "알람 신뢰성 가이드",
+  "alarmTroubleshootingDialogIntro": "Android 버전과 제조사 ROM(예: 커스텀 스킨)은 백그라운드/알림 제한이 다릅니다. 이로 인해 알람이 무음이 되거나 지연될 수 있습니다. 계속 개선하고 있지만, 다음을 시도해 주세요:",
+  "alarmTroubleshootingSteps": "1. 방해금지를 끄고 알람 볼륨을 올리기\n2. 이 앱의 알림을 허용하기\n3. \"Timer Alarm (default)\" 채널에서 소리가 무음이 아닌지 확인하기\n4. 이 앱에 대한 배터리 최적화를 끄기(백그라운드 실행 허용)\n5. Android 14+: \"알람 및 리마인더\"(정확한 알람) 허용\n6. Android 14+: \"전체 화면 인텐트\" 허용",
+  "alarmTroubleshootingMiui": "커스텀 시스템: 자동 시작과 백그라운드 활동을 허용하고, 과도한 절전 기능을 피하세요. 필요하면 최근 앱에서 이 앱을 잠그세요.",
+
+  "alarmTroubleshootingQuickActions": "빠른 작업",
+  "alarmTroubleshootingOpenChannel": "채널 소리 확인",
+  "alarmTroubleshootingOpenNotifications": "알림 설정 열기",
+  "alarmTroubleshootingOpenExactAlarm": "정확한 알람 활성화",
+  "alarmTroubleshootingOpenFullScreenIntent": "전체 화면 알림 활성화",
+  "alarmTroubleshootingOpenBattery": "배터리 최적화 끄기",
+  "alarmTroubleshootingViewSafetyNotice": "안전 안내 보기",
+
+  "alarmReliabilityMode": "알람 신뢰성 모드",
+  "alarmReliabilityModeDesc": "알람을 예약하는 방식을 선택합니다(앱이 종료된 뒤에도 울리는지에 영향)",
+  "alarmReliabilityModeAppOnly": "앱 전용",
+  "alarmReliabilityModeAppOnlyDesc": "배터리 효율이 가장 좋지만 앱이 종료되면 울리지 않습니다",
+  "alarmReliabilityModeNotification": "알림",
+  "alarmReliabilityModeNotificationDesc": "시스템 예약 알림 사용, 백그라운드 신뢰성 향상(권장)",
+  "alarmReliabilityModeAlarmClock": "알람 시계",
+  "alarmReliabilityModeAlarmClockDesc": "최고 신뢰성, 앱이 종료되어도 울림(배터리 사용 증가)",
+
+  "goToSettings": "설정으로 이동",
+  "settingsButton": "설정",
+
+  "failedToOpenChannelSettings": "알림 채널 설정을 열지 못했습니다: {error}",
+
+  "developerModeEnabled": "개발자 모드가 활성화되었습니다",
+  "developerModeDisabled": "개발자 모드가 비활성화되었습니다",
+
+  "speaking": "발화 중...",
+  "ttsTestFailed": "음성 테스트에 실패했습니다. 기기의 TTS 설정을 확인하세요.",
+  "ttsTestTimeout": "음성 테스트 시간이 초과되었습니다. TTS 엔진이 정상인지 확인하세요.",
+
+  "ttsTestFailedTitle": "음성 테스트 실패",
+  "ttsTestFailedMessage": "음성 안내가 들리지 않았습니다. 가능한 원인:\n\n• TTS 엔진이 올바르게 설정되지 않음\n• 언어 팩이 설치되지 않음\n• 시스템 볼륨이 음소거됨\n• 미디어 볼륨이 너무 낮음\n\n시스템 설정을 확인하거나 진단 정보를 확인하세요.",
+
+  "viewDiagnostics": "진단 보기",
+  "ttsDiagnostics": "TTS 진단",
+  "ttsEngine": "현재 엔진",
+  "availableEngines": "사용 가능한 엔진",
+  "availableLanguages": "사용 가능한 언어",
+  "andMore": "외 {count}개...",
+
+  "ttsNoEngineTitle": "음성 엔진을 찾을 수 없음",
+  "ttsNoEngineMessage": "기기에 사용 가능한 TTS(텍스트 음성 변환) 엔진이 없습니다. 일부 커스텀 Android 기기에서 흔합니다.",
+  "ttsNoEngineSteps": "다음 단계를 따라 주세요:\n\n1. \"앱 스토어\"를 엽니다\n2. \"Google 텍스트 음성 변환\"을 검색합니다\n3. 음성 엔진을 설치합니다\n4. 설치 후 \"설정 → 접근성 → 텍스트 음성 변환\"으로 이동합니다\n5. 설치한 엔진을 선택하고 언어 팩을 다운로드합니다",
+
+  "ttsUnavailableTitle": "음성 기능을 사용할 수 없음",
+  "ttsUnavailableMessage": "기기에 음성 패키지가 설치되어 있지 않을 수 있습니다.\n\n다음 단계를 따라 주세요:\n1. 시스템 설정을 엽니다\n2. \"텍스트 음성 변환\" 또는 \"TTS\"를 검색합니다\n3. 음성 엔진이 설치되어 있는지 확인합니다\n4. 기본 언어를 설정합니다",
+  "ttsUnavailableHint": "팁: 일부 기기에서는 시스템 음성 엔진 설정을 확인하거나 Google TTS 엔진을 설치하세요.",
+
+  "openTtsSettings": "TTS 설정 열기",
+  "ok": "확인",
+
+  "ttsSpeechRate": "말하기 속도",
+  "ttsPitch": "피치",
+  "ttsVolumeDesc": "음성 안내 볼륨을 조절합니다",
+  "ttsSpeechRateDesc": "음성 안내 속도를 조절합니다(0.5가 보통 속도)",
+  "ttsPitchDesc": "음성 안내 피치를 조절합니다(1.0이 보통 피치)",
+
+  "ttsLanguageNote": "팁: 자동 감지가 부정확하면 수동으로 언어를 선택할 수 있습니다.",
+  "ttsLanguageAutoDesc": "앱 언어에 따라 자동 선택",
+
+  "followSystem": "시스템 따르기",
+  "simplifiedChinese": "중국어(간체)",
+  "english": "영어",
+
+  "speedVerySlow": "매우 느림",
+  "speedSlow": "느림",
+  "speedNormal": "보통",
+  "speedFast": "빠름",
+  "speedVeryFast": "매우 빠름",
+
+  "pitchVeryLow": "매우 낮음",
+  "pitchLow": "낮음",
+  "pitchNormal": "보통",
+  "pitchHigh": "높음",
+  "pitchVeryHigh": "매우 높음",
+
+  "onboardingNext": "다음",
+  "onboardingStartUsing": "사용 시작",
+
+  "onboardingWelcomeTitle": "Grid Timer에 오신 것을 환영합니다",
+  "onboardingWelcomeDesc": "타이머가 정확히 작동하도록 몇 가지 간단한 설정이 필요합니다.\n\n1분이면 완료됩니다.",
+
+  "onboardingNotificationTitle": "알림 권한",
+  "onboardingNotificationDesc": "이 앱은 카운트다운이 끝났을 때 알려주기 위해 알림 권한이 필요합니다.\n\n권한이 없으면 완료 알림을 놓칠 수 있습니다.",
+  "onboardingGrantNotification": "알림 권한 부여",
+
+  "onboardingExactAlarmTitle": "정확한 알람 권한",
+  "onboardingExactAlarmDesc": "타이머를 초 단위로 정확하게 맞추려면 \"정확한 알람\" 권한이 필요합니다.\n\n다음 대화상자 또는 설정에서 허용해 주세요.",
+  "onboardingGrantExactAlarm": "정확한 알람 권한 부여",
+
+  "onboardingFullScreenIntentTitle": "전체 화면 알림",
+  "onboardingFullScreenIntentDesc": "Android 14+에서는 잠금 화면에서 전체 화면 알림을 표시하려면 특별한 앱 접근 권한이 필요할 수 있습니다.\n\n알람 신뢰성을 높이려면 이 앱에 대해 \"전체 화면 인텐트\"를 허용해 주세요.",
+  "onboardingGrantFullScreenIntent": "설정 열기",
+  "onboardingOpenFullScreenIntentSettings": "전체 화면 인텐트 설정 열기",
+
+  "onboardingBatteryTitle": "배터리 최적화",
+  "onboardingBatteryDesc": "시스템이 백그라운드에서 타이머를 종료하지 않도록, 이 앱을 \"배터리 사용 최적화 안 함\"으로 설정하는 것을 권장합니다.\n\n이렇게 하면 장시간 타이머가 중단되지 않습니다.\n\n팁: 일부 기기에서는 \"배터리 최적화 설정 열기\" 버튼이 차단되거나 정확한 옵션이 표시되지 않을 수 있습니다. 시스템 설정에서 \"배터리 최적화\", \"절전\", \"자동 시작\", \"백그라운드 활동\" 등을 검색해 이 앱을 \"최적화 안 함\" / \"제한 없음\"으로 설정해 주세요.",
+  "onboardingOpenBatterySettings": "배터리 최적화 설정 열기",
+
+  "onboardingCompletionTitle": "준비 완료",
+  "onboardingCompletionDesc": "모든 설정이 완료되었습니다!\n\n팁: 기기와 OS 버전에 따라 동작이 다를 수 있습니다. 장시간 타이머에 의존하기 전에 잠금 화면/백그라운드 테스트를 한 번 해보세요.\n\n설정 페이지에서 언제든 다시 구성할 수 있습니다.",
+
+  "onboardingGranted": "허용됨",
+  "onboardingNotRequired": "필요 없음",
+
+  "onboardingNotRequiredNotificationDesc": "Android 13 미만에서는 기본적으로 알림이 허용됩니다. 수동 승인 불필요.",
+  "onboardingNotRequiredExactAlarmDesc": "Android 12 미만에서는 기본적으로 정확한 알람을 지원합니다. 수동 승인 불필요.",
+
+  "onboardingPreGrantedExactAlarmDesc": "Android 13은 새로 설치된 앱에 정확한 알람 권한을 자동으로 사전 부여합니다.\n\n이 권한을 해제한 경우, 설정 > 앱 > {appName} > 알람 및 리마인더에서 다시 켤 수 있습니다.",
+  "onboardingPreGranted": "사전 부여됨",
+
+  "onboardingBatteryLegacyDesc": "시스템이 백그라운드에서 타이머를 종료하지 않도록, 절전 모드에서 {appName} 실행을 허용하는 것을 권장합니다.\n\n경로 예시: 설정 → 배터리/전원 관리 → 절전 모드 → 절전 모드에서도 허용된 앱 → {appName} 활성화\n\n팁: 기기 브랜드와 OS 버전에 따라 경로가 다를 수 있습니다. 설정에서 관련 옵션을 찾아 주세요.",
+
+  "permissionNotRequiredStatus": "필요 없음(시스템에서 기본 지원)",
+  "batteryOptimizationLegacyDesc": "절전 설정에서 이 앱이 절전 모드에서도 실행되도록 허용해 주세요.\n경로: 설정 → 배터리 → 절전 모드 → 절전 모드에서도 허용된 앱",
+
+  "privacyPolicy": "개인정보 처리방침",
+  "privacyPolicyTitle": "개인정보 처리방침",
+  "privacyPolicyMessage": "이 앱을 사용하기 전에 개인정보 처리방침을 읽고 동의해 주세요.",
+  "privacyPolicyAgree": "동의",
+  "privacyPolicyViewDetails": "개인정보 처리방침 보기",
+
+  "ossLicenses": "서드파티 라이선스",
+  "ossLicensesDesc": "서드파티 라이브러리 라이선스 보기",
+
+  "resetAllSettings": "모든 설정 초기화",
+  "resetAllSettingsDesc": "모든 설정을 기본값으로 복원합니다",
+  "resetAllSettingsConfirmTitle": "모든 설정을 초기화할까요?",
+  "resetAllSettingsConfirmMessage": "모든 설정이 기본값으로 복원됩니다. 이 작업은 되돌릴 수 없습니다.",
+  "resetAllSettingsExitMessage": "초기화를 완료하기 위해 {seconds}초 후 앱이 종료됩니다...",
+  "resetAllSettingsSuccess": "설정이 초기화되었습니다",
+
+  "displaySettings": "표시 및 접근성",
+  "themeMode": "테마 모드",
+  "themeModeDesc": "시각 테마를 선택합니다",
+  "themeSoftDark": "부드러운 다크",
+  "themeHighContrast": "고대비",
+  "themeLightHighContrast": "주간 하이라이트",
+  "themeTraditional": "전통",
+  "themePastelGarden": "파스텔 가든",
+  "themeInkVermilion": "먹과 주홍",
+  "themeGlacialBlue": "빙하 블루",
+  "themeClassicNavy": "클래식 네이비",
+
+  "permissionStatusGranted": "허용됨",
+  "permissionStatusDenied": "허용되지 않음",
+  "batteryOptimizationStatusDisabled": "꺼짐(권장)",
+  "batteryOptimizationStatusEnabled": "켜짐(알람에 영향 가능)",
+  "exactAlarmStatusGranted": "허용됨",
+  "exactAlarmStatusDenied": "허용되지 않음(알람이 지연될 수 있음)",
+  "batteryOptimizationStatusUnknown": "수동으로 확인해 주세요",
+
+  "batteryOptimizationMiuiHint": "MIUI: '배터리 절약'을 '제한 없음'으로 설정",
+  "batteryOptimizationHuaweiHint": "Huawei/Honor: '앱 실행'을 '수동 관리'로 설정하고 '백그라운드 실행'을 허용",
+  "batteryOptimizationOppoHint": "OPPO: '앱 정보' → '배터리 사용량' → '전력 소비 제어'에서 '백그라운드 활동 허용'을 선택",
+  "batteryOptimizationVivoHint": "vivo: '앱 정보' → '배터리 사용량' → '백그라운드 전력 제어'에서 '높은 백그라운드 전력 사용'을 선택",
+  "batteryOptimizationOemHint": "팁: 일부 커스텀 시스템(MIUI/EMUI/HarmonyOS)에서는 설정에서 '배터리 최적화', '자동 시작', '보호된 앱' 등을 수동으로 검색해야 할 수 있습니다",
+  "batteryOptimizationStandardHint": "팁: '제한 없음'이 보이지 않으면 토글이 아닌 '백그라운드 사용 허용' 문구를 탭해 더 많은 옵션을 확인해 보세요",
+
+  "gridDurationMustBePositive": "그리드 {index}의 시간은 양의 정수여야 합니다",
+  "savedSuccessfullyGridUpdated": "저장되었습니다. 그리드가 업데이트되었습니다",
+  "activeTimersRunningConfigWillApplyOnRestart": "실행 중인 타이머가 있어 설정은 다음 앱 실행 시 적용됩니다",
+  "configurationSavedButErrorDuringUpdate": "설정이 저장되었지만 앱 업데이트 중 오류가 발생했습니다: {error}",
+
+  "debugTools": "디버그 도구",
+  "testTimer10s": "10초 테스트 타이머(디버그)",
+  "testTimer10sDesc": "실제 10초 타이머를 시작합니다",
+  "start": "시작",
+
+  "audioTestDebug": "오디오 테스트(디버그)",
+  "audioTestDebugDesc": "소리 문제를 진단합니다",
+  "errorTestDebug": "오류 테스트(디버그)",
+  "errorTestDebugDesc": "오류 보고 시스템을 테스트합니다",
+
+  "exitDeveloperMode": "개발자 모드 종료",
+  "exitDeveloperModeDesc": "탭하여 디버그 도구 숨기기",
+
+  "failedToStartTestTimer": "테스트 타이머를 시작하지 못했습니다: {error}",
+
+  "audioTest": "오디오 테스트",
+  "audioTestInstructions": "다음 기능을 순서대로 테스트하고 소리가 출력되는지 확인하세요.\n테스트가 실패하면 해당 기능에 문제가 있습니다.",
+  "clearLog": "로그 지우기",
+  "startTest": "테스트 시작",
+  "testLog": "테스트 로그:",
+  "waitingForTest": "테스트 대기 중...",
+  "testTimerStarted": "10초 테스트 타이머가 시작되었습니다! 첫 번째 슬롯이 10초로 설정되었습니다.",
+  "stopActiveTimersBeforeTest": "테스트 타이머를 시작하기 전에 실행 중인 타이머를 모두 중지해 주세요",
+
+  "timeIsUp": "시간이 끝났습니다!",
+
+  "widgetTimersRinging": "{count, plural, other{{count}개의 타이머가 울림}}",
+  "widgetTimersActive": "{count, plural, other{{count}개의 타이머가 실행 중}}",
+  "widgetTapToOpen": "탭하여 앱 열기",
+  "widgetTimerRemaining": "{name}: {remaining}",
+  "widgetDescription": "Grid Timer 상태 표시",
+
+  "deviceType": "기기/플랫폼",
+  "deviceTypeMiui": "샤오미(MIUI)",
+  "deviceTypeHuawei": "Huawei/Honor(EMUI/HarmonyOS)",
+  "deviceTypeOppo": "OPPO/Realme/OnePlus(ColorOS)",
+  "deviceTypeVivo": "vivo/iQOO(FuntouchOS/OriginOS)",
+  "deviceTypeStandard": "표준 Android",
+  "deviceTypeIos": "iOS",
+  "deviceTypeMacos": "macOS",
+  "deviceTypeWindows": "Windows",
+  "deviceTypeLinux": "Linux",
+  "deviceTypeWeb": "웹 브라우저",
+
+  "singleInstanceWarningMessage": "이 애플리케이션은 이미 실행 중입니다.\n\n동시에 하나의 인스턴스만 실행할 수 있습니다.\n\n이미 열린 창을 사용하거나, 새로 시작하기 전에 닫아 주세요."
+}

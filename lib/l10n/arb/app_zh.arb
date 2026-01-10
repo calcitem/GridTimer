@@ -229,6 +229,7 @@
   "availableEngines": "可用引擎",
   "availableLanguages": "可用语言",
   "andMore": "还有 {count} 个...",
+
   "ttsNoEngineTitle": "未检测到语音引擎",
   "ttsNoEngineMessage": "您的设备上没有可用的 TTS（文字转语音）引擎。这在部分定制系统的设备上较常见。",
   "ttsNoEngineSteps": "请按以下步骤解决：\n\n1. 打开「应用商店」\n2. 搜索「Google 文字转语音」或「讯飞语音引擎」\n3. 安装语音引擎\n4. 安装后打开「设置 → 更多设置 → 无障碍 → 文字转语音」\n5. 选择刚安装的引擎并下载中文语音包",
@@ -272,6 +273,7 @@
   "onboardingFullScreenIntentDesc": "Android 14+ 需要允许「全屏提醒」才能在锁屏弹出全屏提醒。\n\n请在设置中为本应用开启此权限。",
   "onboardingGrantFullScreenIntent": "打开设置",
   "onboardingOpenFullScreenIntentSettings": "打开全屏提醒设置",
+
   "onboardingBatteryTitle": "电池优化",
   "onboardingBatteryDesc": "为防止系统在后台关闭计时器，建议将本应用设置为「不优化电池使用」。\n\n这可确保长时间计时器不会被中断。\n\n提示：部分设备点击「打开电池优化设置」可能无法跳转，或跳转后看不到对应选项。请在系统设置中手动搜索「电池优化」「省电」「自启动」「后台运行」等，并将本应用设为「不优化 / 无限制」。",
   "onboardingOpenBatterySettings": "打开电池优化设置",
@@ -343,6 +345,7 @@
   "exitDeveloperMode": "退出开发者模式",
   "exitDeveloperModeDesc": "点击隐藏调试工具",
   "failedToStartTestTimer": "启动测试计时器失败：{error}",
+
   "audioTest": "音频测试",
   "audioTestInstructions": "请按顺序测试以下功能，并观察是否有声音输出。\n如果某个测试失败，则对应的功能存在问题。",
   "clearLog": "清空日志",
