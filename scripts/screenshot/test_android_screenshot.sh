@@ -171,8 +171,17 @@ cecho "$COLOR_CYAN" "Starting screenshot tests and pulling for specified locales
 
 for locale in "${locales_to_test[@]}"; do
     cecho "$COLOR_MAGENTA" "--------------------------------------------------"
-    cecho "$COLOR_MAGENTA" "Running test for locale: $locale (Timeout: $flutter_test_timeout)"
+    cecho "$COLOR_MAGENTA" "Checking for locale: $locale"
     cecho "$COLOR_MAGENTA" "--------------------------------------------------"
+
+    local_locale_dir="$local_base_dir/$locale"
+    if [ -d "$local_locale_dir" ]; then
+        cecho "$COLOR_YELLOW" "Skipping $locale - Directory already exists: $local_locale_dir"
+        successful_locales+=("$locale") # Treat as success
+        continue
+    fi
+
+    cecho "$COLOR_MAGENTA" "Running test for locale: $locale (Timeout: $flutter_test_timeout)"
 
     # Construct the command string for logging
     test_command_log="flutter test integration_test/localization_screenshot_test.dart --dart-define=TEST_LOCALE=$locale --timeout $flutter_test_timeout --no-pub --reporter=compact"
