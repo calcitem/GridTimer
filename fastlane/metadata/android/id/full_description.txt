@@ -1,0 +1,22 @@
+Yang sederhana itu lebih baik. Timer yang dibuat untuk jelas — terlihat dan terdengar.
+
+Kalau aplikasi modern terasa terlalu rumit atau jam standar sulit dibaca, Timer Grid dibuat untuk Anda. Kami menghilangkan animasi dan menu yang tidak perlu, menyisakan yang penting: angka besar dan tata letak grid 3×3 yang rapi.
+
+Dirancang untuk aksesibilitas dan kemudahan pakai:
+
+* Tema gelap lembut yang ramah mata dengan teks amber untuk mengurangi silau dan lelah mata
+* Status timer jelas lewat teks dan warna, lengkap dengan label ramah buta warna
+* Nada alarm frekuensi rendah yang disetel dengan cermat, lebih mudah disadari daripada bunyi bip tajam bernada tinggi
+* Pengumuman suara opsional (text-to-speech) yang menyatakan dengan jelas saat waktu habis
+* Tombol “Hentikan Alarm” besar dan sulit salah tekan untuk kontrol yang mudah
+
+Atur sekali, pakai selamanya.
+Pengaturan lanjutan disembunyikan agar tidak mengganggu. Anggota keluarga bisa menyiapkan grid sekali saja, lalu pemakaian harian jadi super mudah: cukup ketuk satu kotak untuk memulai timer. Tanpa scroll. Tanpa bingung.
+
+Ideal untuk:
+* Dapur dan aktivitas memasak
+* Pengguna dengan penglihatan rendah, presbiopia, atau katarak
+* Pengguna yang lebih suka bunyi alarm yang lebih jelas dan bernada lebih rendah
+* Rutinitas sederhana seperti tidur siang, peregangan, atau hobi
+
+Timer Grid — teks besar, alarm yang dirancang dengan baik, dan hidup yang lebih sederhana.

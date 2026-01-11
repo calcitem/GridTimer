@@ -1,1 +1,1 @@
-Senior-friendly 9-grid timer ⚠️ NOT for critical medical use
+An accessible 9‑grid timer with big text, one‑tap start, and a high‑contrast theme.

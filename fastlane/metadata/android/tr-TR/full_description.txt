@@ -1,0 +1,22 @@
+Basit daha iyidir. Hem görsel hem işitsel netlik için tasarlanmış bir zamanlayıcı.
+
+Modern uygulamalar fazla karmaşık geliyorsa ya da standart saatleri okumak zor oluyorsa, 9'lu Zamanlayıcı tam size göre. Gereksiz animasyonları ve menüleri kaldırdık; geriye yalnızca önemli olan kaldı: büyük rakamlar ve sade bir 3×3 (9 kutu) düzen.
+
+Erişilebilirlik ve kullanım kolaylığı için tasarlandı:
+
+* Parlamayı ve göz yorgunluğunu azaltan, amber yazılı yumuşak koyu tema
+* Metin ve renkle net durum göstergesi; renk körlüğüne uygun etiketlerle
+* Keskin, tiz bipler yerine daha kolay fark edilen, özenle ayarlanmış düşük frekanslı alarm tonu
+* Süre bittiğinde açıkça söyleyen isteğe bağlı sesli anons (metinden sese)
+* Kolay kontrol için büyük, yanlış basmayı zorlaştıran “Alarmı Durdur” düğmesi
+
+Bir kez ayarlayın, hep kullanın.
+Gelişmiş ayarlar göz önünde değil. Bir aile üyesi grid’i bir kez kurar; günlük kullanım zahmetsizleşir: bir kutucuğa dokunun, zamanlayıcı başlasın. Kaydırma yok. Karışıklık yok.
+
+Şunlar için ideal:
+* Mutfak ve yemek pişirme işleri
+* Az gören, presbiyopi (yaşa bağlı yakın görme bozukluğu) veya kataraktı olan kullanıcılar
+* Daha net, daha düşük perdeli alarm seslerini tercih edenler
+* Kısa uyku, esneme, hobi gibi basit günlük rutinler
+
+9'lu Zamanlayıcı — büyük yazı, özenle tasarlanmış bir alarm ve sade bir yaşam.
