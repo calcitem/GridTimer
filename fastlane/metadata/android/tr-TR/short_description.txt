@@ -1,1 +1,1 @@
-Erişilebilir 9’lu grid zamanlayıcı: büyük yazı, tek dokunuşla başlatma ve yüksek kontrast tema.
+9'lu zamanlayıcı: büyük yazı, tek dokunuş, yüksek kontrast.

@@ -1,1 +1,1 @@
-An accessible 9‑grid timer with big text, one‑tap start, and a high‑contrast theme.
+Accessible 9-grid timer: big text, one-tap start, high contrast.

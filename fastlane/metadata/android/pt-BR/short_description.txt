@@ -1,1 +1,1 @@
-Timer acessível em grade de 9: texto grande, início com um toque e tema de alto contraste.
+Timer de grade 9: texto grande, um toque, alto contraste.

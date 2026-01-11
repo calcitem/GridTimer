@@ -1,1 +1,1 @@
-Temporizador acessível em grelha de 9: texto grande, início com um toque e tema de alto contraste.
+Temporizador de 9: texto grande, um toque, alto contraste.

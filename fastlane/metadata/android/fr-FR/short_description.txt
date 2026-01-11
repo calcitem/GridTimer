@@ -1,1 +1,1 @@
-Un minuteur accessible en grille de 9 cases : texte XXL, démarrage en un tap et thème très contrasté.
+Minuteur 9 cases : texte XXL, un tap, contraste élevé.

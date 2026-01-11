@@ -1,1 +1,1 @@
-Temporizador accesible en cuadrícula de 9: texto grande, inicio con un toque y tema de alto contraste.
+Temporizador de 9: texto grande, un toque y alto contraste.
