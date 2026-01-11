@@ -157,8 +157,17 @@ $totalPulled = 0
 Write-Host "`nStarting screenshot tests and pulling for specified locales..." -ForegroundColor Cyan
 foreach ($locale in $localesToTest) {
     Write-Host "--------------------------------------------------" -ForegroundColor Magenta
-    Write-Host "Running test for locale: $locale (Timeout: $flutterTestTimeout)" -ForegroundColor Magenta
+    Write-Host "Checking for locale: $locale" -ForegroundColor Magenta
     Write-Host "--------------------------------------------------"
+
+    $localLocaleDir = Join-Path $localBaseDir $locale
+    if (Test-Path -Path $localLocaleDir) {
+        Write-Host "Skipping $locale - Directory already exists: $localLocaleDir" -ForegroundColor Yellow
+        $successfulLocalesPS.Add($locale) # Treat as success or add to a skipped list
+        continue
+    }
+
+    Write-Host "Running test for locale: $locale (Timeout: $flutterTestTimeout)" -ForegroundColor Magenta
 
     # Run flutter test with the specified locale
     $testCommandLog = "flutter test integration_test/localization_screenshot_test.dart --dart-define=TEST_LOCALE=$locale --timeout $flutterTestTimeout --no-pub --reporter=compact"
