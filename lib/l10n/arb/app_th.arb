@@ -189,7 +189,7 @@
   "onboardingCheckSoundTitle": "สำคัญ: ตรวจสอบเสียง",
   "onboardingCheckSoundDesc": "โปรดตรวจสอบว่าเสียง 'Timer Alarm (default)' **ไม่**ได้ตั้งเป็น 'None' หรือ 'Silent'\n\nหากเงียบ คุณจะได้รับเพียงการแจ้งเตือนโดยไม่มีเสียงเมื่อหมดเวลา",
   "onboardingCheckSoundBtn": "ตรวจสอบการตั้งค่าเสียง",
-  "onboardingCheckSoundMiuiHint": "ผู้ใช้ MIUI: หากคุณไม่สามารถเลือกเสียงในช่องการแจ้งเตือนได้ นี่เป็นเรื่องปกติ (ข้อจำกัดของระบบ MIUI) แอปได้เปิดใช้งานการเล่นเสียงในแอปอัตโนมัติ และนาฬิกาปลุกจะทำงานอย่างถูกต้อง หมายเหตุ: พยายามหลีกเลี่ยงการรับข้อความจำนวนมากขณะนาฬิกาปลุกดัง เพื่อป้องกันการขัดจังหวะเสียง",
+  "onboardingCheckSoundMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read.",
 
   "grantPermission": "อนุญาตสิทธิ์",
   "notificationPermissionGranted": "อนุญาตสิทธิ์การแจ้งเตือนแล้ว",

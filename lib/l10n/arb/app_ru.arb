@@ -189,7 +189,7 @@
   "onboardingCheckSoundTitle": "Важно: Проверка звука",
   "onboardingCheckSoundDesc": "Убедитесь, что звук канала «Timer Alarm (default)» **НЕ** стоит в режиме «Без звука».\n\nИначе вы получите только уведомление без звонка.",
   "onboardingCheckSoundBtn": "Проверить настройки звука",
-  "onboardingCheckSoundMiuiHint": "MIUI: Если нельзя выбрать звук в канале уведомлений — это нормально. Приложение использует встроенный плеер. Старайтесь не получать много сообщений во время звонка таймера.",
+  "onboardingCheckSoundMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read.",
 
   "grantPermission": "Разрешить",
   "notificationPermissionGranted": "Уведомления разрешены",
@@ -209,7 +209,7 @@
 
   "alarmSoundSettings": "Настройки звука",
   "alarmSoundSettingsDesc": "Если звук «Timer Alarm» отключен, будет только вибрация/тишина",
-  "alarmSoundSettingsMiuiHint": "MIUI: Из-за ограничений системы приложение использует свой аудиоплеер. Другие уведомления могут приглушить звук таймера.",
+  "alarmSoundSettingsMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read. Note: In-app audio may be interrupted or lowered by other notification sounds. Try to avoid heavy messaging during alarms.",
 
   "appKilledWarning": "Важно: Если принудительно закрыть приложение (смахнуть), таймер не сработает. Оставьте его в фоне и отключите экономию батареи.",
 

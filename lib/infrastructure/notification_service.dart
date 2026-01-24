@@ -14,6 +14,7 @@ import '../core/domain/entities/timer_session.dart';
 import '../core/domain/enums.dart';
 import '../core/domain/services/i_notification_service.dart';
 import '../core/domain/types.dart';
+import '../core/services/agent_debug_logger.dart';
 import '../core/services/service_localizations.dart';
 
 /// Android notification service implementation.
@@ -610,6 +611,8 @@ class NotificationService implements INotificationService {
 
     // MIUI/Android 15 can delay or silence scheduled notifications unless they are scheduled
     // as alarm clocks. Try alarmClock first for best lockscreen reliability.
+    String scheduleModeUsed = 'alarmClock';
+    String? scheduleError;
     try {
       await _plugin.zonedSchedule(
         notificationId,
@@ -621,8 +624,10 @@ class NotificationService implements INotificationService {
         payload: payload,
       );
     } catch (e) {
+      scheduleError = e.toString();
       // Fallback chain: exactAllowWhileIdle -> inexactAllowWhileIdle.
       try {
+        scheduleModeUsed = 'exactAllowWhileIdle';
         await _plugin.zonedSchedule(
           notificationId,
           config.name,
@@ -633,6 +638,8 @@ class NotificationService implements INotificationService {
           payload: payload,
         );
       } catch (e2) {
+        scheduleError = '$scheduleError | ${e2.toString()}';
+        scheduleModeUsed = 'inexactAllowWhileIdle';
         await _plugin.zonedSchedule(
           notificationId,
           config.name,
@@ -644,6 +651,57 @@ class NotificationService implements INotificationService {
         );
       }
     }
+
+    // #region agent log
+    assert(() {
+      unawaited(() async {
+        final v3Id = 'gt.alarm.timeup.${config.soundKey}.v3';
+        final v2Id = 'gt.alarm.timeup.${config.soundKey}.v2';
+        final v3 = await _getAndroidNotificationChannelInfo(channelId: v3Id);
+        final v2 = await _getAndroidNotificationChannelInfo(channelId: v2Id);
+        AgentDebugLogger.log(
+          hypothesisId: 'B',
+          location: 'notification_service.dart:scheduleTimeUp',
+          message: 'Scheduled time-up notification',
+          data: <String, Object?>{
+            'slotIndex': session.slotIndex,
+            'timerId': session.timerId,
+            'soundKey': config.soundKey,
+            'playNotificationSound': playNotificationSound,
+            'preferAlarmAudioUsage': preferAlarmAudioUsage,
+            'channelIdUsed': channelId,
+            'scheduleModeUsed': scheduleModeUsed,
+            'scheduleError': scheduleError,
+            'v3': <String, Object?>{
+              'id': v3Id,
+              'exists': v3?['exists'],
+              'importance': v3?['importance'],
+              'sound': v3?['sound'],
+              'audioUsage': v3?['audioAttributesUsage'],
+              'alarmVol': v3?['alarmVolume'],
+              'alarmVolMax': v3?['alarmVolumeMax'],
+              'notifVol': v3?['notificationVolume'],
+              'notifVolMax': v3?['notificationVolumeMax'],
+              'ringerMode': v3?['ringerMode'],
+              'areNotificationsEnabled': v3?['areNotificationsEnabled'],
+              'interruptionFilter': v3?['interruptionFilter'],
+              'manufacturer': v3?['manufacturer'],
+              'model': v3?['model'],
+              'androidSdk': v3?['androidSdk'],
+            },
+            'v2': <String, Object?>{
+              'id': v2Id,
+              'exists': v2?['exists'],
+              'importance': v2?['importance'],
+              'sound': v2?['sound'],
+              'audioUsage': v2?['audioAttributesUsage'],
+            },
+          },
+        );
+      }());
+      return true;
+    }());
+    // #endregion
   }
 
   @override

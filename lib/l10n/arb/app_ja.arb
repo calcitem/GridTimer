@@ -189,7 +189,7 @@
   "onboardingCheckSoundTitle": "重要：サウンドを確認",
   "onboardingCheckSoundDesc": "「Timer Alarm (default)」のサウンドが「なし」または「サイレント」になっていないことを確認してください。\n\nサイレントの場合、時間になっても音は鳴らず通知のみになります。",
   "onboardingCheckSoundBtn": "サウンド設定を確認",
-  "onboardingCheckSoundMiuiHint": "MIUI の方へ：通知チャンネルでサウンドを選べない場合があります（MIUI の制限）。その場合でもアプリ内音声再生を自動で有効にしており、アラームは鳴ります。注意：鳴動中は大量の通知受信を避けてください（音が途切れる場合があります）。",
+  "onboardingCheckSoundMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read.",
 
   "grantPermission": "許可する",
   "notificationPermissionGranted": "通知権限を許可しました",
@@ -209,7 +209,7 @@
 
   "alarmSoundSettings": "アラーム音設定",
   "alarmSoundSettingsDesc": "「Timer Alarm (default)」が「なし」の場合、通知のみで音が鳴りません",
-  "alarmSoundSettingsMiuiHint": "MIUI の方へ：MIUI の制限により通知チャンネル音を変更できない場合があります。アプリ内音声再生を自動で有効にしており、アラームが鳴るようにしています。注意：他の通知音で中断/音量低下する場合があるため、鳴動中は大量の通知受信を避けてください。",
+  "alarmSoundSettingsMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read. Note: In-app audio may be interrupted or lowered by other notification sounds. Try to avoid heavy messaging during alarms.",
 
   "appKilledWarning": "重要：本アプリがシステムまたはユーザーにより強制終了された場合、タイマーは鳴りません。バックグラウンドで動作させ、バッテリー最適化を無効にしてください。",
 

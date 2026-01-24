@@ -189,7 +189,7 @@
   "onboardingCheckSoundTitle": "Önemli: Sesi Kontrol Edin",
   "onboardingCheckSoundDesc": "Lütfen aşağıdaki düğmeye dokunup \"Timer Alarm (default)\" sesinin **\"Yok\"** veya **\"Sessiz\"** olmadığından emin olun.\n\nSessizse, süre dolduğunda yalnızca ses olmadan bir bildirim alırsınız.",
   "onboardingCheckSoundBtn": "Ses Ayarlarını Kontrol Et",
-  "onboardingCheckSoundMiuiHint": "MIUI Kullanıcıları: Bildirim kanalında ses seçemiyorsanız bu normaldir (MIUI sistem kısıtı). Uygulama, uygulama içi ses çalmayı otomatik etkinleştirdi; alarm düzgün çalışır. Not: Alarm sırasında yoğun mesajlaşmadan kaçının; ses kesilebilir.",
+  "onboardingCheckSoundMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read.",
 
   "grantPermission": "İzin Ver",
   "notificationPermissionGranted": "Bildirim izni verildi",
@@ -209,7 +209,7 @@
 
   "alarmSoundSettings": "Alarm Sesi Ayarları",
   "alarmSoundSettingsDesc": "\"Timer Alarm (default)\" sesi \"Yok\" olarak ayarlanırsa, zamanlayıcı yalnızca ses olmadan bildirim gösterir",
-  "alarmSoundSettingsMiuiHint": "MIUI Kullanıcıları: MIUI kısıtları nedeniyle bazı cihazlar bildirim kanalı sesini değiştiremeyebilir. Alarmın çalışması için uygulama, uygulama içi ses çalmayı otomatik etkinleştirdi. Not: Uygulama içi ses, diğer bildirim sesleriyle kesilebilir veya kısılabilir; alarm sırasında yoğun mesajlaşmadan kaçının.",
+  "alarmSoundSettingsMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read. Note: In-app audio may be interrupted or lowered by other notification sounds. Try to avoid heavy messaging during alarms.",
 
   "appKilledWarning": "Önemli: Bu uygulama sistem veya kullanıcı tarafından zorla kapatılırsa zamanlayıcılar çalmaz. Lütfen arka planda çalışır tutun ve pil optimizasyonunu kapatın.",
 

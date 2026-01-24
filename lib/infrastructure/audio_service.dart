@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 import '../core/domain/enums.dart';
 import '../core/domain/services/i_audio_service.dart';
 import '../core/domain/types.dart';
+import '../core/services/agent_debug_logger.dart';
 
 /// Audio playback service implementation using the audioplayers plugin.
 ///
@@ -38,6 +40,10 @@ import '../core/domain/types.dart';
 /// - Basic playback features supported
 /// - Platform limitations may apply (e.g., autoplay policies)
 class AudioService implements IAudioService {
+  static const MethodChannel _systemSettingsChannel = MethodChannel(
+    'com.calcitem.gridtimer/system_settings',
+  );
+
   final AudioPlayer _player = AudioPlayer();
   double _currentVolume = 1.0;
 
@@ -46,6 +52,10 @@ class AudioService implements IAudioService {
 
   /// Timer for interval mode.
   Timer? _intervalTimer;
+
+  bool _usingRingtoneUri = false;
+  String? _activeRingtoneUri;
+  bool _usingSystemTone = false;
 
   /// Builds AudioContext for mobile platforms.
   ///
@@ -135,10 +145,29 @@ class AudioService implements IAudioService {
     double volume = 1.0,
     int loopDurationMinutes = 5,
     int intervalPauseMinutes = 2,
+    String? soundUri,
   }) async {
+    // #region agent log
+    assert(() {
+      AgentDebugLogger.log(
+        hypothesisId: 'A',
+        location: 'audio_service.dart:playWithMode',
+        message: 'Attempting in-app audio playback',
+        data: <String, Object?>{
+          'soundKey': soundKey,
+          'mode': mode.name,
+          'volume': volume,
+          'loopDurationMinutes': loopDurationMinutes,
+          'intervalPauseMinutes': intervalPauseMinutes,
+        },
+      );
+      return true;
+    }());
+    // #endregion
+
     try {
       // Always stop first to ensure clean state.
-      await _player.stop();
+      await stop();
 
       // Re-apply audio context to ensure we have focus (Android/iOS only).
       // On desktop platforms, this is a no-op.
@@ -158,7 +187,108 @@ class AudioService implements IAudioService {
 
       // Start playing.
       final assetPath = _soundKeyToAssetPath(soundKey);
-      await _player.play(AssetSource(assetPath));
+
+      final uri = soundUri;
+      final isAndroid =
+          !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
+      final useSoundUri = isAndroid && uri != null && uri.isNotEmpty;
+
+      // #region agent log
+      assert(() {
+        AgentDebugLogger.log(
+          hypothesisId: 'A',
+          location: 'audio_service.dart:playWithMode',
+          message: 'Selected audio source for in-app playback',
+          data: <String, Object?>{
+            'soundKey': soundKey,
+            'useSoundUri': useSoundUri,
+            'soundUri': soundUri,
+            'assetPath': assetPath,
+          },
+        );
+        return true;
+      }());
+      // #endregion
+
+      if (useSoundUri) {
+        // For Android content:// URIs (common on MIUI), use native ringtone playback.
+        // audioplayers UrlSource may not support content URIs and can hang before failing.
+        if (uri.startsWith('content://')) {
+          final loop = mode != AudioPlaybackMode.playOnce;
+          final res = await _playRingtoneUriDetailed(
+            uri: uri,
+            loop: loop,
+            usage: 'alarm',
+          );
+          if (res.ok) {
+            _usingRingtoneUri = true;
+            _activeRingtoneUri = uri;
+            _setupPlaybackTimers(
+              mode: mode,
+              loopDurationMinutes: loopDurationMinutes,
+              intervalPauseMinutes: intervalPauseMinutes,
+            );
+            return;
+          }
+
+          // If MIUI blocks the URI with Permission Denial, fall back to system alarm tone.
+          final err = res.error ?? '';
+          final isPermissionDenied = err.contains('Permission Denial');
+          if (isPermissionDenied) {
+            final sysOk = await _playSystemTone(type: 'alarm', loop: loop);
+            // #region agent log
+            assert(() {
+              AgentDebugLogger.log(
+                hypothesisId: 'A',
+                location: 'audio_service.dart:playWithMode',
+                message: 'Falling back to system alarm tone',
+                data: <String, Object?>{
+                  'blockedUri': uri,
+                  'originalError': err,
+                  'systemToneOk': sysOk,
+                },
+              );
+              return true;
+            }());
+            // #endregion
+            if (sysOk) {
+              _usingSystemTone = true;
+              _setupPlaybackTimers(
+                mode: mode,
+                loopDurationMinutes: loopDurationMinutes,
+                intervalPauseMinutes: intervalPauseMinutes,
+              );
+              return;
+            }
+          }
+
+          // Fall back to asset if native playback fails.
+          await _player.play(AssetSource(assetPath));
+        } else {
+          try {
+            await _player.play(UrlSource(uri));
+          } catch (e) {
+            // #region agent log
+            assert(() {
+              AgentDebugLogger.log(
+                hypothesisId: 'A',
+                location: 'audio_service.dart:playWithMode',
+                message: 'URI playback failed, falling back to asset',
+                data: <String, Object?>{
+                  'soundUri': uri,
+                  'assetPath': assetPath,
+                  'error': e.toString(),
+                },
+              );
+              return true;
+            }());
+            // #endregion
+            await _player.play(AssetSource(assetPath));
+          }
+        }
+      } else {
+        await _player.play(AssetSource(assetPath));
+      }
 
       // Set up timers based on mode.
       _setupPlaybackTimers(
@@ -169,7 +299,177 @@ class AudioService implements IAudioService {
     } catch (e) {
       // Catch audio playback errors to avoid affecting app operation.
       debugPrint('Audio playback error: $e');
+
+      // #region agent log
+      assert(() {
+        AgentDebugLogger.log(
+          hypothesisId: 'A',
+          location: 'audio_service.dart:playWithMode',
+          message: 'In-app audio playback failed',
+          data: <String, Object?>{
+            'soundKey': soundKey,
+            'mode': mode.name,
+            'volume': volume,
+            'error': e.toString(),
+          },
+        );
+        return true;
+      }());
+      // #endregion
     }
+  }
+
+  ({bool ok, String? error, String? player}) _normalizeRingtoneResult(
+    Map<dynamic, dynamic>? result,
+  ) {
+    final ok = result?['success'] == true;
+    final error = result?['error'] as String?;
+    final player = result?['player'] as String?;
+    return (ok: ok, error: error, player: player);
+  }
+
+  Future<({bool ok, String? error, String? player})> _playRingtoneUriDetailed({
+    required String uri,
+    required bool loop,
+    required String usage,
+  }) async {
+    try {
+      final result = await _systemSettingsChannel
+          .invokeMethod<Map<dynamic, dynamic>>(
+            'playRingtoneUri',
+            <String, Object?>{'uri': uri, 'loop': loop, 'usage': usage},
+          );
+      final normalized = _normalizeRingtoneResult(result);
+      final ok = normalized.ok;
+
+      // #region agent log
+      assert(() {
+        AgentDebugLogger.log(
+          hypothesisId: 'A',
+          location: 'audio_service.dart:_playRingtoneUri',
+          message: 'Native ringtone URI playback result',
+          data: <String, Object?>{
+            'uri': uri,
+            'loop': loop,
+            'usage': usage,
+            'ok': ok,
+            'result': result?.map((k, v) => MapEntry(k.toString(), v)),
+          },
+        );
+        return true;
+      }());
+      // #endregion
+
+      return normalized;
+    } catch (e) {
+      // #region agent log
+      assert(() {
+        AgentDebugLogger.log(
+          hypothesisId: 'A',
+          location: 'audio_service.dart:_playRingtoneUri',
+          message: 'Native ringtone URI playback threw',
+          data: <String, Object?>{
+            'uri': uri,
+            'loop': loop,
+            'usage': usage,
+            'error': e.toString(),
+          },
+        );
+        return true;
+      }());
+      // #endregion
+      return (ok: false, error: e.toString(), player: null);
+    }
+  }
+
+  Future<void> _stopRingtoneUri() async {
+    try {
+      await _systemSettingsChannel.invokeMethod<void>('stopRingtoneUri');
+    } catch (_) {
+      // Ignore.
+    }
+  }
+
+  Future<bool> _playSystemTone({
+    required String type,
+    required bool loop,
+  }) async {
+    try {
+      final result = await _systemSettingsChannel
+          .invokeMethod<Map<dynamic, dynamic>>(
+            'playSystemTone',
+            <String, Object?>{'type': type, 'loop': loop},
+          );
+      final ok = result?['isPlaying'] == true;
+      // #region agent log
+      assert(() {
+        AgentDebugLogger.log(
+          hypothesisId: 'A',
+          location: 'audio_service.dart:_playSystemTone',
+          message: 'System tone playback result',
+          data: <String, Object?>{
+            'type': type,
+            'loop': loop,
+            'ok': ok,
+            'result': result?.map((k, v) => MapEntry(k.toString(), v)),
+          },
+        );
+        return true;
+      }());
+      // #endregion
+      return ok;
+    } catch (e) {
+      // #region agent log
+      assert(() {
+        AgentDebugLogger.log(
+          hypothesisId: 'A',
+          location: 'audio_service.dart:_playSystemTone',
+          message: 'System tone playback threw',
+          data: <String, Object?>{
+            'type': type,
+            'loop': loop,
+            'error': e.toString(),
+          },
+        );
+        return true;
+      }());
+      // #endregion
+      return false;
+    }
+  }
+
+  Future<void> _stopSystemTone() async {
+    try {
+      await _systemSettingsChannel.invokeMethod<void>('stopSystemTone');
+    } catch (_) {
+      // Ignore.
+    }
+  }
+
+  Future<void> _pausePlayback() async {
+    if (_usingRingtoneUri) {
+      await _stopRingtoneUri();
+      return;
+    }
+    if (_usingSystemTone) {
+      await _stopSystemTone();
+      return;
+    }
+    await _player.pause();
+  }
+
+  Future<void> _resumePlayback() async {
+    if (_usingRingtoneUri) {
+      final uri = _activeRingtoneUri;
+      if (uri == null || uri.isEmpty) return;
+      await _playRingtoneUriDetailed(uri: uri, loop: true, usage: 'alarm');
+      return;
+    }
+    if (_usingSystemTone) {
+      await _playSystemTone(type: 'alarm', loop: true);
+      return;
+    }
+    await _player.resume();
   }
 
   void _setupPlaybackTimers({
@@ -237,7 +537,7 @@ class AudioService implements IAudioService {
       // Phase 1: Play for N minutes.
       _intervalTimer = Timer(Duration(minutes: loopDurationMinutes), () async {
         // Pause audio.
-        await _player.pause();
+        await _pausePlayback();
 
         // Phase 2: Pause for M minutes.
         _intervalTimer = Timer(
@@ -247,13 +547,13 @@ class AudioService implements IAudioService {
 
             if (repeating || cycleCount < maxCycles) {
               // Resume audio.
-              await _player.resume();
+              await _resumePlayback();
 
               // Schedule next cycle.
               scheduleCycle();
             } else {
               // Non-repeating mode: final cycle, just resume and let it play.
-              await _player.resume();
+              await _resumePlayback();
 
               // Stop after the final loop duration.
               _autoStopTimer = Timer(
@@ -274,6 +574,15 @@ class AudioService implements IAudioService {
   @override
   Future<void> stop() async {
     try {
+      if (_usingRingtoneUri) {
+        await _stopRingtoneUri();
+        _usingRingtoneUri = false;
+        _activeRingtoneUri = null;
+      }
+      if (_usingSystemTone) {
+        await _stopSystemTone();
+        _usingSystemTone = false;
+      }
       await _player.stop();
       _autoStopTimer?.cancel();
       _intervalTimer?.cancel();
@@ -286,6 +595,16 @@ class AudioService implements IAudioService {
 
   @override
   Future<bool> isPlaying() async {
+    if (_usingRingtoneUri) {
+      try {
+        final playing = await _systemSettingsChannel.invokeMethod<bool>(
+          'isRingtoneUriPlaying',
+        );
+        return playing ?? false;
+      } catch (_) {
+        return false;
+      }
+    }
     return _player.state == PlayerState.playing;
   }
 

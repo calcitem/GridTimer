@@ -807,7 +807,7 @@
     "description": "تسمية زر التحقق من إعدادات الصوت أثناء الإعداد"
   },
 
-  "onboardingCheckSoundMiuiHint": "لمستخدمي MIUI: إذا تعذر اختيار صوت في قناة الإشعارات، فهذا طبيعي (قيد في MIUI). فعّل التطبيق تلقائيًا تشغيل الصوت داخل التطبيق، وسيعمل التنبيه بشكل صحيح. ملاحظة: حاول تجنب كثرة الرسائل أثناء التنبيهات لتفادي انقطاع الصوت.",
+  "onboardingCheckSoundMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read.",
   "@onboardingCheckSoundMiuiHint": {
     "description": "تلميح خاص بـ MIUI لإعدادات الصوت في صفحة الإعداد"
   },
@@ -882,7 +882,7 @@
     "description": "وصف إعدادات صوت التنبيه"
   },
 
-  "alarmSoundSettingsMiuiHint": "لمستخدمي MIUI: بسبب قيود النظام، قد لا تسمح بعض الأجهزة بتغيير أصوات قنوات الإشعارات. فعّل التطبيق تلقائيًا تشغيل الصوت داخل التطبيق لضمان عمل التنبيه. ملاحظة: قد ينقطع الصوت داخل التطبيق أو ينخفض بسبب أصوات إشعارات أخرى. حاول تجنب كثرة الرسائل أثناء الرنين.",
+  "alarmSoundSettingsMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read. Note: In-app audio may be interrupted or lowered by other notification sounds. Try to avoid heavy messaging during alarms.",
   "@alarmSoundSettingsMiuiHint": {
     "description": "تلميح خاص بـ MIUI لإعدادات صوت التنبيه"
   },

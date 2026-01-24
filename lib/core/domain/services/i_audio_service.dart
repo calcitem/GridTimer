@@ -22,6 +22,7 @@ abstract interface class IAudioService {
     double volume = 1.0,
     int loopDurationMinutes = 5,
     int intervalPauseMinutes = 2,
+    String? soundUri,
   });
 
   /// Stops any playing sound immediately.

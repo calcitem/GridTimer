@@ -189,7 +189,7 @@
   "onboardingCheckSoundTitle": "重要：檢查聲音",
   "onboardingCheckSoundDesc": "請點擊下方按鈕，確保 \"Timer Alarm (default)\" 的聲音**不是**「無」或「靜音」。\n\n如果設為靜音，倒數結束時您將只收到通知而聽不到鈴聲。",
   "onboardingCheckSoundBtn": "去檢查聲音設定",
-  "onboardingCheckSoundMiuiHint": "MIUI 使用者提示：如果無法在通知渠道中選擇聲音，這是正常的（MIUI 系統限制）。應用已自動啟用音訊播放功能，鬧鈴會正常響起。注意：響鈴時請盡量避免接收大量訊息通知，以免音訊被打斷。",
+  "onboardingCheckSoundMiuiHint": "MIUI 使用者提示：由於 MIUI 系統限制，通知渠道聲音可能不會正常響起。\n\n應用會自動啟用應用內音訊播放來確保鬧鈴能響。注意：部分「主題鈴聲」的 URI（例如 com.android.thememanager.fileprovider）因系統權限限制第三方應用無法讀取，應用內無法播放該主題鈴聲，只能回退到內建鈴聲。\n\n建議：優先選擇系統自帶鈴聲，或在系統裡選擇可被應用讀取的鈴聲來源。",
 
   "grantPermission": "授予權限",
   "notificationPermissionGranted": "通知權限已授予",
@@ -209,7 +209,7 @@
 
   "alarmSoundSettings": "鬧鈴聲音設定",
   "alarmSoundSettingsDesc": "如果 \"Timer Alarm (default)\" 聲音設為「無」，計時器將只顯示通知而無聲音",
-  "alarmSoundSettingsMiuiHint": "MIUI 使用者提示：由於 MIUI 系統限制，部分裝置可能無法修改通知渠道聲音。應用已自動啟用音訊播放功能確保鬧鈴正常響起。注意：應用內音訊可能會被其他訊息通知音打斷或音量降低，建議響鈴時避免接收大量訊息。",
+  "alarmSoundSettingsMiuiHint": "MIUI 使用者提示：由於 MIUI 系統限制，通知渠道聲音可能不會正常響起。\n\n應用會自動啟用應用內音訊播放來確保鬧鈴能響。注意：部分「主題鈴聲」的 URI（例如 com.android.thememanager.fileprovider）因系統權限限制第三方應用無法讀取，應用內無法播放該主題鈴聲，只能回退到內建鈴聲。\n\n建議：優先選擇系統自帶鈴聲，或在系統裡選擇可被應用讀取的鈴聲來源。注意：應用內音訊可能會被其他訊息通知音打斷或音量降低，建議響鈴時避免接收大量訊息。",
 
   "appKilledWarning": "重要提示：如果本應用被系統或使用者強制關閉，計時器將無法響鈴。請保持應用在背景運行，並關閉電池最佳化。",
 

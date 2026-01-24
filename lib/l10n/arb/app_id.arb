@@ -188,7 +188,7 @@
   "onboardingCheckSoundTitle": "Penting: Periksa Suara",
   "onboardingCheckSoundDesc": "Silakan periksa apakah suara \"Timer Alarm (default)\" BUKAN \"Tidak ada\" atau \"Senyap\".\n\nJika senyap, Anda hanya akan menerima notifikasi tanpa suara saat waktu habis.",
   "onboardingCheckSoundBtn": "Periksa Pengaturan Suara",
-  "onboardingCheckSoundMiuiHint": "Pengguna MIUI: Jika Anda tidak bisa memilih suara di kanal notifikasi, ini normal (batasan sistem MIUI). Aplikasi telah otomatis mengaktifkan pemutaran audio dalam aplikasi, dan alarm akan berfungsi dengan baik. Catatan: Hindari aktivitas pesan yang berat saat alarm untuk mencegah audio terputus.",
+  "onboardingCheckSoundMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read.",
 
   "grantPermission": "Berikan Izin",
   "notificationPermissionGranted": "Izin notifikasi diberikan",
@@ -208,7 +208,7 @@
 
   "alarmSoundSettings": "Pengaturan Suara Alarm",
   "alarmSoundSettingsDesc": "Jika suara \"Timer Alarm (default)\" disetel ke \"Tidak ada\", timer hanya akan menampilkan notifikasi tanpa suara",
-  "alarmSoundSettingsMiuiHint": "Pengguna MIUI: Karena batasan sistem MIUI, beberapa perangkat mungkin tidak mengizinkan perubahan suara kanal notifikasi. Aplikasi telah otomatis mengaktifkan pemutaran audio dalam aplikasi agar alarm tetap berfungsi. Catatan: Audio dalam aplikasi bisa terputus atau menurun karena suara notifikasi lain. Hindari aktivitas pesan yang berat saat alarm.",
+  "alarmSoundSettingsMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read. Note: In-app audio may be interrupted or lowered by other notification sounds. Try to avoid heavy messaging during alarms.",
 
   "appKilledWarning": "Penting: Jika aplikasi ini ditutup paksa oleh sistem atau pengguna, timer tidak akan berbunyi. Biarkan aplikasi berjalan di latar belakang dan nonaktifkan optimasi baterai.",
 

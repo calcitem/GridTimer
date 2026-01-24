@@ -802,7 +802,7 @@
     "description": "Onboarding check sound button label"
   },
 
-  "onboardingCheckSoundMiuiHint": "MIUI Users: If you cannot select a sound in the notification channel, this is normal (MIUI system limitation). The app has automatically enabled in-app audio playback, and the alarm will work properly. Note: Try to avoid heavy messaging during alarms to prevent audio interruption.",
+  "onboardingCheckSoundMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read.",
   "@onboardingCheckSoundMiuiHint": {
     "description": "MIUI-specific hint for sound settings on onboarding page"
   },
@@ -877,7 +877,7 @@
     "description": "Description for alarm sound settings"
   },
 
-  "alarmSoundSettingsMiuiHint": "MIUI Users: Due to MIUI system limitations, some devices may not allow changing notification channel sounds. The app has automatically enabled in-app audio playback to ensure the alarm works properly. Note: In-app audio may be interrupted or lowered by other notification sounds. Try to avoid heavy messaging during alarms.",
+  "alarmSoundSettingsMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read. Note: In-app audio may be interrupted or lowered by other notification sounds. Try to avoid heavy messaging during alarms.",
   "@alarmSoundSettingsMiuiHint": {
     "description": "MIUI-specific hint for alarm sound settings"
   },

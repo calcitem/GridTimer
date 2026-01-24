@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
@@ -40,6 +41,8 @@ class MainActivity: FlutterActivity() {
     private val systemSettingsChannelName = "com.calcitem.gridtimer/system_settings"
     private val volumeKeyEventChannelName = "com.calcitem.gridtimer/volume_key_events"
     private var testRingtone: Ringtone? = null
+    private var uriRingtone: Ringtone? = null
+    private var uriMediaPlayer: MediaPlayer? = null
     private var volumeKeyEventSink: EventChannel.EventSink? = null
     private var lastVolumeKeyEventAtMs: Long = 0L
     private val volumeKeyThrottleMs: Long = 150L
@@ -316,6 +319,7 @@ class MainActivity: FlutterActivity() {
                         info["androidSdk"] = Build.VERSION.SDK_INT
                         info["manufacturer"] = Build.MANUFACTURER
                         info["model"] = Build.MODEL
+                        info["isMiui"] = isMiuiDevice()
 
                         result.success(info)
                     } catch (e: Exception) {
@@ -325,6 +329,7 @@ class MainActivity: FlutterActivity() {
 
                 "playSystemTone" -> {
                     val type = call.argument<String>("type") ?: "notification"
+                    val loop = call.argument<Boolean>("loop") ?: false
                     val toneType = when (type) {
                         "alarm" -> RingtoneManager.TYPE_ALARM
                         else -> RingtoneManager.TYPE_NOTIFICATION
@@ -351,10 +356,25 @@ class MainActivity: FlutterActivity() {
                         }
 
                         testRingtone = ringtone
+                        val usageValue = when (type) {
+                            "alarm" -> AudioAttributes.USAGE_ALARM
+                            else -> AudioAttributes.USAGE_NOTIFICATION
+                        }
+                        val attrs = AudioAttributes.Builder()
+                            .setUsage(usageValue)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                            .build()
+                        ringtone.audioAttributes = attrs
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            ringtone.isLooping = loop
+                        }
                         ringtone.play()
+                        val playing = ringtone.isPlaying
                         val info = HashMap<String, Any?>()
                         info["type"] = type
                         info["uri"] = uri.toString()
+                        info["loop"] = loop
+                        info["isPlaying"] = playing
                         result.success(info)
                     } catch (e: Exception) {
                         result.error("play_failed", e.toString(), null)
@@ -368,6 +388,213 @@ class MainActivity: FlutterActivity() {
                         result.success(null)
                     } catch (e: Exception) {
                         result.error("stop_failed", e.toString(), null)
+                    }
+                }
+
+                "playRingtoneUri" -> {
+                    val uriStr = call.argument<String>("uri")
+                    val loop = call.argument<Boolean>("loop") ?: true
+                    val usage = call.argument<String>("usage") ?: "alarm"
+
+                    if (uriStr.isNullOrBlank()) {
+                        result.error("invalid_args", "uri must not be empty", null)
+                        return@setMethodCallHandler
+                    }
+
+                    try {
+                        // Stop previous playback first.
+                        try {
+                            uriRingtone?.stop()
+                        } catch (_: Exception) {
+                            // Ignore.
+                        }
+                        uriRingtone = null
+                        try {
+                            uriMediaPlayer?.stop()
+                            uriMediaPlayer?.release()
+                        } catch (_: Exception) {
+                            // Ignore.
+                        }
+                        uriMediaPlayer = null
+
+                        val uri = Uri.parse(uriStr)
+                        val ringtone = RingtoneManager.getRingtone(this, uri)
+
+                        val usageValue = when (usage) {
+                            "notification" -> AudioAttributes.USAGE_NOTIFICATION
+                            else -> AudioAttributes.USAGE_ALARM
+                        }
+                        val attrs = AudioAttributes.Builder()
+                            .setUsage(usageValue)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                            .build()
+                        // Try Ringtone first.
+                        if (ringtone != null) {
+                            ringtone.audioAttributes = attrs
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                ringtone.isLooping = loop
+                            }
+                            uriRingtone = ringtone
+                            ringtone.play()
+
+                            val playing = ringtone.isPlaying
+                            if (playing) {
+                                result.success(
+                                    mapOf(
+                                        "success" to true,
+                                        "player" to "ringtone",
+                                        "uri" to uriStr,
+                                        "usage" to usage,
+                                        "loop" to loop,
+                                        "isPlaying" to true
+                                    )
+                                )
+                                return@setMethodCallHandler
+                            } else {
+                                try {
+                                    ringtone.stop()
+                                } catch (_: Exception) {
+                                    // Ignore.
+                                }
+                                uriRingtone = null
+                            }
+                        }
+
+                        // Fallback: try MediaPlayer with ContentResolver FD (works for many content:// URIs).
+                        try {
+                            val pfd = applicationContext.contentResolver.openFileDescriptor(uri, "r")
+                            if (pfd == null) {
+                                result.success(
+                                    mapOf(
+                                        "success" to false,
+                                        "player" to "none",
+                                        "uri" to uriStr,
+                                        "usage" to usage,
+                                        "loop" to loop,
+                                        "isPlaying" to false,
+                                        "error" to "openFileDescriptor_null"
+                                    )
+                                )
+                                return@setMethodCallHandler
+                            }
+
+                            val player = MediaPlayer()
+                            player.setAudioAttributes(attrs)
+                            player.isLooping = loop
+                            player.setDataSource(pfd.fileDescriptor)
+                            try {
+                                pfd.close()
+                            } catch (_: Exception) {
+                                // Ignore.
+                            }
+                            player.prepare()
+                            player.start()
+
+                            val playing = player.isPlaying
+                            if (playing) {
+                                uriMediaPlayer = player
+                                result.success(
+                                    mapOf(
+                                        "success" to true,
+                                        "player" to "mediaplayer",
+                                        "uri" to uriStr,
+                                        "usage" to usage,
+                                        "loop" to loop,
+                                        "isPlaying" to true
+                                    )
+                                )
+                            } else {
+                                try {
+                                    player.stop()
+                                } catch (_: Exception) {
+                                    // Ignore.
+                                }
+                                try {
+                                    player.release()
+                                } catch (_: Exception) {
+                                    // Ignore.
+                                }
+                                result.success(
+                                    mapOf(
+                                        "success" to false,
+                                        "player" to "mediaplayer",
+                                        "uri" to uriStr,
+                                        "usage" to usage,
+                                        "loop" to loop,
+                                        "isPlaying" to false,
+                                        "error" to "mediaplayer_not_playing"
+                                    )
+                                )
+                            }
+                        } catch (e2: Exception) {
+                            result.success(
+                                mapOf(
+                                    "success" to false,
+                                    "player" to "none",
+                                    "uri" to uriStr,
+                                    "usage" to usage,
+                                    "loop" to loop,
+                                    "isPlaying" to false,
+                                    "error" to (e2.message ?: e2.toString())
+                                )
+                            )
+                        }
+                    } catch (e: Exception) {
+                        try {
+                            uriRingtone?.stop()
+                        } catch (_: Exception) {
+                            // Ignore.
+                        }
+                        uriRingtone = null
+                        try {
+                            uriMediaPlayer?.stop()
+                            uriMediaPlayer?.release()
+                        } catch (_: Exception) {
+                            // Ignore.
+                        }
+                        uriMediaPlayer = null
+                        result.success(
+                            mapOf(
+                                "success" to false,
+                                "player" to "none",
+                                "uri" to uriStr,
+                                "usage" to usage,
+                                "loop" to loop,
+                                "isPlaying" to false,
+                                "error" to (e.message ?: e.toString())
+                            )
+                        )
+                    }
+                }
+
+                "stopRingtoneUri" -> {
+                    try {
+                        uriRingtone?.stop()
+                        uriRingtone = null
+                        try {
+                            uriMediaPlayer?.stop()
+                            uriMediaPlayer?.release()
+                        } catch (_: Exception) {
+                            // Ignore.
+                        }
+                        uriMediaPlayer = null
+                        result.success(null)
+                    } catch (e: Exception) {
+                        result.error("stop_failed", e.toString(), null)
+                    }
+                }
+
+                "isRingtoneUriPlaying" -> {
+                    try {
+                        val ringtonePlaying = uriRingtone?.isPlaying == true
+                        val mediaPlaying = try {
+                            uriMediaPlayer?.isPlaying == true
+                        } catch (_: Exception) {
+                            false
+                        }
+                        result.success(ringtonePlaying || mediaPlaying)
+                    } catch (_: Exception) {
+                        result.success(false)
                     }
                 }
 

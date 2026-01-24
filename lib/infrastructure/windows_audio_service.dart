@@ -128,6 +128,7 @@ class WindowsAudioService implements IAudioService {
     double volume = 1.0,
     int loopDurationMinutes = 5,
     int intervalPauseMinutes = 2,
+    String? soundUri,
   }) async {
     // soundKey is currently ignored because all timers share the same WAV asset.
     if (!_isInitialized) {

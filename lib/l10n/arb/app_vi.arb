@@ -189,7 +189,7 @@
   "onboardingCheckSoundTitle": "Quan trọng: Kiểm tra âm thanh",
   "onboardingCheckSoundDesc": "Vui lòng bấm nút bên dưới và đảm bảo âm thanh của \"Timer Alarm (default)\" KHÔNG phải \"Không\" hoặc \"Im lặng\".\n\nNếu đặt im lặng, khi hết giờ bạn chỉ nhận được thông báo mà không nghe thấy tiếng chuông.",
   "onboardingCheckSoundBtn": "Kiểm tra cài đặt âm thanh",
-  "onboardingCheckSoundMiuiHint": "Gợi ý cho người dùng MIUI: Nếu bạn không thể chọn âm thanh trong kênh thông báo, điều này là bình thường (giới hạn của MIUI). Ứng dụng đã tự bật phát âm thanh trong ứng dụng, báo thức vẫn sẽ hoạt động. Lưu ý: Tránh nhận quá nhiều tin nhắn khi báo thức đang kêu để hạn chế gián đoạn âm thanh.",
+  "onboardingCheckSoundMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read.",
 
   "grantPermission": "Cấp quyền",
   "notificationPermissionGranted": "Đã cấp quyền thông báo",
@@ -209,7 +209,7 @@
 
   "alarmSoundSettings": "Cài đặt âm báo",
   "alarmSoundSettingsDesc": "Nếu âm thanh \"Timer Alarm (default)\" được đặt là \"Không\", hẹn giờ chỉ hiển thị thông báo mà không có âm thanh",
-  "alarmSoundSettingsMiuiHint": "Gợi ý cho người dùng MIUI: Do giới hạn của MIUI, một số thiết bị có thể không cho đổi âm thanh kênh thông báo. Ứng dụng đã tự bật phát âm thanh trong ứng dụng để đảm bảo báo thức hoạt động. Lưu ý: Âm thanh trong ứng dụng có thể bị thông báo khác ngắt hoặc giảm âm lượng; nên tránh nhận quá nhiều tin nhắn khi báo thức đang kêu.",
+  "alarmSoundSettingsMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read. Note: In-app audio may be interrupted or lowered by other notification sounds. Try to avoid heavy messaging during alarms.",
 
   "appKilledWarning": "Quan trọng: Nếu ứng dụng bị hệ thống hoặc người dùng buộc đóng, hẹn giờ sẽ không đổ chuông. Vui lòng giữ ứng dụng chạy nền và tắt tối ưu pin.",
 

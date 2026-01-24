@@ -189,7 +189,7 @@
   "onboardingCheckSoundTitle": "গুরুত্বপূর্ণ: সাউন্ড পরীক্ষা করুন",
   "onboardingCheckSoundDesc": "নিচের বাটনে ট্যাপ করে নিশ্চিত করুন যে “Timer Alarm (default)” সাউন্ডটি “None” বা “Silent” নয়।\n\nসাইলেন্ট হলে সময় শেষ হলে আপনি শুধু নোটিফিকেশন পাবেন, সাউন্ড শুনতে পাবেন না।",
   "onboardingCheckSoundBtn": "সাউন্ড সেটিংস পরীক্ষা করুন",
-  "onboardingCheckSoundMiuiHint": "MIUI ব্যবহারকারী: নোটিফিকেশন চ্যানেলে সাউন্ড নির্বাচন করতে না পারা স্বাভাবিক (MIUI সীমাবদ্ধতা)। অ্যাপ স্বয়ংক্রিয়ভাবে ইন-অ্যাপ অডিও প্লেব্যাক চালু করেছে, অ্যালার্ম ঠিকমতো কাজ করবে। নোট: অ্যালার্ম চলাকালে বেশি মেসেজিং এড়িয়ে চলুন যাতে অডিও বিঘ্নিত না হয়।",
+  "onboardingCheckSoundMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read.",
 
   "grantPermission": "অনুমতি দিন",
   "notificationPermissionGranted": "নোটিফিকেশন অনুমতি দেওয়া হয়েছে",
@@ -209,7 +209,7 @@
 
   "alarmSoundSettings": "অ্যালার্ম সাউন্ড সেটিংস",
   "alarmSoundSettingsDesc": "যদি “Timer Alarm (default)” সাউন্ড “None” থাকে, টাইমার শুধু নোটিফিকেশন দেখাবে, সাউন্ড হবে না",
-  "alarmSoundSettingsMiuiHint": "MIUI ব্যবহারকারী: MIUI সীমাবদ্ধতার কারণে কিছু ডিভাইসে নোটিফিকেশন চ্যানেলের সাউন্ড বদলানো যায় না। অ্যালার্ম নিশ্চিত করতে অ্যাপ স্বয়ংক্রিয়ভাবে ইন-অ্যাপ অডিও প্লেব্যাক চালু করেছে। নোট: অন্য নোটিফিকেশন সাউন্ডে ইন-অ্যাপ অডিও বাধাপ্রাপ্ত বা কমে যেতে পারে; অ্যালার্ম চলাকালে বেশি মেসেজিং এড়িয়ে চলুন।",
+  "alarmSoundSettingsMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read. Note: In-app audio may be interrupted or lowered by other notification sounds. Try to avoid heavy messaging during alarms.",
 
   "appKilledWarning": "গুরুত্বপূর্ণ: এই অ্যাপ সিস্টেম বা ব্যবহারকারী জোর করে বন্ধ করলে টাইমার বাজবে না। ব্যাকগ্রাউন্ডে চালু রাখুন এবং ব্যাটারি অপ্টিমাইজেশন বন্ধ করুন।",
 

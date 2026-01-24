@@ -189,7 +189,7 @@
   "onboardingCheckSoundTitle": "Importante: verificar som",
   "onboardingCheckSoundDesc": "Verifique se o som \"Timer Alarm (default)\" NÃO está definido como \"Nenhum\" ou \"Silencioso\".\n\nSe estiver silencioso, você receberá apenas uma notificação sem som quando o tempo acabar.",
   "onboardingCheckSoundBtn": "Verificar configurações de som",
-  "onboardingCheckSoundMiuiHint": "Usuários MIUI: se você não conseguir selecionar um som no canal de notificação, isso é normal (limitação do MIUI). O app ativou automaticamente a reprodução de áudio no app, e o alarme funcionará corretamente. Observação: tente evitar muitas mensagens durante alarmes para prevenir interrupções de áudio.",
+  "onboardingCheckSoundMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read.",
 
   "grantPermission": "Conceder permissão",
   "notificationPermissionGranted": "Permissão de notificação concedida",
@@ -209,7 +209,7 @@
 
   "alarmSoundSettings": "Configurações de som do alarme",
   "alarmSoundSettingsDesc": "Se o som \"Timer Alarm (default)\" estiver definido como \"Nenhum\", o temporizador apenas mostrará notificação sem som",
-  "alarmSoundSettingsMiuiHint": "Usuários MIUI: devido a limitações do MIUI, alguns dispositivos podem não permitir alterar sons do canal de notificação. O app ativou automaticamente a reprodução de áudio no app para garantir que o alarme funcione corretamente. Observação: o áudio no app pode ser interrompido ou reduzido por outros sons de notificação. Tente evitar muitas mensagens durante alarmes.",
+  "alarmSoundSettingsMiuiHint": "MIUI Users: Due to MIUI system limitations, notification channel sounds may not play reliably.\n\nThe app will automatically enable in-app audio playback to ensure the alarm rings. Note: Some \"theme ringtones\" URIs (e.g. com.android.thememanager.fileprovider) are not readable by third-party apps due to OS permission restrictions, so in-app playback cannot play that theme ringtone and will fall back to the built-in sound.\n\nSuggestion: Prefer system built-in ringtones, or choose a ringtone source that apps can read. Note: In-app audio may be interrupted or lowered by other notification sounds. Try to avoid heavy messaging during alarms.",
 
   "appKilledWarning": "Importante: se este app for encerrado à força pelo sistema ou pelo usuário, os temporizadores não tocarão. Mantenha-o em execução em segundo plano e desative a otimização de bateria.",
 

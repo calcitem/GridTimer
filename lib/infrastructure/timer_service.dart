@@ -20,6 +20,7 @@ import '../core/domain/services/i_vibration_service.dart';
 import '../core/domain/types.dart';
 import '../core/services/duration_formatter.dart';
 import '../core/services/service_localizations.dart';
+import '../core/services/agent_debug_logger.dart';
 import '../data/repositories/storage_repository.dart';
 
 /// Timer service implementation with full state management and recovery.
@@ -349,6 +350,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
         //   (like MIUI) that may not play notification sounds. If user customized
         //   the sound in system settings, don't play in-app audio to avoid double-playing.
         bool shouldPlayInAppAudio = !useNotificationSound;
+        String? inAppSoundUri;
         if (!kIsWeb && Platform.isAndroid && useNotificationSound) {
           // Check if notification channel is using app's default sound resource
           final channelInfo = await _notification.getChannelInfo(
@@ -360,9 +362,57 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
               channelSound.contains('android.resource://') &&
               channelSound.contains('com.calcitem.gridtimer');
 
+          final isMiui = channelInfo?['isMiui'] == true;
+          final isMiuiThemeManagerSound =
+              isMiui &&
+              channelSound != null &&
+              channelSound.startsWith('content://') &&
+              (channelSound.contains('com.android.thememanager.fileprovider') ||
+                  channelSound.contains('external-files-MIUI'));
+
           // Only use in-app audio fallback if channel is using app's default sound
           // (which may not play on some OEM ROMs like MIUI Android 11)
-          shouldPlayInAppAudio = isUsingAppDefaultSound;
+          shouldPlayInAppAudio =
+              isUsingAppDefaultSound || isMiuiThemeManagerSound;
+          inAppSoundUri = isMiuiThemeManagerSound ? channelSound : null;
+
+          // #region agent log
+          assert(() {
+            AgentDebugLogger.log(
+              hypothesisId: 'A',
+              location: 'timer_service.dart:_triggerRingingAsync',
+              message: 'Computed in-app audio decision (foreground timer tick)',
+              data: <String, Object?>{
+                'timerId': timerId,
+                'slotIndex': slotIndex,
+                'soundKey': config.soundKey,
+                'reliabilityMode': reliabilityMode.name,
+                'useNotificationSound': useNotificationSound,
+                'shouldPlayInAppAudio': shouldPlayInAppAudio,
+                'inAppSoundUri': inAppSoundUri,
+                'channelId': 'gt.alarm.timeup.${config.soundKey}.v3',
+                'channelSound': channelSound,
+                'isUsingAppDefaultSound': isUsingAppDefaultSound,
+                'isMiui': isMiui,
+                'isMiuiThemeManagerSound': isMiuiThemeManagerSound,
+                'channelImportance': channelInfo?['importance'],
+                'channelAudioUsage': channelInfo?['audioAttributesUsage'],
+                'alarmVol': channelInfo?['alarmVolume'],
+                'alarmVolMax': channelInfo?['alarmVolumeMax'],
+                'notifVol': channelInfo?['notificationVolume'],
+                'notifVolMax': channelInfo?['notificationVolumeMax'],
+                'ringerMode': channelInfo?['ringerMode'],
+                'areNotificationsEnabled':
+                    channelInfo?['areNotificationsEnabled'],
+                'interruptionFilter': channelInfo?['interruptionFilter'],
+                'manufacturer': channelInfo?['manufacturer'],
+                'model': channelInfo?['model'],
+                'androidSdk': channelInfo?['androidSdk'],
+              },
+            );
+            return true;
+          }());
+          // #endregion
         }
 
         if (shouldPlayInAppAudio) {
@@ -375,6 +425,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
               volume: settings?.soundVolume ?? 1.0,
               loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
               intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+              soundUri: inAppSoundUri,
             );
           } catch (e) {
             debugPrint('TimerService: Failed to play in-app audio: $e');
@@ -765,6 +816,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
               reliabilityMode == AlarmReliabilityMode.alarmClock);
 
       bool shouldPlayInAppAudio = !useNotificationSound;
+      String? inAppSoundUri;
       if (!kIsWeb && Platform.isAndroid && useNotificationSound) {
         final channelInfo = await _notification.getChannelInfo(
           channelId: 'gt.alarm.timeup.${config.soundKey}.v3',
@@ -774,7 +826,57 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
             channelSound != null &&
             channelSound.contains('android.resource://') &&
             channelSound.contains('com.calcitem.gridtimer');
-        shouldPlayInAppAudio = isUsingAppDefaultSound;
+
+        final isMiui = channelInfo?['isMiui'] == true;
+        final isMiuiThemeManagerSound =
+            isMiui &&
+            channelSound != null &&
+            channelSound.startsWith('content://') &&
+            (channelSound.contains('com.android.thememanager.fileprovider') ||
+                channelSound.contains('external-files-MIUI'));
+
+        shouldPlayInAppAudio =
+            isUsingAppDefaultSound || isMiuiThemeManagerSound;
+        inAppSoundUri = isMiuiThemeManagerSound ? channelSound : null;
+
+        // #region agent log
+        assert(() {
+          AgentDebugLogger.log(
+            hypothesisId: 'A',
+            location: 'timer_service.dart:handleTimeUpEvent',
+            message:
+                'Computed in-app audio decision (notification time-up path)',
+            data: <String, Object?>{
+              'timerId': timerId,
+              'slotIndex': updated.slotIndex,
+              'soundKey': config.soundKey,
+              'reliabilityMode': reliabilityMode.name,
+              'useNotificationSound': useNotificationSound,
+              'shouldPlayInAppAudio': shouldPlayInAppAudio,
+              'inAppSoundUri': inAppSoundUri,
+              'channelId': 'gt.alarm.timeup.${config.soundKey}.v3',
+              'channelSound': channelSound,
+              'isUsingAppDefaultSound': isUsingAppDefaultSound,
+              'isMiui': isMiui,
+              'isMiuiThemeManagerSound': isMiuiThemeManagerSound,
+              'channelImportance': channelInfo?['importance'],
+              'channelAudioUsage': channelInfo?['audioAttributesUsage'],
+              'alarmVol': channelInfo?['alarmVolume'],
+              'alarmVolMax': channelInfo?['alarmVolumeMax'],
+              'notifVol': channelInfo?['notificationVolume'],
+              'notifVolMax': channelInfo?['notificationVolumeMax'],
+              'ringerMode': channelInfo?['ringerMode'],
+              'areNotificationsEnabled':
+                  channelInfo?['areNotificationsEnabled'],
+              'interruptionFilter': channelInfo?['interruptionFilter'],
+              'manufacturer': channelInfo?['manufacturer'],
+              'model': channelInfo?['model'],
+              'androidSdk': channelInfo?['androidSdk'],
+            },
+          );
+          return true;
+        }());
+        // #endregion
       }
 
       if (shouldPlayInAppAudio) {
@@ -787,6 +889,7 @@ class TimerService with WidgetsBindingObserver implements ITimerService {
             volume: settings?.soundVolume ?? 1.0,
             loopDurationMinutes: settings?.audioLoopDurationMinutes ?? 5,
             intervalPauseMinutes: settings?.audioIntervalPauseMinutes ?? 2,
+            soundUri: inAppSoundUri,
           );
         } catch (e) {
           debugPrint('TimerService: Failed to play in-app audio: $e');
