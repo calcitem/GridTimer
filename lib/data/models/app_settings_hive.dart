@@ -1,5 +1,6 @@
 import 'package:hive_ce/hive.dart';
 import '../../core/domain/entities/app_settings.dart';
+import '../../core/domain/entities/idle_grid_click_behavior.dart';
 import '../../core/domain/enums.dart';
 
 part 'app_settings_hive.g.dart';
@@ -97,6 +98,12 @@ class AppSettingsHive {
   @HiveField(23, defaultValue: 2)
   final int alarmReliabilityModeIndex;
 
+  @HiveField(27, defaultValue: 'soft_dark')
+  final String themeId;
+
+  @HiveField(28, defaultValue: 1)
+  final int idleGridClickBehaviorIndex;
+
   AppSettingsHive({
     required this.activeModeId,
     required this.flashEnabled,
@@ -125,6 +132,8 @@ class AppSettingsHive {
     required this.showMinutesSecondsFormat,
     required this.gridNames,
     required this.alarmReliabilityModeIndex,
+    required this.themeId,
+    required this.idleGridClickBehaviorIndex,
   });
 
   /// Convert from domain entity.
@@ -164,6 +173,8 @@ class AppSettingsHive {
       showMinutesSecondsFormat: settings.showMinutesSecondsFormat,
       gridNames: settings.gridNames,
       alarmReliabilityModeIndex: settings.alarmReliabilityMode.index,
+      themeId: settings.themeId,
+      idleGridClickBehaviorIndex: settings.idleGridClickBehavior.index,
     );
   }
 
@@ -217,6 +228,12 @@ class AppSettingsHive {
               alarmReliabilityModeIndex < AlarmReliabilityMode.values.length
           ? AlarmReliabilityMode.values[alarmReliabilityModeIndex]
           : AlarmReliabilityMode.alarmClock,
+      themeId: themeId,
+      idleGridClickBehavior:
+          idleGridClickBehaviorIndex >= 0 &&
+              idleGridClickBehaviorIndex < IdleGridClickBehavior.values.length
+          ? IdleGridClickBehavior.values[idleGridClickBehaviorIndex]
+          : IdleGridClickBehavior.showDialog,
     );
   }
 }

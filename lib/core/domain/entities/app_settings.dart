@@ -143,8 +143,8 @@ abstract class AppSettings with _$AppSettings {
     AlarmReliabilityMode alarmReliabilityMode,
 
     /// Behavior when clicking on an idle grid cell.
-    /// Default is showDialog (safer, prevents accidental start).
-    @Default(IdleGridClickBehavior.showDialog)
+    /// Default is directStart (faster for power users).
+    @Default(IdleGridClickBehavior.directStart)
     IdleGridClickBehavior idleGridClickBehavior,
   }) = _AppSettings;
 
