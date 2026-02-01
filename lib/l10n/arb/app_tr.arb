@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "Boş Kare Tıklama Davranışı",
   "idleGridClickBehaviorDesc": "Boş bir kareye tıklayınca yapılacak işlemi seçin",
-  "showDialogOption": "İşlem penceresini göster (önerilir, yanlış dokunmayı önler)",
+  "showDialogOption": "İşlem penceresini göster (yanlış dokunmayı önler)",
   "directStartOption": "Zamanlayıcıyı doğrudan başlat (hızlı mod)",
 
   "permissionNotificationTitle": "Bildirimleri Aç",

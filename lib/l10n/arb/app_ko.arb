@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "대기 그리드 탭 동작",
   "idleGridClickBehaviorDesc": "대기 상태의 그리드 셀을 탭했을 때의 동작을 선택하세요",
-  "showDialogOption": "동작 선택 창 표시(권장, 오탭 방지)",
+  "showDialogOption": "동작 선택 창 표시(오탭 방지)",
   "directStartOption": "바로 타이머 시작(빠른 모드)",
 
   "permissionNotificationTitle": "알림 활성화",

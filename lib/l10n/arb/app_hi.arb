@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "खाली ग्रिड पर टैप का व्यवहार",
   "idleGridClickBehaviorDesc": "खाली ग्रिड सेल पर टैप करने पर क्या करना है चुनें",
-  "showDialogOption": "क्रिया डायलॉग दिखाएँ (अनुशंसित, गलती से टैप से बचाता है)",
+  "showDialogOption": "क्रिया डायलॉग दिखाएँ (गलती से टैप से बचाता है)",
   "directStartOption": "सीधे टाइमर शुरू करें (क्विक मोड)",
 
   "permissionNotificationTitle": "नोटिफिकेशन चालू करें",

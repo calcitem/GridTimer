@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "ফাঁকা গ্রিডে ট্যাপের আচরণ",
   "idleGridClickBehaviorDesc": "ফাঁকা গ্রিড সেলে ট্যাপ করলে কী হবে নির্বাচন করুন",
-  "showDialogOption": "অ্যাকশন ডায়ালগ দেখান (প্রস্তাবিত, ভুল ট্যাপ এড়ায়)",
+  "showDialogOption": "অ্যাকশন ডায়ালগ দেখান (ভুল ট্যাপ এড়ায়)",
   "directStartOption": "সরাসরি টাইমার শুরু করুন (কুইক মোড)",
 
   "permissionNotificationTitle": "নোটিফিকেশন চালু করুন",

@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "การกระทำเมื่อคลิกช่องว่าง",
   "idleGridClickBehaviorDesc": "เลือกสิ่งที่เกิดขึ้นเมื่อคลิกช่องตัวจับเวลาที่ว่างอยู่",
-  "showDialogOption": "แสดงกล่องโต้ตอบการกระทำ (แนะนำ ป้องกันการกดผิด)",
+  "showDialogOption": "แสดงกล่องโต้ตอบการกระทำ (ป้องกันการกดผิด)",
   "directStartOption": "เริ่มจับเวลาทันที (โหมดด่วน)",
 
   "permissionNotificationTitle": "เปิดใช้งานการแจ้งเตือน",

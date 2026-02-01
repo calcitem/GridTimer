@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "Hành vi khi chạm ô trống",
   "idleGridClickBehaviorDesc": "Chọn hành vi khi chạm vào ô lưới đang rảnh",
-  "showDialogOption": "Hiện hộp thoại thao tác (khuyến nghị, tránh chạm nhầm)",
+  "showDialogOption": "Hiện hộp thoại thao tác (tránh chạm nhầm)",
   "directStartOption": "Bắt đầu hẹn giờ ngay (chế độ nhanh)",
 
   "permissionNotificationTitle": "Bật thông báo",

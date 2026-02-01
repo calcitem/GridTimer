@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "Acción al tocar una celda inactiva",
   "idleGridClickBehaviorDesc": "Elige qué hacer al tocar una celda inactiva",
-  "showDialogOption": "Mostrar diálogo de acciones (recomendado, evita toques accidentales)",
+  "showDialogOption": "Mostrar diálogo de acciones (evita toques accidentales)",
   "directStartOption": "Iniciar temporizador directamente (modo rápido)",
 
   "permissionNotificationTitle": "Activar notificaciones",

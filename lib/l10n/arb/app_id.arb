@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "Perilaku Klik Grid Saat Siap",
   "idleGridClickBehaviorDesc": "Pilih aksi saat mengetuk sel grid yang siap",
-  "showDialogOption": "Tampilkan dialog aksi (disarankan, mencegah sentuhan tak sengaja)",
+  "showDialogOption": "Tampilkan dialog aksi (mencegah sentuhan tak sengaja)",
   "directStartOption": "Mulai timer langsung (mode cepat)",
 
   "permissionNotificationTitle": "Aktifkan Notifikasi",

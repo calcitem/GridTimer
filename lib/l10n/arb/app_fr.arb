@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "Comportement au clic (case inactive)",
   "idleGridClickBehaviorDesc": "Choisissez l’action lors d’un clic sur une case inactive",
-  "showDialogOption": "Afficher la boîte d’actions (recommandé, évite les touches accidentelles)",
+  "showDialogOption": "Afficher la boîte d’actions (évite les touches accidentelles)",
   "directStartOption": "Démarrer directement (mode rapide)",
 
   "permissionNotificationTitle": "Activer les notifications",

@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "Клик по пустой ячейке",
   "idleGridClickBehaviorDesc": "Действие при нажатии на незапущенный таймер",
-  "showDialogOption": "Показать меню действий (рекомендуется)",
+  "showDialogOption": "Показать меню действий (защита от случайного нажатия)",
   "directStartOption": "Сразу запустить (быстрый режим)",
 
   "permissionNotificationTitle": "Включите уведомления",

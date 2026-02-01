@@ -149,7 +149,7 @@
     "description": "Setting description for idle grid click behavior"
   },
 
-  "showDialogOption": "Aktionsdialog anzeigen (empfohlen, verhindert versehentliches Tippen)",
+  "showDialogOption": "Aktionsdialog anzeigen (verhindert versehentliches Tippen)",
   "@showDialogOption": {
     "description": "Option to show dialog when clicking idle grid"
   },

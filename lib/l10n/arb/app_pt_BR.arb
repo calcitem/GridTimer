@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "Ação ao tocar em célula ociosa",
   "idleGridClickBehaviorDesc": "Escolha a ação ao tocar em uma célula ociosa",
-  "showDialogOption": "Mostrar diálogo de ações (recomendado, evita toques acidentais)",
+  "showDialogOption": "Mostrar diálogo de ações (evita toques acidentais)",
   "directStartOption": "Iniciar temporizador diretamente (modo rápido)",
 
   "permissionNotificationTitle": "Ativar notificações",

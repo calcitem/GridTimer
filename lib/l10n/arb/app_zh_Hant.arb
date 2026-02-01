@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "點擊閒置格子行為",
   "idleGridClickBehaviorDesc": "選擇點擊閒置格子時的行為",
-  "showDialogOption": "顯示操作對話框（推薦，防誤觸）",
+  "showDialogOption": "顯示操作對話框（防誤觸）",
   "directStartOption": "直接啟動計時器（快捷模式）",
 
   "permissionNotificationTitle": "開啟通知",

@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "Comportamento tocco griglia inattiva",
   "idleGridClickBehaviorDesc": "Scegli l’azione quando tocchi una cella inattiva",
-  "showDialogOption": "Mostra finestra azioni (consigliato, evita tocchi accidentali)",
+  "showDialogOption": "Mostra finestra azioni (evita tocchi accidentali)",
   "directStartOption": "Avvia timer direttamente (modalità rapida)",
 
   "permissionNotificationTitle": "Abilita notifiche",

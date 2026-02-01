@@ -31,7 +31,7 @@
 
   "idleGridClickBehaviorTitle": "待機中セルのタップ動作",
   "idleGridClickBehaviorDesc": "待機中のセルをタップしたときの動作を選択",
-  "showDialogOption": "操作ダイアログを表示（推奨：誤タップ防止）",
+  "showDialogOption": "操作ダイアログを表示（誤タップ防止）",
   "directStartOption": "すぐに開始（クイックモード）",
 
   "permissionNotificationTitle": "通知を有効にする",
