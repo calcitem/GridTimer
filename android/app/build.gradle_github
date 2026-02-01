@@ -73,7 +73,7 @@ def releaseKeystoreFile = resolveReleaseKeystoreFile()
 def releaseKeystoreType = resolveKeystoreType(releaseKeystoreFile)
 
 android {
-    ndkVersion "28.2.13676358"
+    ndkVersion rootProject.ext.ndkVersion
 
     namespace "com.calcitem.gridtimer"
     compileSdk 36

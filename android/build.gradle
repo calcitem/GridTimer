@@ -5,6 +5,11 @@ allprojects {
     }
 }
 
+// Global configuration: Define NDK version here
+ext {
+    ndkVersion = "28.2.13676358"
+}
+
 rootProject.buildDir = '../build'
 subprojects {
     afterEvaluate { project ->
@@ -28,16 +33,16 @@ subprojects {
 
             // Force all plugins to use official NDK r28 version
             String pluginNdkVersion = project.android.ndkVersion
-            if (pluginNdkVersion != null && pluginNdkVersion != "28.2.13676358") {
+            if (pluginNdkVersion != null && pluginNdkVersion != rootProject.ext.ndkVersion) {
                 project.logger.warn(
                         "Warning: Overriding ndkVersion in Flutter plugin: "
                                 + project.name
                                 + " from "
                                 + pluginNdkVersion
-                                + " to 28.2.13676358 (official NDK r28)."
+                                + " to " + rootProject.ext.ndkVersion + " (official NDK r28)."
                 )
                 project.android {
-                    ndkVersion "28.2.13676358"
+                    ndkVersion rootProject.ext.ndkVersion
                 }
             }
 
