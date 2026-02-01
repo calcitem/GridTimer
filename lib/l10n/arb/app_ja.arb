@@ -71,9 +71,6 @@
   "licenseDesc": "ライセンスを表示",
   "comingSoon": "近日公開",
   "selectLanguage": "言語を選択",
-  "languageEnglish": "English",
-  "languageChineseSimplified": "简体中文",
-  "languageSwedish": "Svenska",
 
   "errorText": "エラー：{error}",
   "confirmStart": "他のタイマーが動作中です。このタイマーを開始しますか？",

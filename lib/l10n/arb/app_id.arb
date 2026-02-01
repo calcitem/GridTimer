@@ -71,9 +71,6 @@
   "licenseDesc": "Lihat lisensi aplikasi",
   "comingSoon": "Segera hadir",
   "selectLanguage": "Pilih Bahasa",
-  "languageEnglish": "English",
-  "languageChineseSimplified": "简体中文",
-  "languageSwedish": "Svenska",
 
   "errorText": "Kesalahan: {error}",
   "confirmStart": "Timer lain sedang berjalan. Lanjutkan untuk memulai timer ini?",

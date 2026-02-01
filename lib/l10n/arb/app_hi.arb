@@ -71,9 +71,6 @@
   "licenseDesc": "ऐप का लाइसेंस देखें",
   "comingSoon": "जल्द आ रहा है",
   "selectLanguage": "भाषा चुनें",
-  "languageEnglish": "English",
-  "languageChineseSimplified": "简体中文",
-  "languageSwedish": "Svenska",
 
   "errorText": "त्रुटि: {error}",
   "confirmStart": "अभी अन्य टाइमर चल रहे हैं। क्या इस टाइमर को शुरू करना जारी रखें?",

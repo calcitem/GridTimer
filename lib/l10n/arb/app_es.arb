@@ -71,9 +71,6 @@
   "licenseDesc": "Ver licencias de terceros",
   "comingSoon": "Próximamente",
   "selectLanguage": "Seleccionar idioma",
-  "languageEnglish": "English",
-  "languageChineseSimplified": "简体中文",
-  "languageSwedish": "Svenska",
 
   "errorText": "Error: {error}",
   "confirmStart": "Hay otros temporizadores en marcha. ¿Continuar e iniciar este temporizador?",

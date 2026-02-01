@@ -71,9 +71,6 @@
   "licenseDesc": "Voir la licence de l’application",
   "comingSoon": "Bientôt disponible",
   "selectLanguage": "Choisir une langue",
-  "languageEnglish": "English",
-  "languageChineseSimplified": "简体中文",
-  "languageSwedish": "Svenska",
 
   "errorText": "Erreur : {error}",
   "confirmStart": "D’autres minuteurs sont en cours. Continuer et démarrer ce minuteur ?",

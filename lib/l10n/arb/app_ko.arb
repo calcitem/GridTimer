@@ -71,9 +71,6 @@
   "licenseDesc": "서드파티 라이선스 보기",
   "comingSoon": "준비 중",
   "selectLanguage": "언어 선택",
-  "languageEnglish": "English",
-  "languageChineseSimplified": "简体中文",
-  "languageSwedish": "Svenska",
 
   "errorText": "오류: {error}",
   "confirmStart": "다른 타이머가 실행 중입니다. 이 타이머를 계속 시작할까요?",

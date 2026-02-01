@@ -71,9 +71,6 @@
   "licenseDesc": "查看本應用授權",
   "comingSoon": "即將推出",
   "selectLanguage": "選擇語言",
-  "languageEnglish": "English",
-  "languageChineseSimplified": "簡體中文",
-  "languageSwedish": "Svenska",
 
   "errorText": "錯誤：{error}",
   "confirmStart": "目前已有計時器在運行。要繼續啟動此計時器嗎？",

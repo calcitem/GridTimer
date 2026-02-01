@@ -71,9 +71,6 @@
   "licenseDesc": "Uygulama lisansını görüntüleyin",
   "comingSoon": "Yakında",
   "selectLanguage": "Dil Seç",
-  "languageEnglish": "English",
-  "languageChineseSimplified": "简体中文",
-  "languageSwedish": "Svenska",
 
   "errorText": "Hata: {error}",
   "confirmStart": "Çalışan başka zamanlayıcılar var. Bu zamanlayıcı başlatılsın mı?",
