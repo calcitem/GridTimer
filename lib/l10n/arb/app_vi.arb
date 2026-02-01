@@ -73,6 +73,7 @@
   "selectLanguage": "Chọn ngôn ngữ",
   "languageEnglish": "English",
   "languageChineseSimplified": "简体中文",
+  "languageSwedish": "Svenska",
 
   "errorText": "Lỗi: {error}",
   "confirmStart": "Hiện có bộ hẹn giờ đang chạy. Bạn có muốn tiếp tục bắt đầu bộ hẹn giờ này không?",

@@ -73,6 +73,7 @@
   "selectLanguage": "Seleziona lingua",
   "languageEnglish": "English",
   "languageChineseSimplified": "简体中文",
+  "languageSwedish": "Svenska",
 
   "errorText": "Errore: {error}",
   "confirmStart": "Ci sono altri timer in esecuzione. Vuoi continuare e avviare questo timer?",

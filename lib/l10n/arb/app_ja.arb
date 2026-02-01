@@ -73,6 +73,7 @@
   "selectLanguage": "言語を選択",
   "languageEnglish": "English",
   "languageChineseSimplified": "简体中文",
+  "languageSwedish": "Svenska",
 
   "errorText": "エラー：{error}",
   "confirmStart": "他のタイマーが動作中です。このタイマーを開始しますか？",

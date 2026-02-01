@@ -73,6 +73,7 @@
   "selectLanguage": "ভাষা নির্বাচন করুন",
   "languageEnglish": "English",
   "languageChineseSimplified": "简体中文",
+  "languageSwedish": "Svenska",
 
   "errorText": "ত্রুটি: {error}",
   "confirmStart": "অন্য টাইমার চলছে। এই টাইমার শুরু করতে এগোবেন?",

@@ -73,6 +73,7 @@
   "selectLanguage": "Selecionar idioma",
   "languageEnglish": "English",
   "languageChineseSimplified": "简体中文",
+  "languageSwedish": "Svenska",
 
   "errorText": "Erro: {error}",
   "confirmStart": "Há outros temporizadores em execução. Deseja continuar e iniciar este temporizador?",

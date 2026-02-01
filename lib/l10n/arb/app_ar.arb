@@ -325,7 +325,9 @@
   },
 
   "languageChineseSimplified": "简体中文",
+  "languageSwedish": "Svenska",
   "@languageChineseSimplified": {
+  "languageSwedish": "Svenska",
     "description": "اسم لغة الصينية المبسطة"
   },
 

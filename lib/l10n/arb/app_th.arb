@@ -73,6 +73,7 @@
   "selectLanguage": "เลือกภาษา",
   "languageEnglish": "English",
   "languageChineseSimplified": "简体中文",
+  "languageSwedish": "Svenska",
 
   "errorText": "ข้อผิดพลาด: {error}",
   "confirmStart": "มีตัวจับเวลาอื่นกำลังทำงานอยู่ ต้องการเริ่มตัวจับเวลานี้ต่อหรือไม่?",

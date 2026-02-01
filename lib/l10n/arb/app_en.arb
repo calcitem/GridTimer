@@ -329,6 +329,11 @@
     "description": "Simplified Chinese language name"
   },
 
+  "languageSwedish": "Svenska",
+  "@languageSwedish": {
+    "description": "Swedish language name"
+  },
+
   "errorText": "Error: {error}",
   "@errorText": {
     "description": "Error message template",

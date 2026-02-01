@@ -73,6 +73,7 @@
   "selectLanguage": "选择语言",
   "languageEnglish": "English",
   "languageChineseSimplified": "简体中文",
+  "languageSwedish": "Svenska",
 
   "errorText": "错误：{error}",
   "confirmStart": "当前已有计时器在运行。要继续启动此计时器吗？",

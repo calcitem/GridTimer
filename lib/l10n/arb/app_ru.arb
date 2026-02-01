@@ -73,6 +73,7 @@
   "selectLanguage": "Выберите язык",
   "languageEnglish": "English",
   "languageChineseSimplified": "简体中文",
+  "languageSwedish": "Svenska",
 
   "errorText": "Ошибка: {error}",
   "confirmStart": "Другие таймеры работают. Все равно запустить этот?",

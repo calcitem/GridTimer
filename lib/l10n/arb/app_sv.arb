@@ -1,0 +1,685 @@
+{
+  "@@locale": "sv",
+
+  "appTitle": "Grid Timer",
+
+  "timerIdle": "Inaktiv",
+
+  "timerRunning": "Kör",
+
+  "timerPaused": "Pausad",
+
+  "timerRinging": "RINGER",
+
+  "confirmStartTitle": "Bekräfta start?",
+
+  "confirmStartBody": "Andra timers körs. Fortsätt starta {name}?",
+
+  "actionStart": "Starta",
+
+  "actionPause": "Pausa",
+
+  "actionResume": "Återuppta",
+
+  "actionReset": "Återställ",
+
+  "actionStop": "Stoppa",
+
+  "actionCancel": "Avbryt",
+
+  "timerActions": "Timer-åtgärder",
+
+  "stopAlarm": "Stoppa alarm",
+
+  "timeUpTts": "{name} tiden är ute",
+
+  "timerIdleActions": "Välj åtgärd",
+
+  "actionAdjustTime": "Justera tid",
+
+  "adjustTimeTitle": "Justera tid - {slotName}",
+
+  "currentDuration": "Aktuell: {minutes} min {seconds} sek",
+
+  "durationUpdatedSuccessfully": "Varaktighet uppdaterad",
+
+  "durationMustBePositive": "Varaktighet måste vara större än 0",
+
+  "idleGridClickBehaviorTitle": "Klickbeteende för inaktiv rutnät",
+
+  "idleGridClickBehaviorDesc": "Välj åtgärd vid klick på inaktiv rutnätscell",
+
+  "showDialogOption": "Visa åtgärdsdialog (förhindrar oavsiktlig tryckning)",
+
+  "directStartOption": "Starta timer direkt (snabbläge)",
+
+  "permissionNotificationTitle": "Aktivera aviseringar",
+
+  "permissionNotificationBody": "För att ta emot timer-notifieringar, aktivera aviseringar.",
+
+  "permissionExactAlarmTitle": "Aktivera exakta alarm",
+
+  "permissionExactAlarmBody": "För exakta timer-notifieringar, aktivera 'Alarm & påminnelser'-behörighet.",
+
+  "openSettings": "Öppna inställningar",
+
+  "later": "Senare",
+
+  "minutes": "minuter",
+
+  "remainingSeconds": "tid kvar",
+
+  "pausing": "Pausad",
+
+  "timeUp": "Tiden är ute",
+
+  "clickToStop": "Klicka för att stoppa",
+
+  "settings": "Inställningar",
+
+  "appInformation": "App-information",
+
+  "version": "Version",
+
+  "versionInfo": "Versionsinformation",
+
+  "gitBranch": "Git-gren",
+
+  "gitRevision": "Git-revision",
+
+  "timerSettings": "Timer-inställningar",
+
+  "soundSettings": "Volyminställningar",
+
+  "soundSettingsDesc": "Konfigurera volym",
+
+  "ttsSettings": "TTS-inställningar",
+
+  "ttsSettingsDesc": "Konfigurera röstmeddelanden",
+
+  "languageSettings": "Språk",
+
+  "languageSettingsDesc": "Välj appspråk",
+
+  "permissions": "Behörigheter",
+
+  "notificationPermission": "Aviseringsbehörighet",
+
+  "notificationPermissionDesc": "Tillåt timer-aviseringar",
+
+  "about": "Om",
+
+  "license": "Licens",
+
+  "licenseDesc": "Visa tredjepartslicenser",
+
+  "comingSoon": "Kommer snart",
+
+  "selectLanguage": "Välj språk",
+
+  "languageEnglish": "English",
+
+  "languageChineseSimplified": "简体中文",
+
+  "languageSwedish": "Svenska",
+
+  "errorText": "Fel: {error}",
+
+  "confirmStart": "Andra timers körs. Fortsätt starta denna timer?",
+
+  "flashAnimation": "Blinkanimation",
+
+  "flashAnimationDesc": "Röd blinkning när timer ringer",
+
+  "vibration": "Vibration",
+
+  "vibrationDesc": "Vibrera när timer ringer",
+
+  "keepScreenOn": "Håll skärmen på",
+
+  "keepScreenOnDesc": "Förhindra skärmen från att somna medan timer körs",
+
+  "showMinutesSecondsFormat": "Visa minuter:sekunder-format",
+
+  "showMinutesSecondsFormatDesc": "Visa nedräkning som MM:SS (av visar totala sekunder)",
+
+  "ttsEnabled": "Röstmeddelanden",
+
+  "ttsEnabledDesc": "Meddela timer-slutförande med röst",
+
+  "alarmSound": "Alarmljud",
+
+  "alarmSoundDesc": "Välj ljud för timer-notifieringar",
+
+  "volume": "Volym",
+
+  "volumeDesc": "Justera alarmvolym",
+
+  "systemVolumeHint": "Om volymen är för låg kan du justera alarmvolymen i systeminställningar. På Android, tryck på fysisk volymknapp och sedan på menyn (tre punkter) för att ställa in alarmvolym separat.",
+
+  "autoRaiseAlarmVolumeTitle": "Auto-höj systemets alarmvolym",
+
+  "autoRaiseAlarmVolumeDesc": "Höj tillfälligt systemets alarmvolym när en timer ringer, och återställ den efter att du stoppat alarmet.",
+
+  "alarmVolumeBoostLevelTitle": "Förstärkningsnivå",
+
+  "alarmVolumeBoostLevelMinAudible": "Minimal hörbar",
+
+  "alarmVolumeBoostLevelMax": "Maximal",
+
+  "autoRaiseAlarmVolumeNote": "Obs: Denna funktion ändrar systemets alarmvolym. Den återställer din tidigare volym när du stoppar alarmet (eller efter {minutes} minuter).",
+
+  "vibrationSystemWarning": "App-vibrationsinställningen har ändrats. Observera att systemvibrationsinställningar (såsom Stör ej-läge, systemvibrationsbrytare, etc.) också kan påverka om vibration faktiskt fungerar. För att säkerställa vibration fungerar, kontrollera även systeminställningar.",
+
+  "openSystemVibrationSettings": "Öppna systemvibrationsinställningar",
+
+  "volumeButtonLockScreenHint": "På vissa system fungerar volymknappar endast när enheten är upplåst",
+
+  "ttsLanguage": "TTS-språk",
+
+  "ttsLanguageDesc": "Välj språk för röstmeddelanden",
+
+  "testSound": "Testa ljud",
+
+  "playing": "Spelar...",
+
+  "testTts": "Testa röst",
+
+  "ttsTestMessage": "Timer 1 tiden är ute",
+
+  "unitSecondsShort": "s",
+
+  "unitMinutesShort": "min",
+
+  "unitHoursShort": "h",
+
+  "gridDurationsSettings": "Rutnätsinställningar",
+
+  "gridDurationsSettingsDesc": "Anpassa namn och varaktighet för varje rutnätscell",
+
+  "gridSlot": "Rutnät {index}",
+
+  "seconds": "sekunder",
+
+  "hours": "timmar",
+
+  "save": "Spara",
+
+  "reset": "Återställ",
+
+  "resetToDefault": "Återställ till standard",
+
+  "gridDurationsResetConfirm": "Är du säker på att du vill återställa rutnätets varaktighet till standardvärden?",
+
+  "name": "Namn",
+
+  "optional": "Valfritt",
+
+  "audioPlaybackSettings": "Ljuduppspelningsinställningar",
+
+  "audioPlaybackSettingsDesc": "Konfigurera alarmljuduppspelningsläge",
+
+  "audioPlaybackMode": "Uppspelningsläge",
+
+  "audioPlaybackModeLoopIndefinitely": "Loop oändligt tills manuellt stoppad",
+
+  "audioPlaybackModeLoopForDuration": "Loop i N minuter och auto-stoppa",
+
+  "audioPlaybackModeLoopWithInterval": "Loop N min, pausa M min, loop N min (en gång)",
+
+  "audioPlaybackModeLoopWithIntervalRepeating": "Loop N min, pausa M min, upprepa tills stoppad",
+
+  "audioPlaybackModePlayOnce": "Spela bara en gång",
+
+  "loopDuration": "Loopvaraktighet",
+
+  "intervalPause": "Intervallpaus-varaktighet",
+
+  "minutesUnit": "minuter",
+
+  "audioPlaybackWhenEffectiveTitle": "Viktigt meddelande",
+
+  "audioPlaybackWhenEffectiveDesc": "Dessa inställningar gäller endast för standardalarmljudet.\n\nOm du anpassat aviseringsljudet i systeminställningar kommer alarmet att loopa kontinuerligt tills det stoppas (dessa uppspelningsinställningar gäller inte).",
+
+  "safetyDisclaimerTitle": "Säkerhetsmeddelande",
+
+  "safetyDisclaimerMessage": "För din säkerhet, vänligen förstå följande:",
+
+  "safetyRecommendedUses": "✅ Rekommenderade användningar",
+
+  "safetyRecommendedUsesList": "• Dagliga mattimers\n• Allmänna livspåminnelser\n• Icke-kritiska tillfällen\n• Efter testning",
+
+  "safetyNotRecommendedUses": "❌ INTE rekommenderat",
+
+  "safetyNotRecommendedUsesList": "• Kritiska medicinpåminnelser (använd medicinska appar)\n• Livskritiska påminnelser\n• Akutmedicinska situationer\n• Utan föregående testning",
+
+  "safetyBestPractices": "💡 Bästa praxis:",
+
+  "safetyBestPracticesList": "• Testa alarmet innan du förlitar dig på det\n• Ha reservpåminnelser för kritiska uppgifter\n• Kontrollera Stör ej-läge och aviseringsbehörigheter\n• Förstå appens begränsningar",
+
+  "safetyViewFullDisclaimer": "Visa ansvarsfriskrivning",
+
+  "safetyAcceptAndContinue": "Jag förstår, fortsätt",
+
+  "fullDisclaimerTitle": "Juridisk ansvarsfriskrivning",
+
+  "fullDisclaimerText": "Denna programvara tillhandahålls \"SOM DEN ÄR\" utan garanti av något slag, varken uttryckt eller underförstådd.\n\nUtvecklarna ansvarar inte för några konsekvenser som uppstår från användningen av denna programvara, inklusive men inte begränsat till: missade påminnelser, felaktig timing, appfel, etc.\n\nAnvändare bör bedöma risker själva och förbereda reservlösningar för kritiska uppgifter.",
+
+  "close": "Stäng",
+
+  "aboutDisclaimer": "Säkerhetsmeddelande & ansvarsfriskrivning",
+
+  "gestureSettings": "Gestkontrollinställningar",
+
+  "gestureSettingsDesc": "Konfigurera geståtgärder när alarm ringer",
+
+  "gestureActions": "Geståtgärder",
+
+  "gestureTypeScreenTap": "Tryck på skärm",
+
+  "gestureTypeVolumeUp": "Volym+-knapp",
+
+  "gestureTypeVolumeDown": "Volym--knapp",
+
+  "gestureTypeShake": "Skaka telefon",
+
+  "gestureTypeFlip": "Vänd telefon (framsida ner)",
+
+  "gestureActionStopAndReset": "Stoppa & återställ",
+
+  "gestureActionNone": "Ingen åtgärd",
+
+  "shakeSensitivity": "Skakkänslighet",
+
+  "shakeSensitivityLow": "Låg (Skaka hårt)",
+
+  "shakeSensitivityHigh": "Hög (Skaka försiktigt)",
+
+  "shakeSensitivityDesc": "Justera skakdetekteringskänslighet",
+
+  "gestureHint": "Seniorvänligt: Aktivera skärmtryckning, volymknappar och vänd telefon",
+
+  "gestureLimitationsHint": "Obs: Vissa enheter/system begränsar knappar eller sensorer på låsskärmen. Om gester inte svarar när låst, lås upp först och prova sedan att vända telefonen eller trycka på volymknappar.",
+
+  "onboardingCheckSoundTitle": "Viktigt: Kontrollera ljud",
+
+  "onboardingCheckSoundDesc": "Vänligen kontrollera om 'Timer Alarm (standard)'-ljudet INTE är 'Inget' eller 'Tyst'.\n\nOm tyst får du bara en avisering utan ljud när tiden är ute.",
+
+  "onboardingCheckSoundBtn": "Kontrollera ljudinställningar",
+
+  "onboardingCheckSoundMiuiHint": "MIUI-användare: På grund av MIUI-systembegränsningar kan aviseringskanaljud inte spelas upp tillförlitligt.\n\nAppen aktiverar automatiskt ljuduppspelning i appen för att säkerställa att alarmet ringer. Obs: Vissa 'temasignaler' URI:er (t.ex. com.android.thememanager.fileprovider) är inte läsbara av tredjepartsappar på grund av OS-behörighetsbegränsningar, så uppspelning i appen kan inte spela den temasignalen och återgår till det inbyggda ljudet.\n\nFörslag: Föredra systemets inbyggda ringsignaler eller välj en signalkälla som appar kan läsa.",
+
+  "grantPermission": "Bevilja behörighet",
+
+  "notificationPermissionGranted": "Aviseringsbehörighet beviljad",
+
+  "notificationPermissionDenied": "Aviseringsbehörighet nekad, vänligen bevilja manuellt i systeminställningar",
+
+  "exactAlarmPermission": "Exakt alarmbehörighet",
+
+  "exactAlarmPermissionDesc": "Säkerställ att timers meddelar i tid (Krävs på Android 12, 14+)",
+
+  "exactAlarmPermissionDescApi33": "Förbeviljade på Android 13, kan återkallas i systeminställningar",
+
+  "fullScreenIntentPermission": "Helskärmsavsiktsbehörighet",
+
+  "fullScreenIntentPermissionDesc": "Tillåt helskärmsaviseringar när en timer ringer på låsskärmen (Android 14+)",
+
+  "fullScreenIntentStatusGranted": "Tillåten",
+
+  "fullScreenIntentStatusDenied": "Inte tillåten (kanske inte visar helskärmsavisering)",
+
+  "batteryOptimizationSettings": "Batterioptimeringsinställningar",
+
+  "batteryOptimizationDesc": "Inaktivera batterioptimering för att säkerställa tillförlitliga bakgrundsalarm",
+
+  "alarmSoundSettings": "Alarmljudinställningar",
+
+  "alarmSoundSettingsDesc": "Om 'Timer Alarm (standard)'-ljudet är inställt på 'Inget' visar timer bara avisering utan ljud",
+
+  "alarmSoundSettingsMiuiHint": "MIUI-användare: På grund av MIUI-systembegränsningar kan aviseringskanaljud inte spelas upp tillförlitligt.\n\nAppen aktiverar automatiskt ljuduppspelning i appen för att säkerställa att alarmet ringer. Obs: Vissa 'temasignaler' URI:er (t.ex. com.android.thememanager.fileprovider) är inte läsbara av tredjepartsappar på grund av OS-behörighetsbegränsningar, så uppspelning i appen kan inte spela den temasignalen och återgår till det inbyggda ljudet.\n\nFörslag: Föredra systemets inbyggda ringsignaler eller välj en signalkälla som appar kan läsa. Obs: Ljud i appen kan avbrytas eller sänkas av andra aviseringsljud. Försök undvika tung meddelandeanvändning under alarm.",
+
+  "appKilledWarning": "Viktigt: Om denna app stängs av systemet eller användaren ringer timers inte. Håll den igång i bakgrunden och inaktivera batterioptimering.",
+
+  "alarmTroubleshooting": "Alarm ringer inte / försenat?",
+
+  "alarmTroubleshootingDesc": "Android-versioner och OEM-ROM:er kan begränsa bakgrundsalarm. Tryck för snabbfixar.",
+
+  "alarmTroubleshootingDialogTitle": "Alarmpålitlighetsguide",
+
+  "alarmTroubleshootingDialogIntro": "Olika Android-versioner och OEM-ROM:er (t.ex. anpassade skal) tillämpar olika bakgrunds-/aviseringsbegränsningar. Detta kan tysta eller fördröja alarm. Vi förbättrar kontinuerligt kompatibilitet, men försök följande:",
+
+  "alarmTroubleshootingSteps": "1. Stäng av Stör ej och höj alarmvolym\n2. Aktivera aviseringar för denna app\n3. I 'Timer Alarm (standard)'-kanalen, se till att ljudet inte är tyst\n4. Inaktivera batterioptimering för denna app (tillåt bakgrundskörning)\n5. Android 14+: tillåt 'Alarm & påminnelser' (exakta alarm)\n6. Android 14+: tillåt 'Helskärmsavsikter'",
+
+  "alarmTroubleshootingMiui": "Anpassade Android-skal: tillåt även Auto-start och Bakgrundsaktivitet, och undvik aggressiv batterisparning. Om det behövs, lås denna app i Senaste.",
+
+  "alarmTroubleshootingQuickActions": "Snabbåtgärder",
+
+  "alarmTroubleshootingOpenChannel": "Kontrollera kanalljud",
+
+  "alarmTroubleshootingOpenNotifications": "Öppna aviseringsinställningar",
+
+  "alarmTroubleshootingOpenExactAlarm": "Aktivera exakta alarm",
+
+  "alarmTroubleshootingOpenFullScreenIntent": "Aktivera helskärmsaviseringar",
+
+  "alarmTroubleshootingOpenBattery": "Inaktivera batterioptimering",
+
+  "alarmReliabilityMode": "Alarmpålitlighetsläge",
+
+  "alarmReliabilityModeDesc": "Välj hur alarm schemaläggs (påverkar om alarm utlöses efter att appen stängts)",
+
+  "alarmReliabilityModeAppOnly": "Endast app",
+
+  "alarmReliabilityModeAppOnlyDesc": "Mest batterieffektivt, men alarm utlöses inte om appen stängs",
+
+  "alarmReliabilityModeNotification": "Avisering",
+
+  "alarmReliabilityModeNotificationDesc": "Använd systemschemalagda aviseringar, bättre bakgrundspålitlighet",
+
+  "alarmReliabilityModeAlarmClock": "Väckarklocka",
+
+  "alarmReliabilityModeAlarmClockDesc": "Maximal pålitlighet, utlöses även om appen stängs (använder mer batteri)",
+
+  "alarmTroubleshootingViewSafetyNotice": "Visa säkerhetsmeddelande",
+
+  "goToSettings": "Gå till inställningar",
+
+  "settingsButton": "Inställningar",
+
+  "failedToOpenChannelSettings": "Misslyckades öppna aviseringskanlinställningar: {error}",
+
+  "developerModeEnabled": "Utvecklarläge aktiverat",
+
+  "developerModeDisabled": "Utvecklarläge inaktiverat",
+
+  "speaking": "Talar...",
+
+  "ttsTestFailed": "Rösttest misslyckades. Vänligen kontrollera enhetens TTS-inställningar.",
+
+  "ttsTestTimeout": "Rösttest timeout. Vänligen kontrollera om TTS-motor fungerar.",
+
+  "ttsTestFailedTitle": "Rösttest misslyckades",
+
+  "ttsTestFailedMessage": "Kunde inte höra röstmeddelande. Möjliga orsaker:\n\n• TTS-motor inte korrekt konfigurerad\n• Språkpaket inte installerat\n• Systemvolym tystad\n• Mediavolym för låg\n\nVänligen kontrollera systeminställningar eller visa diagnostik.",
+
+  "viewDiagnostics": "Visa diagnostik",
+
+  "ttsDiagnostics": "TTS-diagnostik",
+
+  "ttsEngine": "Aktuell motor",
+
+  "availableEngines": "Tillgängliga motorer",
+
+  "availableLanguages": "Tillgängliga språk",
+
+  "andMore": "och {count} fler...",
+
+  "ttsNoEngineTitle": "Ingen röstmotor upptäckt",
+
+  "ttsNoEngineMessage": "Ingen TTS (Text-till-tal)-motor är tillgänglig på din enhet. Detta är vanligt på vissa enheter med anpassade Android-skal.",
+
+  "ttsNoEngineSteps": "Vänligen följ dessa steg:\n\n1. Öppna 'App Store'\n2. Sök efter 'Google Text-to-Speech'\n3. Installera röstmotorn\n4. Efter installation, gå till 'Inställningar → Tillgänglighet → Text-till-tal'\n5. Välj den installerade motorn och ladda ner språkpaket",
+
+  "ttsUnavailableTitle": "Röstfunktion otillgänglig",
+
+  "ttsUnavailableMessage": "Din enhet kanske inte har ett röstpaket installerat.\n\nVänligen följ dessa steg:\n1. Öppna systeminställningar\n2. Sök efter 'Text-till-tal' eller 'TTS'\n3. Se till att en röstmotor är installerad\n4. Ställ in ditt språk som standard",
+
+  "ttsUnavailableHint": "Tips: På vissa enheter, kontrollera dina systemröstmotorinställningar eller installera Google TTS-motor.",
+
+  "openTtsSettings": "Öppna TTS-inställningar",
+
+  "ok": "OK",
+
+  "ttsSpeechRate": "Talhastighet",
+
+  "ttsPitch": "Tonhöjd",
+
+  "ttsVolumeDesc": "Justera röstmeddelandevolym",
+
+  "ttsSpeechRateDesc": "Justera röstmeddelandehastighet (0.5 är normal hastighet)",
+
+  "ttsPitchDesc": "Justera röstmeddelandetonhöjd (1.0 är normal tonhöjd)",
+
+  "ttsLanguageNote": "Tips: Du kan manuellt välja språk om automatisk detektering är felaktig.",
+
+  "ttsLanguageAutoDesc": "Auto-välj baserat på appspråk",
+
+  "followSystem": "Följ system",
+
+  "simplifiedChinese": "Förenklad kinesiska",
+
+  "english": "Engelska",
+
+  "speedVerySlow": "Mycket långsam",
+
+  "speedSlow": "Långsam",
+
+  "speedNormal": "Normal",
+
+  "speedFast": "Snabb",
+
+  "speedVeryFast": "Mycket snabb",
+
+  "pitchVeryLow": "Mycket låg",
+
+  "pitchLow": "Låg",
+
+  "pitchNormal": "Normal",
+
+  "pitchHigh": "Hög",
+
+  "pitchVeryHigh": "Mycket hög",
+
+  "onboardingNext": "Nästa",
+
+  "onboardingStartUsing": "Börja använda",
+
+  "onboardingWelcomeTitle": "Välkommen till Grid Timer",
+
+  "onboardingWelcomeDesc": "För att säkerställa att timern körs korrekt behöver vi konfigurera några enkla inställningar.\n\nDetta tar bara en minut.",
+
+  "onboardingNotificationTitle": "Aviseringsbehörighet",
+
+  "onboardingNotificationDesc": "Denna app behöver aviseringsbehörighet för att påminna dig när nedräkningen slutar.\n\nUtan denna behörighet kan du missa timer-slutföringsaviseringar.",
+
+  "onboardingGrantNotification": "Bevilja aviseringsbehörighet",
+
+  "onboardingExactAlarmTitle": "Exakt alarmbehörighet",
+
+  "onboardingExactAlarmDesc": "För att säkerställa timer-noggrannhet till sekunden behöver denna app 'exakt alarm'-behörighet.\n\nVänligen tillåt i kommande dialog eller inställningar.",
+
+  "onboardingGrantExactAlarm": "Bevilja exakt alarmbehörighet",
+
+  "onboardingFullScreenIntentTitle": "Helskärmsaviseringar",
+
+  "onboardingFullScreenIntentDesc": "Android 14+ kan kräva en speciell appåtkomst för att visa helskärmsaviseringar på låsskärmen.\n\nVänligen tillåt 'Helskärmsavsikter' för denna app för att förbättra alarmpålitlighet.",
+
+  "onboardingGrantFullScreenIntent": "Öppna inställningar",
+
+  "onboardingOpenFullScreenIntentSettings": "Öppna helskärmsavsiktsinställningar",
+
+  "onboardingBatteryTitle": "Batterioptimering",
+
+  "onboardingBatteryDesc": "För att förhindra systemet från att stänga timern i bakgrunden rekommenderas att ställa in denna app till 'Optimera inte batteriförbrukning'.\n\nDetta säkerställer att långa timers inte avbryts.\n\nTips: På vissa enheter kan 'Öppna batterioptimeringsinställningar'-knappen vara blockerad eller det exakta alternativet kanske inte visas. Sök i systeminställningar efter 'Batterioptimering', 'Energisparning', 'Auto-start' eller 'Bakgrundsaktivitet' och ställ in denna app till 'Optimera inte' / 'Inga begränsningar'.",
+
+  "onboardingOpenBatterySettings": "Öppna batterioptimeringsinställningar",
+
+  "onboardingCompletionTitle": "Redo att börja",
+
+  "onboardingCompletionDesc": "Alla inställningar är klara!\n\nTips: Olika enheter och OS-versioner kan bete sig olika. Gör ett snabbt låsskärm-/bakgrundstest innan du förlitar dig på långa timers.\n\nDu kan konfigurera dessa alternativ när som helst på inställningssidan.",
+
+  "onboardingGranted": "Beviljad",
+
+  "onboardingNotRequired": "Krävs inte",
+
+  "onboardingNotRequiredNotificationDesc": "Din Android-version (under 13) tillåter aviseringar som standard. Ingen manuell auktorisering behövs.",
+
+  "onboardingNotRequiredExactAlarmDesc": "Din Android-version (under 12) stöder exakta alarm som standard. Ingen manuell auktorisering behövs.",
+
+  "onboardingPreGrantedExactAlarmDesc": "Android 13 förbeviljar automatiskt exakt alarmbehörighet till nyinstallerade appar.\n\nOm du återkallar denna behörighet kan du återaktivera den i Inställningar > Appar > {appName} > Alarm & påminnelser.",
+
+  "onboardingPreGranted": "Förbeviljad",
+
+  "onboardingBatteryLegacyDesc": "För att förhindra systemet från att stänga timern i bakgrunden rekommenderas att tillåta {appName} att köra i batterisparläge.\n\nSökvägsreferens: Inställningar → Batteri / Energihantering → Batterisparning → Appar tillåtna i batterisparning → Aktivera {appName}\n\nTips: Den exakta sökvägen kan variera beroende på enhetsmärke och OS-version. Hitta det relevanta alternativet i dina inställningar.",
+
+  "permissionNotRequiredStatus": "Krävs inte (stöds som standard på ditt system)",
+
+  "batteryOptimizationLegacyDesc": "Vänligen tillåt denna app att köra i batterisparläge.\nSökväg: Inställningar → Batteri → Batterisparning → Appar tillåtna i batterisparning",
+
+  "privacyPolicy": "Integritetspolicy",
+
+  "privacyPolicyTitle": "Integritetspolicy",
+
+  "privacyPolicyMessage": "Innan du använder denna app, vänligen läs och godkänn vår integritetspolicy.",
+
+  "privacyPolicyAgree": "Jag godkänner",
+
+  "privacyPolicyViewDetails": "Visa integritetspolicy",
+
+  "ossLicenses": "Tredjepartslicenser",
+
+  "ossLicensesDesc": "Visa tredjepartsbibliotekslicenser",
+
+  "resetAllSettings": "Återställ alla inställningar",
+
+  "resetAllSettingsDesc": "Återställ alla inställningar till standardvärden",
+
+  "resetAllSettingsConfirmTitle": "Återställ alla inställningar?",
+
+  "resetAllSettingsConfirmMessage": "Detta återställer alla inställningar till sina standardvärden. Denna åtgärd kan inte ångras.",
+
+  "resetAllSettingsExitMessage": "Appen avslutas om {seconds} sekunder för att slutföra återställningen...",
+
+  "resetAllSettingsSuccess": "Inställningar återställda",
+
+  "displaySettings": "Visning & tillgänglighet",
+
+  "themeMode": "Temaläge",
+
+  "themeModeDesc": "Välj visuellt tema",
+
+  "themeSoftDark": "Mjukt mörkt",
+
+  "themeHighContrast": "Hög kontrast",
+
+  "themeLightHighContrast": "Dagsljushighlight",
+
+  "themeTraditional": "Traditionell",
+
+  "themePastelGarden": "Pastellträdgård",
+
+  "themeInkVermilion": "Bläck & Cinnober",
+
+  "themeGlacialBlue": "Glaciärblått",
+
+  "themeClassicNavy": "Klassiskt marinblått",
+
+  "permissionStatusGranted": "Beviljad",
+
+  "permissionStatusDenied": "Inte beviljad",
+
+  "batteryOptimizationStatusDisabled": "Inaktiverad (rekommenderas)",
+
+  "batteryOptimizationStatusEnabled": "Aktiverad (kan påverka alarm)",
+
+  "exactAlarmStatusGranted": "Tillåten",
+
+  "exactAlarmStatusDenied": "Inte tillåten (kan fördröja alarm)",
+
+  "batteryOptimizationStatusUnknown": "Vänligen kontrollera manuellt",
+
+  "batteryOptimizationMiuiHint": "MIUI: Ställ in 'Batterisparning' till 'Inga begränsningar'",
+
+  "batteryOptimizationHuaweiHint": "Huawei/Honor: Ställ in 'Appstart' till 'Hantera manuellt' och aktivera 'Kör i bakgrunden'",
+
+  "batteryOptimizationOppoHint": "OPPO: I 'Appinfo', gå till 'Batterianvändning', öppna 'Energiförbrukningskontroller', välj 'Tillåt bakgrundsaktivitet'",
+
+  "batteryOptimizationVivoHint": "vivo: I 'Appinfo', gå till 'Batterianvändning', i 'Batterianvändningsdetaljer' öppna 'Bakgrundsenergikontroll', välj 'Hög bakgrundsenergianvändning'",
+
+  "batteryOptimizationOemHint": "Tips: På vissa anpassade system (MIUI/EMUI/HarmonyOS) kan du behöva söka manuellt efter 'Batterioptimering', 'Auto-start' eller 'Skyddade appar' i inställningar",
+
+  "batteryOptimizationStandardHint": "Tips: Om du inte hittar 'Obegränsad', försök trycka på 'Tillåt bakgrundsanvändning'-texten (inte växeln) för att få tillgång till fler alternativ",
+
+  "gridDurationMustBePositive": "Rutnät {index} varaktighet måste vara ett positivt heltal",
+
+  "savedSuccessfullyGridUpdated": "Sparad, rutnät uppdaterat",
+
+  "activeTimersRunningConfigWillApplyOnRestart": "Aktiva timers körs, konfiguration träder i kraft vid nästa appstart",
+
+  "configurationSavedButErrorDuringUpdate": "Konfiguration sparad, men fel under appuppdatering: {error}",
+
+  "debugTools": "Felsökningsverktyg",
+
+  "testTimer10s": "10s testtimer (felsökning)",
+
+  "testTimer10sDesc": "Starta en verklig 10-sekunds timer",
+
+  "start": "Starta",
+
+  "audioTestDebug": "Ljudtest (felsökning)",
+
+  "audioTestDebugDesc": "Diagnostisera ljudproblem",
+
+  "errorTestDebug": "Feltest (felsökning)",
+
+  "errorTestDebugDesc": "Testa felrapporteringssystem",
+
+  "exitDeveloperMode": "Avsluta utvecklarläge",
+
+  "exitDeveloperModeDesc": "Tryck för att dölja felsökningsverktyg",
+
+  "failedToStartTestTimer": "Misslyckades starta testtimer: {error}",
+
+  "audioTest": "Ljudtest",
+
+  "audioTestInstructions": "Vänligen testa följande funktioner i ordning och observera om ljud produceras.\nOm ett test misslyckas har motsvarande funktion ett problem.",
+
+  "clearLog": "Rensa logg",
+
+  "startTest": "Starta test",
+
+  "testLog": "Testlogg:",
+
+  "waitingForTest": "Väntar på test...",
+
+  "testTimerStarted": "10-sekunds testtimer startad! Första platsen nu inställd till 10s.",
+
+  "stopActiveTimersBeforeTest": "Vänligen stoppa alla aktiva timers innan testtimer startas",
+
+  "timeIsUp": "Tiden är ute!",
+
+  "widgetTimersRinging": "{count, plural, =1{1 timer ringer} other{{count} timers ringer}}",
+
+  "widgetTimersActive": "{count, plural, =1{1 timer aktiv} other{{count} timers aktiva}}",
+
+  "widgetTapToOpen": "Tryck för att öppna app",
+
+  "widgetTimerRemaining": "{name}: {remaining}",
+
+  "widgetDescription": "Visa Grid Timer-status",
+
+  "deviceType": "Enhet/plattform",
+
+  "deviceTypeMiui": "Xiaomi (MIUI)",
+
+  "deviceTypeHuawei": "Huawei/Honor (EMUI/HarmonyOS)",
+
+  "deviceTypeOppo": "OPPO/Realme/OnePlus (ColorOS)",
+
+  "deviceTypeVivo": "vivo/iQOO (FuntouchOS/OriginOS)",
+
+  "deviceTypeStandard": "Standard Android",
+
+  "deviceTypeIos": "iOS",
+
+  "deviceTypeMacos": "macOS",
+
+  "deviceTypeWindows": "Windows",
+
+  "deviceTypeLinux": "Linux",
+
+  "deviceTypeWeb": "Webbläsare",
+
+  "singleInstanceWarningMessage": "Denna applikation körs redan.\n\nEndast en instans kan köras åt gången.\n\nVänligen använd det befintliga fönstret eller stäng det innan du startar ett nytt."
+}

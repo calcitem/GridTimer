@@ -164,6 +164,12 @@ class SupportedLocales {
       ttsLocale: 'ru-RU',
     ),
     SupportedLanguage(
+      code: 'sv',
+      nativeName: 'Svenska',
+      englishName: 'Swedish',
+      ttsLocale: 'sv-SE',
+    ),
+    SupportedLanguage(
       code: 'th',
       nativeName: 'ไทย',
       englishName: 'Thai',
